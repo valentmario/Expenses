@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="try to insert git_command.txt" />
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="may aDocuments wil no more rejected from origin" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,7 +25,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+    "git-widget-placeholder": "main",
+    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -140,7 +141,23 @@
       <option name="project" value="LOCAL" />
       <updated>1725475031703</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="try to insert text on git_commands.txt">
+      <option name="closed" value="true" />
+      <created>1725475357573</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1725475357573</updated>
+    </task>
+    <task id="LOCAL-00014" summary="may aDocuments wil no more rejected from origin">
+      <option name="closed" value="true" />
+      <created>1725475506721</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1725475506721</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -177,6 +194,8 @@
     <MESSAGE value="try to insert data_lists.txt" />
     <MESSAGE value="try to insert Data_organization.txt" />
     <MESSAGE value="try to insert git_command.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="try to insert git_command.txt" />
+    <MESSAGE value="try to insert text on git_commands.txt" />
+    <MESSAGE value="may aDocuments wil no more rejected from origin" />
+    <option name="LAST_COMMIT_MESSAGE" value="may aDocuments wil no more rejected from origin" />
   </component>
 </project>
