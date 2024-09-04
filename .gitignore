@@ -1,0 +1,11 @@
+# created by virtualenv automatically
+.idea/*
+.venv/*
+venv/*
+Common/__pycache__/
+Data_Classes/__pycache__/
+Top_Expenses/__pycache__/
+Widgt/__pycache__/
+__pycache__/
+.idea/*.xml
+
