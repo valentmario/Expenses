@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="may aDocuments wil no more rejected from origin" />
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Insert Widgts" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +26,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "settings.editor.selected.configurable": "editor.preferences.fonts.default"
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -157,7 +157,23 @@
       <option name="project" value="LOCAL" />
       <updated>1725475506721</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Insert Data_Classes">
+      <option name="closed" value="true" />
+      <created>1725475641946</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1725475641946</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Insert Widgts">
+      <option name="closed" value="true" />
+      <created>1725475701525</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1725475701525</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -196,6 +212,8 @@
     <MESSAGE value="try to insert git_command.txt" />
     <MESSAGE value="try to insert text on git_commands.txt" />
     <MESSAGE value="may aDocuments wil no more rejected from origin" />
-    <option name="LAST_COMMIT_MESSAGE" value="may aDocuments wil no more rejected from origin" />
+    <MESSAGE value="Insert Data_Classes" />
+    <MESSAGE value="Insert Widgts" />
+    <option name="LAST_COMMIT_MESSAGE" value="Insert Widgts" />
   </component>
 </project>
