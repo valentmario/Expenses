@@ -1,6 +1,6 @@
 # created by virtualenv automatically
 
-
+**/__pycache__/
 /.venv/lib/python3.12/site-packages/openpyxl/chart/_3d.py
 /.venv/lib/python3.12/site-packages/pip/_vendor/packaging/__about__.py
 /.venv/lib/python3.12/site-packages/et_xmlfile/__init__.py

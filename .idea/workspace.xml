@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="last commit before complete Top_Queries">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment=".gitignore updated with a lot of files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -201,7 +200,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725476274399</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary=".gitignore updated with a lot of files">
+      <option name="closed" value="true" />
+      <created>1725477781723</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1725477781723</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -245,6 +252,7 @@
     <MESSAGE value="Insert chat then top_Expenses" />
     <MESSAGE value="finally main_window is  inserted" />
     <MESSAGE value="last commit before complete Top_Queries" />
-    <option name="LAST_COMMIT_MESSAGE" value="last commit before complete Top_Queries" />
+    <MESSAGE value=".gitignore updated with a lot of files" />
+    <option name="LAST_COMMIT_MESSAGE" value=".gitignore updated with a lot of files" />
   </component>
 </project>
