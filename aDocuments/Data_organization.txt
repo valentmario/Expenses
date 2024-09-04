@@ -1,0 +1,48 @@
+===========================================================================================
+class Files_Names_Manager:
+***   parent  class  ***
+
+===========================================================================================
+class Codes_db(Files_Names_Manager):
+*** inherits  from Files_Names_Manager  ***
+
+===========================================================================================
+class Xlsx_Manager(Codes_db):
+*** inherits  from Files_Names_Manager  and  class Codes_db  ***
+
+===========================================================================================
+class Transact_Db(Xlsx_Manager):
+*** inherits  from Files_Names_Manager  & Codes_db  &  Xlsx_Manager ***
+
+This is the data chain
+
+# ========================== #
+#                            #
+Data = Transact_Db()         #
+#                            #
+# ========================== #
+
+the rule is:
+methods and data inside the file chain are undscored (_).
+the private (_) methods and attributes are accessible only inside data chain.
+public methods isn't undscored (_) and can't acces to _attributes
+but they can retrieve _attributes with Get_somthing_method()
+
+data chain:
+LOW LEVEL       return  OK  or  'Diagnostic'
+
+Modules_Manager
+MIDDLE LEVEL    return True or display 'Diagnostic' and return False
+
+Toplevel modules
+HIGH LEVEL      get only True or False
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+class Super_Top_Mngr(tk.Toplevel):
+
+class Top_Mngr(Super_Top_Mngr):
+    Inherits the Toplevel creation
+    and major functions of Super_Top_Mngr
+    ** this is a way to cut a toplevel class in two files (272 rows + 372 rows)
+
+==========================================================================================
