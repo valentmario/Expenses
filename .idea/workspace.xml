@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="__pycache__ added in .gitignore" />
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="insert .venv in .gitignore">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -214,7 +216,23 @@
       <option name="project" value="LOCAL" />
       <updated>1725478642378</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="deleted lot of files in .gitignore.gitignore">
+      <option name="closed" value="true" />
+      <created>1725478834054</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1725478834054</updated>
+    </task>
+    <task id="LOCAL-00023" summary="insert .venv in .gitignore">
+      <option name="closed" value="true" />
+      <created>1725478898865</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1725478898865</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -260,6 +278,8 @@
     <MESSAGE value="last commit before complete Top_Queries" />
     <MESSAGE value=".gitignore updated with a lot of files" />
     <MESSAGE value="__pycache__ added in .gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="__pycache__ added in .gitignore" />
+    <MESSAGE value="deleted lot of files in .gitignore.gitignore" />
+    <MESSAGE value="insert .venv in .gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="insert .venv in .gitignore" />
   </component>
 </project>
