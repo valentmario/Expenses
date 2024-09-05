@@ -46,8 +46,8 @@ class Top_Queries(tk.Toplevel):
         self.Months_TR_Database_List = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
 
         self.Tot_List       = [ONE_MONTH,TWO_MONTHS,FOUR_MONTHS,SIX_MONTHS,TWELVE_MONTHS]
-        self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()
 
+        self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()
         self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
         self.Conto_Selected = ''
         self.Month_Selected = JAN
@@ -64,7 +64,7 @@ class Top_Queries(tk.Toplevel):
         self.CA_List     = []
         self.Total_xCode = []       # [totTR. totGR, totCA]
 
-        # steps to add a widget:   1-Create widget    2-Set_Widgets_PosX
+        # steps to add a widget:   1-Create widget    2-Set_Widgets_PosX and Y
 
         # ------------  OPTION  MENUS   Year  Conto Month Total  TR GR CA  with default values  -----------------------
 
@@ -84,7 +84,7 @@ class Top_Queries(tk.Toplevel):
         self.OptMenu_Date = TheCombo(self,  self.StrVar_Date,  self.Widg_PosX, 160, 21, 16,  self.Date_List,
                                      VAL_DATE, self.Clk_Date)
 
-        self.Txt_Codes  = TheText(self, Txt_Disab, 450, 207, 16, 1,  'TR GR CA  select')
+        self.Txt_SelTrGrCa = TheText(self, Txt_Disab, 450, 207, 16, 1,  'TR GR CA  select')
 
         self.StrVar_TR  = tk.StringVar
         self.OptMenu_TR = TheCombo(self, self.StrVar_TR,      self.Widg_PosX, 240, 41, 16, self.TR_List,
@@ -283,7 +283,7 @@ class Top_Queries(tk.Toplevel):
         self.OptMenu_Tot.SetValues(self.Tot_List)
         self.OptMenu_Date.PosX(PosXok)
 
-        self.Txt_Codes.PosX(PosXok)
+        self.Txt_SelTrGrCa.PosX(PosXok)
         self.Btn_Summaries.SetX(PosXok)
 
         self.OptMenu_TR.PosX(PosXok)
@@ -531,5 +531,8 @@ class Top_Queries(tk.Toplevel):
         if type(Value) is int:
             flVal = float(Value)
         return flVal
+
+    def View_Data(self):
+        pass
 
 # =====================================================================================================

@@ -367,14 +367,14 @@ Queries_Geometry_Index  = {ONE_MONTH:0, TWO_MONTHS:1, THREE_MONTHS:2, FOUR_MONTH
 
 # Widgets (Text, Button, Combo) position for  1, 2 or 3 frames
 #                               0   one Frame                  1        two Frames       2  three Frames
-Queries_Frames_PosX        = [ [10, xyToHide, xyToHide, 450], [10, 440, xyToHide, 880], [10, 440, 870, 1310] ]
+Queries_Frames_PosX = [ [10, xyToHide, xyToHide, 450], [10, 440, xyToHide, 880], [10, 440, 870, 1310] ]
 
-Queries_Txt_Btn_Combo_PosX = [450, 880, 1310]
+Widgets_PosY        = [450, 880, 1310]
 
 #                          total frames per total months
-Queries_nFrames            = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:2, SIX_MONTHS:3, TWELVE_MONTHS:3}
+Queries_nFrames     = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:2, SIX_MONTHS:3, TWELVE_MONTHS:3}
 
 #                          total months per frame
-Queries_nMonts_xTree        = {ONE_MONTH:1, TWO_MONTHS:1, THREE_MONTHS:1, FOUR_MONTHS:2, SIX_MONTHS:2, TWELVE_MONTHS:4}
+Queries_nMonts_xTree = {ONE_MONTH:1, TWO_MONTHS:1, THREE_MONTHS:1, FOUR_MONTHS:2, SIX_MONTHS:2, TWELVE_MONTHS:4}
 
 # ============================================================================================
