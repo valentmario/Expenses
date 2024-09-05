@@ -109,6 +109,7 @@ NONE = 'None'
 
 OK     = 'OK'
 LOADED = 'Loaded'
+EMPTY  = 'Empty'
 NOK    = 'NOK'
 
 Txt_File_Dir_Name    = '/home/mario/aTxt_File'
@@ -120,7 +121,7 @@ Default_TxtFile_List = [UNKNOWN,                            # 0 Ix_Codes_File
                         UNKNOWN,                            # 1 Ix_Xlsx_File
                         'Sheet Name',                       # 2 Ix_Sheet_Name    ----- Elements  -----
                         UNKNOWN,                            # 3 Ix_Transact_File [Year,Conto, Mon,Tot,
-                        ['Conto','Month','TotMonths',       # 4 Query
+                        [None,  None,  None,                # 4 Query  [Conto, Month, Tot, ...
                          'NOT', 'NOT', 'NOT'],              #   TR GR CA  selected]
                         [] ]                                # 5 Top to start
 

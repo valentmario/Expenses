@@ -61,7 +61,7 @@ class Transact_Db(Xlsx_Manager):
             return 'ERROR\non loading Transactions'
 
         if not self._Transact_Table:
-            return 'EMPTY'
+            return EMPTY
         return OK
 
     # ---------------------------------------------------------------------------------------

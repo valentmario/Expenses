@@ -22,93 +22,12 @@ from Top_Expenses.Modules_Manager import Modul_Mngr
 class Top_Queries(Top_Queries_Parent):
     def __init__(self):
         super().__init__()
-        # self.Chat     = Ms_Chat
-        # self.Data     = Data
-        # self.Mod_Mngr = Modul_Mngr
-        # self.Dummy    = 0
-        # self.geometry('15x15+900+490')
-        # self.resizable(False, False)
-        # self.configure(background=BakGnd)
-        # self.Chat.Attach([self, TOP_QUERY])
-        # self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
-        # self.title('*****     Queries on transactions database     *****')
 
-        # self.Geometry       = ''
-        # self.nFrames        = 0
-        # self.Widgtes_PosX   = []
-        # self.Widg_PosX      = 9999
-        # self.Months_on_Tree = 0
-        # self.iStart_Month   = 0
-        # self.iTot_Months    = 0
-        # self.iEnd_Month     = 0
 
-        # self.OneYear_Transact_List   = []    # Cred Deb
-        # self.Tot_CredDeb_xTree       = [[0, 0], [0,    0], [0, 0]]
-        # self.Months_TR_Database_List = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
-        #
-        # self.Tot_List       = [ONE_MONTH,TWO_MONTHS,FOUR_MONTHS,SIX_MONTHS,TWELVE_MONTHS]
-        #
-        # self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()
-        # self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
-        # self.Conto_Selected = ''
-        # self.Month_Selected = JAN
-        # self.Tot_Selected   = ONE_MONTH
-        # self.Date_List      = [VAL_DATE, ACC_DATE]
-        # self.Date           = VAL_DATE
-        # self.TRselected  = ''
-        # self.GRselected  = ''
-        # self.CAselected  = ''
-        #
-        # self.Total_Rows  = 0    # The rows in the Trees Months
-        # self.TR_List     = []
-        # self.GR_List     = []
-        # self.CA_List     = []
-        # self.Total_xCode = []       # [totTR. totGR, totCA]
-
-        # steps to add a widget:   1-Create widget    2-Set_Widgets_PosX and Y
-
-        # ------------  OPTION  MENUS   Year  Conto Month Total  TR GR CA  with default values  -----------------------
-
-        strYear          = 'Year =  ' + str(self.Year_Selected)
-        self.Txt_Year    = TheText(self, Txt_Disab, 450, 20, 17, 1, strYear)
-        self.StrVar_Year = tk.StringVar
-        self.OptMenu_Conto = TheCombo(self, self.StrVar_Year, self.Widg_PosX,  55, 21, 16, Conto_List,
-                                     FIDEU, self.Clk_Conto)
-        self.StrVar_Start  = tk.StringVar
-        self.OptMenu_Start = TheCombo(self, self.StrVar_Start, self.Widg_PosX, 90, 21, 16,  Month_Names,
-                                      JAN, self.Clk_Month)
-        self.StrVar_Tot   = tk.StringVar
-        self.OptMenu_Tot  = TheCombo(self,  self.StrVar_Tot,   self.Widg_PosX, 125, 21, 16,  self.Tot_List,
-                                     ONE_MONTH, self.Clk_Tot)
-
-        self.StrVar_Date  = tk.StringVar
-        self.OptMenu_Date = TheCombo(self,  self.StrVar_Date,  self.Widg_PosX, 160, 21, 16,  self.Date_List,
-                                     VAL_DATE, self.Clk_Date)
-
-        self.Txt_SelTrGrCa = TheText(self, Txt_Disab, 450, 207, 16, 1,  'TR GR CA  select')
-
-        self.StrVar_TR  = tk.StringVar
-        self.OptMenu_TR = TheCombo(self, self.StrVar_TR,      self.Widg_PosX, 240, 41, 16, self.TR_List,
-                                    '', self.Clk_TRsel)
-        self.StrVar_GR  = tk.StringVar
-        self.OptMenu_GR = TheCombo(self, self.StrVar_GR,     self.Widg_PosX, 275, 41, 16,  self.GR_List,
-                                   '', self.Clk_GRsel)
-        self.StrVar_CA  = tk.StringVar
-        self.OptMenu_CA = TheCombo(self,  self.StrVar_CA,    self.Widg_PosX, 310, 21, 16,  self.CA_List,
-                                   '', self.Clk_CAsel)
         # self.Create_Year_Transact_List()
         # TheText(self, Txt_Disab, self.Widg_PosX, 450, 19, 1, 'start - end balances')
         # TheText(self, Txt_Disab, 450, 20, 19, 1, 'start - end summaries')
 
-        # ---------------------------------    Buttons   --------------------------------------------------------------
-        self.Btn_xlsx_file = TheButton(self, Btn_Def_En,  self.Widg_PosX,   370, 17, 'xlsx file select',self.Clk_SelXlsx)
-        self.Btn_xlsx_View = TheButton(self, Btn_Def_En,  self.Widg_PosX,   410, 17, 'xlsx view', self.Clk_XlsxView)
-
-        self.Btn_Transact_Sel = TheButton(self, Btn_Def_En, self.Widg_PosX, 450, 17, 'transact  file select', self.Clk_Sel_Transact)
-        self.Btn_Transact_view = TheButton(self, Btn_Def_En, self.Widg_PosX,490, 17, 'transactions view', self.Clk_ViewTransact)
-
-        self.Btn_Summaries = TheButton(self, Btn_Def_En,   self.Widg_PosX,  660, 17, ' Summaries ', self.Clk_Summaries)
-        self.Btn_Exit      = TheButton(self, Btn_Bol_En,   self.Widg_PosX,  936, 15, '  E X I T  ',  self.Call_OnClose)
 
         # --------------------------  Trees-Frames    for  Queries   --------------------------------------------------
         self.Frame1 = TheFrame(self, xyToHide, 10, self.Click_OnFrame)
@@ -139,17 +58,16 @@ class Top_Queries(Top_Queries_Parent):
         self.Trees_Load()
         self.Set_Combos_List_Sel()
 
-    # -------------------------------------------------------------------------------------------------
-    def Call_OnClose(self):
-        self.Chat.Detach(TOP_QUERY)
-        self.destroy()
+        self.View_Data()
 
+    # -------------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
         Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Values_List)
         if Request_Code == CODE_TO_CLOSE:  # Close
             self.Call_OnClose()
         elif Request_Code == TRANSACT_UPDATED:
             pass
+        # set Conto Month TotMonths   ??????????????????????????
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Summaries(self):
@@ -278,13 +196,14 @@ class Top_Queries(Top_Queries_Parent):
     def Set_Widgets_PosX(self):
         # 10,  xyToHide,  xyToHide,  450
         PosXok = self.Widgtes_PosX[3]
+        self.OptMenu_Year.PosX(PosXok)
         self.OptMenu_Conto.PosX(PosXok)
         self.OptMenu_Start.PosX(PosXok)
         self.OptMenu_Tot.PosX(PosXok)
         self.OptMenu_Tot.SetValues(self.Tot_List)
         self.OptMenu_Date.PosX(PosXok)
 
-        self.Txt_SelTrGrCa.PosX(PosXok)
+        # self.Txt_SelTrGrCa.PosX(PosXok)
         self.Btn_Summaries.SetX(PosXok)
 
         self.OptMenu_TR.PosX(PosXok)
@@ -292,7 +211,7 @@ class Top_Queries(Top_Queries_Parent):
         self.OptMenu_CA.PosX(PosXok)
         self.Btn_xlsx_View.SetX(PosXok)
         self.Btn_xlsx_file.SetX(PosXok)
-        self.Btn_Transact_Sel.SetX(PosXok)
+
         self.Btn_Transact_view.SetX(PosXok)
         self.Btn_Exit.SetX(PosXok)
 
@@ -409,7 +328,6 @@ class Top_Queries(Top_Queries_Parent):
         self.Update_Selections()
         self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
         self.View_Trees_Values()
-
 
     # -------------------------------------------------------------------------------------------------
     def Trees_Load(self):
@@ -533,6 +451,7 @@ class Top_Queries(Top_Queries_Parent):
             flVal = float(Value)
         return flVal
 
+    # -----------------------------------------------------------------------------------------------
     def View_Data(self):
         pass
 

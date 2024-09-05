@@ -37,7 +37,10 @@ class Super_Top_Mngr(tk.Toplevel):
         self.GR_Code     = None
         self.CA_Code     = None
 
-        # ---------------------------         Group Select Combo     ------------------------------
+        # --------------------------------     C O M B O s           ------------------------------
+        self.StrVar_Conto  = tk.StringVar
+        self.OptMenu_Conto = TheCombo(self, self.StrVar_Conto, self.Widg_PosX,  55, 21, 16, Conto_List,
+                                     FIDEU, self.Clk_Conto)
         self.StrVar    = tk.StringVar()
         self.GR_Combo  = TheCombo(self, self.StrVar, xyToHide, xyToHide, 1, 1, [], '', self.Clk_Combo)
 

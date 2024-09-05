@@ -3,6 +3,7 @@
 #                              Settings  used essentially for developing                          #
 # ----------------------------------------------------------------------------------------------- #
 
+from os import listdir
 from Chat import Ms_Chat
 from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
@@ -93,6 +94,7 @@ class Top_Settings(tk.Toplevel):
         self.configure(background=BakGnd)
         self.title('*****     Settings     *****')
 
+        self.Files_List = []
         self.Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
 
         self.ComboList = []
@@ -116,7 +118,7 @@ class Top_Settings(tk.Toplevel):
         self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'View Txt List',     self.Clk_View_TxtList)
         self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En, 170, 200, 14, 'Chat Participants', self.Clk_View_Chat)
 
-        self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'Text test',         self.Clk_NotUsed)
+        self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'Files list',         self.Clk_NotUsed)
         # self.Btn_StrMatching   = TheButton(self, Btn_Def_En, 170, 245, 14, 'Strings matching',  self.Clk_Matching)
         self.TestTxt           = TheText(self, Txt_Disab,    170, 245, 14, 1, 'Text')
 
@@ -219,9 +221,16 @@ class Top_Settings(tk.Toplevel):
         Mess.wait_window()
 
     # ----------------------------------------------------------------------------------------
+    # def Clk_NotUsed(self):
+    #     # self.TestTxt.PosXY(190, 245)
+    #     self.TestTxt.PosX(190)
+    #     pass
+
+
     def Clk_NotUsed(self):
-        # self.TestTxt.PosXY(190, 245)
-        self.TestTxt.PosX(190)
+        Directory = '/media/mario/ACEext4/ACEext4/12_Expenses/bFiles/bXLSX_Files/TRANSACTIONS/'
+        self.Files_List = os.listdir(Directory)
+
         pass
 
     # ----------------------------------------------------------------------------------------

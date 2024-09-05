@@ -57,7 +57,7 @@ class Modules_Manager:
         if Result == NEW:
             self.Data.Xlsx_Conto_Year_Month_Setup(False)
             self.Data.Transact_Year_Setup(False)
-            Text = "New Files_Names.txt   created\nmount the data drive\nthen select the data drive"
+            Text = "New Files_Names.txt   created\nmount the data drive"
             Msg  = Message_Dlg(MsgBox_Info, Text)
             Msg.wait_window()
         else:
@@ -181,22 +181,25 @@ class Modules_Manager:
 
     # -------------------------------------------------------------------------
     def Load_Transact(self):
-        self.Data.Transact_Year_Setup(True)  # neede for lists creating
+        self.Data.Transact_Year_Setup(True)  # needed for lists creating
         Reply = self.Data.Load_Transact_Table()
-        if Reply == OK:
-            self.Files_Loaded[Ix_Transact_Loaded] = LOADED
-            self.Chat.Tx_Request([MODULES_MNGR, [ANY], CODES_DB_UPDATED, []])
-            return True
-        elif Reply == 'EMPTY':
-            self.Files_Loaded[Ix_Transact_Loaded] = LOADED
-            Msg = Message_Dlg(MsgBox_Err, 'Transactions Database is EMPTY')
-            Msg.wait_window()
-            return True
+
+        if Reply == OK or Reply == EMPTY:
+            Result = True
+            if Reply == EMPTY:
+                Msg = Message_Dlg(MsgBox_Err, 'Transactions Database is EMPTY')
+                Msg.wait_window()
+
         else:
-            self.Files_Loaded[Ix_Transact_Loaded] = LOADED
-            Msg = Message_Dlg(MsgBox_Err, Reply)
+            Result = False
+            self.Files_Loaded[Ix_Transact_Loaded] = LOADED   # in this caase the database is cleared
+            Msg = Message_Dlg(MsgBox_Err, Reply)             # return 'ERROR... '
             Msg.wait_window()
-            return False
+
+        self.Files_Loaded[Ix_Transact_Loaded] = LOADED
+        self.Chat.Tx_Request([MODULES_MNGR, [ANY], CODES_DB_UPDATED, []])
+        return Result
+
 
     # =========================================================================================== #
     #           --------------    Cek_ names Methods    --------------                            #

@@ -52,7 +52,7 @@ class Xlsx_Manager(Codes_db):
     def Xlsx_Conto_Year_Month_Setup(self, Action):
         # FIDEU_2024_01.xlsx
         if not Action:
-            self._Xlsx_Conto = 'Conto'
+            self._Xlsx_Conto = None
             self._Xlsx_Year  = None
             self._Xlsx_Month = None
         else:
