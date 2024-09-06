@@ -8,7 +8,7 @@ import tkinter as tk
 from Chat import Ms_Chat
 from Common.Common_Functions import *
 from Data_Classes.Transact_DB import Data
-from Top_Expenses.Top_Queries_Parent import Top_Queries_Parent
+from Top_Expenses.Super_Top_Queries import Super_Top_Queries
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Tree_Widg import TheFrame
@@ -19,7 +19,7 @@ from Widgt.Widgets import TheCombo
 from Top_Expenses.Modules_Manager import Modul_Mngr
 
 # ---------------------------------------------------------------------------------------------------------------------
-class Top_Queries(Top_Queries_Parent):
+class Top_Queries(Super_Top_Queries):
     def __init__(self):
         super().__init__()
 
@@ -180,7 +180,7 @@ class Top_Queries(Top_Queries_Parent):
 
    # -------------------------------------------------------------------------------------------------
     def Set_Geometry_Frames(self):
-        Type_Tot             = self.Tot_Selected
+        Type_Tot             = ONE_MONTH   # .Tot_Selected
         Geometry_Index       = Queries_Geometry_Index[Type_Tot]
         self.Geometry        = Top_Query_geometry[Geometry_Index]
         self.Widgtes_PosX    = Queries_Frames_PosX[Geometry_Index]

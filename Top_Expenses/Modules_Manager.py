@@ -57,7 +57,7 @@ class Modules_Manager:
         if Result == NEW:
             self.Data.Xlsx_Conto_Year_Month_Setup(False)
             self.Data.Transact_Year_Setup(False)
-            Text = "New Files_Names.txt   created\nmount the data drive"
+            Text = "New Txt_File.txt created\nmount the data drive"
             Msg  = Message_Dlg(MsgBox_Info, Text)
             Msg.wait_window()
         else:

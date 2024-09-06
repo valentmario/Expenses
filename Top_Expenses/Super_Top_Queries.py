@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------------- #
-#               *****     Top_Queries_Parent.py     *****                            #
+#               *****     Super_Top_Queries.py     *****                            #
 #      the parent of Top_Queries contains attributs and some methods                 #
 #                                                                                    #
 # ---------------------------------------------------------------------------------- #
@@ -19,7 +19,7 @@ from Widgt.Widgets import TheCombo
 from Top_Expenses.Modules_Manager import Modul_Mngr
 
 # ---------------------------------------------------------------------------------------------------------------------
-class Top_Queries_Parent(tk.Toplevel):
+class Super_Top_Queries(tk.Toplevel):
     def __init__(self):
         super().__init__()
         self.Chat     = Ms_Chat
@@ -114,6 +114,7 @@ class Top_Queries_Parent(tk.Toplevel):
         self.OptMenu_Year.SetSelText(str(self.Year_Selected))
 
         Queries_Sel = self.Data.Get_Txt_Member(Ix_Query_List)
+
         self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
         self.Month_Selected = Queries_Sel[Ix_Query_Month]
         strTot_Months       = Queries_Sel[Ix_Query_TotMonths]

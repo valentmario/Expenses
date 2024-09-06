@@ -63,14 +63,11 @@ class Files_Names_Manager:
             Txt_File.write(str(Default_TxtFile_List))  # Write default Files_Names.txt
             Txt_File.close()
             self._Txt_List = Default_TxtFile_List
-            # self._Txt_List = Default_TxtFile_List
             return NEW
         else:  # ---  Files_Names.txt exists ----
             self._Read_Txt_File()
             return OK
 
-    # Index: # Ix_Codes_File, Ix_Xlsx_File,  Ix_Sheet_Name, Ix_Transact_File,
-    #          Ix_Query_List, Ix_TOP_ToStart
     def Get_Txt_Member(self, Index):
         return self._Txt_List[Index]
 

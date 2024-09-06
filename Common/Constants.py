@@ -99,31 +99,24 @@ Id_File_DBcodes  = 'Codes DB'
 Id_File_xlsx     = 'Xlsx file'
 Id_File_Transact = 'Transactions DB'
 Id_File_Any      = 'Any'
+
 UNKNOWN          = 'unknown'
-
 NEW  = 'New file created'
-
 YES  = 'YES'
 NO   = 'NO'
 NONE = 'None'
-
 OK     = 'OK'
+NOK    = 'NOK'
 LOADED = 'Loaded'
 EMPTY  = 'Empty'
-NOK    = 'NOK'
 
-Txt_File_Dir_Name    = '/home/mario/aTxt_File'
-Txt_File_Full_Name   = '/home/mario/aTxt_File/Files_Names.txt'
+ALL_CODES   = 'All codes'
+ALL_GROUPS  = 'All groups'
+ALL_CAT     = 'All categories'
+
+Txt_File_Dir_Name    = '/home/mario/aExpen_Init'
+Txt_File_Full_Name   = '/home/mario/aExpen_Init/Txt_File.txt'
 Default_Init_Dir     = '/'
-
-                        #   --- Items ---
-Default_TxtFile_List = [UNKNOWN,                            # 0 Ix_Codes_File
-                        UNKNOWN,                            # 1 Ix_Xlsx_File
-                        'Sheet Name',                       # 2 Ix_Sheet_Name    ----- Elements  -----
-                        UNKNOWN,                            # 3 Ix_Transact_File [Year,Conto, Mon,Tot,
-                        [None,  None,  None,                # 4 Query  [Conto, Month, Tot, ...
-                         'NOT', 'NOT', 'NOT'],              #   TR GR CA  selected]
-                        [] ]                                # 5 Top to start
 
 # Txt File Items Indexes  ----------------------------
 Ix_Codes_File    = 0
@@ -301,7 +294,7 @@ iView_GRdesc    = 2
 iView_CAdesc    = 3
 iView_StrToSerc = 4
 
-# ----------------------  List of Controls  To Check XLS rows Data ----------------------------
+# ----------------------  List of Controls  To Check XLS rows Data ------------------------------------------
 INTEGER = 'Integer'
 NOT_INT = 'String'
 NUMERIC = 'Numeric'
@@ -315,7 +308,7 @@ List_For_XLSX_Row_Control = [
     [iRow_Contab, DATE],    [iRow_Valuta, DATE],   [iRow_Descr1, STRING],
     [iRow_Accr,   NUMERIC], [iRow_Addeb, NUMERIC], [iRow_Descr2, STRING]]
 
-# ---------------------------   for queries  --------------------------------------------------
+# ---------------------------   for queries  ----------------------------------------------------------------
 # on the panel for queries can appear the following frames depending on Month and Total Months
 # the frames used are three:  Frame1             Frame2             Fraame 3
 # the months inserted are     1 (Jan-Dec)
@@ -360,7 +353,7 @@ Queries_Tot_Dict = {JAN:  LIST_TOT_12, FEB: LIST_TOT_6,  MARCH: LIST_TOT_6, APR:
                     SEPT: LIST_TOT_4,  OCT: LIST_TOT_3,  NOV: LIST_TOT_2,   DEC: LIST_TOT_1}
 
 
-# ----------------------------------   queries :  trees, months, geomety  ---------------------
+# ----------------------------------   queries :  trees, months, geomety  -----------------------------------
 # Frames in view :   Frame1   Frame1-Frame2  Frame1-Frame2 -Frame3
 #                          Frame geometry index per total Months   (see Top_Query_geometry)
 Queries_Geometry_Index  = {ONE_MONTH:0, TWO_MONTHS:1, THREE_MONTHS:2, FOUR_MONTHS:1, SIX_MONTHS:2, TWELVE_MONTHS:2}
@@ -378,4 +371,14 @@ Queries_nFrames     = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:2,
 #                          total months per frame
 Queries_nMonts_xTree = {ONE_MONTH:1, TWO_MONTHS:1, THREE_MONTHS:1, FOUR_MONTHS:2, SIX_MONTHS:2, TWELVE_MONTHS:4}
 
-# ============================================================================================
+# -----------------------------------------------------------------------------------------------------------
+                        #   --- Items ---
+Default_TxtFile_List = [UNKNOWN,                            # 0 Ix_Codes_File
+                        UNKNOWN,                            # 1 Ix_Xlsx_File
+                        'Sheet Name',                       # 2 Ix_Sheet_Name    ----- Elements  -----
+                        UNKNOWN,                            # 3 Ix_Transact_File [Year,Conto, Mon,Tot,
+                        [FIDEU, JAN, ONE_MONTH,             # 4 Query  [Conto, Month, Tot, ...
+                         ALL_CODES, ALL_GROUPS, ALL_CAT],   #   TR GR CA  selected]
+                        [] ]                                # 5 Top to start
+
+# ===========================================================================================================

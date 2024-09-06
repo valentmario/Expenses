@@ -61,8 +61,8 @@ class Widgets_Styles:
 
         # ========================   Style   TheTreeView       ==========================
         self.style.configure("mystyle.Treeview", highlightthickness=0,
-                             bd=0, font=('Calibri', 9))
-        self.style.configure("mystyle.Treeview.Heading", font=('Calibri', 9, 'bold'))
+                             bd=0, font=('Calibri', 10))
+        self.style.configure("mystyle.Treeview.Heading", font=('Calibri', 10, 'bold'))
         # Remove the borders ----------------------
         self.style.layout("mystyle.Treeview",
                           [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])
