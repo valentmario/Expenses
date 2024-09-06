@@ -36,7 +36,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Geometry       = ''
         self.nFrames        = 0
         self.Widgtes_PosX   = []
-        self.Widg_PosX      = 9999
+        self.Widg_PosX      = xyToHide
         self.Months_on_Tree = 0
         self.iStart_Month   = 0
         self.iTot_Months    = 0

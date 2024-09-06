@@ -3,15 +3,23 @@
 #                                                                               #
 #    ----------------------------------                                         #
 #     Modul_Mngr = Modules_Manager()                                            #
-#     Data       = Transact_DB()                                                #
-#    ----------------------------------                                         #
-#     are istanced on Startup and will NEVER destoyed                           #                                  #
+#     Data       = Transact_DB <-- Xlsx_Manager <--                             #
+#                  <-- Files_Names_Manager                                      #
+#     are instanced on Startup and will NEVER destroyed                         #
 #                                                                               #
 #    Methodes:  ( returns  True or False)                                       #
+#         Codes_DB             Xlsx               Transactions                  #
 #       Init_Codes          Init_xlsx           Init_transact                   #
 #       Cek_Codes_Name      Cek_xlsx_Name       Cek_Transactions_Name           #
 #       Sel_Codes           Sel_Xlsx            Sel_Transact                    #
 #       Load_Codes          Load_Xlsx           Load_Transact                   #
+#                                                                               #
+#    The List on Data is                                                        #
+#     [self._Xlsx_Conto,self._Xlsx_Year,self._Xlsx_Month,self._Transact_Year]   #
+#     is created from  Xlsx_Conto_Year_Month_Setup(False/True)   and            #
+#                      Transact_Year_Setup(False/True)                          #
+#      on Cek_Create_Txt_File(),  Cek..Name(), Sel..file(),  Load..Data()       #
+#      so all TopLevels are launchd with this filled list                       #
 #                                                                               #
 # ============================================================================= #
 """
@@ -71,6 +79,8 @@ class Modules_Manager:
         Full_Codes_DB_Filename = self.Data.Get_Txt_Member(Ix_Codes_File)
         if (Full_Codes_DB_Filename == UNKNOWN) or \
         not (self.Cek_Codes_Name(Full_Codes_DB_Filename)):
+            Msg = Message_Dlg(MsgBox_Info, 'Please select a CodesDatabe.db file')
+            Msg.wait_window()
             if self.Sel_Codes():    # return True False
                 if self.Load_Codes():
                     return True
@@ -88,6 +98,8 @@ class Modules_Manager:
         Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
         if (Full_Xlsx_Filename == UNKNOWN) or \
         not (self.Cek_Xlsx_Name(Full_Xlsx_Filename)):
+            Msg = Message_Dlg(MsgBox_Info, 'Please select a file.xlsx')
+            Msg.wait_window()
             if self.Sel_Xlsx():
                 if self.Load_Xlsx():
                     return True
@@ -104,6 +116,8 @@ class Modules_Manager:
         Full_Transact_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
         if (Full_Transact_Filename == UNKNOWN) or \
         not (self.Cek_Transactions_Name(Full_Transact_Filename)):
+            Msg = Message_Dlg(MsgBox_Info, 'Please select a Transact_YYYY.db file')
+            Msg.wait_window()
             if self.Sel_Transact():    # return True False
                 if self.Load_Transact():
                     return True

@@ -181,6 +181,8 @@ class Top_Queries(Super_Top_Queries):
    # -------------------------------------------------------------------------------------------------
     def Set_Geometry_Frames(self):
         Type_Tot             = ONE_MONTH   # .Tot_Selected
+
+
         Geometry_Index       = Queries_Geometry_Index[Type_Tot]
         self.Geometry        = Top_Query_geometry[Geometry_Index]
         self.Widgtes_PosX    = Queries_Frames_PosX[Geometry_Index]
