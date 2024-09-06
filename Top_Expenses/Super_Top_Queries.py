@@ -9,13 +9,8 @@ import tkinter as tk
 from Chat import Ms_Chat
 from Common.Common_Functions import *
 from Data_Classes.Transact_DB import Data
-
-from Widgt.Dialogs import Print_Received_Message
-from Widgt.Tree_Widg import TheFrame
 from Widgt.Widgets import TheButton
-from Widgt.Widgets import TheText
 from Widgt.Widgets import TheCombo
-
 from Top_Expenses.Modules_Manager import Modul_Mngr
 
 # =================================================================================================================
@@ -30,7 +25,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.resizable(False, False)
         self.configure(background=BakGnd)
         self.Chat.Attach([self, TOP_QUERY])
-        # self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
         self.title('*****     Queries on transactions database     *****')
 
         self.Geometry       = ''
@@ -42,9 +36,9 @@ class Super_Top_Queries(tk.Toplevel):
         self.iTot_Months    = 0
         self.iEnd_Month     = 0
 
-        self.OneYear_Transact_List   = []    # Cred Deb
-        self.Tot_CredDeb_xTree       = [[0, 0], [0,    0], [0, 0]]
-        self.Months_TR_Database_List = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
+        self.OneYear_Transact_List = []    # Cred Deb
+        self.Tot_CredDeb_xTree     = [[0, 0], [0,    0], [0, 0]]
+        self.Transact_xMonth_List  = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
 
         self.Years_List  = []
         self.Tot_List    = [ONE_MONTH,TWO_MONTHS,FOUR_MONTHS,SIX_MONTHS,TWELVE_MONTHS]
@@ -105,6 +99,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Btn_Summaries = TheButton(self, Btn_Def_En, self.Widg_PosX, 660, 17, ' Summaries ', self.Clk_Summaries)
         self.Btn_Exit = TheButton(self, Btn_Bol_En, self.Widg_PosX, 936, 15, '  E X I T  ', self.Call_OnClose)
         self.Setup_Year_Conto_Month_Tot_Date()
+        self._Create_Year_Transact_List()
 
 
     # -------------------------------------------------------------------------------------------------------------
@@ -112,6 +107,14 @@ class Super_Top_Queries(tk.Toplevel):
         self.TRselected = ''
         self.GRselected = ''
         self.CAselected = ''
+
+    # -------------------------------------------------------------------------------------------------------------
+    def _Create_Year_Transact_List(self):
+        self.OneYear_Transact_List = self.Data.Get_Transact_Table()
+        self.Transact_xMonth_List  = []
+
+
+
 
     # -------------------------------------------------------------------------------------------------------------
     def Setup_Year_Conto_Month_Tot_Date(self):
@@ -123,7 +126,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.OptMenu_Year.SetSelText(str(self.Year_Selected))
 
         Queries_Sel = self.Data.Get_Txt_Member(Ix_Query_List)
-
         self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
         self.Month_Selected = Queries_Sel[Ix_Query_Month]
         self.Tot_Selected   = Queries_Sel[Ix_Query_TotMonths]
@@ -142,8 +144,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.OptMenu_TR.SetSelText(self.TRselected)
         self.OptMenu_GR.SetSelText(self.GRselected)
         self.OptMenu_CA.SetSelText(self.CAselected)
-
-        # self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], XLSX_UPDATED, []])
+        self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], UPDATE_FILES_NAME, []])
 
     # -------------------------------------------------------------------------------------------------------------
     def Update_Sel_onTxt(self):
@@ -172,32 +173,29 @@ class Super_Top_Queries(tk.Toplevel):
         self.Chat.Detach(TOP_QUERY)
         self.destroy()
 
+
+
+
+
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Year(self, Value):
         pass
-
     def Clk_Conto(self, Value):
         pass
-
     def Clk_Month(self, Value):
        pass
-
     def Clk_Tot(self, Value):
         pass
-
     def Clk_Date(self, Value):
         pass
-
     def Clk_TRsel(self, Value):
         pass
-
     def Clk_GRsel(self, Value):
         pass
-
     def Clk_CAsel(self, Value):
         pass
 
-
+    # -------------------------------------------------------------------------------------------------------------
     def Clk_ViewTransact(self):
         pass
 
@@ -209,5 +207,16 @@ class Super_Top_Queries(tk.Toplevel):
 
     def Clk_Summaries(self):
         pass
+
+    # -----------------------------------------------------------------------------------------------
+    def Convert_To_Float(self, Value):
+        self.Dummy = 0
+        flVal      = Value
+        Type = type(Value)
+        if Type is str or Type is None:
+            return 0.00
+        if type(Value) is int:
+            flVal = float(Value)
+        return flVal
 
 # =================================================================================================================

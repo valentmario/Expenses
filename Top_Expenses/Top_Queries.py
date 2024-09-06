@@ -5,7 +5,6 @@
 # ---------------------------------------------------------------------------------- #
 
 from Common.Common_Functions import *
-from Data_Classes.Transact_DB import Data
 from Top_Expenses.Super_Top_Queries import Super_Top_Queries
 
 from Widgt.Dialogs import Print_Received_Message
@@ -17,9 +16,6 @@ class Top_Queries(Super_Top_Queries):
         super().__init__()
 
 
-        # self.Create_Year_Transact_List()
-        # TheText(self, Txt_Disab, self.Widg_PosX, 450, 19, 1, 'start - end balances')
-        # TheText(self, Txt_Disab, 450, 20, 19, 1, 'start - end summaries')
 
 
         # --------------------------  Trees-Frames    for  Queries   --------------------------------------------------
@@ -50,8 +46,6 @@ class Top_Queries(Super_Top_Queries):
         self.Set_Frames_Title()
         self.Trees_Load()
         self.Set_Combos_List_Sel()
-
-        self.View_Data()
 
     # -------------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
@@ -327,7 +321,7 @@ class Top_Queries(Super_Top_Queries):
             Month_Start = Init_End_Months[index][0]
             Month_End   = Init_End_Months[index][1]
             for Ix_Month in range(Month_Start, Month_End):
-                for Rec in self.Months_TR_Database_List[Ix_Month]:
+                for Rec in self.Transact_xMonth_List[Ix_Month]:
                     Checked_Rec = self.Check_Record_To_Insert(Rec)
                     if Checked_Rec:
                         List.append(Checked_Rec)
@@ -414,21 +408,5 @@ class Top_Queries(Super_Top_Queries):
     # -------------------------------------------------------------------------------------------------
     def Clk_ViewTransact(self):
         self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT)
-
-
-    # -----------------------------------------------------------------------------------------------
-    def Convert_To_Float(self, Value):
-        self.Dummy = 0
-        flVal      = Value
-        Type = type(Value)
-        if Type is str or Type is None:
-            return 0.00
-        if type(Value) is int:
-            flVal = float(Value)
-        return flVal
-
-    # -----------------------------------------------------------------------------------------------
-    def View_Data(self):
-        pass
 
 # =====================================================================================================
