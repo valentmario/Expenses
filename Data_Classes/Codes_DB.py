@@ -61,6 +61,12 @@ class Codes_db(Files_Names_Manager):
     def Get_TR_Codes_Table_Len(self):
         return len(self._TR_Codes_Table)
 
+    def Get_TrDesc_FromCode(self, TRcde):
+        for Rec in self._TR_Codes_Table:
+            if Rec[iTR_TRcode] == TRcde:
+                return Rec[iTR_TRdesc]
+        return -1
+
     def Get_TrCode_FromDescr(self, Descr):
         for Rec in self._TR_Codes_Table:
             if Rec[iTR_TRdesc] == Descr:

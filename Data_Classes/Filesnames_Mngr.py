@@ -168,20 +168,10 @@ class Files_Names_Manager:
         for Line in Txt_File:
             self._Txt_List = eval(Line)
         Txt_File.close()
-        self._Codes_DB_Filename  = self._Txt_List[Ix_Codes_File]
-        self._Xlsx_Filename      = self._Txt_List[Ix_Xlsx_File]
+        self._Codes_DB_Filename = self._Txt_List[Ix_Codes_File]
+        self._Xlsx_Filename     = self._Txt_List[Ix_Xlsx_File]
         self.Sheet_Name         = self._Txt_List[Ix_Sheet_Name]
         self._Transact_DB_Filename = self._Txt_List[Ix_Transact_File]
-        #
-        # self.Queries_List       = self._Txt_List[Ix_Query_List]
-        #
-        # self.QueryConto         = self.Queries_List[Ix_Query_Conto]
-        # self.QueryMonth         = self.Queries_List[Ix_Query_Month]
-        # self.QueryTotMonths     = self.Queries_List[Ix_Query_TotMonths]
-        # self.QueryTRsel         = self.Queries_List[Ix_Query_TRsel]
-        # self.QueryGRsel         = self.Queries_List[Ix_Query_GRsel]
-        # self.QueryCAsel         = self.Queries_List[Ix_Query_CAsel]
-
         self.Top_ToStart        = self._Txt_List[Ix_TOP_ToStart]
 
     # ------------------------------------------------------------------------------------

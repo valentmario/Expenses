@@ -15,9 +15,6 @@ class Top_Queries(Super_Top_Queries):
     def __init__(self):
         super().__init__()
 
-
-
-
         # --------------------------  Trees-Frames    for  Queries   --------------------------------------------------
         self.Frame1 = TheFrame(self, xyToHide, 10, self.Click_OnFrame)
         self.Frame2 = TheFrame(self, xyToHide, 10, self.Click_OnFrame)
@@ -31,6 +28,7 @@ class Top_Queries(Super_Top_Queries):
 
         self.Frames_Tot_List = [self.Frame1_Tot, self.Frame2_Tot, self.Frame3_Tot]
         self.Tot_Frames_Setup()
+
         # ----------------------------------------------------------------
         self.Frame_TotRows = TheFrame(self, xyToHide, 10, self.Click_OnTot)
         self.TotRows_Frame_Setup()
@@ -44,8 +42,8 @@ class Top_Queries(Super_Top_Queries):
         self.Set_Geometry_Frames()
         self.Set_Widgets_PosX()
         self.Set_Frames_Title()
+        self.Set_TR_GR_CA_Sel_List()
         self.Trees_Load()
-        self.Set_Combos_List_Sel()
 
     # -------------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
@@ -53,48 +51,15 @@ class Top_Queries(Super_Top_Queries):
         if Request_Code == CODE_TO_CLOSE:  # Close
             self.Call_OnClose()
         elif Request_Code == TRANSACT_UPDATED:
-            pass
+            self.Call_OnClose()
+        elif Request_Code == CODE_CLK_ON_TR_CODES:
+            self.TRcode_Selected(Values_List[0])
+
         # set Conto Month TotMonths   ??????????????????????????
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Summaries(self):
         self.Mod_Mngr.Top_Launcher(TOP_SUMMARIES)
-
-    # ------------------  Fill Combos List   and previous selections saved on  Files_Names  ---------------------------
-    def Set_Combos_List_Sel(self):
-        TR_List      = []
-        self.TR_List = []
-        self.GR_List = []
-        self.CA_List = []
-
-        for Rec in self.OneYear_Transact_List:
-            if Rec[iTransact_TRdesc] not in TR_List:
-                TR_List.append(Rec[iTransact_TRdesc])
-        TR_List.sort()
-        for TRdesc in TR_List:
-            GRCAdesc = self.Data.Get_GR_CA_desc_From_TRdesc(TRdesc)
-            GRdesc = GRCAdesc[0]
-            CAdesc = GRCAdesc[1]
-            if GRdesc not in self.GR_List:
-                self.GR_List.append(GRdesc)
-            if CAdesc not in self.CA_List:
-                self.CA_List.append(CAdesc)
-        self.TR_List = [ALLTR]
-        for Item in TR_List:
-            self.TR_List.append(Item)
-        self.GR_List.sort()
-        self.CA_List.sort()
-        strToPrint  = 'Len TR_List: '+str(len(self.TR_List))+'   Len GR_List: '+str(len(self.GR_List))
-        strToPrint += '   Len CA_List: '+str(len(self.CA_List))
-        PRINT(strToPrint)
-
-        self.OptMenu_TR.SetValues(self.TR_List)
-        self.OptMenu_GR.SetValues(self.GR_List)
-        self.OptMenu_CA.SetValues(self.CA_List)
-
-        self.OptMenu_TR.SetSelText(self.TRselected)
-        self.OptMenu_GR.SetSelText(self.GRselected)
-        self.OptMenu_CA.SetSelText(self.CAselected)
 
     # -------------------------------------------------------------------------------------------------
     # Three Frames for transactions view
@@ -123,10 +88,10 @@ class Top_Queries(Super_Top_Queries):
     # --------------------------------------------------------------------------------------------------
     def TotRows_Frame_Setup(self):
         Nrows     = 1
-        nColToVis = 2
-        Headings  = ['#0', 'total', 'checked']
-        Anchor    = ['c',  'c',     'c']
-        Width     = [ 0,    70,      70]
+        nColToVis = 1
+        Headings  = ['#0', 'total   rows  ']
+        Anchor    = ['c',  'e']
+        Width     = [ 0,    140]
         Form_ListT = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_TotRows.Tree_Setup(Form_ListT)
 
@@ -134,7 +99,7 @@ class Top_Queries(Super_Top_Queries):
     def Credit_Frame_Setup(self):
         Nrows     = 1
         nColToVis = 1
-        HeadingsC = ['#0', 'Credits  ']
+        HeadingsC = ['#0', 'total  credits  ']
         Anchor    = ['c',  'e']
         Width     = [ 0,    140]
         Form_ListCred     = [Nrows, nColToVis, HeadingsC, Anchor, Width]
@@ -144,7 +109,7 @@ class Top_Queries(Super_Top_Queries):
     def Debit_Frame_Setup(self):
         Nrows     = 1
         nColToVis = 1
-        HeadingsC = ['#0', 'Debits  ']
+        HeadingsC = ['#0', 'total  debits  ']
         Anchor    = ['c',  'e']
         Width     = [ 0,    140]
         Form_ListDeb = [Nrows, nColToVis, HeadingsC, Anchor, Width]
@@ -197,7 +162,7 @@ class Top_Queries(Super_Top_Queries):
         self.Btn_xlsx_View.SetX(PosXok)
         self.Btn_xlsx_file.SetX(PosXok)
 
-        self.Btn_Transact_view.SetX(PosXok)
+        self.Btn_DB_View.SetX(PosXok)
         self.Btn_Exit.SetX(PosXok)
 
         self.Frame1.Frame_PosXY(self.Widgtes_PosX[0], 10)
@@ -233,71 +198,6 @@ class Top_Queries(Super_Top_Queries):
 
         if self.GRselected == '':
             return
-        Tot = 0
-        # for Rec in self.OneYear_Transact_List:
-        #     if Rec[iTransact_GRdesc] == self.GRselected:
-        #         PRINT(Rec)
-        #         Tot += 1
-        PRINT('Len of Trees Rows: ' +str(Tot)+'\n----------------------------------')
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_Conto(self, Value):
-        self.Conto_Selected = Value
-        self.Month_Selected = Month_Names[0]
-        self.Tot_Selected   = ONE_MONTH
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
-
-    def Clk_Month(self, Value):
-        self.Month_Selected = Value
-        self.Tot_Selected   = ONE_MONTH
-        self.Tot_List       = Queries_Tot_Dict[self.Month_Selected]
-        self.OptMenu_Tot.SetValues(self.Tot_List)
-        self.OptMenu_Tot.SetSelText(self.Tot_Selected[0])
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_Tot(self, Value):
-        self.Tot_Selected = Value
-        self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_Date(self, Value):
-        self.Date_List = Value
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_TRsel(self, Val):
-        Value = Val
-        if Val == NONE:
-            Value = ''
-        self.Clear_Code_Sel()
-        self.TRselected = Value
-        self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
-
-    def Clk_GRsel(self, Value):
-        self.Clear_Code_Sel()
-        self.GRselected = Value
-        self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
-
-    def Clk_CAsel(self, Value):
-        self.Clear_Code_Sel()
-        self.CAselected = Value
-        self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
 
     # -------------------------------------------------------------------------------------------------
     def Trees_Load(self):
@@ -383,30 +283,12 @@ class Top_Queries(Super_Top_Queries):
             Checked = True
         if not Checked:
             return []
-        # Rec_Checked = [It_Date(Rec_ToIns[iTransact_Date]), Rec_ToIns[iTransact_TRdesc],
-        #                Rec_ToIns[iTransact_Accred], Rec_ToIns[iTransact_Addeb]]
-        # return Rec_Checked
+
     # -------------------------------------------------------------------------------------------------
     def Get_Credit_Debit(self, Rec):
         self.Dummy = 0
         Credit = self.Convert_To_Float(Rec[2])
         Debit  = self.Convert_To_Float(Rec[3])
         return [Credit, Debit]
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_XlsxView(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW)
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_SelXlsx(self):
-        self.Mod_Mngr.Sel_Xlsx()
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_Sel_Transact(self):
-        self.Mod_Mngr.Sel_Transact()
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_ViewTransact(self):
-        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT)
 
 # =====================================================================================================

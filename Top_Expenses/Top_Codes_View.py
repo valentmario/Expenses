@@ -52,6 +52,7 @@ class Top_View_Codes(tk.Toplevel):
     def Call_OnClose(self):
         self.Chat.Detach(TOP_CODES_VIEW)
         self.destroy()
+        return
 
     # ---------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Value):
@@ -104,7 +105,7 @@ class Top_View_Codes(tk.Toplevel):
     # ---------------------------------------------------------------------------------------------
     def Clk_OnTree_Codes(self, Values):
         TRcode = int(Values[iView_TRcode])
-        self.Chat.Tx_Request([TOP_CODES_VIEW, [TOP_MNGR], CODE_CLK_ON_TR_CODES, [TRcode] ])
+        self.Chat.Tx_Request([TOP_CODES_VIEW, [TOP_MNGR, TOP_QUERY], CODE_CLK_ON_TR_CODES, [TRcode] ])
 
     # ----------------------------------------------------------------------------------------------
     def Clk_Order(self):

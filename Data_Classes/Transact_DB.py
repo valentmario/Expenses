@@ -56,6 +56,7 @@ class Transact_Db(Xlsx_Manager):
         try:
             cursor.execute("SELECT * FROM TRANSACT")
             self._Transact_Table = cursor.fetchall()
+            connect.close()
         except:
             connect.close()
             return 'ERROR\non loading Transactions'

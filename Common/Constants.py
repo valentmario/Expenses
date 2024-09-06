@@ -314,7 +314,10 @@ List_For_XLSX_Row_Control = [
 # the months inserted are     1 (Jan-Dec)
 #
 
-ALLTR  = 'All transactions'      # Manage all transactions
+ALLTR  = 'All transactions'
+SELTR  = 'Selecet a Code'
+ALLGR  = 'All groups'
+ALLCA  = 'All categories'
 
 JAN   = 'January'
 FEB   = 'February'
