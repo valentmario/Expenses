@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------------- #
-#               *****     Super_Top_Queries.py     *****                            #
+#               *****     Super_Top_Queries.py     *****                             #
 #      the parent of Top_Queries contains attributs and some methods                 #
 #                                                                                    #
 # ---------------------------------------------------------------------------------- #
@@ -18,7 +18,7 @@ from Widgt.Widgets import TheCombo
 
 from Top_Expenses.Modules_Manager import Modul_Mngr
 
-# ---------------------------------------------------------------------------------------------------------------------
+# =================================================================================================================
 class Super_Top_Queries(tk.Toplevel):
     def __init__(self):
         super().__init__()
@@ -49,9 +49,9 @@ class Super_Top_Queries(tk.Toplevel):
         self.Years_List  = []
         self.Tot_List    = [ONE_MONTH,TWO_MONTHS,FOUR_MONTHS,SIX_MONTHS,TWELVE_MONTHS]
         self.Date_List   = [VAL_DATE, ACC_DATE]
-        self.Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
+        self.Files_Ident = []   # self.Data.Get_Xlsx_Transact_Ident()
 
-        self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
+        self.Year_Selected  = 0    # self.Files_Ident[Ix_Transact_Year]
         self.Conto_Selected = ''
         self.Month_Selected = ''
         self.Tot_Selected   = ''
@@ -66,6 +66,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.CA_List     = []
         self.Total_xCode = []       # [totTR. totGR, totCA]
 
+        # ----------------------------------    C O M B O s -------------------------------------------------------
         self.StrVar_Year  = tk.StringVar
         self.OptMenu_Year = TheCombo(self, self.StrVar_Year, self.Widg_PosX, 20, 21, 16, ['2023', '2024'],
                                       '2023', self.Clk_Year)
@@ -95,7 +96,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.OptMenu_CA = TheCombo(self,  self.StrVar_CA,    self.Widg_PosX, 310, 21, 16,  self.CA_List,
                                    'Category code', self.Clk_CAsel)
 
-        # ---------------------------------    Buttons   --------------------------------------------------------------
+        # ---------------------------------    Buttons   ----------------------------------------------------------
         self.Btn_Transact_view = TheButton(self, Btn_Def_En, self.Widg_PosX, 370, 17, 'transactions view',
                                            self.Clk_ViewTransact)
         self.Btn_xlsx_file = TheButton(self, Btn_Def_En, self.Widg_PosX, 410, 17, 'xlsx file select', self.Clk_SelXlsx)
@@ -103,13 +104,21 @@ class Super_Top_Queries(tk.Toplevel):
 
         self.Btn_Summaries = TheButton(self, Btn_Def_En, self.Widg_PosX, 660, 17, ' Summaries ', self.Clk_Summaries)
         self.Btn_Exit = TheButton(self, Btn_Bol_En, self.Widg_PosX, 936, 15, '  E X I T  ', self.Call_OnClose)
-        self.View_Year_Conto_Month_Tot_Date()
+        self.Setup_Year_Conto_Month_Tot_Date()
+
 
     # -------------------------------------------------------------------------------------------------------------
-    def View_Year_Conto_Month_Tot_Date(self):
+    def Clear_Code_Sel(self):
+        self.TRselected = ''
+        self.GRselected = ''
+        self.CAselected = ''
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Setup_Year_Conto_Month_Tot_Date(self):
         self.Get_Transact_Year_List()
-        self.OptMenu_Year.SetValues(self.Years_List)
-        self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()
+        self.OptMenu_Year.SetValues(self.Years_List)               # List of existing Year Transactions
+
+        self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()   # list created on ModulesManager
         self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
         self.OptMenu_Year.SetSelText(str(self.Year_Selected))
 
@@ -117,17 +126,32 @@ class Super_Top_Queries(tk.Toplevel):
 
         self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
         self.Month_Selected = Queries_Sel[Ix_Query_Month]
-        strTot_Months       = Queries_Sel[Ix_Query_TotMonths]
-        # iTotMonths          = TOT_MONTH_INT[str]
-        pass
-        self.Date_Selected = Queries_Sel[Ix_Query_Month]
+        self.Tot_Selected   = Queries_Sel[Ix_Query_TotMonths]
+        self.Date_Selected  = VAL_DATE
+        self.TRselected     = Queries_Sel[Ix_Query_TRsel]
+        self.GRselected     = Queries_Sel[Ix_Query_GRsel]
+        self.CAselected     = Queries_Sel[Ix_Query_CAsel]
+        self.View_Selections()
 
-        self.TRselected     = ''
-        self.GRselected     = ''
-        self.CAselected     = ''
-        pass
+    # -------------------------------------------------------------------------------------------------------------
+    def View_Selections(self):
+        self.OptMenu_Year.SetSelText(self.Year_Selected)
+        self.OptMenu_Conto.SetSelText(self.Conto_Selected)
+        self.OptMenu_Start.SetSelText(self.Month_Selected)
+        self.OptMenu_Tot.SetSelText(self.Tot_Selected)
+        self.OptMenu_TR.SetSelText(self.TRselected)
+        self.OptMenu_GR.SetSelText(self.GRselected)
+        self.OptMenu_CA.SetSelText(self.CAselected)
 
-    # -------------------------------------------------------------------------------------------------
+        # self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], XLSX_UPDATED, []])
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Update_Sel_onTxt(self):
+        QueryList = [self.Conto_Selected, self.Month_Selected, self.Tot_Selected,
+                     self.TRselected,     self.GRselected,     self.CAselected ]
+        self.Data.Update_Txt_File(QueryList, Ix_Query_List)
+
+    # -------------------------------------------------------------------------------------------------------------
     def Get_Transact_Year_List(self):
         Full_Transact_filename = self.Data.Get_Txt_Member(Ix_Transact_File)
         Directory  = Get_Dir_Name(Full_Transact_filename)
@@ -143,12 +167,12 @@ class Super_Top_Queries(tk.Toplevel):
         pass
 
 
-    # -------------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------------------------
     def Call_OnClose(self):
         self.Chat.Detach(TOP_QUERY)
         self.destroy()
 
-    # -------------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------------------------
     def Clk_Year(self, Value):
         pass
 
@@ -186,4 +210,4 @@ class Super_Top_Queries(tk.Toplevel):
     def Clk_Summaries(self):
         pass
 
-# =======================================================================================
+# =================================================================================================================

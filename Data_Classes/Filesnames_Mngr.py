@@ -35,13 +35,13 @@ class Files_Names_Manager:
         self._Xlsx_Month    = None
         self._Transact_Year = None  # or on selecting new file  Transact_2024
 
-        self._Queries_List  = ['Conto', 'Month', 'Tot', '---', '---', '---']
-        self.QueryConto     = 'Conto'       # the content of [Queries_List]
-        self.QueryMonth     = 'Month'
-        self.QueryTotMonths = 'TotMonths'
-        self.QueryTRsel     = 'NOT'
-        self.QueryGRsel     = 'NOT'
-        self.QueryCAsel     = 'NOT'
+        # self._Queries_List  = ['Conto', 'Month', 'Tot', '---', '---', '---']
+        # self.QueryConto     = 'Conto'       # the content of [Queries_List]
+        # self.QueryMonth     = 'Month'
+        # self.QueryTotMonths = 'TotMonths'
+        # self.QueryTRsel     = 'NOT'
+        # self.QueryGRsel     = 'NOT'
+        # self.QueryCAsel     = 'NOT'
 
         self.Curr_Year  = datetime.now().year    # to max years history setup
         self.Curr_Month = datetime.now().month
@@ -83,9 +83,6 @@ class Files_Names_Manager:
         self._Update_Txt_File( Value, Index)
 
     # -----------------------------------------------------------------------------------
-    def Get_Queries_List(self):
-        return self._Queries_List
-
     def Update_Query_List(self, Value, Index):
         Query_List = self._Txt_List[Ix_Query_List]
         Query_List[Index]            = Value
@@ -175,15 +172,15 @@ class Files_Names_Manager:
         self._Xlsx_Filename      = self._Txt_List[Ix_Xlsx_File]
         self.Sheet_Name         = self._Txt_List[Ix_Sheet_Name]
         self._Transact_DB_Filename = self._Txt_List[Ix_Transact_File]
-
-        self.Queries_List       = self._Txt_List[Ix_Query_List]
-
-        self.QueryConto         = self.Queries_List[Ix_Query_Conto]
-        self.QueryMonth         = self.Queries_List[Ix_Query_Month]
-        self.QueryTotMonths     = self.Queries_List[Ix_Query_TotMonths]
-        self.QueryTRsel         = self.Queries_List[Ix_Query_TRsel]
-        self.QueryGRsel         = self.Queries_List[Ix_Query_GRsel]
-        self.QueryCAsel         = self.Queries_List[Ix_Query_CAsel]
+        #
+        # self.Queries_List       = self._Txt_List[Ix_Query_List]
+        #
+        # self.QueryConto         = self.Queries_List[Ix_Query_Conto]
+        # self.QueryMonth         = self.Queries_List[Ix_Query_Month]
+        # self.QueryTotMonths     = self.Queries_List[Ix_Query_TotMonths]
+        # self.QueryTRsel         = self.Queries_List[Ix_Query_TRsel]
+        # self.QueryGRsel         = self.Queries_List[Ix_Query_GRsel]
+        # self.QueryCAsel         = self.Queries_List[Ix_Query_CAsel]
 
         self.Top_ToStart        = self._Txt_List[Ix_TOP_ToStart]
 

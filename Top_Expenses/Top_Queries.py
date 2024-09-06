@@ -3,20 +3,13 @@
 #                      Queries  on Transactions database                             #
 #                                                                                    #
 # ---------------------------------------------------------------------------------- #
-import tkinter as tk
 
-from Chat import Ms_Chat
 from Common.Common_Functions import *
 from Data_Classes.Transact_DB import Data
 from Top_Expenses.Super_Top_Queries import Super_Top_Queries
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Tree_Widg import TheFrame
-from Widgt.Widgets import TheButton
-from Widgt.Widgets import TheText
-from Widgt.Widgets import TheCombo
-
-from Top_Expenses.Modules_Manager import Modul_Mngr
 
 # ---------------------------------------------------------------------------------------------------------------------
 class Top_Queries(Super_Top_Queries):
@@ -180,9 +173,7 @@ class Top_Queries(Super_Top_Queries):
 
    # -------------------------------------------------------------------------------------------------
     def Set_Geometry_Frames(self):
-        Type_Tot             = ONE_MONTH   # .Tot_Selected
-
-
+        Type_Tot             = self.Tot_Selected
         Geometry_Index       = Queries_Geometry_Index[Type_Tot]
         self.Geometry        = Top_Query_geometry[Geometry_Index]
         self.Widgtes_PosX    = Queries_Frames_PosX[Geometry_Index]
@@ -204,8 +195,6 @@ class Top_Queries(Super_Top_Queries):
         self.OptMenu_Tot.PosX(PosXok)
         self.OptMenu_Tot.SetValues(self.Tot_List)
         self.OptMenu_Date.PosX(PosXok)
-
-        # self.Txt_SelTrGrCa.PosX(PosXok)
         self.Btn_Summaries.SetX(PosXok)
 
         self.OptMenu_TR.PosX(PosXok)
@@ -257,54 +246,36 @@ class Top_Queries(Super_Top_Queries):
         #         Tot += 1
         PRINT('Len of Trees Rows: ' +str(Tot)+'\n----------------------------------')
 
-    def Update_Selections(self):
-        # self.Data.Update_Ins_Query_year(self.Conto_Selected, Ix_Query_Conto)
-        # self.Data.Update_Ins_Query_year(self.Month_Selected, Ix_Query_Month)
-        # self.Data.Update_Ins_Query_year(self.Tot_Selected, Ix_Query_TotMonths)
-        # self.Data.Update_Ins_Query_year(self.TRselected, Ix_Query_TRsel)
-        # self.Data.Update_Ins_Query_year(self.GRselected, Ix_Query_GRsel)
-        # self.Data.Update_Ins_Query_year(self.CAselected, Ix_Query_CAsel)
-
-        self.OptMenu_Conto.SetSelText(self.Conto_Selected)
-        self.OptMenu_Start.SetSelText(self.Month_Selected)
-        self.OptMenu_Tot.SetSelText(self.Tot_Selected)
-        self.OptMenu_TR.SetSelText(self.TRselected)
-        self.OptMenu_GR.SetSelText(self.GRselected)
-        self.OptMenu_CA.SetSelText(self.CAselected)
-
-        self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], XLSX_UPDATED, []])
-
     # -------------------------------------------------------------------------------------------------
     def Clk_Conto(self, Value):
         self.Conto_Selected = Value
         self.Month_Selected = Month_Names[0]
         self.Tot_Selected   = ONE_MONTH
-        self.Update_Selections()
+        self.Update_Sel_onTxt()
+        self.View_Selections()
         self.View_Trees_Values()
 
     def Clk_Month(self, Value):
         self.Month_Selected = Value
-        self.Update_Selections()
-        self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
+        self.Tot_Selected   = ONE_MONTH
+        self.Tot_List       = Queries_Tot_Dict[self.Month_Selected]
+        self.OptMenu_Tot.SetValues(self.Tot_List)
+        self.OptMenu_Tot.SetSelText(self.Tot_Selected[0])
+        self.Update_Sel_onTxt()
+        self.View_Selections()
         self.View_Trees_Values()
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Tot(self, Value):
         self.Tot_Selected = Value
-        self.Update_Selections()
         self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
+        self.Update_Sel_onTxt()
+        self.View_Selections()
         self.View_Trees_Values()
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Date(self, Value):
         self.Date_List = Value
-
-
-    # -------------------------------------------------------------------------------------------------
-    def Clear_Code_Sel(self):
-        self.TRselected = ''
-        self.GRselected = ''
-        self.CAselected = ''
 
     # -------------------------------------------------------------------------------------------------
     def Clk_TRsel(self, Val):
@@ -313,22 +284,25 @@ class Top_Queries(Super_Top_Queries):
             Value = ''
         self.Clear_Code_Sel()
         self.TRselected = Value
-        self.Update_Selections()
         self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
+        self.Update_Sel_onTxt()
+        self.View_Selections()
         self.View_Trees_Values()
 
     def Clk_GRsel(self, Value):
         self.Clear_Code_Sel()
         self.GRselected = Value
-        self.Update_Selections()
         self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
+        self.Update_Sel_onTxt()
+        self.View_Selections()
         self.View_Trees_Values()
 
     def Clk_CAsel(self, Value):
         self.Clear_Code_Sel()
         self.CAselected = Value
-        self.Update_Selections()
         self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
+        self.Update_Sel_onTxt()
+        self.View_Selections()
         self.View_Trees_Values()
 
     # -------------------------------------------------------------------------------------------------

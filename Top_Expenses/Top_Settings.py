@@ -1,9 +1,8 @@
 # ----------------------------------------------------------------------------------------------- #
 #                           ***   Top_Settings.py   ***                                           #
-#                              Settings  used essentially for developing                          #
+#                        Settings  functions used essentially for developing                      #
 # ----------------------------------------------------------------------------------------------- #
 
-from os import listdir
 from Chat import Ms_Chat
 from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
@@ -170,7 +169,7 @@ class Top_Settings(tk.Toplevel):
 
     def Clk_View_TxtList(self):
         Total = self.Data.Get_Total_Rows()
-        Queries_List = self.Data.Get_Queries_List()
+        Queries_List = self.Data.Get_Txt_Member(Ix_Query_List)
         Files_Status = self.Mod_Mngr.Get_Files_Loaded_Status()
         strText = ''
         strText +=     '-------------  Codes DB  -----------------\n'
@@ -185,7 +184,7 @@ class Top_Settings(tk.Toplevel):
         strText += '\n\n----------  Xlsx total rows   -------------\n'
         strText +=   'Total rows OK ...  ' + str(Total[Ix_Tot_OK])
         strText += '\nTotal with-code .. ' + str(Total[Ix_Tot_WithCode])
-        strText += '\nTotal withot-code  ' + str(Total[Ix_Tot_Without_Code])
+        strText += '\nTotal without-code ' + str(Total[Ix_Tot_Without_Code])
 
         strText += '\n\n---  Queries  selections  -----------------'
         strText +=   '\nQuery Conto:      ' + Queries_List[Ix_Query_Conto]
