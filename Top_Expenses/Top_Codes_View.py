@@ -31,7 +31,7 @@ class Top_View_Codes(tk.Toplevel):
 
         self.Dummy           = None
         self.GRdesc          = ''
-        self.Ordered         = False
+        self.Ordered         = True
 
         self.Keys_Rows_List  = []
         self.Row_Count       = 0
@@ -44,6 +44,7 @@ class Top_View_Codes(tk.Toplevel):
         self.Frame_Codes = TheFrame(self,  10,  10, self.Clk_OnTree_Codes)
         self.Frame_Codes_Setup()
         self.Frame_Codes.Frame_View()
+        self.Frame_Codes.Load_Row_Values(self.Data.Tree_Codes_View_List_Ordered)
 
         # ---------------------------------    T R E E   of  Keys    -----------------------------
         self.Frame_Keys = TheFrame(self,  10,  10, self.Clk_OnTree_Codes)
@@ -100,7 +101,6 @@ class Top_View_Codes(tk.Toplevel):
         Width     = [0, 50, 190, 140, 140, 270]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_Codes.Tree_Setup(Form_List)
-        self.Frame_Codes.Load_Row_Values(self.Data.Tree_Codes_View_List)
 
     # ---------------------------------------------------------------------------------------------
     def Clk_OnTree_Codes(self, Values):

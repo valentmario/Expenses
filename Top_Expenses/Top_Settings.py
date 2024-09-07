@@ -140,9 +140,9 @@ class Top_Settings(tk.Toplevel):
             self.Mod_Mngr.Load_Codes()
 
     def Clk_View_Codes_DB(self):
-        self.Mod_Mngr.Top_Launcher(TOP_MNGR)
+        # self.Mod_Mngr.Top_Launcher(TOP_MNGR)
         self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW)
-        self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR)
+        # self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR)
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):

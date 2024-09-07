@@ -309,7 +309,7 @@ class Modules_Manager:
     # =========================================================================================== #
     def Top_Launcher(self, Name):
         if self.Chat.Check_Name_Is_On_Participants_List(Name):
-            self.Chat.Tx_Request([MAIN_WIND, [Name], CODE_TO_CLOSE, []])
+            self.Chat.Tx_Request([MODULES_MNGR, [Name], CODE_TO_CLOSE, []])
             return
         else:
             Result = self.Make_Checkout(Name)

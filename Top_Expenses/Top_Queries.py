@@ -53,9 +53,8 @@ class Top_Queries(Super_Top_Queries):
         elif Request_Code == TRANSACT_UPDATED:
             self.Call_OnClose()
         elif Request_Code == CODE_CLK_ON_TR_CODES:
-            self.TRcode_Selected(Values_List[0])
-
-        # set Conto Month TotMonths   ??????????????????????????
+            self.TRcode_Selected_OnTopView(Values_List[0])  # The Value is Transact_Code
+            pass
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Summaries(self):

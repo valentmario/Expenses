@@ -294,14 +294,15 @@ class Super_Top_Queries(tk.Toplevel):
             self.TRselected = ''
             self.GRselected = ''
             self.CAselected = ''
+            self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW)
         self.Update_Sel_onTxt()
         self.View_Selections()
-        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW)
+
         # self.View_Trees_Values()
 
     # --------------------------------------------------------------------------
-    def TRcode_Selected(self, TRcode):
-        self.TRselected = self.Data.Get_TR_GR_CA_desc_From_TRcode(TRcode)
+    def TRcode_Selected_OnTopView(self, TRcode):
+        self.TRselected = self.Data.Get_TrDesc_FromCode(TRcode)
         self.GRselected = ''
         self.CAselected = ''
         self.Update_Sel_onTxt()
