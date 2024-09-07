@@ -109,10 +109,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.Setup_TR_GR_CA_OptManu()
         pass
 
-        # self.Create_TRselect_List()
-        # self._Create_Year_Transact_List()
-
-
     # -------------------------------------------------------------------------------------------------------------
     def Clear_Code_Sel(self):
         self.TRselected = ''
@@ -120,7 +116,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.CAselected = ''
 
     # -------------------------------------------------------------------------------------------------------------
-    def _Create_Year_Transact_List(self):
+    def Create_Year_Transact_List(self):
         self.OneYear_Transact_List = self.Data.Get_Transact_Table()
         self.Transact_xMonth_List  = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
         Year  = self.Year_Selected
@@ -142,7 +138,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
         self.Month_Selected = Queries_Sel[Ix_Query_Month]
         self.Tot_Selected   = Queries_Sel[Ix_Query_TotMonths]
-        self.Date_Selected  = VAL_DATE
+        self.Date_Selected  = ACC_DATE
         self.TRselected     = Queries_Sel[Ix_Query_TRsel]
         self.GRselected     = Queries_Sel[Ix_Query_GRsel]
         self.CAselected     = Queries_Sel[Ix_Query_CAsel]
@@ -231,48 +227,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.Chat.Detach(TOP_QUERY)
         self.destroy()
 
-
-    # -------------------------------------------------------------------------------------------------------------
-    def Clk_Year(self, Value):
-        pass
-
-    def View_Trees_Values(self):
-        pass
-
-    # -------------------------------------------------------------------------------------------------------------
-    def Clk_Conto(self, Value):
-        self.Conto_Selected = Value
-        self.Month_Selected = Month_Names[0]
-        self.Tot_Selected   = ONE_MONTH
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
-
-    def Clk_Month(self, Value):
-        self.Month_Selected = Value
-        self.Tot_Selected   = ONE_MONTH
-        self.Tot_List       = Queries_Tot_Dict[self.Month_Selected]
-        self.OptMenu_Tot.SetValues(self.Tot_List)
-        self.OptMenu_Tot.SetSelText(self.Tot_Selected[0])
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
-
-    # -------------------------------------------------------------------------------------------------------------
-    def Clk_Tot(self, Value):
-        self.Tot_Selected = Value
-        self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.View_Trees_Values()
-
-    # -------------------------------------------------------------------------------------------------------------
-    def Clk_Date(self, Value):
-        self.Date_List = Value
-        self.View_Selections()
-        self.View_Trees_Values()
-
-
     # -------------------------------------------------------------------------------------------------------------
     def Set_OnTxt_TR_GR_Sel(self):
         QueriesSel = self.Data.Get_Txt_Member(Ix_Query_List)
@@ -292,6 +246,67 @@ class Super_Top_Queries(tk.Toplevel):
         self.Set_OnTxt_TR_GR_Sel()
 
     # -------------------------------------------------------------------------------------------------------------
+    #  this methods are defined here for final form see Top_Queries
+    #  Must load Transact_yyyy.db and
+    def Clk_Year(self, Value):
+        pass
+
+    def Crate_List_Transact_perMonth(self):
+        pass
+
+    def Trees_Load(self):
+        pass
+
+    def Set_Frames_Title(self):
+        pass
+
+    def Set_Geometry_Frames(self):
+        pass
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Clk_Conto(self, Value):
+        self.Conto_Selected = Value
+        self.Month_Selected = Month_Names[0]
+        self.Tot_Selected   = ONE_MONTH
+        self.Update_Sel_onTxt()
+        self.View_Selections()
+        self.Crate_List_Transact_perMonth()
+        self.Trees_Load()
+
+    def Clk_Month(self, Value):
+        self.Month_Selected = Value
+        self.Tot_Selected   = ONE_MONTH
+        self.Tot_List       = Queries_Tot_Dict[self.Month_Selected]
+        self.OptMenu_Tot.SetValues(self.Tot_List)
+        self.OptMenu_Tot.SetSelText(self.Tot_Selected[0])
+        self.Update_Sel_onTxt()
+        self.View_Selections()
+        self.Set_Geometry_Frames()
+        self.Set_Frames_Title()
+        # self.Crate_List_Transact_perMonth()
+        self.Trees_Load()
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Clk_Tot(self, Value):
+        self.Tot_Selected = Value
+        self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
+        self.Update_Sel_onTxt()
+        self.View_Selections()
+        self.View_Selections()
+        self.Set_Geometry_Frames()
+        self.Set_Frames_Title()
+        # self.Crate_List_Transact_perMonth()
+        self.Trees_Load()
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Clk_Date(self, Value):
+        self.Date_Selected = Value
+        self.View_Selections()
+        self.View_Selections()
+        self.Crate_List_Transact_perMonth()
+        self.Trees_Load()
+
+    # -------------------------------------------------------------------------------------------------------------
     def Clk_TRsel(self, Value):
         if Value == ALLTR:
             self.Set_All_Select()
@@ -304,15 +319,16 @@ class Super_Top_Queries(tk.Toplevel):
         self.Update_Sel_onTxt()
         self.View_Selections()
 
-        # self.View_Trees_Values()
-
-    # --------------------------------------------------------------------------
+    # ------------  see above  ------------------------
+    # called from TOP_CODES_VIEW on click on tree
     def TRcode_Selected_OnTopView(self, TRcode):
         self.TRselected = self.Data.Get_TrDesc_FromCode(TRcode)
         self.GRselected = ''
         self.CAselected = ''
         self.Update_Sel_onTxt()
         self.View_Selections()
+        self.Crate_List_Transact_perMonth()
+        self.Trees_Load()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_GRsel(self, Value):
@@ -324,7 +340,8 @@ class Super_Top_Queries(tk.Toplevel):
             self.CAselected = ''
         self.Update_Sel_onTxt()
         self.View_Selections()
-        # self.View_Trees_Values()
+        self.Crate_List_Transact_perMonth()
+        self.Trees_Load()
 
     def Clk_CAsel(self, Value):
         if Value == ALLCA:
@@ -335,7 +352,8 @@ class Super_Top_Queries(tk.Toplevel):
             self.GRselected = ''
         self.Update_Sel_onTxt()
         self.View_Selections()
-        # self.View_Trees_Values()
+        self.Crate_List_Transact_perMonth()
+        self.Trees_Load()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_ViewTransact(self):
