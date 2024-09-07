@@ -37,7 +37,7 @@ class Top_View_Codes(tk.Toplevel):
         self.Row_Count       = 0
 
         # ----------------------------------    B U T T O N S     ---------------------------------
-        self.Btn_Order  = TheButton(self, Btn_Def_En, 20, 940, 12, 'per code', self.Clk_Order)
+        self.Btn_Order  = TheButton(self, Btn_Def_En, 20, 940, 12, 'ordered', self.Clk_Order)
         self.Btn_Exit   = TheButton(self, Btn_Def_En, 705, 940, 10, '  E X I T ', self.Call_OnClose)
 
         # ---------------------------------    T R E E   of  Codes    -----------------------------

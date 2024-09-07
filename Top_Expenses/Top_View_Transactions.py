@@ -3,14 +3,15 @@
 # XLS_Row_List : nRow  Contab  Valuta  Descr1  Accred  Addeb  Descr2                #
 # ================================================================================= #
 
-import tkinter as tk
 from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data
 
 from Widgt.Dialogs import Print_Received_Message
-from Widgt.Tree_Widg import TheFrame
+from Widgt.Tree_Widg import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
+from Widgt.Widgets import TheButton
+
 
 # ===================================================================================
 class Top_View_Transact(tk.Toplevel):
@@ -35,6 +36,8 @@ class Top_View_Transact(tk.Toplevel):
         self.Frame_Sheets_Rows = TheFrame(self, 20, 20, self.Clk_On_Sheets_Rows)
         self.Frame_Sheets_Rows_Setup()
         self.Frame_Sheets_Rows.Frame_View()
+
+        TheButton(self, Btn_Def_En, 620, 950, 16, '  E X I T  ', self.Call_OnClose)
 
     # ---------------------------------------------------------------------------------------------
     def Call_OnClose(self):
@@ -72,7 +75,7 @@ class Top_View_Transact(tk.Toplevel):
     #                      0        1         2         3         4        5        6      7
     # List_Transact_DB :  nRow    Conto    Contab    Valuta    TR_Desc   Accred   Addeb  TRcode
     def Frame_Sheets_Rows_Setup(self):
-        Nrow = 46
+        Nrow = 42
         Ncol = 8
         Headings = ['#0', 'row', 'Conto', "Contab", 'Valuta', 'Description', 'Accred  ', 'Addebit  ', 'TRcode']
         Anchor   = ['c',  'c',   'c',     'c',      'c',      'w',           'e',       'e',       'c'     ]

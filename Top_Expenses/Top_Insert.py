@@ -187,7 +187,16 @@ class Top_Insert(tk.Toplevel):
         Conto = Files_Ident[Ix_Xlsx_Conto]
         self.Data.OpenClose_Transactions_Database(True, self.Full_Filename_For_Insert)
         for Rec in ViewList:
-            if not self.Test_If_Rec_In_Database(Rec):
+            RecToInsert = [Rec[iWithCode_nRow],
+                           Conto,
+                           Rec[iWithCode_Contab],
+                           Rec[iWithCode_Valuta],
+                           Rec[iWithCode_TR_Desc],
+                           Rec[iWithCode_Accr],
+                           Rec[iWithCode_Addeb],
+                           Rec[iWithCode_TRcode],
+                           Rec[iWithCode_TRcode]]
+            if not self.Test_If_Rec_In_Database(RecToInsert):
                 Transact_Inserted += 1
                 self.Data.Insert_Transact_Record(Rec[iWithCode_nRow],
                                                  Conto,
@@ -247,20 +256,26 @@ class Top_Insert(tk.Toplevel):
             if self.Continue:
                 RecToIns = Result[0]
                 RecInDB  = Result[1]
-                Texto = 'Rec to insert\n'
-                Texto += RecToIns[0] + '   ', RecToIns[1] + '   ', RecToIns[2] + '   ',
-                Texto += str(RecToIns[3]) + '   ' + str(RecToIns[3]) + '\n'
-                Texto = 'Rec in database\n'
-                Texto += RecInDB[0] + '   ', RecInDB[1] + '   ', RecInDB[2] + '   ',
-                Texto += str(RecInDB[3]) + '   ' + str(RecInDB[3]) + '\n\nContinue ?'
-                Dlg = Message_Dlg(MsgBox_Ask, Texto)
+
+                TextoIns = 'Rec to insert:\n'
+                for Item in RecToIns:
+                    TextoIns += ' ' + str(Item)
+                pass
+                TextoIns += '\n'
+
+                TextoDb = 'Rec in database:\n'
+                for Item in RecInDB:
+                    TextoDb += ' ' + str(Item)
+                pass
+                TextoDb += '\n\nContinue ?'
+
+                MsgText = TextoIns + TextoDb
+                Dlg = Message_Dlg(MsgBox_Ask, MsgText)
                 Dlg.wait_window()
                 Reply = Dlg.data
                 if Reply == NO:
                     self.Continue = False
             return True
-
-
 
     # -------------------------------------------------------------------------------------------------
     def Test_If_Year_Month_OK(self, selected_Year, selected_nMonth):

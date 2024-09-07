@@ -24,9 +24,9 @@
 # ============================================================================= #
 """
     the rule is:
-    methods and data inside the data chain are underscored (_).
+    methods and data inside the data chain are private and underscored (_).
     the private (_) methods and attributes are accessible only inside data chain.
-    public methods isn't undscored (_) and can't acces to _attributes
+    public methods are not undscored (_) and should not acces to _attributes,
     but they can retrieve _attributes with Get_somthing_method()
 
     data chain:

@@ -25,6 +25,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.resizable(False, False)
         self.configure(background=BakGnd)
         self.Chat.Attach([self, TOP_QUERY])
+        self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
         self.title('*****     Queries on transactions database     *****')
 
         self.Geometry       = ''
@@ -36,16 +37,22 @@ class Super_Top_Queries(tk.Toplevel):
         self.iTot_Months    = 0
         self.iEnd_Month     = 0
 
-        self.OneYear_Transact_List = []    # Cred Deb
-        self.Tot_CredDeb_xTree     = [[0, 0], [0,    0], [0, 0]]
-        self.Transact_xMonth_List  = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
+        # This list is loaded from Transact_DB_Table on startup or on selecting Year
+        self.OneYear_Transact_List = []
 
-        self.Years_List  = []
+        # This list is created on startup or at each Selection
+        # based on Conto Year (ValDate/AccDate) TR GR CA for each month
+        self.Transact_xMonth_List = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
+
+        # [Credits, Debits]  for   Frame1, Frame2, Frame3
+        self.Tot_CredDeb_xTree  = [[0, 0], [0, 0], [0, 0]]
+
+        self.Years_List  = []  # The years transactions contained on TRANSATCION directory
         self.Tot_List    = [ONE_MONTH,TWO_MONTHS,FOUR_MONTHS,SIX_MONTHS,TWELVE_MONTHS]
         self.Date_List   = [VAL_DATE, ACC_DATE]
         self.Files_Ident = []   # self.Data.Get_Xlsx_Transact_Ident()
 
-        self.Year_Selected  = 0    # self.Files_Ident[Ix_Transact_Year]
+        self.Year_Selected  = 0    # all the possible selections
         self.Conto_Selected = ''
         self.Month_Selected = ''
         self.Tot_Selected   = ''
@@ -54,11 +61,10 @@ class Super_Top_Queries(tk.Toplevel):
         self.GRselected     = ''
         self.CAselected     = ''
 
-        self.Total_Rows  = 0    # The rows in the Trees Months
-        self.TR_List     = []
-        self.GR_List     = []
-        self.CA_List     = []
-        self.Total_xCode = []       # [totTR. totGR, totCA]
+        self.Total_Rows  = 0    # Total rows of selected Transactions
+        self.TR_List     = []   # Codes on Year Transactions Table for OptMenu_TR
+        self.GR_List     = []   # same per GR
+        self.CA_List     = []   # same per CA
 
         # ----------------------------------    C O M B O s -------------------------------------------------------
         self.StrVar_Year  = tk.StringVar

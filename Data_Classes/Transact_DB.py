@@ -163,21 +163,19 @@ class Transact_Db(Xlsx_Manager):
     # --------------------------------------------------------------------------------------------------
     def Check_IfTransactRecord_InDatabase(self, RecToInsert):
         for Transact_Rec in self._Transact_Table:
-            if RecToInsert[iTransact_Valuta] != Transact_Rec[iTransact_Valuta]:
-                return []
-            if RecToInsert[iTransact_TRcode] != Transact_Rec[iTransact_TRcode]:
-                return []
-            if RecToInsert[iTransact_Addeb] != Transact_Rec[iTransact_Addeb]:
-                return []
-            if RecToInsert[iTransact_Accred] != Transact_Rec[iTransact_Accred]:
-                return []
-            if RecToInsert[iTransact_Conto] != Transact_Rec[iTransact_Conto]:
-                return []
-            ListToInsert = [RecToInsert[iTransact_Conto], RecToInsert[iTransact_Valuta], RecToInsert[iTransact_TRdesc],
-                            RecToInsert[iTransact_Accred], RecToInsert[iTransact_Addeb]]
-            ListInDatabase = [Transact_Rec[iTransact_Conto], Transact_Rec[iTransact_Valuta], Transact_Rec[iTransact_TRdesc],
-                            Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb]]
-            return [ListToInsert, ListInDatabase]
+            Found = True
+            Index = -1
+            for Item in Transact_Rec:
+                Index += 1
+                if Item != RecToInsert[Index]:
+                    Found = False
+            if Found:
+                ListToInsert = [RecToInsert[iTransact_Conto], RecToInsert[iTransact_Valuta], RecToInsert[iTransact_TRdesc],
+                                RecToInsert[iTransact_Accred], RecToInsert[iTransact_Addeb]]
+                ListInDatabase = [Transact_Rec[iTransact_Conto], Transact_Rec[iTransact_Valuta], Transact_Rec[iTransact_TRdesc],
+                                Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb]]
+                return [ListToInsert, ListInDatabase]
+        return []
 
 # ===========================================================================================
 
