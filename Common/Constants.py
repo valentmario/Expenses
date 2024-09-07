@@ -261,7 +261,6 @@ Conto_List = [FIDEU, FLASH, POSTA, FidFlhPost, AMBRA]
 # List View Codes       : TRcode  TR_Desc   GR_Desc   CA_Desc  StrToSear                                    #
 # List_Rows_WithoutCode : nRow    Date      FullDesc                                                        #
 # List_Rows_WithCode    : nRow    Contab    Valuta    TR_Desc   Accred   Addeb   TRcode                     #
-# List_Transact_View    : nRow    Contab    Valuta    TR_Desc   Accred   Addeb   TRcode                     #
 # Query_View_List       : Date    TR_Desc   Accred    Addeb                                                 #
 # ========================================================================================================= #
 Ix_Tot_OK           = 0

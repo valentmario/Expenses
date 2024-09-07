@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="selections on Top_Query&#10;completed">
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="fixed vie codes ordered.&#10;fixed check record to insert not i transactions db">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Common/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Classes/Transact_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Transact_DB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Modules_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Modules_Manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Insert.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Insert.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_View_Transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_View_Transactions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Queries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Summaries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Summaries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aDocuments/Data_Lists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/aDocuments/Data_Lists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,7 +36,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Python.Main_Window.executor": "Run",
+    "Python.Main_Window.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
@@ -307,7 +306,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725696243102</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="fixed vie codes ordered.&#10;fixed check record to insert not i transactions db">
+      <option name="closed" value="true" />
+      <created>1725714729892</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1725714729892</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -334,7 +341,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="deleted 3 files" />
     <MESSAGE value="deleted aDocuments" />
     <MESSAGE value="added aDocuments directory only" />
     <MESSAGE value="try to insert data_lists.txt" />
@@ -359,7 +365,8 @@
     <MESSAGE value="Begin preparing list of transactions for queries" />
     <MESSAGE value="selections on Top_Query&#10;almost completed" />
     <MESSAGE value="selections on Top_Query&#10;completed" />
-    <option name="LAST_COMMIT_MESSAGE" value="selections on Top_Query&#10;completed" />
+    <MESSAGE value="fixed vie codes ordered.&#10;fixed check record to insert not i transactions db" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed vie codes ordered.&#10;fixed check record to insert not i transactions db" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -373,11 +380,6 @@
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
           <line>170</line>
           <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py</url>
-          <line>54</line>
-          <option name="timeStamp" value="53" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py</url>
@@ -396,17 +398,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>313</line>
+          <line>327</line>
           <option name="timeStamp" value="59" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>314</line>
+          <line>328</line>
           <option name="timeStamp" value="60" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>305</line>
+          <line>320</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -415,49 +417,9 @@
           <option name="timeStamp" value="63" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py</url>
-          <line>53</line>
-          <option name="timeStamp" value="64" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Chat.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="65" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Chat.py</url>
-          <line>28</line>
-          <option name="timeStamp" value="66" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Chat.py</url>
-          <line>29</line>
-          <option name="timeStamp" value="67" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Chat.py</url>
-          <line>30</line>
-          <option name="timeStamp" value="68" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>295</line>
-          <option name="timeStamp" value="69" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>297</line>
-          <option name="timeStamp" value="70" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py</url>
           <line>59</line>
           <option name="timeStamp" value="71" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>239</line>
-          <option name="timeStamp" value="72" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>

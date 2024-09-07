@@ -3,7 +3,6 @@
 #                      Queries  on Transactions database                             #
 #                                                                                    #
 # ---------------------------------------------------------------------------------- #
-
 from Common.Common_Functions import *
 from Top_Expenses.Super_Top_Queries import Super_Top_Queries
 
@@ -43,6 +42,7 @@ class Top_Queries(Super_Top_Queries):
         self.Set_Widgets_PosX()
         self.Set_Frames_Title()
         self.Set_TR_GR_CA_Sel_List()
+        self.Crate_List_Transact_perMonth()
         self.Trees_Load()
 
     # -------------------------------------------------------------------------------------------------
@@ -189,16 +189,69 @@ class Top_Queries(Super_Top_Queries):
                 self.Frame3.Frame_Title(Tit3)
 
     # -------------------------------------------------------------------------------------------------
-    def View_Trees_Values(self):
-        self.Set_Geometry_Frames()
-        self.Set_Widgets_PosX()
-        self.Set_Frames_Title()
-        self.Trees_Load()
+    # Check for insert in Transact_xMonth_List (year[Date] Conto (TR GR CA)  return iMonth or -1
+    def CheckToInsert(self, Rec):
+        # Check for Conto
+        if self.Conto_Selected != Rec[iTransact_Conto]:
+            return -1
 
-        if self.GRselected == '':
-            return
+        # Check for Year
+        Date = Rec[iTransact_Valuta]
+        if self.Date_Selected == ACC_DATE:
+            Date = Rec[iTransact_Contab]
+        # Check for Conto and Year --------------------
+        if int(Date[0:4]) == self.Year_Selected and \
+            Rec[iTransact_Conto] == self.Conto_Selected:
+                pass
+        else:
+            return -1
+
+        # Check for TR
+        if self.TRselected!= ALLTR and self.TRselected != '':
+            if self.GRselected == Rec[iTransact_TRdesc]:
+                pass
+            else:
+                return -1
+
+        # Check for GR
+        GR_CA_List = self.Data.Get_GR_CA_desc_From_TRdesc(Rec[iTransact_TRdesc])
+        if self.GRselected != ALLGR and self.GRselected != '':
+            if self.GRselected == GR_CA_List[0]:
+                pass
+            else:
+                return -1
+
+        # Check for CA
+        if self.CAselected != ALLCA and self.CAselected != '':
+            if self.CAselected == GR_CA_List[1]:
+                pass
+            else:
+                return -1
+
+        iMonth = int(Date[5:7]) - 1
+        return iMonth
 
     # -------------------------------------------------------------------------------------------------
+    # Create Transact_xMonth_List on base of Conto, Year, Date, TR, GR, CA
+    # On Db      :[nRow    Contab    Valuta    TR_Desc   Accred   Addeb   TRcode]
+    # Query view : ['Date', 'Description', 'Credits  ', 'Debits  ']
+    # (date based on VALDATE/ACCDATE)  (Conto <- self.ContoSelected)
+    # -------------------------------------------------------------------------------------------------
+    def Crate_List_Transact_perMonth(self):
+        DateIndex = iTransact_Valuta
+        if self.Date_Selected == ACC_DATE:
+            DateIndex = iTransact_Contab
+        self.Transact_xMonth_List  = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
+        for Rec in self.OneYear_Transact_List:
+            iMonth = self.CheckToInsert(Rec)
+            if iMonth >= 0:
+                # ['Date', 'Description', 'Credits  ', 'Debits  ']
+                View_Rec = [Rec[DateIndex], Rec[iTransact_TRdesc], Rec[iTransact_Accred], Rec[iTransact_Addeb]]
+                self.Transact_xMonth_List[iMonth].append(View_Rec)
+        pass
+
+    # -------------------------------------------------------------------------------------------------
+    # from Transact_xMonth_List (created on base of Conto,Year, Date, TR, GR, CA)
     def Trees_Load(self):
         Tot_Rec = 0
         Month_Start  = MONTH_INT[self.Month_Selected] - 1
@@ -216,72 +269,38 @@ class Top_Queries(Super_Top_Queries):
         for index in range(0, self.nFrames):
             Frame     = self.Frames_List[index]
             Frame_Tot = self.Frames_Tot_List[index]
-            List  = []
+            Frame_List  = []
             Month_Start = Init_End_Months[index][0]
             Month_End   = Init_End_Months[index][1]
             for Ix_Month in range(Month_Start, Month_End):
                 for Rec in self.Transact_xMonth_List[Ix_Month]:
-                    Checked_Rec = self.Check_Record_To_Insert(Rec)
-                    if Checked_Rec:
-                        List.append(Checked_Rec)
-                        Accr_Debits = self.Get_Credit_Debit(Checked_Rec)
-                        Credit = Accr_Debits[0]
-                        Debit  = Accr_Debits[1]
-
-                        self.Tot_CredDeb_xTree[index][0] += Credit
-                        self.Tot_CredDeb_xTree[index][1] += Debit
-                        Tot_Rec += 1
+                    Frame_List.append(Rec)
+                    Accr_Debits = self.Get_Credit_Debit(Rec)
+                    Credit = Accr_Debits[0]
+                    Debit  = Accr_Debits[1]
+                    self.Tot_CredDeb_xTree[index][0] += Credit
+                    self.Tot_CredDeb_xTree[index][1] += Debit
+                    Tot_Rec += 1
                 pass
-            Frame.Load_Row_Values(List)
+            Frame.Load_Row_Values(Frame_List)
             Credit = Float_ToString_Setup(self.Tot_CredDeb_xTree[index][0])
             Debit  = Float_ToString_Setup(self.Tot_CredDeb_xTree[index][1])
-            LenList= len(List)
+            LenList= len(Frame_List)
             self.Total_Rows += LenList
             Tot_Transact = str(LenList) + '   transactions '
             Tot_List = [[Tot_Transact, Credit, Debit]]
             Frame_Tot.Load_Row_Values(Tot_List)
-        PRINT('***  Tot of Trees_Load: '+str(Tot_Rec)+'  ***')
+        PRINT('***  Tot of Trees records: '+str(Tot_Rec)+'  ***')
 
         Total_Credit = self.Tot_CredDeb_xTree[0][0] + self.Tot_CredDeb_xTree[1][0] + self.Tot_CredDeb_xTree[2][0]
         Total_Debit  = self.Tot_CredDeb_xTree[0][1] + self.Tot_CredDeb_xTree[1][1] + self.Tot_CredDeb_xTree[2][1]
 
-        flTot_Credit = Float_ToString_Setup(Total_Credit)
-        flTot_Debit = Float_ToString_Setup(Total_Debit)
+        # flTot_Credit = Float_ToString_Setup(Total_Credit)
+        # flTot_Debit = Float_ToString_Setup(Total_Debit)
 
         # self.Frame_TotCred.Load_Row_Values([[flTot_Credit]])
         # self.Frame_TotDebit.Load_Row_Values([[flTot_Debit]])
         # self.Frame_TotRows.Load_Row_Values([[self.Total_Rows, 2]])
-
-    # ---------------------------------------------------------------------------------------------
-    def Check_Record_To_Insert(self, Rec_ToIns):
-        Conto_ToCheck = Rec_ToIns[iTransact_Conto]
-        TRcode       = Rec_ToIns[iTransact_TRcode]
-        TR_GR_CAdesc = self.Data.Get_TR_GR_CA_desc_From_TRcode(TRcode)
-        TR_ToCheck   = TR_GR_CAdesc[0]
-        GR_ToCheck   = TR_GR_CAdesc[1]
-        CA_ToCheck   = TR_GR_CAdesc[2]
-
-        Checked = False
-        if self.Conto_Selected == FidFlhPost:
-            if Conto_ToCheck == AMBRA:
-                pass
-            else:
-                Checked = True
-        elif self.Conto_Selected == Conto_ToCheck:
-            Checked = True
-        if not Checked:
-            return []
-
-        Checked = False
-        TRsel = True
-        if self.TRselected == ALLTR or self.TRselected == '':
-            TRsel = False
-        if not TRsel and self.GRselected == '' and self.CAselected == '':
-            Checked = True
-        elif self.TRselected == TR_ToCheck or self.GRselected == GR_ToCheck or self.CAselected == CA_ToCheck:
-            Checked = True
-        if not Checked:
-            return []
 
     # -------------------------------------------------------------------------------------------------
     def Get_Credit_Debit(self, Rec):
