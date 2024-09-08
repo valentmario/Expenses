@@ -312,9 +312,8 @@ List_For_XLSX_Row_Control = [
 # the frames used are three:  Frame1             Frame2             Fraame 3
 # the months inserted are     1 (Jan-Dec)
 #
-
-ALLTR  = 'All transactions'
-SELTR  = 'Selecet a Code'
+SELTR  = 'Select a Code'
+ALLTR  = 'All codes'
 ALLGR  = 'All groups'
 ALLCA  = 'All categories'
 

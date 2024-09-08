@@ -108,7 +108,6 @@ class Super_Top_Mngr(tk.Toplevel):
         else:
             return OK
 
-
     # ------------------------     ***   Add new code Record  the last Tr Record      -------------
     def Add_Record_Code(self):
         TR_Code = self.Txt_TR_Code.Get_Text(INTEGER)

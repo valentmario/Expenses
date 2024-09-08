@@ -67,18 +67,19 @@ class Top_Mngr(Super_Top_Mngr):
 
         self.Load_Trees()
         self.geometry(Top_Mngr_geometry)
+
     # ------------------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
         Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Values_List)
-        if Request_Code                         == CODE_TO_CLOSE:
+        if Request_Code == CODE_TO_CLOSE:
             self.Call_OnClose()
-        elif Request_Code                       == CODE_CLK_ON_TR_CODES:  # Clicked on Codes Tree [TRcode]
+        elif Request_Code == CODE_CLK_ON_TR_CODES:  # Clicked on Codes Tree [TRcode]
             TRcode = Values_List[0]
             self.Reqst_Clkd_On_TRcode(TRcode)
-        elif Request_Code                        == CODES_DB_UPDATED:   # Codes database updated
-            self.Data.Load_Xlsx_Lists()
-            self.Load_Trees()
-        elif Request_Code == XLSX_UPDATED:
+        elif Request_Code == CODES_DB_UPDATED or \
+                Request_Code == XLSX_UPDATED:   # Codes dat
+            # self.Data.Load_Xlsx_Lists()
+            self.Mod_Mngr.Load_Xlsx()
             self.Load_Trees()
 
     # --------------------------  T R E E     Without  Codes   ------------------------------------
@@ -97,7 +98,7 @@ class Top_Mngr(Super_Top_Mngr):
         self.Clicked_Mod_Code = 1
         self.Clear_Texts()
         self.Set_Row_Without_Code(Values)
-        myList = [Values[0], Values[1]]
+        myList = [Values[1], Values[2]]
         self.Chat.Tx_Request([ TOP_MNGR, [TOP_XLSX_VIEW], CODE_CLIK_ON_XLSX, myList ])
 
     # --------------------------  T R E E     With  Codes   ---------------------------------------
@@ -153,13 +154,15 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Frames_Refresh(self):
-        self.Data.Load_Xlsx_Lists()
+        self.Mod_Mngr.Load_Xlsx()
+        self.Load_Trees()
         if self.View_Without_Code:
             self.Frame_NoCodes.Frame_View()
             self.Frame_WithCodes.Frame_Hide()
         else:
             self.Frame_NoCodes.Frame_Hide()
             self.Frame_WithCodes.Frame_View()
+
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Codes(self):
@@ -224,7 +227,8 @@ class Top_Mngr(Super_Top_Mngr):
         Date = str(Values[1])
         Descr = Values[2]
         Index = - 1
-        for Rec in self.Data.Wihtout_Code_Tree_List:
+        Without_Recs = self.Data.Get_WithoutCodeList()
+        for Rec in Without_Recs:     # Wihtout_Code_Tree_List:
             Index += 1
             if Rec[0] == nRow and Rec[1] == Date:
                 self.Frame_NoCodes.Set_Focus(Index)

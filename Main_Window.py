@@ -166,9 +166,9 @@ class Main_Window(tk.Tk):
                          str(Values[Ix_Query_Conto]) + '  ' + \
                          str(Values[Ix_Query_Month]) + '  ' + \
                          str(Values[Ix_Query_TotMonths])
-        strSelect      = '\nSelect:  ' + \
-                         str(Values[Ix_Query_TRsel]) + '    ' + \
-                         str(Values[Ix_Query_GRsel]) + '    ' + \
+        strSelect      = '\nSel:  ' + \
+                         str(Values[Ix_Query_TRsel]) + '   ' + \
+                         str(Values[Ix_Query_GRsel]) + '   ' + \
                          str(Values[Ix_Query_CAsel])
 
         TextString = Filenames + strQuery +strSelect

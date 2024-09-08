@@ -35,14 +35,6 @@ class Files_Names_Manager:
         self._Xlsx_Month    = None
         self._Transact_Year = None  # or on selecting new file  Transact_2024
 
-        # self._Queries_List  = ['Conto', 'Month', 'Tot', '---', '---', '---']
-        # self.QueryConto     = 'Conto'       # the content of [Queries_List]
-        # self.QueryMonth     = 'Month'
-        # self.QueryTotMonths = 'TotMonths'
-        # self.QueryTRsel     = 'NOT'
-        # self.QueryGRsel     = 'NOT'
-        # self.QueryCAsel     = 'NOT'
-
         self.Curr_Year  = datetime.now().year    # to max years history setup
         self.Curr_Month = datetime.now().month
         self.Min_Year = self.Curr_Year - 5

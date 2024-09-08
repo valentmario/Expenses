@@ -4,13 +4,12 @@
 #                                                                                    #
 # ---------------------------------------------------------------------------------- #
 import os
-import tkinter as tk
 
 from Chat import Ms_Chat
 from Common.Common_Functions import *
 from Data_Classes.Transact_DB import Data
-from Widgt.Widgets import TheButton
-from Widgt.Widgets import TheCombo
+from Widgt.Widgets import *
+from Widgt.Dialogs import Message_Dlg
 from Top_Expenses.Modules_Manager import Modul_Mngr
 
 # =================================================================================================================
@@ -158,7 +157,7 @@ class Super_Top_Queries(tk.Toplevel):
                 TR_List.append(Rec[iTransact_TRdesc])
         TR_List.sort()
 
-        for TRdesc in TR_List:
+        for TRdesc in TR_List:      # List of codes groups categories used in transactions
             GRCAdesc = self.Data.Get_GR_CA_desc_From_TRdesc(TRdesc)
             GRdesc = GRCAdesc[0]
             CAdesc = GRCAdesc[1]
@@ -169,7 +168,7 @@ class Super_Top_Queries(tk.Toplevel):
         GR_List.sort()
         CA_List.sort()
 
-        self.TR_List = [ALLTR]
+        self.TR_List = [ALLTR]          # Put All Transac
         for Item in TR_List:
             self.TR_List.append(Item)
 
@@ -246,10 +245,8 @@ class Super_Top_Queries(tk.Toplevel):
         self.Set_OnTxt_TR_GR_Sel()
 
     # -------------------------------------------------------------------------------------------------------------
-    #  this methods are defined here for final form see Top_Queries
-    #  Must load Transact_yyyy.db and
-    def Clk_Year(self, Value):
-        pass
+    #  this methods are defined here but are redifined on Top_Queries
+    #  this is almost the overloading on python
 
     def Crate_List_Transact_perMonth(self):
         pass
@@ -262,6 +259,28 @@ class Super_Top_Queries(tk.Toplevel):
 
     def Set_Geometry_Frames(self):
         pass
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Clk_Year(self, Value):
+        Curr_Full_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
+        Dir_Name           = Get_Dir_Name(Curr_Full_Filename)
+        Full_Filename  = Dir_Name + Transact_ + str(Value) + '.db'
+        File_Exists = os.path.isfile(Full_Filename)
+        if not File_Exists:
+            Msg = Message_Dlg(MsgBox_Err, 'The requested Transactions Db\n dosesn"t exist')
+            Msg.wait_window()
+            return
+
+        self.Data.Update_Txt_File(Full_Filename, Ix_Transact_File)
+        self.Year_Selected  = Value
+        self.Month_Selected = JAN
+        self.Tot_Selected   = ONE_MONTH
+        self.Update_Sel_onTxt()
+        self.View_Selections()
+        self.Crate_List_Transact_perMonth()
+        self.Trees_Load()
+        self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], UPDATE_FILES_NAME, []])
+
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Conto(self, Value):
@@ -292,7 +311,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
         self.Update_Sel_onTxt()
         self.View_Selections()
-        self.View_Selections()
         self.Set_Geometry_Frames()
         self.Set_Frames_Title()
         # self.Crate_List_Transact_perMonth()
@@ -301,7 +319,7 @@ class Super_Top_Queries(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Date(self, Value):
         self.Date_Selected = Value
-        self.View_Selections()
+        self.Update_Sel_onTxt()
         self.View_Selections()
         self.Crate_List_Transact_perMonth()
         self.Trees_Load()
