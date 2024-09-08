@@ -4,14 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Completed view transactions record on tree (Date Desc Credits Debits)">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Classes/Filesnames_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Filesnames_Mngr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main_Window.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" afterDir="false" />
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="restored II as previous commit to insert in Dialog files selections">
+      <change beforePath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +16,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="bc2192ef1edf2beac37bb959d14d291a9b88f183" />
+        <entry key="$PROJECT_DIR$" value="Try_To_Restore_Previous_Version" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -37,9 +32,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Python.Main_Window.executor": "Debug",
+    "Python.Main_Window.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "To__Restore__Previous__Version",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
 }]]></component>
@@ -339,7 +334,39 @@
       <option name="project" value="LOCAL" />
       <updated>1725735516780</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="adjusted top Insert transactions">
+      <option name="closed" value="true" />
+      <created>1725796938907</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1725796938907</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Set view Frame with or without codes on Top_Mngr">
+      <option name="closed" value="true" />
+      <created>1725802593948</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1725802593948</updated>
+    </task>
+    <task id="LOCAL-00038" summary="restored as previous commit to insert in Dialog files selections">
+      <option name="closed" value="true" />
+      <created>1725806756369</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1725806756369</updated>
+    </task>
+    <task id="LOCAL-00039" summary="restored II as previous commit to insert in Dialog files selections">
+      <option name="closed" value="true" />
+      <created>1725807380043</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1725807380043</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -353,7 +380,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/main" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
@@ -366,10 +393,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="try to insert Data_organization.txt" />
-    <MESSAGE value="try to insert git_command.txt" />
-    <MESSAGE value="try to insert text on git_commands.txt" />
-    <MESSAGE value="may aDocuments wil no more rejected from origin" />
     <MESSAGE value="Insert Data_Classes" />
     <MESSAGE value="Insert Widgts" />
     <MESSAGE value="Insert chat then top_Expenses" />
@@ -391,7 +414,11 @@
     <MESSAGE value="Completed  view transactions record on tree (Date Desc Accedr  Addeb)" />
     <MESSAGE value="Completed to view transations record on tree (Date Desc Acced  AddeB)" />
     <MESSAGE value="Completed view transactions record on tree (Date Desc Credits Debits)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Completed view transactions record on tree (Date Desc Credits Debits)" />
+    <MESSAGE value="adjusted top Insert transactions" />
+    <MESSAGE value="Set view Frame with or without codes on Top_Mngr" />
+    <MESSAGE value="restored as previous commit to insert in Dialog files selections" />
+    <MESSAGE value="restored II as previous commit to insert in Dialog files selections" />
+    <option name="LAST_COMMIT_MESSAGE" value="restored II as previous commit to insert in Dialog files selections" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -437,11 +464,6 @@
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>311</line>
-          <option name="timeStamp" value="63" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py</url>
           <line>59</line>
           <option name="timeStamp" value="71" />
@@ -477,29 +499,19 @@
           <option name="timeStamp" value="117" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>230</line>
-          <option name="timeStamp" value="118" />
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
+          <line>237</line>
+          <option name="timeStamp" value="149" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
+          <url>file://$PROJECT_DIR$/Widgt/Dialogs.py</url>
+          <line>72</line>
+          <option name="timeStamp" value="155" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Widgt/Dialogs.py</url>
           <line>95</line>
-          <option name="timeStamp" value="119" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>99</line>
-          <option name="timeStamp" value="120" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>156</line>
-          <option name="timeStamp" value="121" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>184</line>
-          <option name="timeStamp" value="122" />
+          <option name="timeStamp" value="157" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
