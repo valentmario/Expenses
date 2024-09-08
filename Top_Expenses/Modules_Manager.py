@@ -186,7 +186,7 @@ class Modules_Manager:
         Reply = self.Data.Load_Xlsx_Lists()
         if Reply == OK:
             self.Files_Loaded[Ix_Xls_Loaded] = LOADED
-            self.Chat.Tx_Request([MODULES_MNGR, [ANY], CODES_DB_UPDATED, []])
+            # self.Chat.Tx_Request([MODULES_MNGR, [ANY], CODES_DB_UPDATED, []])
             return True
         else:
             Msg = Message_Dlg(MsgBox_Err, Reply)

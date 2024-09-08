@@ -27,7 +27,7 @@ class Top_Mngr(Super_Top_Mngr):
         self.Frame_NoCodes = TheFrame(self, 10, 20, self.Clk_OnTree_NoCodes)
         self.Frame_NoCodes_Setup()
         self.Frame_NoCodes.Frame_View()
-        self.View_Without_Code = True
+        self.View_WithCode = False
 
         self.Frame_WithCodes = TheFrame(self, 10, 20, self.Clk_OnTree_WithCodes)
         self.Frame_WithCodes_Setup()
@@ -62,7 +62,7 @@ class Top_Mngr(Super_Top_Mngr):
 
         self.BtnSelXls = TheButton(self, Btn_Def_En, 286, 860, 18, 'Select Xlsx file', self.Clk_Sel_xlsx)
         self.BtnView   = TheButton(self, Btn_Def_En, 286, 900, 18, 'View Xlsx Rows',   self.Clk_View_Xlsx)
-        self.BtnVWithC = TheButton(self, Btn_Def_En, 474, 860, 18, 'View with-hout codes', self.Clk_View_Rows)
+        self.BtnVWithC = TheButton(self, Btn_Def_En, 474, 860, 18, 'View with-hout codes', self.Clk_Xchg_View_Rows)
         self.BtnExit   = TheButton(self, Btn_Def_En,   474, 940, 18, 'E X I T ', self.Call_OnClose)
 
         self.Load_Trees()
@@ -139,13 +139,10 @@ class Top_Mngr(Super_Top_Mngr):
         self.Frame_WithCodes.Frame_Title(Title)
 
         if Total[Ix_Tot_Without_Code] == 0:
-            self.View_Without_Code = False
-            self.Frame_WithCodes.Frame_View()
-            self.Frame_NoCodes.Frame_Hide()
+            self.View_WithCode = True
         else:
-            self.View_Without_Code = True
-            self.Frame_WithCodes.Frame_Hide()
-            self.Frame_NoCodes.Frame_View()
+            self.View_WithCode = False
+        self.View_Tree()
 
         #    nRow Date  Descr
         self.Frame_NoCodes.Load_Row_Values(self.Data.Get_WithoutCodeList())
@@ -156,13 +153,6 @@ class Top_Mngr(Super_Top_Mngr):
     def Frames_Refresh(self):
         self.Mod_Mngr.Load_Xlsx()
         self.Load_Trees()
-        if self.View_Without_Code:
-            self.Frame_NoCodes.Frame_View()
-            self.Frame_WithCodes.Frame_Hide()
-        else:
-            self.Frame_NoCodes.Frame_Hide()
-            self.Frame_WithCodes.Frame_View()
-
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Codes(self):
@@ -173,15 +163,21 @@ class Top_Mngr(Super_Top_Mngr):
         self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR)
 
     # ---------------------------------------------------------------------------------------------
-    def Clk_View_Rows(self):
-        if not self.View_Without_Code:
+    def View_Tree(self):
+        if self.View_WithCode:
+            self.Frame_WithCodes.Frame_View()
+            self.Frame_NoCodes.Frame_Hide()
+        else:
             self.Frame_NoCodes.Frame_View()
             self.Frame_WithCodes.Frame_Hide()
-            self.View_Without_Code = True
+
+    # ---------------------------------------------------------------------------------------------
+    def Clk_Xchg_View_Rows(self):
+        if self.View_WithCode:
+            self.View_WithCode = False
         else:
-            self.Frame_NoCodes.Frame_Hide()
-            self.Frame_WithCodes.Frame_View()
-            self.View_Without_Code = False
+            self.View_WithCode = True
+        self.View_Tree()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_Codes(self):
@@ -191,6 +187,7 @@ class Top_Mngr(Super_Top_Mngr):
     def Clk_Sel_xlsx(self):
         if self.Mod_Mngr.Sel_Xlsx():
             self.Mod_Mngr.Load_Xlsx()
+            self.Load_Trees()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
@@ -203,7 +200,7 @@ class Top_Mngr(Super_Top_Mngr):
         Index = -1
         TrCodInt = int(TRcode)
         self.Load_Trees()
-        WithList = self.Data.Get_With_Code_Tree_List
+        WithList = self.Data.Get_WithCodeList()              #  Get_With_Code_Tree_List()
         for Rec in WithList:
             Index += 1
             if Rec[iWithCode_TRcode] == TrCodInt:

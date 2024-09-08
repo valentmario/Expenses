@@ -21,10 +21,10 @@ if DUAL_DISPLAY:
     Top_Query_geometry     = ['640x1000+1340+10', '1060x1000+920+10', '1500x1000+480+10']
                            # ['640x1000+2840+10', '1060x1000+2420+10', '1500x1000+1980+10']
     Top_Balances_geometry  = ['820x1000+340+10']
-else:
+else:                      # ONE MONITOR
     Main_Wind_geometry     = '330x310+1580+1'
     Settings_geometry      = '330x390+1580+360'
-    Top_Mngr_geometry      = '660x1000+1200+1'
+    Top_Mngr_geometry      = '660x1000+900+1'
     Top_View_geometry      = '840x1000+350+1'
     Top_GRcodes_geometry   = '830x1000+20+1'
     Top_Xlsx_View_geometry = '820x1000+10+1'
