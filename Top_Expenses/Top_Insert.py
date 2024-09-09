@@ -32,10 +32,10 @@ class Top_Insert(tk.Toplevel):
         self.geometry(Top_Insert_geometry)
         self.title('*****     Insert transactions on database     *****')
 
-        self.Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
-        self.Conto       = self.Files_Ident[Ix_Xlsx_Conto]
-        self.intYear     = self.Files_Ident[Ix_Xlsx_Year]
-        self.intMonth    = self.Files_Ident[Ix_Xlsx_Month]
+        self.Files_Ident = []  # self.Data.Get_Xlsx_Transact_Ident()
+        self.Conto       = ''  # self.Files_Ident[Ix_Xlsx_Conto]
+        self.intYear     = 0   # self.Files_Ident[Ix_Xlsx_Year]
+        self.intMonth    = 1   # self.Files_Ident[Ix_Xlsx_Month]
         self.Years_Match = False
         self.Continue    = True
 
@@ -43,21 +43,20 @@ class Top_Insert(tk.Toplevel):
         self.Transact_InDatabase_List = []
         self.Full_Filename_For_Insert = self.Data.Get_Txt_Member(Ix_Transact_File)
 
-        self.Trs_Txt   = TheText(self, Txt_Disab,  20,  20, 18, 1, '')
-        self.Xlsx_Txt  = TheText(self, Txt_Disab, 200,  20, 19, 1, '')
-        self.Year_Txt  = TheText(self, Txt_Disab, 370,  20, 10, 1, '')
-        self.Conto_Txt = TheText(self, Txt_Disab, 465,  20, 13, 1, '')
+        self.Txt_TransactYear = TheText(self, Txt_Disab,  20,  20, 18, 1, '')
+        self.Txt_Xlsx_Year    = TheText(self, Txt_Disab, 200,  20, 19, 1, '')
+        self.Txt_Xlsx_Name    = TheText(self, Txt_Disab, 370,  20, 10, 1, '')
+        self.Txt_Conto        = TheText(self, Txt_Disab, 465,  20, 13, 1, '')
 
         self.Tot_Text = TheText(self, Txt_Disab, 20, 860, 22, 1, '')
 
         #  ------------------------------------  B U T T O N s  ---------------------------------------
         self.Ins_Btn = TheButton(self, Btn_Def_En, 220, 860, 19, 'Insert Transactions', self.Clk_Insert)
         TheButton(self, Btn_Def_En, 420, 860, 16, 'Codes Manager',      self.Clk_Codes_Mngr)
-        TheButton(self, Btn_Def_En,  20, 900, 19, 'Select  xlsx  file', self.Clk_Sel_xlsx)
         TheButton(self, Btn_Def_En,  20, 940, 19, 'View xlsx file',     self.Clk_View_Xlsx)
 
-        TheButton(self, Btn_Def_En, 220, 900, 19, 'Select  Transactions  file', self.Clk_Sel_Transact)
-        TheButton(self, Btn_Def_En, 220, 940, 19, 'View Transactions file',     self.Clk_View_Transact)
+        TheButton(self, Btn_Def_En, 220, 900, 19, 'Select Transactions Db', self.Clk_Sel_Transact)
+        TheButton(self, Btn_Def_En, 220, 940, 19, 'View Transactions Db',     self.Clk_View_Transact)
 
         TheButton(self, Btn_Def_En, 420, 940, 16, '  E X I T  ', self.Call_OnClose)
 
@@ -69,22 +68,7 @@ class Top_Insert(tk.Toplevel):
         self.WithList                     = []
         self.TransactRecords_ToBeInserted = []
         self.TotTransact_ToBeInserted     = 0
-
-        self.Set_Full_Transact_Name()
-        # Full_Transact_Name = self.Data.Get_Txt_Member(Ix_Transact_File)
-        # Transact_Name = Get_File_Name(Full_Transact_Name)
-        # self.Trs_Txt.Set_Text(Transact_Name)
-
-        Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
-        Xlsx_Filename      = Get_File_Name(Full_Xlsx_Filename)
-        self.Xlsx_Txt.Set_Text(Xlsx_Filename)
-
-        Year = 'Year: ' + str(self.intYear)
-        self.Year_Txt.Set_Text(Year)
-        Conto = 'Conto: ' + self.Conto
-        self.Conto_Txt.Set_Text(Conto)
-
-        # ---------------------------------------------------------------------
+        self.Set_Texts()
 
         if not self.Check_For_Insert():
             self.Call_OnClose()
@@ -136,37 +120,51 @@ class Top_Insert(tk.Toplevel):
             TransactYear = Files_Ident[Ix_Transact_Year]
             if XlsxYear != TransactYear:    # the name may be UNKNOWN
                 TRansact_Years_List = self.Data.Get_Transact_Year_ListInData()
-                for Year in TRansact_Years_List:
-                    if XlsxYear == Year:
-                        if not self.Load_Transact_Found(Year):
-                            self.Call_OnClose()
-                            return False  # Insert not enabled
+                if XlsxYear in TRansact_Years_List:
+                    self. Load_Transact_Found(XlsxYear, TransactYear)
                 else:
-                    if not self.Create_New_Transact_Db(XlsxYear):
-                        return False
+                    if self.Create_New_Transact_Db(XlsxYear):
+                        self.Set_Texts()
+                        return True
+                    return False
 
         self.Ins_Btn.Btn_Enable()
         self.Years_Match = True
         return True
 
     # -------------------------------------------------------------------------------------------------
-    def Set_Full_Transact_Name(self):
+    def Set_Texts(self):
+        self.Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
+        self.Conto       = self.Files_Ident[Ix_Xlsx_Conto]
+        self.intYear     = self.Files_Ident[Ix_Xlsx_Year]
+        self.intMonth    = self.Files_Ident[Ix_Xlsx_Month]
+
         Full_Transact_Name = self.Data.Get_Txt_Member(Ix_Transact_File)
-        Transact_Name = Get_File_Name(Full_Transact_Name)
-        self.Trs_Txt.Set_Text(Transact_Name)
+        Transact_Name      = Get_File_Name(Full_Transact_Name)
+        self.Txt_TransactYear.Set_Text(Transact_Name)
+
+        Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
+        Xlsx_Filename      = Get_File_Name(Full_Xlsx_Filename)
+        self.Txt_Xlsx_Year.Set_Text(Xlsx_Filename)
+
+        Year = 'Year: ' + str(self.intYear)
+        self.Txt_Xlsx_Name.Set_Text(Year)
+
+        Conto = 'Conto: ' + self.Conto
+        self.Txt_Conto.Set_Text(Conto)
 
     # -------------------------------------------------------------------------------------------------
-    def Load_Transact_Found(self, Year):
-        Transact_Filename = Transact_ + str(Year) + '.db'
-        Msg = 'Found transactions  Db:\n' + Transact_Filename + '\nLoad it'
-        Msg_Dlg = Message_Dlg(MsgBox_Ask, Msg)
+    def Load_Transact_Found(self, XlsxYear, TransactYear):
+        newTransact_Filename = Transact_ + str(XlsxYear) + '.db'
+        Messg  = str(XlsxYear) + ' Year for Xlsx\n'
+        Messg += str(TransactYear) + ' Year for Transactions Db\n'
+        Messg += 'Not equal\n' + newTransact_Filename + '  will be loaded'
+        Msg_Dlg = Message_Dlg(MsgBox_Info, Messg)
         Msg_Dlg.wait_window()
-        Reply = Msg_Dlg.data
-        if Reply != YES:
-            return False
+
         Curr_Full_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
         Dir_Name           = Get_Dir_Name(Curr_Full_Filename)
-        Full_Filename      = Dir_Name + Transact_Filename
+        Full_Filename      = Dir_Name + newTransact_Filename
         File_Exists        = os.path.isfile(Full_Filename)
         if not File_Exists:
             Messg = 'inexplicably transaction Db:\n' + \
@@ -176,8 +174,8 @@ class Top_Insert(tk.Toplevel):
             return False
         self.Data.Update_Txt_File(Full_Filename, Ix_Transact_File)
         self.Data.Transact_Year_Setup(True)
+        self.Set_Texts()
         return self.Mod_Mngr.Init_Transactions(TOP_INS)
-
 
     # -------------------------------------------------------------------------------------------------
     def Create_New_Transact_Db(self, Year):
@@ -195,7 +193,7 @@ class Top_Insert(tk.Toplevel):
                 Msg.wait_window()
                 self.Data.Update_Txt_File(Full_Name, Ix_Transact_File)
                 self.Data.Transact_Year_Setup(True)
-                self.Set_Full_Transact_Name()
+                self.Set_Texts()
                 self.Chat.Tx_Request([TOP_INS, [MAIN_WIND], UPDATE_FILES_NAME, []])
                 return True
             Msg = Message_Dlg(MsgBox_Err, 'ERROR on creating\nnew database')
@@ -217,9 +215,9 @@ class Top_Insert(tk.Toplevel):
         return RecToInsert
 
     # -------------------------------------------------------------------------------------------------
-    # The case of two identical recodes (Dates, value, Code)
-    # for example ATM withdrawals at the same day for the same value
-    # must be adjustad manually; i.e. for two 100€ must modified manually
+    # The case of two identical records (Dates, value, Code etc.)
+    # (for example ATM withdrawals at the same day for the same values)
+    # Xlsx must be adjustad manually; i.e. for two 100€ Xlsx must be modified manually:
     # in 99.99 and 100.1
     # -------------------------------------------------------------------------------------------------
     def Check_For_Multiple_Record_OnWitCodeList(self, RecToCheck):
@@ -296,13 +294,6 @@ class Top_Insert(tk.Toplevel):
     def Clk_Ontree_View(self, Values):
         pass
 
-    # ---------------------------------------------------------------------------------------------
-    def Clk_Sel_xlsx(self):
-        self.Ins_Btn.Btn_Disable()
-        if self.Mod_Mngr.Sel_Xlsx(TOP_INS):
-            if self.Mod_Mngr.Load_Xlsx(TOP_INS):
-                self.Tree_Update()
-
     # -------------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
         self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_INS)
@@ -313,13 +304,33 @@ class Top_Insert(tk.Toplevel):
         self.Frame_Transact.Load_Row_Values([])
         self.Frame_Transact.Frame_Title('   Transactions to be inserted   ')
         self.Frame_Transact.Frame_Title(self.Tree_Transact_Title)
-        if self.Mod_Mngr.Sel_Transact(TOP_INS):
+        if not self.Mod_Mngr.Sel_Transact(TOP_INS):
+            return
+        else:
             if self.Mod_Mngr.Load_Transact(TOP_INS):
-                self.Tree_Update()
-                self.Check_For_Insert()
+                Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
+                XlsxYear    = Files_Ident[Ix_Xlsx_Year]
+                TransactYear = Files_Ident[Ix_Transact_Year]
+                if XlsxYear != TransactYear:
+                    Messg = str(XlsxYear) + ' Year for Xlsx\n'
+                    Messg += str(TransactYear) + ' Year for Transactions Db\n'
+                    Messg += 'Not equal\n' + 'Please select the Xlsx file\n'
+                    Messg += 'For ' + str(TransactYear)
+                    Msg_Dlg = Message_Dlg(MsgBox_Info, Messg)
+                    Msg_Dlg.wait_window()
+
+                    if self.Mod_Mngr.Sel_Xlsx(TOP_INS):
+                        Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
+                        XlsxYear = Files_Ident[Ix_Xlsx_Year]
+                        TransactYear = Files_Ident[Ix_Transact_Year]
+                        if XlsxYear !=TransactYear:
+                            Msg_Dlg = Message_Dlg(MsgBox_Err, 'Bad selection. Try again')
+                            Msg_Dlg.wait_window()
+                            return
+
                 self.Tree_Update()
 
-    # ---------------------------------------------------------------------------------------------
+       # ---------------------------------------------------------------------------------------------
     def Clk_View_Transact(self):
         self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_INS)
 

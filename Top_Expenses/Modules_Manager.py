@@ -129,6 +129,7 @@ class Modules_Manager:
                 return True
             else:
                 if self.Load_Transact(Origin):
+                    self.Chat.Tx_Request([Origin, [ANY], TRANSACT_UPDATED, []])
                     return True
                 return False
 
@@ -150,7 +151,7 @@ class Modules_Manager:
         if self.Cek_Xlsx_Name(Full_Filename):
             self.Data.Update_Txt_File(Full_Filename, Ix_Xlsx_File)
             self.Data.Xlsx_Conto_Year_Month_Setup(True)
-            self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
+            self.Chat.Tx_Request([Origin, [ANY], UPDATE_FILES_NAME, []])
             return True
         else:
             return False
