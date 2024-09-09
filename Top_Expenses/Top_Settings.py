@@ -136,32 +136,32 @@ class Top_Settings(tk.Toplevel):
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_Codes_DB(self):
-        if self.Mod_Mngr.Sel_Codes():
+        if self.Mod_Mngr.Sel_Codes(TOP_SETTINGS):
             self.Mod_Mngr.Load_Codes()
 
     def Clk_View_Codes_DB(self):
-        # self.Mod_Mngr.Top_Launcher(TOP_MNGR)
-        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW)
-        # self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR)
+        # self.Mod_Mngr.Top_Launcher(TOP_MNGR, TOP_SETTINGS)
+        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_SETTINGS)
+        # self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_SETTINGS)
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
-        self.Mod_Mngr.Sel_Xlsx()
+        self.Mod_Mngr.Sel_Xlsx(TOP_SETTINGS)
 
     def Clk_View_xlsx_File(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW)
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS)
 
     # ------------------------------------------------------------------------------------
     def Clk_Sel_Transact(self):
-        self.Mod_Mngr.Sel_Transact()
+        self.Mod_Mngr.Sel_Transact(TOP_SETTINGS)
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Transact(self):
-        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT)
+        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_SETTINGS)
 
     # -----------------------------------------------------------------------------------
     def Clk_Summaries(self):
-        self.Mod_Mngr.Top_Launcher(TOP_SUMMARIES)
+        self.Mod_Mngr.Top_Launcher(TOP_SUMMARIES, TOP_SETTINGS)
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Chat(self):
@@ -212,12 +212,20 @@ class Top_Settings(tk.Toplevel):
 
     # --------------------------------------------------------------------------------------
     def Clk_Check_Codes_DB(self):
-        Result = self.Data.Check_Codesdatabase()
-        if Result[0] == OK:
-            Mess = Message_Dlg(MsgBox_Info, Result[1])
+        Multiple = self.Data.Check_Codesdatabase()
+        if not Multiple:
+            Len = self.Data.Get_TR_Codes_Table_Len()
+            Info = str(Len) + '   code records correctly checked out'
+            Message = Message_Dlg(MsgBox_Info, Info)
         else:
-            Mess = Message_Dlg(MsgBox_Err, Result[1])
-        Mess.wait_window()
+            Info = 'ERROR on checking out codes database\n\n'
+            for TRrecord in Multiple:
+                StrToserch = TRrecord[iTR_TRserc]
+                FullDescr = TRrecord[iTR_TRfullDes]
+                Info += StrToserch + '\n' + FullDescr + '\n\n'
+            Message = Message_Dlg(MsgBox_Err, Info)
+        Message.wait_window()
+        pass
 
     # ----------------------------------------------------------------------------------------
     # def Clk_NotUsed(self):
@@ -229,7 +237,6 @@ class Top_Settings(tk.Toplevel):
     def Clk_NotUsed(self):
         Directory = '/media/mario/ACEext4/ACEext4/12_Expenses/bFiles/bXLSX_Files/TRANSACTIONS/'
         self.Files_List = os.listdir(Directory)
-
         pass
 
     # ----------------------------------------------------------------------------------------

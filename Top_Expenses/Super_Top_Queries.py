@@ -264,7 +264,7 @@ class Super_Top_Queries(tk.Toplevel):
     def Clk_Year(self, Value):
         Curr_Full_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
         Dir_Name           = Get_Dir_Name(Curr_Full_Filename)
-        Full_Filename  = Dir_Name + Transact_ + str(Value) + '.db'
+        Full_Filename      = Dir_Name + Transact_ + str(Value) + '.db'
         File_Exists = os.path.isfile(Full_Filename)
         if not File_Exists:
             Msg = Message_Dlg(MsgBox_Err, 'The requested Transactions Db\n dosesn"t exist')
@@ -333,7 +333,7 @@ class Super_Top_Queries(tk.Toplevel):
             self.TRselected = ''
             self.GRselected = ''
             self.CAselected = ''
-            self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW)
+            self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_QUERY)
         self.Update_Sel_onTxt()
         self.View_Selections()
 
@@ -375,11 +375,11 @@ class Super_Top_Queries(tk.Toplevel):
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_ViewTransact(self):
-        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT)
+        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_QUERY)
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_XlsxView(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW)
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_QUERY)
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_SelXlsx(self):

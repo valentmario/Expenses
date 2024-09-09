@@ -189,7 +189,7 @@ class Xlsx_Manager(Codes_db):
                         myRow.append(Val)
                 self.XLSX_Rows_From_Sheet.append(myRow)          # Descripritions as in Sheet, Date is str
         if self._Tot_OK == 0:
-            return 'Corrects rows not found'
+            return 'wny row with significant data'
         if self._Xlsx_Conto == FLASH or self._Xlsx_Conto == AMBRA or self._Xlsx_Conto == POSTA:
             self._Adjust_Xlsx_Rows_ForFLASH()   # adjust rows as in FLASH or in AMBRA
         elif self._Xlsx_Conto == POSTA:
@@ -198,7 +198,7 @@ class Xlsx_Manager(Codes_db):
             pass                                # NOT identified leave as FIDEU
         # -------------
         if not self._XLSX_Rows_Desc_Compact:
-            return 'xlsx file contains any row with correct data'
+            return 'xlsx file contains any row with significant data'
         else:
             return OK
 
@@ -332,6 +332,7 @@ class Xlsx_Manager(Codes_db):
         self.Update_Txt_File(self.SheetName, Ix_Sheet_Name)
         self._Work_Sheet = Work_Book.get_sheet_by_name(self.SheetName)
         self._Tot_Rows    = self._Work_Sheet.max_row
+        pass
 
     # -----------------------------------------------------------------------------------
     @classmethod

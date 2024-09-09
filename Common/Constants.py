@@ -57,6 +57,7 @@ TOP_SUMMARIES  = 'Top Summaries   '      # Toplevel for Summaries
 
 CEK_CODES      = 'Check codes DB     '   # Checkes to be maade before a Tolevel launch
 CEK_XLSX       = 'Check xlsx file    '
+CEK_XLSX_MNGR  = 'Check xlsx for Top_Mngr'
 CEK_TRANSACT   = 'Check transactions '
 CEK_SUMMARIES  = 'Check suumaries    '
 
@@ -64,7 +65,7 @@ DIALOG         = 'Dialogs Widget  '      # Only for Transmitting
 ANY            = 'All Modules     '      # Any object
 
 LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
-                    [TOP_MNGR,          [CEK_CODES,  CEK_XLSX]],
+                    [TOP_MNGR,          [CEK_CODES,  CEK_XLSX_MNGR]],
                     [TOP_CODES_VIEW,    [CEK_CODES]],
                     [TOP_GR_MNGR,       [CEK_CODES]],
                     [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX]],

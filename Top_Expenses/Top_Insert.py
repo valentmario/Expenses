@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------------------------- #
 
 import tkinter as tk
-
+import os
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Chat import Ms_Chat
 from Common.Common_Functions import *
@@ -24,9 +24,6 @@ class Top_Insert(tk.Toplevel):
         self.Chat     = Ms_Chat
         self.Data     = Data
         self.Mod_Mngr = Modul_Mngr
-        if not self.Mod_Mngr.Init_Transactions():
-            self.destroy()
-            return
 
         self.Chat.Attach([self, TOP_INS])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
@@ -69,6 +66,10 @@ class Top_Insert(tk.Toplevel):
         self.Frame_Transact_Setup()
         self.Frame_Transact.Frame_View()
 
+        self.WithList                     = []
+        self.TransactRecords_ToBeInserted = []
+        self.TotTransact_ToBeInserted     = 0
+
         Full_Transact_Name = self.Data.Get_Txt_Member(Ix_Transact_File)
         Transact_Name = Get_File_Name(Full_Transact_Name)
         self.Trs_Txt.Set_Text(Transact_Name)
@@ -84,7 +85,9 @@ class Top_Insert(tk.Toplevel):
 
         # ---------------------------------------------------------------------
 
-        self.Check_For_Insert()
+        if not self.Check_For_Insert():
+            self.Call_OnClose()
+            return
         self.Tree_Update()
 
     # -------------------------------------------------------------------------------------------------
@@ -122,35 +125,126 @@ class Top_Insert(tk.Toplevel):
         Total = self.Data.Get_Total_Rows()
         Tot_WithoutCode = Total[Ix_Tot_Without_Code]
         if Tot_WithoutCode != 0:
-            Texto = str(Tot_WithoutCode) + '  Xlsx rows without code\nUpdate codes\then try Insert again'
-            Dialog = Message_Dlg(MsgBox_Err, Texto)
-            Dialog.wait_window()
-            return
+            Texto = str(Tot_WithoutCode) + '  Xlsx rows without code\nUpdate codes\then try to insert again'
+            Msg_Dlg = Message_Dlg(MsgBox_Err, Texto)
+            Msg_Dlg.wait_window()
+            return False
         else:
-            self.Mod_Mngr.Init_Transactions()
             Files_Ident  = self.Data.Get_Xlsx_Transact_Ident()
             XlsxYear     = Files_Ident[Ix_Xlsx_Year]
             TransactYear = Files_Ident[Ix_Transact_Year]
-            if XlsxYear != TransactYear:
-                ErrMsg = str(XlsxYear) + '  Xls Year\n' + str(TransactYear) + '  Transactions Year\n\n'
-                ErrMsg += 'NOT EQUAL  Please Change selections'
-                Dialog = Message_Dlg(MsgBox_Err, ErrMsg)
-                Dialog.wait_window()
-                return
-        Transact_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
-        if Transact_Filename == UNKNOWN:
-            return
-        else:
-            XlsxCommDir     = self.Data.Get_Xls_CommonDir()
-            TransactCommDir = self.Data.Get_Transact_CommonDir()
-            if XlsxCommDir != TransactCommDir:
-                ErrMsg = XlsxCommDir + '\n' + TransactCommDir + '\n\n'
-                ErrMsg += 'NOT EQUAL  Please Change selections'
-                Dialog = Message_Dlg(MsgBox_Err, ErrMsg)
-                Dialog.wait_window()
-                return
+            if XlsxYear != TransactYear:    # the name may be UNKNOWN
+                TRansact_Years_List = self.Data.Get_Transact_Year_ListInData()
+                for Year in TRansact_Years_List:
+                    if XlsxYear == Year:
+                        if not self.Load_Transact_Found(Year):
+                            self.Call_OnClose()
+                            return False  # Insert not enabled
+                else:
+                    if not self.Create_New_Transact_Db(XlsxYear):
+                        # self.Call_OnClose()
+                        return False
+
         self.Ins_Btn.Btn_Enable()
         self.Years_Match = True
+        return True
+
+    # -------------------------------------------------------------------------------------------------
+    def Load_Transact_Found(self, Year):
+        Transact_Filename = Transact_ + str(Year) + '.db'
+        Msg = 'Found transactions  Db:\n' + Transact_Filename + '\nLoad it'
+        Msg_Dlg = Message_Dlg(MsgBox_Ask, Msg)
+        Msg_Dlg.wait_window()
+        Reply = Msg_Dlg.data
+        if Reply != YES:
+            return False
+        Curr_Full_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
+        Dir_Name           = Get_Dir_Name(Curr_Full_Filename)
+        Full_Filename      = Dir_Name + Transact_Filename
+        File_Exists        = os.path.isfile(Full_Filename)
+        if not File_Exists:
+            Messg = 'inexplicably transaction Db:\n' + \
+                     Full_Filename + 'doesn"t exist'
+            MsgDlg = Message_Dlg(MsgBox_Err, Messg)
+            MsgDlg.wait_window()
+            return False
+        self.Data.Update_Txt_File(Full_Filename, Ix_Transact_File)
+        self.Data.Transact_Year_Setup(True)
+        return self.Mod_Mngr.Init_Transactions(TOP_INS)
+
+
+    # -------------------------------------------------------------------------------------------------
+    def Create_New_Transact_Db(self, Year):
+        Msg = 'Create new Transactions Db for:\n' + 'Year: ' +str(Year)
+        Msg_Dlg = Message_Dlg(MsgBox_Ask, Msg)
+        Msg_Dlg.wait_window()
+        Reply = Msg_Dlg.data
+        if Reply != YES:
+            return False
+        else:
+            if self.Data.Create_Transact_DB_File(Year):
+                Msg = Message_Dlg(MsgBox_Info, ('New:  ' + str(Year) +
+                                                '\nTransactions Db created'))
+                Msg.wait_window()
+                return True
+            Msg = Message_Dlg(MsgBox_Err, 'ERROR on creating\nnew database')
+            Msg.wait_window()
+            return False
+    # -------------------------------------------------------------------------------------------------
+    def Create_RecToInsert_From_RowWithCode(self, RecWithCode):
+        Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
+        Conto = Files_Ident[Ix_Xlsx_Conto]
+        RecToInsert = [RecWithCode[iWithCode_nRow],
+                       Conto,
+                       RecWithCode[iWithCode_Contab],
+                       RecWithCode[iWithCode_Valuta],
+                       RecWithCode[iWithCode_TR_Desc],
+                       RecWithCode[iWithCode_Accr],
+                       RecWithCode[iWithCode_Addeb],
+                       RecWithCode[iWithCode_TRcode],
+                       RecWithCode[iWithCode_TRcode]]
+        return RecToInsert
+
+    # -------------------------------------------------------------------------------------------------
+    # The case of two identical recodes (Dates, value, Code)
+    # for example ATM withdrawals at the same day for the same value
+    # must be adjustad manually; i.e. for two 100€ must modified manually
+    # in 99.99 and 100.1
+    # -------------------------------------------------------------------------------------------------
+    def Check_For_Multiple_Record_OnWitCodeList(self, RecToCheck):
+        nFound = 0
+        Rec    = None
+        for Rec in self.WithList:
+            if Rec == RecToCheck:
+                nFound += 1
+        if nFound == 1:
+            return False
+        else:
+            Message = 'Row: ' + str(Rec[iWithCode_nRow]) + \
+                      '\nfound in more records WitCode List\nAdjust records\nExit '
+            Dlg_Msg = Message_Dlg(MsgBox_Err, Message)
+            Dlg_Msg.wait_window()
+            return True
+
+    # -------------------------------------------------------------------------------------------------
+    def Create_RecordsList_ToBeInserted(self):
+        self.WithList = self.Data.Get_WithCodeList()
+        self.TransactRecords_ToBeInserted = []
+        self.TotTransact_ToBeInserted     = 0
+        for Rec in self.WithList:
+            if self.Check_For_Multiple_Record_OnWitCodeList(Rec):
+                self.Call_OnClose()
+                return
+            # On transactions database will be inserted record with
+            # Year of Valuta  or Year of Contab == self.intYear
+            YYYYmmDDvaluta = Get_DMY_From_Date(Rec[iWithCode_Valuta])
+            YYYYmmDDcontab = Get_DMY_From_Date(Rec[iWithCode_Contab])
+            if YYYYmmDDvaluta[2] == self.intYear or YYYYmmDDcontab[2] == self.intYear:
+                if not self.Test_If_Rec_In_Database(Rec):
+                    self.TotTransact_ToBeInserted += 1
+                    self.TransactRecords_ToBeInserted.append(Rec)
+            else:
+                pass
 
     # -------------------------------------------------------------------------------------------------
     def Tree_Update(self):
@@ -159,62 +253,33 @@ class Top_Insert(tk.Toplevel):
             self.Frame_Transact.Frame_Title('   ')
             return
         else:
-            NtotYear = 0
-            WithList  = self.Data.Get_WithCodeList()
-            for Rec in WithList:
-                YYYYmmDD = Get_DMY_From_Date(Rec[iWithCode_Valuta])
-                if YYYYmmDD[2] == self.intYear:
-                    NtotYear += 1
-            TotTexto = 'Total on ' + str(self.intYear) + ' = ' + str(NtotYear)
+            self.Create_RecordsList_ToBeInserted()
+            strTotal = str(self.TotTransact_ToBeInserted)
+            TotTexto = 'Total on ' + str(self.intYear) + ' = ' + strTotal
             self.Tot_Text.Set_Text(str(TotTexto))
-            self.Frame_Transact.Load_Row_Values(self.Data.Get_Transact_ViewInsert_List())
-            FrameTitle = '    ' + str(NtotYear) + '    Transactions to be inserted    '
+            self.Frame_Transact.Load_Row_Values(self.TransactRecords_ToBeInserted)
+            FrameTitle = '    ' + strTotal + '    Transactions to be inserted    '
             self.Frame_Transact.Frame_Title(FrameTitle)
-
-     # -------------------------------------------------------------------------------------------------
-    def Create_Transact_InDatabase_List(self, Full_Filename_For_Insert):
-        self.Transact_InDatabase_List = self.Data.Fetch_OneYear_Values(Full_Filename_For_Insert)
-        pass
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7
     # List_Transact_DB :  nRow    Conto    Contab    Valuta    TR_Desc   Accred   Addeb  TRcode
     # ---------------------------------------------------------------------------------------------------
     def Clk_Insert(self):
-        Transact_Inserted = 0
-        Files_Ident       = self.Data.Get_Xlsx_Transact_Ident()
-        ViewList = self.Data.Get_WithCodeList()
-        Conto = Files_Ident[Ix_Xlsx_Conto]
         self.Data.OpenClose_Transactions_Database(True, self.Full_Filename_For_Insert)
-        for Rec in ViewList:
-            RecToInsert = [Rec[iWithCode_nRow],
-                           Conto,
-                           Rec[iWithCode_Contab],
-                           Rec[iWithCode_Valuta],
-                           Rec[iWithCode_TR_Desc],
-                           Rec[iWithCode_Accr],
-                           Rec[iWithCode_Addeb],
-                           Rec[iWithCode_TRcode],
-                           Rec[iWithCode_TRcode]]
-            if not self.Test_If_Rec_In_Database(RecToInsert):
-                Transact_Inserted += 1
-                self.Data.Insert_Transact_Record(Rec[iWithCode_nRow],
-                                                 Conto,
-                                                 Rec[iWithCode_Contab],
-                                                 Rec[iWithCode_Valuta],
-                                                 Rec[iWithCode_TR_Desc],
-                                                 Rec[iWithCode_Accr],
-                                                 Rec[iWithCode_Addeb],
-                                                 Rec[iWithCode_TRcode]
-                                                 )
+        for Rec in self.TransactRecords_ToBeInserted:
+            RecToInsert = self.Create_RecToInsert_From_RowWithCode(Rec)
+            self.Data.Insert_Transact_Record(RecToInsert)
         self.Data.OpenClose_Transactions_Database(False, self.Full_Filename_For_Insert)
-        Messg = Message_Dlg(MsgBox_Info, (str(Transact_Inserted) + '\ntransactions inserted'))
+        strTotal = str(self.TotTransact_ToBeInserted)
+        Texto    = strTotal + '\ntransactions inserted'
+        Messg = Message_Dlg(MsgBox_Info, Texto )
         Messg.wait_window()
         self.Tree_Update()
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Codes_Mngr(self):
-        self.Mod_Mngr.Top_Launcher(TOP_MNGR)
+        self.Mod_Mngr.Top_Launcher(TOP_MNGR, TOP_INS)
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Ontree_View(self, Values):
@@ -223,13 +288,13 @@ class Top_Insert(tk.Toplevel):
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_xlsx(self):
         self.Ins_Btn.Btn_Disable()
-        if self.Mod_Mngr.Sel_Xlsx():
-            if self.Mod_Mngr.Load_Xlsx():
+        if self.Mod_Mngr.Sel_Xlsx(TOP_INS):
+            if self.Mod_Mngr.Load_Xlsx(TOP_INS):
                 self.Tree_Update()
 
     # -------------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW)
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_INS)
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_Transact(self):
@@ -237,15 +302,15 @@ class Top_Insert(tk.Toplevel):
         self.Frame_Transact.Load_Row_Values([])
         self.Frame_Transact.Frame_Title('   Transactions to be inserted   ')
         self.Frame_Transact.Frame_Title(self.Tree_Transact_Title)
-        if self.Mod_Mngr.Sel_Transact():
-            if self.Mod_Mngr.Load_Transact():
+        if self.Mod_Mngr.Sel_Transact(TOP_INS):
+            if self.Mod_Mngr.Load_Transact(TOP_INS):
                 self.Tree_Update()
                 self.Check_For_Insert()
                 self.Tree_Update()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Transact(self):
-        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT)
+        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_INS)
 
     # ---------------------------------------------------------------------------------------------
     def Test_If_Rec_In_Database(self, RecToInsert):

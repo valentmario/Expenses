@@ -154,7 +154,7 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Frames_Refresh(self):
-        self.Mod_Mngr.Load_Xlsx()
+        self.Mod_Mngr.Load_Xlsx(TOP_MNGR)
         self.Load_Trees()
         if self.View_Without_Code:
             self.Frame_NoCodes.Frame_View()
@@ -166,11 +166,11 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Codes(self):
-        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW)
+        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_MNGR)
 
     # ---------------------------------------------------------------------------------------------
     def Clk_GR_Mngr(self):
-        self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR)
+        self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_MNGR)
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Rows(self):
@@ -185,19 +185,24 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_Codes(self):
-        self.Mod_Mngr.Sel_Codes()
+        self.Mod_Mngr.Sel_Codes(TOP_MNGR)
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_xlsx(self):
-        if self.Mod_Mngr.Sel_Xlsx():
-            self.Mod_Mngr.Load_Xlsx()
+        if self.Mod_Mngr.Sel_Xlsx(TOP_MNGR):
+            self.Mod_Mngr.Load_Xlsx(TOP_MNGR)
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW)
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_MNGR)
 
     # ---------------------------------------------------------------------------------------------
     def Reqst_Clkd_On_TRcode(self, TRcode):
+        if self.Mod_Mngr.Files_Loaded != LOADED:
+            self.View_Descr_Text(TRcode, self.GR_Combo)
+            self.Clicked_Mod_Code = 2
+            self.BtnUpdate.Set_Btn_State(Btn_Enab)
+            return
         self.Frame_WithCodes.Clear_Focus()
         self.Clear_Texts()
         Index = -1
@@ -303,14 +308,14 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Ceck_Codes_DB(self):
-        Result = self.Data.Check_Codesdatabase()
-        if not Result:
+        Multiple = self.Data.Check_Codesdatabase()
+        if not Multiple:
             Len = self.Data.Get_TR_Codes_Table_Len()
             Info = str(Len)  + '   code records correctly checked out'
             Message = Message_Dlg(MsgBox_Info, Info)
         else:
             Info = 'ERROR on checking out codes database\n\n'
-            for TRrecord in Result:
+            for TRrecord in Multiple:
                 StrToserch = TRrecord[iTR_TRserc]
                 FullDescr  = TRrecord[iTR_TRfullDes]
                 Info += StrToserch + '\n' + FullDescr +'\n\n'

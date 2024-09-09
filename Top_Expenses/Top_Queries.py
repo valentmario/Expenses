@@ -58,7 +58,7 @@ class Top_Queries(Super_Top_Queries):
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Summaries(self):
-        self.Mod_Mngr.Top_Launcher(TOP_SUMMARIES)
+        self.Mod_Mngr.Top_Launcher(TOP_SUMMARIES, TOP_QUERY)
 
     # -------------------------------------------------------------------------------------------------
     # Three Frames for transactions view

@@ -29,7 +29,6 @@
 import os
 import sqlite3
 from Common.Common_Functions import *
-from Widgt.Dialogs import Message_Dlg
 from Data_Classes.Xlsx_Manager import Xlsx_Manager
 
 # ------------------------------------------------------------------------------
@@ -86,44 +85,35 @@ class Transact_Db(Xlsx_Manager):
     def Get_Len_Transact_Table(self):
         return len(self._Transact_Table)
 
-    #  --------------------------------------------------------------------------------------
-    def Create_Transact_DB_File(self, Year):      # used in Top_Insert()
-        Connect = None
+    # ---------------------------------------------------------------------------------------
+    def Create_TRansact_Filename(self, Year):
         Xlsx_CommonDir = self.Get_Xls_CommonDir()
-        FullDir = Xlsx_CommonDir + '/' + TRANSACTIONS
-        if not os.path.exists(FullDir):
-            os.mkdir(FullDir)
-        Fullname = FullDir + '/' + Transact_ + str(Year) + '.db'
-        File_Exists = os.path.isfile(Fullname)
-        if File_Exists:
+        Fullname       = Xlsx_CommonDir + '/' + TRANSACTIONS + '/' + Transact_ + str(Year) + '.db'
+        return Fullname
+
+    # ---------------------------------------------------------------------------------------
+    def Create_Transact_DB_File(self, Year):      # used in Top_Insert()
+        Connect        = None
+        Fullname = self.Create_TRansact_Filename(Year)
+        try:
+            Connect = sqlite3.connect(Fullname)
+            Cursor = Connect.cursor()
+            Cursor.execute(
+                "CREATE TABLE TRANSACT (nRow   INTEGER, "
+                                       "Conto  TEXT, "
+                                       "Contab TEXT, "
+                                       "Valuta TEXT, "
+                                       "TRdesc TEXT, "
+                                       "Accred FLOAT, "
+                                       "Addeb  FLOAT ,"
+                                       "TRcode INTEGER)" )
+            Connect.commit()
+            Connect.close()
             self.Update_Txt_File(Fullname, Ix_Transact_File)
-            return True
-        else:
-            try:
-                Connect = sqlite3.connect(Fullname)
-                Cursor = Connect.cursor()
-                # iTransact_nRow=0   iTransact_Conto=1  iTransact_Contab=2  iTransact_Valuta=3
-                # iTransact_TRdesc=4 iTransact_Accred=5 iTransact_Addeb=6   iTransact_TRcode=7
-                Cursor.execute(
-                    "create table if not exists TRANSACT (nRow   INTEGER, "
-                                                         "Conto  TEXT, "
-                                                         "Contab TEXT, "
-                                                         "Valuta TEXT, "
-                                                         "TRdesc TEXT, "
-                                                         "Accred FLOAT, "
-                                                         "Addeb  FLOAT ,"
-                                                         "TRcode INTEGER)" )
-                Connect.commit()
-                Connect.close()
-                self.Update_Txt_File(Fullname, Ix_Transact_File)
 
-            except:
-                Connect.close()
-                return 'Codes database ERROR'
-
-        File_Name = Get_File_Name(Fullname)
-        Msg = Message_Dlg(MsgBox_Info, ('New:' + File_Name + '\ncreated'))
-        Msg.wait_window()
+        except:
+            Connect.close()
+            return False
         return True
 
     # --------------------------------------------------------------------------------------------
@@ -131,21 +121,42 @@ class Transact_Db(Xlsx_Manager):
         if Open:
             self.Connect = sqlite3.connect(Transact_Filename)
             self.Cursor = self.Connect.cursor()
+            pass
         else:
             self.Connect.close()
+            pass
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7
     # List_Transact_DB :  nRow    Conto    Contab    Valuta    TR_Desc   Accred   Addeb  TRcode
     # ---------------------------------------------------------------------------------------------------
-    def Insert_Transact_Record(self, nRow, Cont, Contab, Valuta, Trdesc, Accred, Addeb, TRcode):
+    def Insert_Transact_Record(self, Record_List):   # nRow, Cont, Contab, Valuta, Trdesc, Accred, Addeb, TRcode:
+        nRow   = Record_List[iTransact_nRow]
+        Conto  = Record_List[iTransact_Conto]
+        Contab = Record_List[iTransact_Contab]
+        Valuta = Record_List[iTransact_Valuta]
+        TRdesc = Record_List[iTransact_TRdesc]
+        Accred = Record_List[iTransact_Accred]
+        Addeb  = Record_List[iTransact_Addeb]
+        TRcode = Record_List[iTransact_TRcode]
+        Cursor = None
         # self.Connect(TransactDB_Filename) is  made before the loop for insert
-        self.Cursor.execute("""
-        INSERT INTO TRANSACT (nRow, Conto, Contab, Valuta, Trdesc, Accred, Addeb, TRcode)
-                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
-                         (nRow, Cont, Contab, Valuta, Trdesc, Accred, Addeb, TRcode))
+        try:
+            Connect = sqlite3.connect(self._Transact_DB_Filename)
+            Cursor  = Connect.cursor()
+            # self.Cursor.execute("""
+            Cursor.execute("""
+                             INSERT INTO TRANSACT (nRow, Conto, Contab, Valuta, TRdesc, Accred, Addeb, TRcode)
+                             VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                             (nRow, Conto, Contab, Valuta, TRdesc, Accred, Addeb, TRcode))
+            Connect.commit()
+            Cursor.close()
+            return True
+        except:
+            Cursor.close()
+            return False
 
-        self.Connect.commit()
+        # self.Connect.commit()
         # self.Connect.close() #  is  made at the end of loop for insert
 
     # --------------------------------------------------------------------------------------------------
@@ -176,6 +187,22 @@ class Transact_Db(Xlsx_Manager):
                                 Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb]]
                 return [ListToInsert, ListInDatabase]
         return []
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Get_Transact_Year_ListInData(self):
+        Full_Transact_filename = self._Txt_List[Ix_Transact_File]
+        if Full_Transact_filename == UNKNOWN:
+            return []
+        Directory  = Get_Dir_Name(Full_Transact_filename)
+        Files_List = os.listdir(Directory)
+        Years_List = []
+        for Filename in Files_List:
+            # Transact_2024.db
+            strYear = Filename[9:13]
+            if CheckInteger(strYear):
+                iYear = int(strYear)
+                Years_List.append(iYear)
+        return Years_List
 
 # ===========================================================================================
 
