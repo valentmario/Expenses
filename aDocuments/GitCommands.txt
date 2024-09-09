@@ -1,0 +1,26 @@
+===============================================================================
+2024 August 27 git commands summary:
+               VERY VERY IMPORTANT:
+               THE DIRECTORY ON TERMINAL COMMAND MUST BE
+               <<<<<<<<< S:~/bExpenses/aExp_$ >>>>>>>>>>
+
+
+================       2024 September 4th     ===================
+         how to create a new project with git and github
+
+Step 1 : create ssh key ed25519 :  ssh-keygen -t ed25519  (-C ?)
+         eval ssh-agent
+
+Step 2 : GitHub: add ssh key to valentmario
+Step 3 : GitHub: set email NOT "private email address"
+Step 4 : GitHub: create new repo - select address for SSH
+
+Step 5 : Create new project (files, .gitignore, init, commit)
+          git branch -m master main
+          (git remote remove origin)
+Step 6  : git remote add origin git@github.com:valentmario/repo.git (Step 4)
+Step 7  : git push --set-upstream origin main
+Step 8  : git push -u origin main
+Step 9  : Commits ...
+Step 9  : git push -u origin main
+Step 10 : git pull Already up to date.
