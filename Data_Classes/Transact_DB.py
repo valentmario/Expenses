@@ -92,11 +92,10 @@ class Transact_Db(Xlsx_Manager):
         return Fullname
 
     # ---------------------------------------------------------------------------------------
-    def Create_Transact_DB_File(self, Year):      # used in Top_Insert()
+    def Create_Transact_DB_File(self, FullName):      # used in Top_Insert()
         Connect        = None
-        Fullname = self.Create_TRansact_Filename(Year)
         try:
-            Connect = sqlite3.connect(Fullname)
+            Connect = sqlite3.connect(FullName)
             Cursor = Connect.cursor()
             Cursor.execute(
                 "CREATE TABLE TRANSACT (nRow   INTEGER, "
@@ -109,8 +108,6 @@ class Transact_Db(Xlsx_Manager):
                                        "TRcode INTEGER)" )
             Connect.commit()
             Connect.close()
-            self.Update_Txt_File(Fullname, Ix_Transact_File)
-
         except:
             Connect.close()
             return False

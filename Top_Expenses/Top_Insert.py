@@ -70,9 +70,10 @@ class Top_Insert(tk.Toplevel):
         self.TransactRecords_ToBeInserted = []
         self.TotTransact_ToBeInserted     = 0
 
-        Full_Transact_Name = self.Data.Get_Txt_Member(Ix_Transact_File)
-        Transact_Name = Get_File_Name(Full_Transact_Name)
-        self.Trs_Txt.Set_Text(Transact_Name)
+        self.Set_Full_Transact_Name()
+        # Full_Transact_Name = self.Data.Get_Txt_Member(Ix_Transact_File)
+        # Transact_Name = Get_File_Name(Full_Transact_Name)
+        # self.Trs_Txt.Set_Text(Transact_Name)
 
         Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
         Xlsx_Filename      = Get_File_Name(Full_Xlsx_Filename)
@@ -142,12 +143,17 @@ class Top_Insert(tk.Toplevel):
                             return False  # Insert not enabled
                 else:
                     if not self.Create_New_Transact_Db(XlsxYear):
-                        # self.Call_OnClose()
                         return False
 
         self.Ins_Btn.Btn_Enable()
         self.Years_Match = True
         return True
+
+    # -------------------------------------------------------------------------------------------------
+    def Set_Full_Transact_Name(self):
+        Full_Transact_Name = self.Data.Get_Txt_Member(Ix_Transact_File)
+        Transact_Name = Get_File_Name(Full_Transact_Name)
+        self.Trs_Txt.Set_Text(Transact_Name)
 
     # -------------------------------------------------------------------------------------------------
     def Load_Transact_Found(self, Year):
@@ -182,10 +188,15 @@ class Top_Insert(tk.Toplevel):
         if Reply != YES:
             return False
         else:
-            if self.Data.Create_Transact_DB_File(Year):
+            Full_Name = self.Data.Create_TRansact_Filename(Year)
+            if self.Data.Create_Transact_DB_File(Full_Name):
                 Msg = Message_Dlg(MsgBox_Info, ('New:  ' + str(Year) +
                                                 '\nTransactions Db created'))
                 Msg.wait_window()
+                self.Data.Update_Txt_File(Full_Name, Ix_Transact_File)
+                self.Data.Transact_Year_Setup(True)
+                self.Set_Full_Transact_Name()
+                self.Chat.Tx_Request([TOP_INS, [MAIN_WIND], UPDATE_FILES_NAME, []])
                 return True
             Msg = Message_Dlg(MsgBox_Err, 'ERROR on creating\nnew database')
             Msg.wait_window()
