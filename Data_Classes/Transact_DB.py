@@ -71,7 +71,8 @@ class Transact_Db(Xlsx_Manager):
         return Fullname
 
     # ---------------------------------------------------------------------------------------
-    def Create_Transact_DB_File(self, FullName):      # used in Top_Insert()
+    # used in Top_Insert()
+    def Create_Transact_DB_File(self, FullName):
         self.Dummy = 0
         Connect    = None
         try:
@@ -149,21 +150,31 @@ class Transact_Db(Xlsx_Manager):
         Connct.close()
 
     # --------------------------------------------------------------------------------------------------
+    #                               nRow Not to check                                         only on WithCode
+    # be careful : Record to insert :  [nRow, Conto, Contab, Valuta, TRdesc, Accr, Addeb, TRcode,     '']
+    #              Record on Database: [nRow, Conto, Contab, Valuta, TRdesc, Accr, Addeb, TRcode]
+    #              Id may be different
+    # --------------------------------------------------------------------------------------------------
     def Check_IfTransactRecord_InDatabase(self, RecToInsert):
         for Transact_Rec in self._Transact_Table:
+            ListOnDb = list(Transact_Rec)
             Found = True
             Index = -1
-            for Item in Transact_Rec:
+            for ItemOnDb in ListOnDb:
                 Index += 1
-                if Item != RecToInsert[Index]:
-                    Found = False
+                if Index == 0:
+                    pass
+                else:
+                    if ItemOnDb != RecToInsert[Index]:
+                        Found = False
+                        break
             if Found:
-                ListToInsert = [RecToInsert[iTransact_Conto], RecToInsert[iTransact_Valuta], RecToInsert[iTransact_TRdesc],
-                                RecToInsert[iTransact_Accred], RecToInsert[iTransact_Addeb]]
-                ListInDatabase = [Transact_Rec[iTransact_Conto], Transact_Rec[iTransact_Valuta], Transact_Rec[iTransact_TRdesc],
-                                Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb]]
-                return [ListToInsert, ListInDatabase]
-        return []
+                return [Transact_Rec[iTransact_nRow],   Transact_Rec[iTransact_Conto],
+                        Transact_Rec[iTransact_Contab], Transact_Rec[iTransact_Valuta],
+                        Transact_Rec[iTransact_TRdesc],
+                        Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb],
+                        Transact_Rec[iTransact_TRcode]]
+            return []
 
     # -------------------------------------------------------------------------------------------------------------
     def Get_Transact_Year_ListInData(self):

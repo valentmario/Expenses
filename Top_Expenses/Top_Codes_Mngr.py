@@ -191,6 +191,7 @@ class Top_Mngr(Super_Top_Mngr):
     def Clk_Sel_xlsx(self):
         if self.Mod_Mngr.Sel_Xlsx(TOP_MNGR):
             self.Mod_Mngr.Load_Xlsx(TOP_MNGR)
+            self.Load_Trees()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):

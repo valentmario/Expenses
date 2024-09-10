@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Data_Organization updated deleted two txt files and File Dialog inserted on Dialog">
-      <change beforePath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Classes/Transact_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Transact_DB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_GR_Codes_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_GR_Codes_Mngr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Queries.py" afterDir="false" />
-    </list>
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Small corrections to eliminate unused things" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -403,7 +396,15 @@
       <option name="project" value="LOCAL" />
       <updated>1725958126798</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Small corrections to eliminate unused things">
+      <option name="closed" value="true" />
+      <created>1725958586522</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1725958586522</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -417,7 +418,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="To_Restore_Previous_Version" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
@@ -430,7 +431,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="last commit before complete Top_Queries" />
     <MESSAGE value=".gitignore updated with a lot of files" />
     <MESSAGE value="__pycache__ added in .gitignore" />
     <MESSAGE value="deleted lot of files in .gitignore.gitignore" />
@@ -455,7 +455,8 @@
     <MESSAGE value="Top Insert almost finished" />
     <MESSAGE value="Top Insert tested. May be a deeper testing in next future will be made" />
     <MESSAGE value="Data_Organization updated deleted two txt files and File Dialog inserted on Dialog" />
-    <option name="LAST_COMMIT_MESSAGE" value="Data_Organization updated deleted two txt files and File Dialog inserted on Dialog" />
+    <MESSAGE value="Small corrections to eliminate unused things" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small corrections to eliminate unused things" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

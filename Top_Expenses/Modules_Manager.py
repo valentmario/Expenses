@@ -119,20 +119,17 @@ class Modules_Manager:
         Full_Transact_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
         if (Full_Transact_Filename == UNKNOWN) or \
         not (self.Cek_Transactions_Name(Full_Transact_Filename)):
-            Msg = Message_Dlg(MsgBox_Info, 'Please select a Transact_YYYY.db file')
+            Msg = Message_Dlg(MsgBox_Info, 'The database dosn"t exhist\nNew database must be created')
             Msg.wait_window()
-            if self.Sel_Transact(Origin):    # return True False
-                if self.Load_Transact(Origin):
-                    return True
+            # if self.Sel_Transact(Origin):    # return True False
+            #     if self.Load_Transact(Origin):
+            #         return True
             return False
         else:
-            if self.Files_Loaded[Ix_Transact_Loaded] == LOADED:
+            if self.Load_Transact(Origin):
+                self.Chat.Tx_Request([Origin, [ANY], TRANSACT_UPDATED, []])
                 return True
-            else:
-                if self.Load_Transact(Origin):
-                    self.Chat.Tx_Request([Origin, [ANY], TRANSACT_UPDATED, []])
-                    return True
-                return False
+            return False
 
     # =========================================================================================== #
     #           --------------     Sel_ file Methods    --------------                            #

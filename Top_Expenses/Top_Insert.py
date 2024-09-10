@@ -48,7 +48,7 @@ class Top_Insert(tk.Toplevel):
         self.Txt_Xlsx_Name    = TheText(self, Txt_Disab, 370,  20, 10, 1, '')
         self.Txt_Conto        = TheText(self, Txt_Disab, 465,  20, 13, 1, '')
 
-        self.Tot_Text = TheText(self, Txt_Disab, 20, 860, 22, 1, '')
+        # self.Tot_Text = TheText(self, Txt_Disab, 20, 860, 22, 1, '')
 
         #  ------------------------------------  B U T T O N s  ---------------------------------------
         self.Ins_Btn = TheButton(self, Btn_Def_En, 220, 860, 19, 'Insert Transactions', self.Clk_Insert)
@@ -68,11 +68,13 @@ class Top_Insert(tk.Toplevel):
         self.WithList                     = []
         self.TransactRecords_ToBeInserted = []
         self.TotTransact_ToBeInserted     = 0
-        self.Set_Texts()
+
 
         if not self.Check_For_Insert():
             self.Call_OnClose()
             return
+        self.Mod_Mngr.Init_Transactions(TOP_INS)
+        self.Set_Texts()
         self.Tree_Update()
 
     # -------------------------------------------------------------------------------------------------
@@ -130,6 +132,7 @@ class Top_Insert(tk.Toplevel):
 
         self.Ins_Btn.Btn_Enable()
         self.Years_Match = True
+        self.Set_Texts()
         return True
 
     # -------------------------------------------------------------------------------------------------
@@ -201,16 +204,15 @@ class Top_Insert(tk.Toplevel):
             return False
     # -------------------------------------------------------------------------------------------------
     def Create_RecToInsert_From_RowWithCode(self, RecWithCode):
-        Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
-        Conto = Files_Ident[Ix_Xlsx_Conto]
+        # Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
+        # Conto       = Files_Ident[Ix_Xlsx_Conto]
         RecToInsert = [RecWithCode[iWithCode_nRow],
-                       Conto,
+                       self.Conto,
                        RecWithCode[iWithCode_Contab],
                        RecWithCode[iWithCode_Valuta],
                        RecWithCode[iWithCode_TR_Desc],
                        RecWithCode[iWithCode_Accr],
                        RecWithCode[iWithCode_Addeb],
-                       RecWithCode[iWithCode_TRcode],
                        RecWithCode[iWithCode_TRcode]]
         return RecToInsert
 
@@ -237,23 +239,26 @@ class Top_Insert(tk.Toplevel):
 
     # -------------------------------------------------------------------------------------------------
     def Create_RecordsList_ToBeInserted(self):
-        self.WithList = self.Data.Get_WithCodeList()
+        self.WithList                     = self.Data.Get_WithCodeList()
         self.TransactRecords_ToBeInserted = []
         self.TotTransact_ToBeInserted     = 0
-        for Rec in self.WithList:
-            if self.Check_For_Multiple_Record_OnWitCodeList(Rec):
+        for RecWith in self.WithList:
+            if self.Check_For_Multiple_Record_OnWitCodeList(RecWith):
                 self.Call_OnClose()
                 return
+
             # On transactions database will be inserted record with
             # Year of Valuta  or Year of Contab == self.intYear
-            YYYYmmDDvaluta = Get_DMY_From_Date(Rec[iWithCode_Valuta])
-            YYYYmmDDcontab = Get_DMY_From_Date(Rec[iWithCode_Contab])
+            YYYYmmDDvaluta = Get_DMY_From_Date(RecWith[iWithCode_Valuta])
+            YYYYmmDDcontab = Get_DMY_From_Date(RecWith[iWithCode_Contab])
             if YYYYmmDDvaluta[2] == self.intYear or YYYYmmDDcontab[2] == self.intYear:
-                if not self.Test_If_Rec_In_Database(Rec):
+                RecToInsert = self.Create_RecToInsert_From_RowWithCode(RecWith)
+                if not self.Test_If_Rec_In_Database(RecToInsert):
                     self.TotTransact_ToBeInserted += 1
-                    self.TransactRecords_ToBeInserted.append(Rec)
+                    self.TransactRecords_ToBeInserted.append(RecToInsert)
             else:
                 pass
+        pass
 
     # -------------------------------------------------------------------------------------------------
     def Tree_Update(self):
@@ -263,11 +268,12 @@ class Top_Insert(tk.Toplevel):
             return
         else:
             self.Create_RecordsList_ToBeInserted()
-            strTotal = str(self.TotTransact_ToBeInserted)
-            TotTexto = 'Total on ' + str(self.intYear) + ' = ' + strTotal
-            self.Tot_Text.Set_Text(str(TotTexto))
+            TotToInsert = self.TotTransact_ToBeInserted
+            strToInsert = ' NO '
+            if TotToInsert != 0:
+                strToInsert = str(TotToInsert)
             self.Frame_Transact.Load_Row_Values(self.TransactRecords_ToBeInserted)
-            FrameTitle = '    ' + strTotal + '    Transactions to be inserted    '
+            FrameTitle = '    ' + strToInsert + '    Transactions to be inserted    '
             self.Frame_Transact.Frame_Title(FrameTitle)
 
     # --------------------------------------------------------------------------------------------------
@@ -277,13 +283,15 @@ class Top_Insert(tk.Toplevel):
     def Clk_Insert(self):
         self.Data.OpenClose_Transactions_Database(True, self.Full_Filename_For_Insert)
         for Rec in self.TransactRecords_ToBeInserted:
-            RecToInsert = self.Create_RecToInsert_From_RowWithCode(Rec)
-            self.Data.Insert_Transact_Record(RecToInsert)
+            # RecToInsert = self.Create_RecToInsert_From_RowWithCode(Rec)
+            # self.Data.Insert_Transact_Record(RecToInsert)
+            self.Data.Insert_Transact_Record(Rec)
         self.Data.OpenClose_Transactions_Database(False, self.Full_Filename_For_Insert)
         strTotal = str(self.TotTransact_ToBeInserted)
         Texto    = strTotal + '\ntransactions inserted'
         Messg = Message_Dlg(MsgBox_Info, Texto )
         Messg.wait_window()
+        self.Mod_Mngr.Init_Transactions(TOP_INS)
         self.Tree_Update()
 
     # -------------------------------------------------------------------------------------------------
@@ -340,29 +348,20 @@ class Top_Insert(tk.Toplevel):
         if not Result:
             return False
         else:
-            if self.Continue:
-                RecToIns = Result[0]
-                RecInDB  = Result[1]
-
-                TextoIns = 'Rec to insert:\n'
-                for Item in RecToIns:
-                    TextoIns += ' ' + str(Item)
-                pass
-                TextoIns += '\n'
-
-                TextoDb = 'Rec in database:\n'
-                for Item in RecInDB:
-                    TextoDb += ' ' + str(Item)
-                pass
-                TextoDb += '\n\nContinue ?'
-
-                MsgText = TextoIns + TextoDb
-                Dlg = Message_Dlg(MsgBox_Ask, MsgText)
-                Dlg.wait_window()
-                Reply = Dlg.data
-                if Reply == NO:
-                    self.Continue = False
             return True
+            # if self.Continue:
+            #     Texto = 'existing record on Transctions Db:'
+            #     for Item in Result:
+            #         if Item == ' ':
+            #             Item = ' 0.00'
+            #         Texto += '\n' + str(Item)
+            #     Texto += '\n\nContinue to display '
+            #     Dlg = Message_Dlg(MsgBox_Ask, Texto)
+            #     Dlg.wait_window()
+            #     Reply = Dlg.data
+            #     if Reply == NO:
+            #         self.Continue = False
+            # return True
 
     # -------------------------------------------------------------------------------------------------
     def Test_If_Year_Month_OK(self, selected_Year, selected_nMonth):
