@@ -1,32 +1,15 @@
 ===========================================================================================
-class Files_Names_Manager:
-***   parent  class  ***
+Data classes inheritance:
+Files_Names_Manager <-- Codes_db <-- Xlsx_Manager <-- Transact_Db
 
-===========================================================================================
-class Codes_db(Files_Names_Manager):
-*** inherits  from Files_Names_Manager  ***
+Instance:
+Data = Transact_Db()
 
-===========================================================================================
-class Xlsx_Manager(Codes_db):
-*** inherits  from Files_Names_Manager  and  class Codes_db  ***
-
-===========================================================================================
-class Transact_Db(Xlsx_Manager):
-*** inherits  from Files_Names_Manager  & Codes_db  &  Xlsx_Manager ***
-
-This is the data chain
-
-# ========================== #
-#                            #
-Data = Transact_Db()         #
-#                            #
-# ========================== #
-
-the rule is:
-methods and data inside the file chain are undscored (_).
+The methods and data inside the file chain are undscored (_).
 the private (_) methods and attributes are accessible only inside data chain.
-public methods isn't undscored (_) and can't acces to _attributes
-but they can retrieve _attributes with Get_somthing_method()
+internal methods isn't undscored (_) and can acces to _attributes.
+From external classes the internal attributes (-) can be retrieved only
+by call of internal methods not underscored
 
 data chain:
 LOW LEVEL       return  OK  or  'Diagnostic'
@@ -36,6 +19,16 @@ MIDDLE LEVEL    return True or display 'Diagnostic' and return False
 
 Toplevel modules
 HIGH LEVEL      get only True or False
+
+This classes are primarly instanced once at startup, and are imported
+from  all Toplevels that import  Chat, Dialogs etc.
+to avoid circularity DON'T import Chat, Widgets etc. on Data classes.
+
+The Common_Functions import only Constants so they can be imported everywhere
+
+
+
+
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class Super_Top_Mngr(tk.Toplevel):

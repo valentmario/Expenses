@@ -7,13 +7,14 @@
 #      Transact.db                                                            #
 #  Classes inheritance:                                                       #
 #  Files_Names_Mngr <-- Codes_DB <-- Xlsx_Manager <-- Transact_DB             #
-#  Data = Transact_DB()
+#  Data = Transact_DB()                                                       #
+#                                                                             #
+#  for more informations see Data_Organization.txt                            #
 # =========================================================================== #
 
 import os
 import tkinter as tk
 from tkinter import filedialog
-
 from Common.Common_Functions import *
 from datetime import datetime
 
@@ -82,12 +83,12 @@ class Files_Names_Manager:
         self._Update_Txt_File(Query_List, Ix_Query_List)
 
     # ----------------------------------------------------------------------------------
-    def Sel_Codes_OnData(self):
+    def Sel_Codes_OnData(self, Parent):
         Init_Directory = Default_Init_Dir
         if self._Codes_DB_Filename != UNKNOWN:
             Init_Directory = Get_Dir_Name(self._Codes_DB_Filename)
         # -----------------------------------------------------
-        Full_filename = tk.filedialog.askopenfilename(
+        Full_filename = tk.filedialog.askopenfilename(parent=Parent,
             title='Select codes database',
             filetypes=[('db file', '*.db')],
             initialdir=Init_Directory)
@@ -95,12 +96,12 @@ class Files_Names_Manager:
         return Full_filename
 
     # ----------------------------------------------------------------------------------
-    def Sel_Xlsx_OnData(self):
+    def Sel_Xlsx_OnData(self, Parent):
         Init_Directory = Default_Init_Dir
         if self._Xlsx_Filename != UNKNOWN:
             Init_Directory = Get_Dir_Name(self._Xlsx_Filename)
         # -----------------------------------------------------
-        Full_filename = tk.filedialog.askopenfilename(
+        Full_filename = tk.filedialog.askopenfilename(parent=Parent,
             title='Select xlsx file',
             filetypes=[('xlsx file', '*.xlsx')],
             initialdir=Init_Directory)
@@ -108,12 +109,12 @@ class Files_Names_Manager:
         return Full_filename
 
     # ----------------------------------------------------------------------------------
-    def Sel_Transact_OnData(self):
+    def Sel_Transact_OnData(self, Parent):
         Init_Directory = Default_Init_Dir
         if self._Transact_DB_Filename != UNKNOWN:
             Init_Directory = Get_Dir_Name(self._Transact_DB_Filename)
         # -----------------------------------------------------
-        Full_filename = tk.filedialog.askopenfilename(
+        Full_filename = tk.filedialog.askopenfilename(parent=Parent,
             title='Select transactions database',
             filetypes=[('db file', '*.db')],
             initialdir=Init_Directory)

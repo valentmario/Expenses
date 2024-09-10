@@ -159,9 +159,13 @@ Btn_Msg     = 7      # Button for Message
 Btn_Disab  = 1      # Button Disabled
 Btn_Enab   = 2      # Button Enabled (normal)
 
-MsgBox_Info = 1
-MsgBox_Ask  = 2
-MsgBox_Err  = 3
+MsgBox_Info = 'Info message'
+MsgBox_Ask  = 'Ask message'
+MsgBox_Err  = 'Err message'
+
+FileBox_Codes    = 'Codes file'
+FileBox_Xlsx     = 'Xlsx file'
+FileBox_Transact = 'Transact file'
 
 Txt_Enab     = 'Txt_Enab'      # Text enable     Black on Mustard
 Txt_Disab    = 'Txt_Disab'     # Text disabled   White on Light Blue

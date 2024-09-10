@@ -4,6 +4,7 @@
 # ----------------------------------------------------------------------------------------------- #
 
 from Chat import Ms_Chat
+from Widgt.Dialogs import File_Dialog
 from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
@@ -93,6 +94,7 @@ class Top_Settings(tk.Toplevel):
         self.configure(background=BakGnd)
         self.title('*****     Settings     *****')
 
+        self.Dummy      = 0
         self.Files_List = []
         self.Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
 
@@ -117,7 +119,7 @@ class Top_Settings(tk.Toplevel):
         self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'View Txt List',     self.Clk_View_TxtList)
         self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En, 170, 200, 14, 'Chat Participants', self.Clk_View_Chat)
 
-        self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'Files list',         self.Clk_NotUsed)
+        self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'for test',         self.Clk_NotUsed)
         # self.Btn_StrMatching   = TheButton(self, Btn_Def_En, 170, 245, 14, 'Strings matching',  self.Clk_Matching)
         self.TestTxt           = TheText(self, Txt_Disab,    170, 245, 14, 1, 'Text')
 
@@ -136,13 +138,13 @@ class Top_Settings(tk.Toplevel):
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_Codes_DB(self):
-        if self.Mod_Mngr.Sel_Codes(TOP_SETTINGS):
-            self.Mod_Mngr.Load_Codes()
+        self.Dummy = 0
+        self.Mod_Mngr.Sel_Codes(TOP_SETTINGS)
+        pass
+
 
     def Clk_View_Codes_DB(self):
-        # self.Mod_Mngr.Top_Launcher(TOP_MNGR, TOP_SETTINGS)
         self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_SETTINGS)
-        # self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_SETTINGS)
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
@@ -235,10 +237,12 @@ class Top_Settings(tk.Toplevel):
 
 
     def Clk_NotUsed(self):
-        Directory = '/media/mario/ACEext4/ACEext4/12_Expenses/bFiles/bXLSX_Files/TRANSACTIONS/'
-        self.Files_List = os.listdir(Directory)
+        self.Dummy = 0
+        File_Dlg    = File_Dialog(FileBox_Codes)
+        # File_Dlg.wait_window()
+        FileSelected = File_Dlg.FileName
+        print(FileSelected)
         pass
-
     # ----------------------------------------------------------------------------------------
     @staticmethod
     def Clk_Matching():

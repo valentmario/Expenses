@@ -44,6 +44,7 @@ from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data
 from Widgt.Dialogs import Message_Dlg
+from Widgt.Dialogs import File_Dialog
 
 # -------------------------------------------------------------------------------------------------
 class Modules_Manager:
@@ -137,7 +138,8 @@ class Modules_Manager:
     #           --------------     Sel_ file Methods    --------------                            #
     # =========================================================================================== #
     def Sel_Codes(self, Origin):
-        Full_Filename = self.Data.Sel_Codes_OnData()  # return the full filename
+        File_Dlg      = File_Dialog(FileBox_Codes)
+        Full_Filename = File_Dlg.FileName
         if self.Cek_Codes_Name(Full_Filename):
             self.Data.Update_Txt_File(Full_Filename, Ix_Codes_File)
             self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
@@ -147,7 +149,9 @@ class Modules_Manager:
 
     # -------------------------------------------------------------------------
     def Sel_Xlsx(self, Origin):
-        Full_Filename = self.Data.Sel_Xlsx_OnData()  # return the full filename
+        # Full_Filename = self.Data.Sel_Xlsx_OnData()  # return the full filename
+        File_Dlg      = File_Dialog(FileBox_Xlsx)
+        Full_Filename = File_Dlg.FileName
         if self.Cek_Xlsx_Name(Full_Filename):
             self.Data.Update_Txt_File(Full_Filename, Ix_Xlsx_File)
             self.Data.Xlsx_Conto_Year_Month_Setup(True)
@@ -158,7 +162,9 @@ class Modules_Manager:
 
     # -------------------------------------------------------------------------
     def Sel_Transact(self, Origin):
-        Full_Filename = self.Data.Sel_Transact_OnData()  # return the full filename
+        # Full_Filename = self.Data.Sel_Transact_OnData()  # return the full filename
+        File_Dlg      = File_Dialog(FileBox_Transact)
+        Full_Filename = File_Dlg.FileName
         if self.Cek_Transactions_Name(Full_Filename):
             self.Data.Update_Txt_File(Full_Filename, Ix_Transact_File)
             self.Data.Transact_Year_Setup(True)

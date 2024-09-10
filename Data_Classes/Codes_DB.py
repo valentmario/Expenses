@@ -1,6 +1,7 @@
 # =========================================================================== #
 #               -----   Codes_DB.py   -----                                   #
 #          class  for Transactions Codes Database                             #
+#  for more informations see Data_Organization.txt                            #
 # =========================================================================== #
 
 import sqlite3
@@ -8,13 +9,11 @@ import sqlite3
 from Data_Classes.Filesnames_Mngr import Files_Names_Manager
 from Common.Common_Functions import *
 from Common.Common_Functions import Compact_Descr_String
-from Chat import *
 
 # ---------------------------------------------------------------------------------
 class Codes_db(Files_Names_Manager):
     def __init__(self):
         super().__init__()
-        self.Chat  = Ms_Chat
         self.Dummy = 0
 
         # ==================================================================================================== #

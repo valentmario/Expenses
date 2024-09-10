@@ -122,3 +122,37 @@ class Combo_Dlg(tk.Toplevel):
         self.data = Val
 
 # =================================================================================
+
+from Data_Classes.Transact_DB import Data
+
+# =======================   F I L E     D I A L O G       ========================
+class File_Dialog(tk.Toplevel):
+    def __init__(self, Option):
+        super().__init__()
+        self.resizable(False, False)
+        self.geometry('50x50+800+200')
+        self.title('File Select  Dialog')
+        self.configure(bg='white')
+        self.Data = Data
+
+        self.wait_visibility()
+        self.grab_set()
+        self.transient()
+
+        self.FileName = ''
+        if Option == FileBox_Codes:
+            Full_filename = self.Data.Sel_Codes_OnData(self)
+            self.FileName = Full_filename
+
+        if Option == FileBox_Xlsx:
+            Full_filename = self.Data.Sel_Xlsx_OnData(self)
+            self.FileName = Full_filename
+
+        if Option == FileBox_Transact:
+            Full_filename = self.Data.Sel_Transact_OnData(self)
+            self.FileName = Full_filename
+
+        self.grab_release()
+        self.destroy()
+
+# ==============================================================================

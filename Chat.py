@@ -8,6 +8,7 @@
 import time
 from Common.Constants import *
 from Widgt.Dialogs import Message_Dlg
+
 # ---------------------------------------------------------------------------------------
 class Messages_Chat:
     def __init__(self):

@@ -1,7 +1,8 @@
-# ==================================================================================== #
-#               -----   xlsx_Mngr.py   -----                                           #
-#              class  for  xlsx file managiging                                        #
-# ==================================================================================== #
+# ========================================================================== #
+#               -----   xlsx_Mngr.py   -----                                 #
+#              class  for  xlsx file managiging                              #
+#  for more informations see Data_Organization.txt                           #
+# ========================================================================== #
 
 from Data_Classes.Codes_DB import *
 from openpyxl import load_workbook
