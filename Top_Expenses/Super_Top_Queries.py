@@ -118,11 +118,11 @@ class Super_Top_Queries(tk.Toplevel):
     def Create_Year_Transact_List(self):
         self.OneYear_Transact_List = self.Data.Get_Transact_Table()
         self.Transact_xMonth_List  = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
-        Year  = self.Year_Selected
-        Conto = self.Conto_Selected
-        TRsel = self.TRselected
-        GRsel = self.GRselected
-        CAsel = self.CAselected
+        # Year  = self.Year_Selected
+        # Conto = self.Conto_Selected
+        # TRsel = self.TRselected
+        # GRsel = self.GRselected
+        # CAsel = self.CAselected
 
     # -------------------------------------------------------------------------------------------------------------
     def Setup_Year_Conto_Month_Tot_Date(self):

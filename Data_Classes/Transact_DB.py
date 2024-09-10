@@ -22,12 +22,7 @@ class Transact_Db(Xlsx_Manager):
         self._Transact_Table = []
         self.Connect = None
         self.Cursor  = None
-
-    # --------------------------------------------------------------------------
-    def Call_OnClose(self):
-        self.Chat.Detach(TRANSACT_CLASS)
-        del self
-
+        self.Dummy   = 0
     # --------------------------------------------------------------------------------------
     def Get_Xlsx_Transact_Ident(self):
         return [self._Xlsx_Conto, self._Xlsx_Year, self._Xlsx_Month, self._Transact_Year]
@@ -77,7 +72,8 @@ class Transact_Db(Xlsx_Manager):
 
     # ---------------------------------------------------------------------------------------
     def Create_Transact_DB_File(self, FullName):      # used in Top_Insert()
-        Connect        = None
+        self.Dummy = 0
+        Connect    = None
         try:
             Connect = sqlite3.connect(FullName)
             Cursor = Connect.cursor()

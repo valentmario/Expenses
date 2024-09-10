@@ -292,8 +292,8 @@ class Top_Queries(Super_Top_Queries):
             Frame_Tot.Load_Row_Values(Tot_List)
         PRINT('***  Tot of Trees records: '+str(Tot_Rec)+'  ***')
 
-        Total_Credit = self.Tot_CredDeb_xTree[0][0] + self.Tot_CredDeb_xTree[1][0] + self.Tot_CredDeb_xTree[2][0]
-        Total_Debit  = self.Tot_CredDeb_xTree[0][1] + self.Tot_CredDeb_xTree[1][1] + self.Tot_CredDeb_xTree[2][1]
+        # Total_Credit = self.Tot_CredDeb_xTree[0][0] + self.Tot_CredDeb_xTree[1][0] + self.Tot_CredDeb_xTree[2][0]
+        # Total_Debit  = self.Tot_CredDeb_xTree[0][1] + self.Tot_CredDeb_xTree[1][1] + self.Tot_CredDeb_xTree[2][1]
 
         # flTot_Credit = Float_ToString_Setup(Total_Credit)
         # flTot_Debit = Float_ToString_Setup(Total_Debit)

@@ -157,7 +157,7 @@ class Codes_db(Files_Names_Manager):
         self._CA_Codes_Ordered     = []
 
         try:
-            TestConnect = sqlite3.connect(self._Codes_DB_Filename)
+            sqlite3.connect(self._Codes_DB_Filename)
             pass
         except:
             return 'Please mount data drive'

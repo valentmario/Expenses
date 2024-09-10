@@ -79,7 +79,7 @@ class Xlsx_Manager(Codes_db):
 
     # -----------------------------------------------------------------------------------------
     def Load_Xlsx_Lists(self):
-        self.Chat.Set_Start_Time()
+        # self.Chat.Set_Start_Time()
         self._Tot_OK                 = 0
         self._XLSX_Rows_From_Sheet   = []  # nRow Contab Valuta  Descr1  Accred Addeb Descr2
         self.XLSX_Rows_Desc_Compact  = []

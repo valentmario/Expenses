@@ -211,7 +211,7 @@ class Top_GR_Codes_Mngr(tk.Toplevel):
         TRdesc     = Values[0]
         TR_Full    = Get_List_Record(self.Data.Get_TR_Codes_Full(-1), iTR_Ful_TRdesc, TRdesc, [])
         if TR_Full:
-            StrTR = TR_Full[iTR_Ful_TRdesc]
+            # StrTR = TR_Full[iTR_Ful_TRdesc]
             # self.Frame_TRxGR.Load_Row_Values([[StrTR]])
             GRdesc = TR_Full[iTR_Ful_GRdesc]
             Index = Get_List_Index(self.List_GRxCA, 1, GRdesc, -1)
