@@ -29,6 +29,7 @@ class Transact_Db(Xlsx_Manager):
 
     # --------------------------------------------------------------------------------------
     def Load_Transact_Table(self):
+        self._Transact_Table = []
         connect = sqlite3.connect(self._Transact_DB_Filename)
         cursor  = connect.cursor()
         try:
@@ -97,12 +98,16 @@ class Transact_Db(Xlsx_Manager):
     # --------------------------------------------------------------------------------------------
     def OpenClose_Transactions_Database(self, Open, Transact_Filename):
         if Open:
-            self.Connect = sqlite3.connect(Transact_Filename)
-            self.Cursor = self.Connect.cursor()
-            pass
+            try:
+                self.Connect = sqlite3.connect(Transact_Filename)
+                self.Cursor = self.Connect.cursor()
+                return True
+            except:
+                return False
+
         else:
             self.Connect.close()
-            pass
+            return True
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7
@@ -150,7 +155,7 @@ class Transact_Db(Xlsx_Manager):
         Connct.close()
 
     # --------------------------------------------------------------------------------------------------
-    #                               nRow Not to check                                         only on WithCode
+    #                               nRow Not to checked                                         only on WithCode
     # be careful : Record to insert :  [nRow, Conto, Contab, Valuta, TRdesc, Accr, Addeb, TRcode,     '']
     #              Record on Database: [nRow, Conto, Contab, Valuta, TRdesc, Accr, Addeb, TRcode]
     #              Id may be different
@@ -158,23 +163,19 @@ class Transact_Db(Xlsx_Manager):
     def Check_IfTransactRecord_InDatabase(self, RecToInsert):
         for Transact_Rec in self._Transact_Table:
             ListOnDb = list(Transact_Rec)
-            Found = True
-            Index = -1
-            for ItemOnDb in ListOnDb:
-                Index += 1
-                if Index == 0:
-                    pass
-                else:
-                    if ItemOnDb != RecToInsert[Index]:
-                        Found = False
-                        break
-            if Found:
-                return [Transact_Rec[iTransact_nRow],   Transact_Rec[iTransact_Conto],
-                        Transact_Rec[iTransact_Contab], Transact_Rec[iTransact_Valuta],
-                        Transact_Rec[iTransact_TRdesc],
-                        Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb],
-                        Transact_Rec[iTransact_TRcode]]
-            return []
+            if ListOnDb[iTransact_Conto]       == RecToInsert[iTransact_Conto]  and \
+                    ListOnDb[iTransact_Contab] == RecToInsert[iTransact_Contab] and \
+                    ListOnDb[iTransact_Valuta] == RecToInsert[iTransact_Valuta] and \
+                    ListOnDb[iTransact_TRdesc] == RecToInsert[iTransact_TRdesc] and \
+                    ListOnDb[iTransact_Accred] == RecToInsert[iTransact_Accred] and \
+                    ListOnDb[iTransact_Addeb]  == RecToInsert[iTransact_Addeb]  and \
+                    ListOnDb[iTransact_Addeb]  == RecToInsert[iTransact_Addeb]:
+                        return [Transact_Rec[iTransact_nRow], Transact_Rec[iTransact_Conto],
+                                Transact_Rec[iTransact_Contab], Transact_Rec[iTransact_Valuta],
+                                Transact_Rec[iTransact_TRdesc],
+                                Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb],
+                                Transact_Rec[iTransact_TRcode]]
+        return []
 
     # -------------------------------------------------------------------------------------------------------------
     def Get_Transact_Year_ListInData(self):

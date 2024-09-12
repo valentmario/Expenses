@@ -144,9 +144,9 @@ class Xlsx_Manager(Codes_db):
     # -------------------------------------  Get rows from sheet ----------------------------
     def _Get_XLS_Rows_From_Sheet(self):
         self.XLSX_Rows_From_Sheet   = []
-        self._XLSX_Rows_Desc_Compact = []
+        self._XLSX_Rows_Desc_Compact= []
         self.Xlsx_Rows_NOK_List     = []
-        self.iYear_List = []
+        self.iYear_List             = []
         self._Tot_OK  = 0
         self._Tot_NOK = 0
         self._Get_Work_Sheet_Rows()

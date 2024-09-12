@@ -11,23 +11,7 @@
 #    Data       = Transact_DB()                                                                   #
 #    are istanced on Startup and will NEVER destoyed                                              #
 # *********************************************************************************************** #
-"""
-    the rule is:
-    methods and data inside the data chain are underscored (_).
-    the private (_) methods and attributes are accessible only inside data chain.
-    public methods isn't undscored (_) and can't acces to _attributes
-    but they can retrieve _attributes with Get_somthing_method()
 
-    data chain:
-    LOW LEVEL       return  OK  or  'Diagnostic'
-
-    Modules_Manager
-    MIDDLE LEVEL    return True or display 'Diagnostic' and return False
-
-    Toplevel modules
-    HIGH LEVEL      get only True or False
-"""
-# ===================================================================================
 from Top_Expenses.Modules_Manager import Modul_Mngr
 
 from Data_Classes.Transact_DB import Data

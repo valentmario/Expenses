@@ -56,10 +56,10 @@ class Top_View_Transact(tk.Toplevel):
             self.Frame_Sheets_Rows.Load_Row_Values(self.Data.XLSX_Rows_From_Sheet)
 
     # ---------------------------------------------------------------------------------------------
-    def Chck_ForView(self):
-        if not self.Mod_Mngr.Init_Transactions():
-            self.destroy()
-            return
+    # def Chck_ForView(self):
+    #     if not self.Mod_Mngr.Init_Transactions():
+    #         self.destroy()
+    #         return
 
     # ---------------------------------------------------------------------------------------------
     def Clk_On_Sheets_Rows(self, Values):

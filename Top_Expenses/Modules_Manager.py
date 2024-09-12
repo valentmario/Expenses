@@ -20,25 +20,9 @@
 #                      Transact_Year_Setup(False/True)                          #
 #      on Cek_Create_Txt_File(),  Cek..Name(), Sel..file(),  Load..Data()       #
 #      so all TopLevels are launchd with this filled list                       #
+#      Init_Transact have a flag to force Loading data even if is LOADED        #
 #                                                                               #
 # ============================================================================= #
-"""
-    the rule is:
-    methods and data inside the data chain are private and underscored (_).
-    the private (_) methods and attributes are accessible only inside data chain.
-    public methods are not undscored (_) and should not acces to _attributes,
-    but they can retrieve _attributes with Get_somthing_method()
-
-    data chain:
-    LOW LEVEL       return  OK  or  'Diagnostic'
-
-    Modules_Manager
-    MIDDLE LEVEL    return True or display 'Diagnostic' and return False
-
-    Toplevel modules
-    HIGH LEVEL      get only True or False
-"""
-# ============================================================================== #
 
 from Common.Common_Functions import *
 from Chat import Ms_Chat
@@ -53,7 +37,7 @@ class Modules_Manager:
         self.Chat = Ms_Chat
         self.Dummy = None
         # these attributes are not memorized on Txt_File
-        self.Files_Loaded = [NOK, NOK, NOK]     # same structure as Files_Stat LOADED / NOK
+        self.Files_Loaded = [NO, NO, NO]     # same structure as Files_Stat LOADED / NOK
 
         self.Toplevels_Id_List = []     # <class>,  NAME  # List of toplevel to launch in Top_Settings
 
@@ -119,17 +103,15 @@ class Modules_Manager:
         Full_Transact_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
         if (Full_Transact_Filename == UNKNOWN) or \
         not (self.Cek_Transactions_Name(Full_Transact_Filename)):
-            Msg = Message_Dlg(MsgBox_Info, 'The database dosn"t exhist\nNew database must be created')
+            Msg = Message_Dlg(MsgBox_Info, 'The database dosn"t exist\nNew database must be created')
             Msg.wait_window()
-            # if self.Sel_Transact(Origin):    # return True False
-            #     if self.Load_Transact(Origin):
-            #         return True
             return False
         else:
-            if self.Load_Transact(Origin):
-                self.Chat.Tx_Request([Origin, [ANY], TRANSACT_UPDATED, []])
-                return True
-            return False
+            # if LoadAnyway or self.Files_Loaded[Ix_Transact_Loaded] != LOADED:
+                if self.Load_Transact(Origin):
+                    return True
+                else:
+                    return False
 
     # =========================================================================================== #
     #           --------------     Sel_ file Methods    --------------                            #
@@ -139,6 +121,7 @@ class Modules_Manager:
         Full_Filename = File_Dlg.FileName
         if self.Cek_Codes_Name(Full_Filename):
             self.Data.Update_Txt_File(Full_Filename, Ix_Codes_File)
+            self.Files_Loaded[Ix_Codes_Loaded] = LOADED
             self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
             return True
         else:
@@ -152,6 +135,7 @@ class Modules_Manager:
         if self.Cek_Xlsx_Name(Full_Filename):
             self.Data.Update_Txt_File(Full_Filename, Ix_Xlsx_File)
             self.Data.Xlsx_Conto_Year_Month_Setup(True)
+            self.Files_Loaded[Ix_Xls_Loaded] = NOK
             self.Chat.Tx_Request([Origin, [ANY], UPDATE_FILES_NAME, []])
             return True
         else:
@@ -203,21 +187,18 @@ class Modules_Manager:
     def Load_Transact(self, Origin):
         self.Data.Transact_Year_Setup(True)  # needed for lists creating
         Reply = self.Data.Load_Transact_Table()
-
         if Reply == OK or Reply == EMPTY:
             Result = True
-            if Reply == EMPTY:
-                Msg = Message_Dlg(MsgBox_Err, 'Transactions Database is EMPTY')
-                Msg.wait_window()
-
+            # if Reply == EMPTY:
+            #     Msg = Message_Dlg(MsgBox_Err, 'Transactions Database is EMPTY')
+            #     Msg.wait_window()
         else:
             Result = False
-            self.Files_Loaded[Ix_Transact_Loaded] = LOADED   # in this caase the database is cleared
-            Msg = Message_Dlg(MsgBox_Err, Reply)             # return 'ERROR... '
+            Msg = Message_Dlg(MsgBox_Err, Reply)   # display 'ERROR... '
             Msg.wait_window()
 
         self.Files_Loaded[Ix_Transact_Loaded] = LOADED
-        self.Chat.Tx_Request([Origin, [ANY], CODES_DB_UPDATED, []])
+        self.Chat.Tx_Request([Origin, [ANY], TRANSACT_UPDATED, []])
         return Result
 
 
