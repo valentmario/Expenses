@@ -301,24 +301,26 @@ class Xlsx_Manager(Codes_db):
             self.Contab = self._Work_Sheet['A' + str(nRow)].value
             self.Valuta = self._Work_Sheet['B' + str(nRow)].value
             self.Des1   = self._Work_Sheet['C' + str(nRow)].value
-            self.Accr   = self._Work_Sheet['D' + str(nRow)].value
-            self.Addeb  = self._Work_Sheet['E' + str(nRow)].value
+            XlsxAccr   = self._Work_Sheet['D' + str(nRow)].value
+            XlsxAddeb  = self._Work_Sheet['E' + str(nRow)].value
             self.Des2   = self._Work_Sheet['F' + str(nRow)].value
-
-            # self.Accr  = Float_ToString_Setup(Accr)
-            # self.Addeb = Float_ToString_Setup(Addeb)
+            # ----------   Credits and Debits  type are :  float   -------
+            self.Accr  = Convert_To_Float(XlsxAccr)
+            self.Addeb = Convert_To_Float(XlsxAddeb)
 
         elif self._Xlsx_Conto == FLASH or self._Xlsx_Conto == AMBRA:  # Get columns for Flash/AMBRA
             self.Contab = self._Work_Sheet['A' + str(nRow)].value
             self.Valuta = self._Work_Sheet['B' + str(nRow)].value
             self.Des1   = self._Work_Sheet['C' + str(nRow)].value
-            self.Accr   = self._Work_Sheet['E' + str(nRow)].value
-            self.Addeb  = self._Work_Sheet['G' + str(nRow)].value
+            XlsxAccr    = self._Work_Sheet['E' + str(nRow)].value
+            XlsxAddeb   = self._Work_Sheet['G' + str(nRow)].value
             self.Des2   = ''
-            if type(self.Addeb) is float or type(self.Addeb) is int:
-                self.Addeb  = -self.Addeb
+            # ----------   Credits and Debits  type are :  float   -------
+            self.Accr  = Convert_To_Float(XlsxAccr)
+            self.Addeb = -Convert_To_Float(XlsxAddeb)
             typeContab = type(self.Contab)
             typeValuta = type(self.Valuta)
+
             if typeContab is datetime and typeValuta is datetime:
                 pass
             elif typeContab is datetime:

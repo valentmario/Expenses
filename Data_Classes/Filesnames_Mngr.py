@@ -38,7 +38,7 @@ class Files_Names_Manager:
 
         self.Curr_Year  = datetime.now().year    # to max years history setup
         self.Curr_Month = datetime.now().month
-        self.Min_Year = self.Curr_Year - 5
+        self.Min_Year = self.Curr_Year - 9
         self.Max_Year = self.Curr_Year + 1
 
     # ----------------------------------------------------------------------------------- #

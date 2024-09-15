@@ -191,10 +191,8 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Codes(self):
-        # self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_MNGR)
-        # self.Dummy = 0
-        # Top_View_Codes([])
-
+        # This launch is not possible through Top_Launcher because Top_Codes_View
+        # require a list at __init__()
         if self.Chat.Check_Name_Is_On_Participants_List(TOP_CODES_VIEW):
             self.Chat.Tx_Request([TOP_MNGR, [TOP_CODES_VIEW, TOP_GR_MNGR], CODE_TO_CLOSE, []])
             return

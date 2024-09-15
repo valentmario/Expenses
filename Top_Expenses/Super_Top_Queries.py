@@ -329,4 +329,29 @@ class Super_Top_Queries(tk.Toplevel):
             flVal = float(Value)
         return flVal
 
+
+    # -------------------------------------------------------------------------------------------------
+    def Get_Credit_Debit(self, Rec):
+        self.Dummy = 0
+        Credit = self.Convert_To_Float(Rec[2])
+        Debit  = self.Convert_To_Float(Rec[3])
+        return [Credit, Debit]
+
+    # ------------------------------------------------------------------------------------------------------------
+    # Rec Query_View_List    : Date    TR_Desc   Accred    Addeb
+    # return                  [fl, fl str, str]
+    def Credit_Debit_Setup(self, Rec):
+        self.Dummy = 0
+        Credit     = Rec[iQuery_Accr]         # can be  float or '' or ' '
+        Debit      = Rec[iQuery_Addeb]
+
+        floatCredit = Convert_To_Float(Credit)
+        floatDebit  = Convert_To_Float(Debit)
+
+        strCredit   = Float_ToString_Setup(floatCredit)
+        strDebit    = Float_ToString_Setup(floatDebit)
+        CreditDebit_List = [floatCredit, floatDebit, strCredit, strDebit]
+        Rec_List         = [Rec[iQuery_Date], Rec[iQuery_Descr], strCredit, strDebit]
+        return [Rec_List, CreditDebit_List]
+
 # =================================================================================================================

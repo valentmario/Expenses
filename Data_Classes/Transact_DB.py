@@ -45,10 +45,6 @@ class Transact_Db(Xlsx_Manager):
         return OK
 
     # ---------------------------------------------------------------------------------------
-    # def Get_Transact_Table(self):
-    #     return self._Transact_Table
-
-    # ---------------------------------------------------------------------------------------
     #                      0      1       2       3       4       5        6      7
     # List_Transact_DB :  nRow  Conto  Contab  Valuta  TR_Desc  Accred   Addeb  TRcode
     # ---------------------------------------------------------------------------------------

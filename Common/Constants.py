@@ -297,6 +297,11 @@ iView_GRdesc    = 2
 iView_CAdesc    = 3
 iView_StrToSerc = 4
 
+iQuery_Date     = 0
+iQuery_Descr    = 1
+iQuery_Accr     = 2
+iQuery_Addeb    = 3
+
 # ----------------------  List of Controls  To Check XLS rows Data ------------------------------------------
 INTEGER = 'Integer'
 NOT_INT = 'String'

@@ -29,6 +29,9 @@ class Top_Queries(Super_Top_Queries):
         self.Tot_Frames_Setup()
 
         # ----------------------------------------------------------------
+        self.Frame_Average = TheFrame(self, xyToHide, 10, self.Click_OnTot)  # the frame for month average of expensess
+        self.Frame_Average_Setup()
+
         self.Frame_TotRows = TheFrame(self, xyToHide, 10, self.Click_OnTot)  # the frame for total number of rows
         self.TotRows_Frame_Setup()
 
@@ -43,7 +46,6 @@ class Top_Queries(Super_Top_Queries):
 
     # ------------------------------------------------------------------------------------------------
     def Trees_Update(self):
-        # self.Update_Sel_onTxt()
         self.Setup_Year_Conto_Month_Tot_Date()
         self.Show_Selections()
         self.Set_Geometry_Frames()
@@ -87,6 +89,16 @@ class Top_Queries(Super_Top_Queries):
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         for Frame in self.Frames_Tot_List:
             Frame.Tree_Setup(Form_List)
+
+    # --------------------------------------------------------------------------------------------------
+    def Frame_Average_Setup(self):
+        Nrows     = 1
+        nColToVis = 1
+        Headings  = ['#0', 'month  average  ']
+        Anchor    = ['c',  'e']
+        Width     = [ 0,    140]
+        Form_ListT = [Nrows, nColToVis, Headings, Anchor, Width]
+        self.Frame_Average.Tree_Setup(Form_ListT)
 
     # --------------------------------------------------------------------------------------------------
     def TotRows_Frame_Setup(self):
@@ -173,9 +185,10 @@ class Top_Queries(Super_Top_Queries):
         self.Frame2_Tot.Frame_PosXY(self.Widgtes_PosX[1], 910)
         self.Frame3_Tot.Frame_PosXY(self.Widgtes_PosX[2], 910)
 
+        self.Frame_Average.Frame_PosXY(self.Widgtes_PosX[3], 640)
         self.Frame_TotRows.Frame_PosXY(self.Widgtes_PosX[3], 710)
-        self.Frame_TotCred.Frame_PosXY(self.Widgtes_PosX[3],  780)
-        self.Frame_TotDebit.Frame_PosXY(self.Widgtes_PosX[3],   850)
+        self.Frame_TotCred.Frame_PosXY(self.Widgtes_PosX[3], 780)
+        self.Frame_TotDebit.Frame_PosXY(self.Widgtes_PosX[3],850)
 
     # -------------------------------------------------------------------------------------------------
     def Set_Frames_Title(self):
@@ -264,24 +277,29 @@ class Top_Queries(Super_Top_Queries):
         End3   = Month_Start + Total_Months_xTree * 3
         Init_End_Months  = [[Start1, End1], [Start2, End2], [Start3, End3]]
         self.Tot_CredDeb_xTree = [[0,   0], [0, 0], [0, 0]]
-        #                          Cred Deb
+        #                         Cred Deb
         self.Total_Rows = 0
         for index in range(0, self.nFrames):
             Frame     = self.Frames_List[index]
             Frame_Tot = self.Frames_Tot_List[index]
-            Frame_List  = []
+            Frame_List  = []  #
             Month_Start = Init_End_Months[index][0]
             Month_End   = Init_End_Months[index][1]
             for Ix_Month in range(Month_Start, Month_End):
                 for Rec in self.Transact_xMonth_List[Ix_Month]:
-                    Frame_List.append(Rec)
-                    Accr_Debits = self.Get_Credit_Debit(Rec)
-                    Credit      = Accr_Debits[0]
-                    Debit       = Accr_Debits[1]
-                    self.Tot_CredDeb_xTree[index][0] += Credit
-                    self.Tot_CredDeb_xTree[index][1] += Debit
+                    Rec_CredDeb_List = self.Credit_Debit_Setup(Rec)
+                    Frame_List.append(Rec_CredDeb_List[0])
+                    self.Tot_CredDeb_xTree[index][0] += Rec_CredDeb_List[1][0]
+                    self.Tot_CredDeb_xTree[index][1] += Rec_CredDeb_List[1][1]
+                    # Frame_List.append(Rec)
+                    # Accr_Debits = self.Get_Credit_Debit(Rec)
+                    # Credit      = Accr_Debits[0]
+                    # Debit       = Accr_Debits[1]
+                    # self.Tot_CredDeb_xTree[index][0] += Credit
+                    # self.Tot_CredDeb_xTree[index][1] += Debit
                     Tot_Rec += 1
                 pass
+
             Frame.Load_Row_Values(Frame_List)
             Credit = Float_ToString_Setup(self.Tot_CredDeb_xTree[index][0])
             Debit  = Float_ToString_Setup(self.Tot_CredDeb_xTree[index][1])
@@ -295,11 +313,13 @@ class Top_Queries(Super_Top_Queries):
         Total_Credit = self.Tot_CredDeb_xTree[0][0] + self.Tot_CredDeb_xTree[1][0] + self.Tot_CredDeb_xTree[2][0]
         Total_Debit  = self.Tot_CredDeb_xTree[0][1] + self.Tot_CredDeb_xTree[1][1] + self.Tot_CredDeb_xTree[2][1]
 
-        flTot_Credit = Float_ToString_Setup(Total_Credit)
-        flTot_Debit = Float_ToString_Setup(Total_Debit)
+        strAverage    = Float_ToString_Setup(Total_Debit/self.iTot_Months)
+        strTot_Credit = Float_ToString_Setup(Total_Credit)
+        strTot_Debit  = Float_ToString_Setup(Total_Debit)
 
-        self.Frame_TotCred.Load_Row_Values([[flTot_Credit]])
-        self.Frame_TotDebit.Load_Row_Values([[flTot_Debit]])
+        self.Frame_Average.Load_Row_Values([[strAverage]])
+        self.Frame_TotCred.Load_Row_Values([[strTot_Credit]])
+        self.Frame_TotDebit.Load_Row_Values([[strTot_Debit]])
         self.Frame_TotRows.Load_Row_Values([[self.Total_Rows, 2]])
 
     # selections for conto, month, total months, TR, GR, CA
@@ -310,12 +330,5 @@ class Top_Queries(Super_Top_Queries):
         self.OptMenu_TR.SetSelText(self.TRselected)
         self.OptMenu_GR.SetSelText(self.GRselected)
         self.OptMenu_CA.SetSelText(self.CAselected)
-
-    # -------------------------------------------------------------------------------------------------
-    def Get_Credit_Debit(self, Rec):
-        self.Dummy = 0
-        Credit = self.Convert_To_Float(Rec[2])
-        Debit  = self.Convert_To_Float(Rec[3])
-        return [Credit, Debit]
 
 # =====================================================================================================
