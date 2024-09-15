@@ -4,6 +4,7 @@
 # ----------------------------------------------------------------------------------------------- #
 
 from Chat import Ms_Chat
+from Top_Expenses.Top_Codes_View import Top_View_Codes
 from Widgt.Dialogs import File_Dialog
 from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
@@ -105,18 +106,18 @@ class Top_Settings(tk.Toplevel):
         self.Part_Combo = TheCombo(self, self.StrVar, 20, 292, 32, 16,
                                    self.ComboList, '', self.Clk_Combo)
         self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 20, 14, 'Select Codes DB file', self.Clk_Sel_Codes_DB)
-        self.Btn_View_Codes    = TheButton(self, Btn_Def_En, 170, 20, 14, 'View Codes DB',        self.Clk_View_Codes_DB)
+        self.Btn_View_Codes    = TheButton(self, Btn_Def_En, 170, 20, 14, 'Show Codes DB',        self.Clk_View_Codes_DB)
 
-        self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En,  20, 65, 14, 'Select xlsx File',     self.Clk_Sel_xlsx_File)
-        self.Btn_View_Xlsx     = TheButton(self, Btn_Def_En, 170, 65, 14, 'View Xlsx File',    self.Clk_View_xlsx_File)
+        self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En,  20, 65, 14, 'Select xlsx File',  self.Clk_Sel_xlsx_File)
+        self.Btn_View_Xlsx     = TheButton(self, Btn_Def_En, 170, 65, 14, 'Show Xlsx File',    self.Clk_View_xlsx_File)
 
         self.Btn_Tsel_Transact  = TheButton(self, Btn_Def_En,  20, 110, 14, 'Sel transact file',self.Clk_Sel_Transact)
-        self.Btn_ViewTransact   = TheButton(self, Btn_Def_En, 170, 110, 14, 'View transactions', self.Clk_View_Transact)
+        self.Btn_ViewTransact   = TheButton(self, Btn_Def_En, 170, 110, 14, 'Show transactions',self.Clk_View_Transact)
 
         self.Btn_Test_DBcodes  = TheButton(self, Btn_Def_En,  20, 155, 14, 'Check Codes DB',   self.Clk_Check_Codes_DB)
         self.Btn_View_Xlsx_Tot = TheButton(self, Btn_Def_En, 170, 155, 14, 'Summaries',        self.Clk_Summaries)
 
-        self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'View Txt List',     self.Clk_View_TxtList)
+        self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'Show Txt List',     self.Clk_View_TxtList)
         self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En, 170, 200, 14, 'Chat Participants', self.Clk_View_Chat)
 
         self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'for test',         self.Clk_NotUsed)
@@ -144,7 +145,9 @@ class Top_Settings(tk.Toplevel):
 
 
     def Clk_View_Codes_DB(self):
-        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_SETTINGS)
+        self.Dummy = 0
+        Top_View_Codes([])
+        # self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_SETTINGS)
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
@@ -156,6 +159,7 @@ class Top_Settings(tk.Toplevel):
     # ------------------------------------------------------------------------------------
     def Clk_Sel_Transact(self):
         self.Mod_Mngr.Sel_Transact(TOP_SETTINGS)
+        pass
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Transact(self):
@@ -230,19 +234,18 @@ class Top_Settings(tk.Toplevel):
         pass
 
     # ----------------------------------------------------------------------------------------
-    # def Clk_NotUsed(self):
-    #     # self.TestTxt.PosXY(190, 245)
-    #     self.TestTxt.PosX(190)
-    #     pass
-
-
     def Clk_NotUsed(self):
         self.Dummy = 0
-        File_Dlg    = File_Dialog(FileBox_Codes)
-        # File_Dlg.wait_window()
-        FileSelected = File_Dlg.FileName
-        print(FileSelected)
-        pass
+        # self.TestTxt.PosXY(190, 245)
+        self.TestTxt.PosX(190)
+
+        # File_Dlg    = File_Dialog(FileBox_Codes)
+        # # File_Dlg.wait_window()
+        # FileSelected = File_Dlg.FileName
+        # print(FileSelected)
+        # pass
+
+
     # ----------------------------------------------------------------------------------------
     @staticmethod
     def Clk_Matching():

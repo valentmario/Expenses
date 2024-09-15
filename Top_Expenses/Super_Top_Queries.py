@@ -1,6 +1,9 @@
 # ---------------------------------------------------------------------------------- #
 #               *****     Super_Top_Queries.py     *****                             #
-#      the parent of Top_Queries contains attributs and some methods                 #
+#      the parent of Top_Queries contains:                                           #
+#                                   all attributs excepted the frames                #
+#                                   all click methods                                #
+#       the method  Trees_Update is passed from Top_Queries as in __init__           #
 #                                                                                    #
 # ---------------------------------------------------------------------------------- #
 import os
@@ -9,16 +12,18 @@ from Chat import Ms_Chat
 from Common.Common_Functions import *
 from Data_Classes.Transact_DB import Data
 from Widgt.Widgets import *
-from Widgt.Dialogs import Message_Dlg
 from Top_Expenses.Modules_Manager import Modul_Mngr
+from Top_Expenses.Top_Codes_View import Top_View_Codes
 
 # =================================================================================================================
 class Super_Top_Queries(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, Trees_Update):
         super().__init__()
         self.Chat     = Ms_Chat
         self.Data     = Data
         self.Mod_Mngr = Modul_Mngr
+
+        self.Trees_Update = Trees_Update
         self.Dummy    = 0
         self.geometry('15x15+900+490')
         self.resizable(False, False)
@@ -40,7 +45,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.OneYear_Transact_List = []
 
         # This list is created on startup or at each Selection
-        # based on Conto Year (ValDate/AccDate) TR GR CA for each month
+        # based on Year, Conto (ValDate/AccDate) TR GR CA for each month
         self.Transact_xMonth_List = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
 
         # [Credits, Debits]  for   Frame1, Frame2, Frame3
@@ -55,7 +60,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Conto_Selected = ''
         self.Month_Selected = ''
         self.Tot_Selected   = ''
-        self.Date_Selected  = ''
+        self.Date_Selected  = VAL_DATE  # default is Valuta, can be changed through OptMenu_Date
         self.TRselected     = ''
         self.GRselected     = ''
         self.CAselected     = ''
@@ -65,25 +70,23 @@ class Super_Top_Queries(tk.Toplevel):
         self.GR_List     = []   # same per GR
         self.CA_List     = []   # same per CA
 
-        # ----------------------------------    C O M B O s -------------------------------------------------------
-        self.StrVar_Year  = tk.StringVar
-        self.OptMenu_Year = TheCombo(self, self.StrVar_Year, self.Widg_PosX, 20, 21, 16, ['', ''],
-                                      '', self.Clk_Year)
+        # ------------  Year Button   and     C O M B O s ---------------------------------------------------
+        self.Btn_Clk_Year = TheButton(self, Btn_Def_En, self.Widg_PosX, 20, 15, '', self.Clk_Year)
 
         self.StrVar_Conto  = tk.StringVar
-        self.OptMenu_Conto = TheCombo(self, self.StrVar_Conto, self.Widg_PosX, 55, 21, 16, Conto_List,
+        self.OptMenu_Conto = TheCombo(self, self.StrVar_Conto, self.Widg_PosX, 75, 15, 16, Conto_List,
                                       FIDEU, self.Clk_Conto)
 
         self.StrVar_Start  = tk.StringVar
-        self.OptMenu_Start = TheCombo(self, self.StrVar_Start, self.Widg_PosX, 90, 21, 16,  Month_Names,
+        self.OptMenu_Start = TheCombo(self, self.StrVar_Start, self.Widg_PosX, 110, 21, 16,  Month_Names,
                                       JAN, self.Clk_Month)
         self.StrVar_Tot   = tk.StringVar
-        self.OptMenu_Tot  = TheCombo(self,  self.StrVar_Tot,   self.Widg_PosX, 125, 21, 16,  self.Tot_List,
+        self.OptMenu_Tot  = TheCombo(self,  self.StrVar_Tot,   self.Widg_PosX, 145, 21, 16,  self.Tot_List,
                                      ONE_MONTH, self.Clk_Tot)
 
         self.StrVar_Date  = tk.StringVar
-        self.OptMenu_Date = TheCombo(self,  self.StrVar_Date,  self.Widg_PosX, 160, 21, 16,  self.Date_List,
-                                     VAL_DATE, self.Clk_Date)
+        self.OptMenu_Date = TheCombo(self,  self.StrVar_Date,  self.Widg_PosX, 180, 21, 16,  self.Date_List,
+                                     self.Date_Selected , self.Clk_Date)
 
         self.StrVar_TR  = tk.StringVar
         self.OptMenu_TR = TheCombo(self, self.StrVar_TR,      self.Widg_PosX, 240, 41, 16, self.TR_List,
@@ -96,14 +99,13 @@ class Super_Top_Queries(tk.Toplevel):
                                    'Category code', self.Clk_CAsel)
 
         # ---------------------------------    Buttons   ----------------------------------------------------------
-        self.Btn_DB_View = TheButton(self, Btn_Def_En, self.Widg_PosX, 370, 17, 'transactions view', self.Clk_ViewTransact)
-        self.Btn_xlsx_file = TheButton(self, Btn_Def_En, self.Widg_PosX, 410, 17, 'xlsx file select', self.Clk_SelXlsx)
-        self.Btn_xlsx_View = TheButton(self, Btn_Def_En, self.Widg_PosX, 450, 17, 'xlsx view', self.Clk_XlsxView)
+        self.Btn_DB_View = TheButton(self, Btn_Def_En, self.Widg_PosX,   370, 17, 'show transactions', self.Clk_ViewTransact)
+        self.Btn_xlsx_file = TheButton(self, Btn_Def_En, self.Widg_PosX, 410, 17, 'xlsx file select',  self.Clk_SelXlsx)
+        self.Btn_xlsx_View = TheButton(self, Btn_Def_En, self.Widg_PosX, 450, 17, 'show xlsx file',    self.Clk_XlsxView)
 
-        self.Btn_Summaries = TheButton(self, Btn_Def_En, self.Widg_PosX, 660, 17, ' Summaries ', self.Clk_Summaries)
         self.Btn_Exit = TheButton(self, Btn_Bol_En, self.Widg_PosX, 936, 15, '  E X I T  ', self.Call_OnClose)
+
         self.OneYear_Transact_List = self.Data.Get_Transact_Table()
-        self.Setup_Year_Conto_Month_Tot_Date()
         self.Set_TR_GR_CA_Sel_List()
         self.Setup_TR_GR_CA_OptManu()
         pass
@@ -113,35 +115,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.TRselected = ''
         self.GRselected = ''
         self.CAselected = ''
-
-    # -------------------------------------------------------------------------------------------------------------
-    def Create_Year_Transact_List(self):
-        self.OneYear_Transact_List = self.Data.Get_Transact_Table()
-        self.Transact_xMonth_List  = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
-        # Year  = self.Year_Selected
-        # Conto = self.Conto_Selected
-        # TRsel = self.TRselected
-        # GRsel = self.GRselected
-        # CAsel = self.CAselected
-
-    # -------------------------------------------------------------------------------------------------------------
-    def Setup_Year_Conto_Month_Tot_Date(self):
-        self.Years_List = self.Get_Transact_Year_List()
-        self.OptMenu_Year.SetValues(self.Years_List)               # List of existing Year Transactions
-
-        self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()   # list created on ModulesManager
-        self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
-        self.OptMenu_Year.SetSelText(str(self.Year_Selected))
-
-        Queries_Sel = self.Data.Get_Txt_Member(Ix_Query_List)
-        self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
-        self.Month_Selected = Queries_Sel[Ix_Query_Month]
-        self.Tot_Selected   = Queries_Sel[Ix_Query_TotMonths]
-        self.Date_Selected  = ACC_DATE
-        self.TRselected     = Queries_Sel[Ix_Query_TRsel]
-        self.GRselected     = Queries_Sel[Ix_Query_GRsel]
-        self.CAselected     = Queries_Sel[Ix_Query_CAsel]
-        self.View_Selections()
 
     # ------------------  Fill Combos List   and previous selections saved on  Files_Names  -----------------------
     def Set_TR_GR_CA_Sel_List(self):
@@ -179,7 +152,23 @@ class Super_Top_Queries(tk.Toplevel):
         self.CA_List = [ALLCA]
         for Item in CA_List:
             self.CA_List.append(Item)
-        pass
+
+        self.Setup_Year_Conto_Month_Tot_Date()
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Setup_Year_Conto_Month_Tot_Date(self):
+        self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()   # list created on ModulesManager
+        self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
+        Texto = '(sel) Year:   ' +str(self.Year_Selected)
+        self.Btn_Clk_Year.Set_Text(Texto)
+        Queries_Sel = self.Data.Get_Txt_Member(Ix_Query_List)
+        self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
+        self.Month_Selected = Queries_Sel[Ix_Query_Month]
+        self.Tot_Selected   = Queries_Sel[Ix_Query_TotMonths]
+
+        self.TRselected     = Queries_Sel[Ix_Query_TRsel]
+        self.GRselected     = Queries_Sel[Ix_Query_GRsel]
+        self.CAselected     = Queries_Sel[Ix_Query_CAsel]
 
     # -------------------------------------------------------------------------------------------------------------
     def Setup_TR_GR_CA_OptManu(self):
@@ -190,17 +179,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.OptMenu_TR.SetSelText(self.TRselected)
         self.OptMenu_GR.SetSelText(self.GRselected)
         self.OptMenu_CA.SetSelText(self.CAselected)
-
-    # -------------------------------------------------------------------------------------------------------------
-    def View_Selections(self):
-        self.OptMenu_Year.SetSelText(self.Year_Selected)
-        self.OptMenu_Conto.SetSelText(self.Conto_Selected)
-        self.OptMenu_Start.SetSelText(self.Month_Selected)
-        self.OptMenu_Tot.SetSelText(self.Tot_Selected)
-        self.OptMenu_TR.SetSelText(self.TRselected)
-        self.OptMenu_GR.SetSelText(self.GRselected)
-        self.OptMenu_CA.SetSelText(self.CAselected)
-        self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], UPDATE_FILES_NAME, []])
 
     # -------------------------------------------------------------------------------------------------------------
     def Update_Sel_onTxt(self):
@@ -245,42 +223,13 @@ class Super_Top_Queries(tk.Toplevel):
         self.Set_OnTxt_TR_GR_Sel()
 
     # -------------------------------------------------------------------------------------------------------------
-    #  this methods are defined here but are redifined on Top_Queries
-    #  this is almost the overloading on python
-
-    def Crate_List_Transact_perMonth(self):
-        pass
-
-    def Trees_Load(self):
-        pass
-
-    def Set_Frames_Title(self):
-        pass
-
-    def Set_Geometry_Frames(self):
-        pass
-
-    # -------------------------------------------------------------------------------------------------------------
-    def Clk_Year(self, Value):
-        Curr_Full_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
-        Dir_Name           = Get_Dir_Name(Curr_Full_Filename)
-        Full_Filename      = Dir_Name + Transact_ + str(Value) + '.db'
-        File_Exists = os.path.isfile(Full_Filename)
-        if not File_Exists:
-            Msg = Message_Dlg(MsgBox_Err, 'The requested Transactions Db\n dosesn"t exist')
-            Msg.wait_window()
-            return
-
-        self.Data.Update_Txt_File(Full_Filename, Ix_Transact_File)
-        self.Year_Selected  = Value
-        self.Month_Selected = JAN
-        self.Tot_Selected   = ONE_MONTH
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.Crate_List_Transact_perMonth()
-        self.Trees_Load()
-        self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], UPDATE_FILES_NAME, []])
-
+    def Clk_Year(self):
+        if not self.Mod_Mngr.Sel_Transact(TOP_QUERY):
+            pass
+        else:
+            Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
+            self.Year_Selected = Files_Ident[Ix_Transact_Year]
+            self.Trees_Update()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Conto(self, Value):
@@ -288,41 +237,27 @@ class Super_Top_Queries(tk.Toplevel):
         self.Month_Selected = Month_Names[0]
         self.Tot_Selected   = ONE_MONTH
         self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.Crate_List_Transact_perMonth()
-        self.Trees_Load()
+        self.Trees_Update()
 
     def Clk_Month(self, Value):
         self.Month_Selected = Value
-        self.Tot_Selected   = ONE_MONTH
         self.Tot_List       = Queries_Tot_Dict[self.Month_Selected]
         self.OptMenu_Tot.SetValues(self.Tot_List)
         self.OptMenu_Tot.SetSelText(self.Tot_Selected[0])
         self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.Set_Geometry_Frames()
-        self.Set_Frames_Title()
-        # self.Crate_List_Transact_perMonth()
-        self.Trees_Load()
+        self.Trees_Update()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Tot(self, Value):
         self.Tot_Selected = Value
         self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
         self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.Set_Geometry_Frames()
-        self.Set_Frames_Title()
-        # self.Crate_List_Transact_perMonth()
-        self.Trees_Load()
+        self.Trees_Update()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Date(self, Value):
         self.Date_Selected = Value
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.Crate_List_Transact_perMonth()
-        self.Trees_Load()
+        self.Trees_Update()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_TRsel(self, Value):
@@ -333,9 +268,9 @@ class Super_Top_Queries(tk.Toplevel):
             self.TRselected = ''
             self.GRselected = ''
             self.CAselected = ''
-            self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_QUERY)
+            Top_View_Codes(self.TR_List)
         self.Update_Sel_onTxt()
-        self.View_Selections()
+        self.Trees_Update()
 
     # ------------  see above  ------------------------
     # called from TOP_CODES_VIEW on click on tree
@@ -344,9 +279,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.GRselected = ''
         self.CAselected = ''
         self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.Crate_List_Transact_perMonth()
-        self.Trees_Load()
+        self.Trees_Update()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_GRsel(self, Value):
@@ -356,10 +289,8 @@ class Super_Top_Queries(tk.Toplevel):
             self.GRselected = Value
             self.TRselected = ''
             self.CAselected = ''
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.Crate_List_Transact_perMonth()
-        self.Trees_Load()
+            self.Update_Sel_onTxt()
+        self.Trees_Update()
 
     def Clk_CAsel(self, Value):
         if Value == ALLCA:
@@ -368,10 +299,8 @@ class Super_Top_Queries(tk.Toplevel):
             self.CAselected = Value
             self.TRselected = ''
             self.GRselected = ''
-        self.Update_Sel_onTxt()
-        self.View_Selections()
-        self.Crate_List_Transact_perMonth()
-        self.Trees_Load()
+            self.Update_Sel_onTxt()
+        self.Trees_Update()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_ViewTransact(self):

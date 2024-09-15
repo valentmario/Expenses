@@ -45,21 +45,22 @@ class Transact_Db(Xlsx_Manager):
         return OK
 
     # ---------------------------------------------------------------------------------------
-    def Get_Transact_Table(self):
-        return self._Transact_Table
+    # def Get_Transact_Table(self):
+    #     return self._Transact_Table
 
     # ---------------------------------------------------------------------------------------
-    def Get_Transact_ViewInsert_List(self):
-        ViewList = []
-        for Record in self._With_Code_Tree_List:
-            ViewRec = [Record[iWithCode_nRow], Record[iWithCode_Contab], Record[iWithCode_Valuta],
-                       Record[iWithCode_TR_Desc], Record[iWithCode_Accr], Record[iWithCode_Addeb],
-                       Record[iWithCode_TRcode]]
-            # ViewRec = [Record[iTransact_nRow], Record[iTransact_Contab], Record[iTransact_Valuta],
-            #            Record[iTransact_TRdesc], Record[iTransact_Accred], Record[iTransact_Addeb],
-            #            Record[iTransact_TRcode]]
-            ViewList.append(ViewRec)
-        return ViewList
+    #                      0      1       2       3       4       5        6      7
+    # List_Transact_DB :  nRow  Conto  Contab  Valuta  TR_Desc  Accred   Addeb  TRcode
+    # ---------------------------------------------------------------------------------------
+    def Get_Transact_Table(self):
+        Transact_Descr_OK = []
+        for Rec in self._Transact_Table:
+            RecList = list(Rec)
+            TRcode = RecList[iTransact_TRcode]
+            TRdesc = self.Get_TrDesc_FromCode(TRcode)
+            RecList[iTransact_TRdesc] = TRdesc
+            Transact_Descr_OK.append(RecList)
+        return Transact_Descr_OK
 
     # ---------------------------------------------------------------------------------------
     def Get_Len_Transact_Table(self):
@@ -95,7 +96,7 @@ class Transact_Db(Xlsx_Manager):
             return False
         return True
 
-    # --------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------
     def OpenClose_Transactions_Database(self, Open, Transact_Filename):
         if Open:
             try:
@@ -155,8 +156,8 @@ class Transact_Db(Xlsx_Manager):
         Connct.close()
 
     # --------------------------------------------------------------------------------------------------
-    #                               nRow Not to checked                                         only on WithCode
-    # be careful : Record to insert :  [nRow, Conto, Contab, Valuta, TRdesc, Accr, Addeb, TRcode,     '']
+    #                              nRow Not check                                   '' only on WithCode
+    # be careful : Record to insert :  [nRow, Conto, Contab, Valuta, TRdesc, Accr, Addeb, TRcode,   '']
     #              Record on Database: [nRow, Conto, Contab, Valuta, TRdesc, Accr, Addeb, TRcode]
     #              Id may be different
     # --------------------------------------------------------------------------------------------------
@@ -166,11 +167,9 @@ class Transact_Db(Xlsx_Manager):
             if ListOnDb[iTransact_Conto]       == RecToInsert[iTransact_Conto]  and \
                     ListOnDb[iTransact_Contab] == RecToInsert[iTransact_Contab] and \
                     ListOnDb[iTransact_Valuta] == RecToInsert[iTransact_Valuta] and \
-                    ListOnDb[iTransact_TRdesc] == RecToInsert[iTransact_TRdesc] and \
                     ListOnDb[iTransact_Accred] == RecToInsert[iTransact_Accred] and \
-                    ListOnDb[iTransact_Addeb]  == RecToInsert[iTransact_Addeb]  and \
                     ListOnDb[iTransact_Addeb]  == RecToInsert[iTransact_Addeb]:
-                        return [Transact_Rec[iTransact_nRow], Transact_Rec[iTransact_Conto],
+                        return [Transact_Rec[iTransact_nRow],   Transact_Rec[iTransact_Conto],
                                 Transact_Rec[iTransact_Contab], Transact_Rec[iTransact_Valuta],
                                 Transact_Rec[iTransact_TRdesc],
                                 Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb],

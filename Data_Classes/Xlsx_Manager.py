@@ -25,6 +25,9 @@ class Xlsx_Manager(Codes_db):
         self.Accr   = None
         self.Addeb  = None
         self.Des2   = None
+        #                  nRow Contab Valuta TR_Desc Accred Addeb TRcode
+        #                #   x    1       2      x       4     5     6
+        self.ItemToCheck = [99,   1,      2,    99,      4,    5,    6]
 
         #                                     A      B      C      D      E     F
         self._XLSX_Rows_From_Sheet  = []  # Contab Valuta Descr1 Accred Addeb Descr2
@@ -64,6 +67,43 @@ class Xlsx_Manager(Codes_db):
                 self._Xlsx_Conto = filename[0:5]
                 self._Xlsx_Year  = int(filename[6:10])
                 self._Xlsx_Month = int(filename[11:13])
+
+    # -------------------------------------------------------------------------------------------------
+    # The case of two identical records (Dates, value, Code etc.)
+    # (for example ATM withdrawals at the same day for the same values)
+    # Xlsx must be adjustad manually; i.e. for two 100€ Xlsx must be modified manually:
+    # in 99.99 and 100.1
+    # nRow    Contab    Valuta    TR_Desc   Accred   Addeb   TRcode
+    #   x        1         2         x         3       4        5
+    # -------------------------------------------------------------------------------------------------
+    def Check_For_Multiple_Record_OnWitCodeList(self, RecToCheck):
+        nFound = 0
+        for Rec in self._With_Code_Tree_List:
+            Index = -1
+            Found = True
+            for Item in Rec:
+                Index += 1
+                if Index == 6:
+                    break
+                indexToCheck = self.ItemToCheck[Index]
+                if indexToCheck == 99:
+                    pass
+                else:
+                    if Item == '' or Item == ' ':
+                        pass
+                    else:
+                        if Item != RecToCheck[indexToCheck]:
+                            Found = False
+            if Found:
+                nFound += 1
+        if nFound == 1:
+            return ''
+        else:
+            Mess = 'Row: '
+            for Item in RecToCheck:
+                Mess += str(Item) + '\n'
+            Mess += '\n\nfound in more records WitCode List\nAdjust records in Xlsx\nExit '
+            return Mess
 
     # -----------------------------------------------------------------------------------
     def Transact_Year_Setup(self, Action):
@@ -137,7 +177,6 @@ class Xlsx_Manager(Codes_db):
                 Row_With_Code.append(Row[iRow_Accr])         # Accred
                 Row_With_Code.append(Row[iRow_Addeb])        # Addeb
                 Row_With_Code.append(Rec_Found[iTR_TRcode])  # TRcode
-                Row_With_Code.append('  ')                   # Space
                 self._With_Code_Tree_List.append(Row_With_Code)
         return OK
 

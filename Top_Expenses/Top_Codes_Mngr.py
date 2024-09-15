@@ -8,6 +8,7 @@
 from Common.Common_Functions import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Top_Expenses.Super_Top_Codes_Mngr import Super_Top_Mngr
+from Top_Expenses.Top_Codes_View import Top_View_Codes
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Dialogs import Message_Dlg
@@ -22,6 +23,7 @@ class Top_Mngr(Super_Top_Mngr):
         super().__init__()
         self.Mod_Mngr = Modul_Mngr
 
+        self.Dummy      = 0
         self.Scroll_Txt = None
         # ----------------------   Frames   -------------------------------------------------------
         self.Frame_NoCodes = TheFrame(self, 10, 20, self.Clk_OnTree_NoCodes)
@@ -50,20 +52,22 @@ class Top_Mngr(Super_Top_Mngr):
         self.Txt_CAdesc      = TheText(self, Txt_DisBlak, 62, 816, 25, 1, 'Category')
 
         # ----------------------------------    B U T T O N S     ---------------------------------
-        self.BtnDel    = TheButton(self, Btn_Def_En,  286, 772, 18, 'Delete Last Record', self.Clk_Delete_Record)
-        self.BtnAddNew = TheButton(self, Btn_Def_En, 286, 815, 18, 'Add New Record',     self.Clk_Add_New_Record)
+        self.BtnSelCodes= TheButton(self, Btn_Def_En, 60, 860, 22, 'Select Codes DB ', self.Clk_Sel_Codes)
+        self.BtnView = TheButton(self, Btn_Def_En,    60, 900, 22, 'Show Transact Codes', self.Clk_View_Codes)
+        self.BtnSelDB  = TheButton(self, Btn_Def_En,  60, 940, 22, 'Groups Codes',     self.Clk_GR_Mngr)
+
+        self.BtnDel = TheButton(self, Btn_Def_En,    286, 772, 18, 'Delete Last Record', self.Clk_Delete_Record)
+        self.BtnAddNew = TheButton(self, Btn_Def_En, 286, 815, 18, 'Add New Record', self.Clk_Add_New_Record)
+        self.BtnSelXls = TheButton(self, Btn_Def_En, 286, 860, 18, 'Select Xlsx file', self.Clk_Sel_xlsx)
+        self.BtnView   = TheButton(self, Btn_Def_En, 286, 900, 18, 'Show Xlsx Rows',   self.Clk_View_Xlsx)
+        self.BtnSelDB  = TheButton(self, Btn_Def_En, 286, 940, 18, 'Check codes DB',   self.Clk_Ceck_Codes_DB)
 
         self.BtnUpdate = TheButton(self, Btn_Def_Dis, 474, 772, 17, 'Update Code', self.Clk_Update_Record)
 
-        self.BtnSelCodes= TheButton(self, Btn_Def_En, 60, 860, 22, 'Select Codes DB ', self.Clk_Sel_Codes)
-        self.BtnView = TheButton(self, Btn_Def_En,    60, 900, 22, 'View Transact Codes', self.Clk_View_Codes)
-        self.BtnSelDB  = TheButton(self, Btn_Def_En,  60, 940, 22, 'Groups Codes',     self.Clk_GR_Mngr)
-        self.BtnSelDB  = TheButton(self, Btn_Def_En, 286, 940, 18, 'Check codes DB',   self.Clk_Ceck_Codes_DB)
-
-        self.BtnSelXls = TheButton(self, Btn_Def_En, 286, 860, 18, 'Select Xlsx file', self.Clk_Sel_xlsx)
-        self.BtnView   = TheButton(self, Btn_Def_En, 286, 900, 18, 'View Xlsx Rows',   self.Clk_View_Xlsx)
-        self.BtnVWithC = TheButton(self, Btn_Def_En, 474, 860, 18, 'View with-hout codes', self.Clk_View_Rows)
-        self.BtnExit   = TheButton(self, Btn_Def_En,   474, 940, 18, 'E X I T ', self.Call_OnClose)
+        self.BtnVWithC = TheButton(self, Btn_Def_En,  474, 815, 18, 'Show with/hout codes', self.Clk_View_Rows)
+        self.BtnInsert = TheButton(self, Btn_Def_En,  474, 860, 17, 'Insert Transactions',  self.Clk_Insert)
+        self.BtnInsert = TheButton(self, Btn_Def_En,  474, 900, 17, 'Show Transactions',    self.Clk_ViewTransact)
+        self.BtnExit   = TheButton(self, Btn_Def_En,  474, 940, 18, 'E X I T ', self.Call_OnClose)
 
         self.Load_Trees()
         self.geometry(Top_Mngr_geometry)
@@ -127,30 +131,52 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Load_Trees(self):
+        #    nRow Contab Valuta  TRdesc  Accred Addeb TRcode
+        List_OK        = True
+        With_Code_List = self.Data.Get_WithCodeList()
+        for RecToCheck in With_Code_List:
+            Result = self.Data.Check_For_Multiple_Record_OnWitCodeList(RecToCheck)
+            if Result != '':
+                # self.TotTransact_ToBeInserted = 0
+                # self.TransactRecords_ToBeInserted = []
+                Dlg_Mess = Message_Dlg(MsgBox_Err, Result)
+                Dlg_Mess.wait_window()
+                List_OK = False
+
         Total = self.Data.Get_Total_Rows()
         XlsxFilename = Get_File_Name(self.Data.Get_Txt_Member(Ix_Xlsx_File))
+        Total_WthoutCode = Total[Ix_Tot_Without_Code]
+        Total_WithCode   = Total[Ix_Tot_WithCode]
+        if not List_OK:
+            Total_WthoutCode = 0
+            Total_WithCode   = 0
 
-        Title = "  " + XlsxFilename + " :      " + str(Total[Ix_Tot_Without_Code]) + "  Transactions without code  ...  "
+
+        Title = "  " + XlsxFilename + " :      " + str(Total_WthoutCode) + "  Transactions without code  ...  "
         Title += str(Total[Ix_Tot_WithCode])  + "  with code   "
         self.Frame_NoCodes.Frame_Title(Title)
 
-        Title = "   " + XlsxFilename + " :      " + str(Total[Ix_Tot_WithCode]) + "  Transactions with code  ...    "
+        Title = "   " + XlsxFilename + " :      " + str(Total_WithCode) + "  Transactions with code  ...    "
         Title += str(Total[Ix_Tot_Without_Code]) + "  whithout code   "
         self.Frame_WithCodes.Frame_Title(Title)
 
-        if Total[Ix_Tot_Without_Code] == 0:
+        if not List_OK:
             self.View_Without_Code = False
             self.Frame_WithCodes.Frame_View()
             self.Frame_NoCodes.Frame_Hide()
         else:
-            self.View_Without_Code = True
-            self.Frame_WithCodes.Frame_Hide()
-            self.Frame_NoCodes.Frame_View()
-
-        #    nRow Date  Descr
-        self.Frame_NoCodes.Load_Row_Values(self.Data.Get_WithoutCodeList())
-        #    nRow Contab Valuta  TRdesc  Accred Addeb TRcode
-        self.Frame_WithCodes.Load_Row_Values(self.Data.Get_WithCodeList())
+            if Total[Ix_Tot_Without_Code] == 0:
+                self.View_Without_Code = False
+                self.Frame_WithCodes.Frame_View()
+                self.Frame_NoCodes.Frame_Hide()
+            else:
+                self.View_Without_Code = True
+                self.Frame_WithCodes.Frame_Hide()
+                self.Frame_NoCodes.Frame_View()
+        if List_OK:
+            #    nRow Date  Descr
+            self.Frame_NoCodes.Load_Row_Values(self.Data.Get_WithoutCodeList())
+            self.Frame_WithCodes.Load_Row_Values(With_Code_List)
 
     # ---------------------------------------------------------------------------------------------
     def Frames_Refresh(self):
@@ -163,10 +189,17 @@ class Top_Mngr(Super_Top_Mngr):
             self.Frame_NoCodes.Frame_Hide()
             self.Frame_WithCodes.Frame_View()
 
-
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Codes(self):
-        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_MNGR)
+        # self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_MNGR)
+        # self.Dummy = 0
+        # Top_View_Codes([])
+
+        if self.Chat.Check_Name_Is_On_Participants_List(TOP_CODES_VIEW):
+            self.Chat.Tx_Request([TOP_MNGR, [TOP_CODES_VIEW, TOP_GR_MNGR], CODE_TO_CLOSE, []])
+            return
+        else:
+            Top_View_Codes([])
 
     # ---------------------------------------------------------------------------------------------
     def Clk_GR_Mngr(self):
@@ -196,6 +229,13 @@ class Top_Mngr(Super_Top_Mngr):
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
         self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_MNGR)
+
+    # --------------------------------------------------------------------------------------------
+    def Clk_Insert(self):
+        self.Mod_Mngr.Top_Launcher(TOP_INS, TOP_MNGR)
+
+    def Clk_ViewTransact(self):
+        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_MNGR)
 
     # ---------------------------------------------------------------------------------------------
     def Reqst_Clkd_On_TRcode(self, TRcode):

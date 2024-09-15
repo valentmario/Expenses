@@ -79,14 +79,15 @@ class Top_Insert(tk.Toplevel):
         self.Txt_Conto        = TheText(self, Txt_Disab, 465,  20, 13, 1, '')
 
         #  ------------------------------------  B U T T O N s  ---------------------------------------
-        TheButton(self, Btn_Def_En,  20, 900, 19, 'Select xlsx file',    self.Clk_Sel_Xlsx)
-        TheButton(self, Btn_Def_En,  20, 940, 19, 'View xlsx file',     self.Clk_View_Xlsx)
+        TheButton(self, Btn_Def_En,  20, 900, 19, 'Select xlsx file',   self.Clk_Sel_Xlsx)
+        TheButton(self, Btn_Def_En,  20, 940, 19, 'Show xlsx file',     self.Clk_View_Xlsx)
 
-        TheButton(self, Btn_Def_En, 220, 900, 19, 'Codes Manager', self.Clk_Codes_Mngr)
-        TheButton(self, Btn_Def_En, 220, 940, 19, 'View Transactions Db',   self.Clk_View_Transact)
+        TheButton(self, Btn_Def_En, 220, 900, 19, 'Codes Manager',       self.Clk_Codes_Mngr)
+        TheButton(self, Btn_Def_En, 220, 940, 19, 'Show Transactions Db',self.Clk_View_Transact)
 
         self.Ins_Btn = TheButton(self, Btn_Def_En, 420, 900, 17, 'Insert Transactions', self.Clk_Insert)
-        TheButton(self, Btn_Def_En, 420, 940, 17, '  E X I T  ', self.Call_OnClose)
+        TheButton(self, Btn_Def_En, 420, 940, 17, '  E X I T  ',
+                  self.Call_OnClose)
 
         # --------------------------  T R E E     Transactions to insert   ----------------------------
         self.Frame_Transact = TheFrame(self, 20, 60, self.Clk_Ontree_View)
@@ -293,39 +294,47 @@ class Top_Insert(tk.Toplevel):
     # (for example ATM withdrawals at the same day for the same values)
     # Xlsx must be adjustad manually; i.e. for two 100€ Xlsx must be modified manually:
     # in 99.99 and 100.1
+    # nRow    Contab    Valuta    TR_Desc   Accred   Addeb   TRcode
     # -------------------------------------------------------------------------------------------------
-    def Check_For_Multiple_Record_OnWitCodeList(self, RecToCheck):
-        nFound = 0
-        Rec    = None
-        for Rec in self.WithList:
-            if Rec == RecToCheck:
-                nFound += 1
-        if nFound == 1:
-            return False
-        else:
-            Message = 'Row: ' + str(Rec[iWithCode_nRow]) + \
-                      '\nfound in more records WitCode List\nAdjust records\nExit '
-            Dlg_Msg = Message_Dlg(MsgBox_Err, Message)
-            Dlg_Msg.wait_window()
-            return True
+    # def Check_For_Multiple_Record_OnWitCodeList(self, RecToCheck):
+    #     nFound = 0
+    #     Rec    = None
+    #     for Rec in self.WithList:
+    #         Index = 0
+    #         for Item in Rec:
+    #
+    #
+    #         if Rec == RecToCheck:
+    #             nFound += 1
+    #     if nFound == 1:
+    #         return False
+    #     else:
+    #         Message = 'Row: ' + str(Rec[iWithCode_nRow]) + \
+    #                   '\nfound in more records WitCode List\nAdjust records\nExit '
+    #         Dlg_Msg = Message_Dlg(MsgBox_Err, Message)
+    #         Dlg_Msg.wait_window()
+    #         return True
 
     # -------------------------------------------------------------------------------------------------
     def Create_RecordsList_ToBeInserted(self):
         self.WithList                     = self.Data.Get_WithCodeList()
         self.TransactRecords_ToBeInserted = []
         self.TotTransact_ToBeInserted     = 0
-        for RecWith in self.WithList:
-            if self.Check_For_Multiple_Record_OnWitCodeList(RecWith):
+        for RecToCheck in self.WithList:
+            Result = Data.Check_For_Multiple_Record_OnWitCodeList(RecToCheck)
+            if Result != '':
                 self.TotTransact_ToBeInserted = 0
                 self.TransactRecords_ToBeInserted = []
-                return False
+                Dlg_Mess = Message_Dlg(MsgBox_Err, Result)
+                Dlg_Mess.wait_window()
+                return Dlg_Mess
 
-            # On transactions database will be inserted record with
+            # On transactions database will be inserted records with
             # Year of Valuta  or Year of Contab == self.intYear
-            YYYYmmDDvaluta = Get_DMY_From_Date(RecWith[iWithCode_Valuta])
-            YYYYmmDDcontab = Get_DMY_From_Date(RecWith[iWithCode_Contab])
+            YYYYmmDDvaluta = Get_DMY_From_Date(RecToCheck[iWithCode_Valuta])
+            YYYYmmDDcontab = Get_DMY_From_Date(RecToCheck[iWithCode_Contab])
             if YYYYmmDDvaluta[2] == self.intYear or YYYYmmDDcontab[2] == self.intYear:
-                RecToInsert = self.Create_RecToInsert_From_RowWithCode(RecWith)
+                RecToInsert = self.Create_RecToInsert_From_RowWithCode(RecToCheck)
                 Result      = self.Data.Check_IfTransactRecord_InDatabase(RecToInsert)
                 if not Result:
                     self.TotTransact_ToBeInserted += 1

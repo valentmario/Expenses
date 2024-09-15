@@ -35,6 +35,7 @@ class Top_View_Transact(tk.Toplevel):
         # --------------------------   Create Treeview Frame   ------------------------------------
         self.Frame_Sheets_Rows = TheFrame(self, 20, 20, self.Clk_On_Sheets_Rows)
         self.Frame_Sheets_Rows_Setup()
+        self.Frame_Sheets_Rows_View()
         self.Frame_Sheets_Rows.Frame_View()
 
         TheButton(self, Btn_Def_En, 620, 950, 16, '  E X I T  ', self.Call_OnClose)
@@ -82,7 +83,7 @@ class Top_View_Transact(tk.Toplevel):
         Width    = [ 0,    60,    80,      80,       80,       200,           80,        80,        80     ]
         Form_List = [Nrow, Ncol, Headings, Anchor, Width]
         self.Frame_Sheets_Rows.Tree_Setup(Form_List)
-        self.Frame_Sheets_Rows_View()
+        # self.Frame_Sheets_Rows_View()
 
     def Frame_Sheets_Rows_View(self):
         TR_Name   = Get_File_Name(self.Data.Get_Txt_Member(Ix_Transact_File))

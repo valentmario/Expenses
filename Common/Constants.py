@@ -24,7 +24,7 @@ if DUAL_DISPLAY:
 else:
     Main_Wind_geometry     = '330x310+1580+1'
     Settings_geometry      = '330x390+1580+360'
-    Top_Mngr_geometry      = '660x1000+1200+1'
+    Top_Mngr_geometry      = '660x1000+1000+1'
     Top_View_geometry      = '840x1000+350+1'
     Top_GRcodes_geometry   = '830x1000+20+1'
     Top_Xlsx_View_geometry = '820x1000+10+1'
@@ -33,7 +33,6 @@ else:
     #                         one frame           two frames          three frames
     Top_Query_geometry     = ['630x1000+940+10', '1060x1000+510+1', '1490x1000+80+1']
 
-    Top_Balances_geometry  = ['600x900+340+1']
 # =========================================================== #
 #       CHAT for  echanging   DATA between classes            #
 # =========================================================== #

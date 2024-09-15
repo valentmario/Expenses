@@ -97,8 +97,6 @@ class Main_Window(tk.Tk):
     # -----------------------------------------------------------------------
     # def Tx_Request(self, Tx_Req_List):       # [Txr, [RecList], Request, [Values]]
     def Clk_Manage_Codes(self):
-        # self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, MAIN_WIND)
-        # self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, MAIN_WIND)
         self.Mod_Mngr.Top_Launcher(TOP_MNGR, MAIN_WIND)
 
     # ---------------------------------------------------------------------------------------------

@@ -1,4 +1,13 @@
-===========================================================================================
+*****************************************************************************************
+******************************   Very  Important   **************************************
+on Codes database only the following columns can be modified:                           *
+TRdesc  GRdesc  CAdesc   GRcode associated with TRcode   CAcode associetad With GRcode  *
+DO NOT CHANGE:                                                                          *
+*****************      TRcode  and  String to search       ******************************
+*****************************************************************************************
+
+
+=========================================================================================
 Data classes inheritance:
 Files_Names_Manager <-- Codes_db <-- Xlsx_Manager <-- Transact_Db
 
@@ -27,10 +36,7 @@ to avoid circularity DON'T import Chat, Widgets etc. on Data classes.
 The Common_Functions import only Constants so they can be imported everywhere
 
 
-
-
-
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 class Super_Top_Mngr(tk.Toplevel):
 
 class Top_Mngr(Super_Top_Mngr):
@@ -39,3 +45,30 @@ class Top_Mngr(Super_Top_Mngr):
     ** this is a way to cut a toplevel class in two files (272 rows + 372 rows)
 
 ==========================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

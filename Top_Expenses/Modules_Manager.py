@@ -88,6 +88,7 @@ class Modules_Manager:
             Msg = Message_Dlg(MsgBox_Info, 'Please select a file.xlsx')
             Msg.wait_window()
             if self.Sel_Xlsx(Origin):
+                self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
                 if self.Load_Xlsx(Origin):
                     return True
                 return False
@@ -103,11 +104,22 @@ class Modules_Manager:
         Full_Transact_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
         if (Full_Transact_Filename == UNKNOWN) or \
         not (self.Cek_Transactions_Name(Full_Transact_Filename)):
-            Msg = Message_Dlg(MsgBox_Info, 'The database dosn"t exist\nNew database must be created')
+            Msg = Message_Dlg(MsgBox_Ask, 'Database not found\nSelect an existing database')
             Msg.wait_window()
-            return False
+            Reply = Msg.data
+            if Reply == YES:
+                if self.Sel_Transact(Origin):
+                    self.Chat.Tx_Request(Origin, [MAIN_WIND], UPDATE_FILES_NAME, [])
+                    if self.Load_Transact(Origin):
+                        return True
+                    else:
+                        return False
+            else:
+                Msg = Message_Dlg(MsgBox_Info, 'new database must be created')
+                Msg.wait_window()
+                return False
         else:
-            # if LoadAnyway or self.Files_Loaded[Ix_Transact_Loaded] != LOADED:
+            #  LoadAnyway not self.Files_Loaded[Ix_Transact_Loaded] != LOADED:
                 if self.Load_Transact(Origin):
                     return True
                 else:

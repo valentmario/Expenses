@@ -66,23 +66,18 @@ class Codes_db(Files_Names_Manager):
                 return Rec[iTR_TRdesc]
         return -1
 
-    def Get_TrCode_FromDescr(self, Descr):
-        for Rec in self._TR_Codes_Table:
-            if Rec[iTR_TRdesc] == Descr:
-                return Rec[iTR_TRcode]
-        return -1
-
     def Get_TR_Codes_Full(self, Index):
         if Index == -1:
             return self._TR_Codes_Full
         else:
             return self._TR_Codes_Full[Index]
 
-    def Get_TR_Codes_Full_FromTRdescr(self, descr):
-        TrCode = self.Get_TrCode_FromDescr(descr)
-        if TrCode == -1:
-            return []
-        return self.Get_TR_Codes_Full(TrCode)
+    def Create_CodesTable_FromTR(self, TRlist):
+        List = []
+        for Rec in self.Tree_Codes_View_List:
+            if Rec[iView_TRdesc] in TRlist:
+                List.append(Rec)
+        return List
 
 
     def Get_GR_Codes_Table(self):
@@ -146,15 +141,15 @@ class Codes_db(Files_Names_Manager):
     #      private  _methods invoked only inside  the data classes  chain                    #
     # -------------------------------------------------------------------------------------- #
     def _Load_Codes_Tables(self):
-        self._TR_Codes_Table       = []  # TRCode GRcode   SPcode   TRdesc  StrToSear  FullDesc
-        self._GR_Codes_Table       = []  # GRcode GRdescr  CAcode
-        self._CA_Codes_Table       = []  # CAcode CAdescr
+        self._TR_Codes_Table  = []  # TRCode GRcode   SPcode   TRdesc  StrToSear  FullDesc
+        self._GR_Codes_Table  = []  # GRcode GRdescr  CAcode
+        self._CA_Codes_Table  = []  # CAcode CAdescr
 
         self.Tree_Codes_View_List         = []
         self.Tree_Codes_View_List_Ordered = []
 
-        self.GR_Codes_Ordered     = []
-        self._CA_Codes_Ordered     = []
+        self.GR_Codes_Ordered  = []
+        self._CA_Codes_Ordered = []
 
         try:
             sqlite3.connect(self._Codes_DB_Filename)
@@ -291,6 +286,7 @@ class Codes_db(Files_Names_Manager):
         except:
             Connect.close()
             return 'ERROR on Codes database:\for record INSERT'
+
     # --------------   update a codes record on data base  --------------------------------
     def Update_DB_TR_Codes(self, Record):
         Connect  = sqlite3.connect(self._Codes_DB_Filename)   # self.Files_Mngr.Codes_DB_Filename)
@@ -387,6 +383,8 @@ class Codes_db(Files_Names_Manager):
                                 CAdesc = CArec[iCA_CAdesc]
                                 break
         return [TRdesc, GRdesc, CAdesc]
+
+
     # ---------------------------------------------------------------------------------------------
     def _Find_StrToSearc_InFullDesc(self, Row):  # nRow Contab Valuta   Full_Desc ....
         Full_Desc   = Row[iRow_Descr1]

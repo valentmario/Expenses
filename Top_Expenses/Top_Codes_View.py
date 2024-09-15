@@ -5,7 +5,7 @@
 #
 import tkinter as tk
 from Top_Expenses.Modules_Manager import Modul_Mngr
-from Common.Constants import *
+from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data
 
@@ -16,7 +16,7 @@ from Widgt.Widgets import TheButton
 
 # ---------------------------------------------------------------------------------------
 class Top_View_Codes(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, Codes_List):
         super().__init__()
         self.Chat     = Ms_Chat
         self.Data     = Data
@@ -29,8 +29,15 @@ class Top_View_Codes(tk.Toplevel):
         self.title('*****     Transactions  Codes     ***** ')
         self.configure(background=BakGnd)
 
-        self.Dummy           = None
-        self.GRdesc          = ''
+        self.Dummy          = None
+        if Codes_List:
+            self.Codes_List = self.Data.Create_CodesTable_FromTR(Codes_List)
+        else:
+            self.Codes_List = self.Data.Tree_Codes_View_List
+
+        self.List_Len = len(self.Codes_List)
+        self.Codes_List_Ordr = self.Codes_List.copy()
+        self.Codes_List_Ordr = List_Order(self.Codes_List_Ordr, 1)
         self.Ordered         = True
 
         self.Keys_Rows_List  = []
@@ -44,10 +51,7 @@ class Top_View_Codes(tk.Toplevel):
         self.Frame_Codes = TheFrame(self,  10,  10, self.Clk_OnTree_Codes)
         self.Frame_Codes_Setup()
         self.Frame_Codes.Frame_View()
-        self.Frame_Codes.Load_Row_Values(self.Data.Tree_Codes_View_List_Ordered)
-
-        # ---------------------------------    T R E E   of  Keys    -----------------------------
-        self.Frame_Keys = TheFrame(self,  10,  10, self.Clk_OnTree_Codes)
+        self.Frame_Codes.Load_Row_Values(self.Codes_List_Ordr)
 
     # ---------------------------------------------------------------------------------------------
     def Call_OnClose(self):
@@ -91,8 +95,8 @@ class Top_View_Codes(tk.Toplevel):
 
     # ------------------------   T R E E   of  TRcodes  Setup       -------------------------------
     def Frame_Codes_Setup(self):
-        strTot_Cod = str(self.Data.Get_TR_Codes_Table_Len())
-        Title = '   ' + strTot_Cod + '   Transactions Codes   '
+        # strTot_Cod = str(self.Data.Get_TR_Codes_Table_Len())
+        Title = '   ' + str(self.List_Len) + '   Transactions Codes   '
         self.Frame_Codes.configure(text=Title)
         Nrows     = 43
         nColToVis = 5
@@ -112,11 +116,11 @@ class Top_View_Codes(tk.Toplevel):
         if self.Ordered:
             self.Ordered = False
             self.Btn_Order.Set_Text('per code')
-            self.Frame_Codes.Load_Row_Values(self.Data.Tree_Codes_View_List)
+            self.Frame_Codes.Load_Row_Values(self.Codes_List)
         else:
             self.Ordered = True
             self.Btn_Order.Set_Text('ordered')
-            self.Frame_Codes.Load_Row_Values(self.Data.Tree_Codes_View_List_Ordered)
+            self.Frame_Codes.Load_Row_Values(self.Codes_List_Ordr)
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_GRmngr(self):
