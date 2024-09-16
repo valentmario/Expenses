@@ -318,10 +318,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.Mod_Mngr.Sel_Xlsx()
 
     # -------------------------------------------------------------------------------------------------------------
-    def Clk_Summaries(self):
-        pass
-
-    # -------------------------------------------------------------------------------------------------------------
     def Convert_To_Float(self, Value):
         self.Dummy = 0
         flVal      = Value

@@ -28,6 +28,7 @@ else:
     Top_View_geometry      = '840x1000+350+1'
     Top_GRcodes_geometry   = '830x1000+20+1'
     Top_Xlsx_View_geometry = '820x1000+10+1'
+    Top_View_Mess_geometry = '450x470+600+10'
     Top_Insert_geometry    = '610x1000+1300+1'
     Top_TrView_geometry    = '800x1000+10+1'
     #                         one frame           two frames          three frames
@@ -52,7 +53,7 @@ TOP_XLSX_VIEW  = 'Xlsx Rows View  '      # Toplevel  xlsx File Viewer
 TOP_INS        = 'Top_Ins_Tansact '      # Toplevel Insert Transactions on DB
 TOP_VIEW_TRANSACT= 'Top View Transact'   # Topleveel view transactions
 TOP_QUERY      = 'Top_Queries     '      # Toplevel for Queries
-TOP_SUMMARIES  = 'Top Summaries   '      # Toplevel for Summaries
+TOP_VIEW_MESS  = 'Top show messages '    # Toplevel to shaw messages
 
 CEK_CODES      = 'Check codes DB     '   # Checkes to be maade before a Tolevel launch
 CEK_XLSX       = 'Check xlsx file    '
@@ -71,7 +72,7 @@ LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
                     [TOP_INS,           [CEK_CODES,  CEK_XLSX]],
                     [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TRANSACT]],
                     [TOP_QUERY,         [CEK_CODES,  CEK_TRANSACT]],
-                    [TOP_SUMMARIES,     []] ]
+                    [TOP_VIEW_MESS,     []] ]
 
 # Participants_List  [<class name>,  Name]
 Ix_TopClass = 0

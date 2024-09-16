@@ -8,6 +8,7 @@ from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Top_Expenses.Top_Xlsx_Rows_View import Top_XLSX_Rows_View
+from Top_Expenses.Top_View_Message import Top_View_Message
 from Data_Classes.Transact_DB import *
 
 # ================================================================================================
@@ -101,7 +102,7 @@ class Top_Settings(tk.Toplevel):
         self.ComboList = []
         self.StrVar     = tk.StringVar()
         self.ComboList  = [TOP_SETTINGS, TOP_MNGR, TOP_CODES_VIEW, TOP_VIEW_TRANSACT,
-                           TOP_GR_MNGR,  TOP_INS,  TOP_QUERY,      TOP_XLSX_VIEW, TOP_SUMMARIES]
+                           TOP_GR_MNGR,  TOP_INS,  TOP_QUERY,      TOP_XLSX_VIEW]
         self.Part_Combo = TheCombo(self, self.StrVar, 20, 292, 32, 16,
                                    self.ComboList, '', self.Clk_Combo)
         self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 20, 14, 'Select Codes DB file', self.Clk_Sel_Codes_DB)
@@ -114,7 +115,7 @@ class Top_Settings(tk.Toplevel):
         self.Btn_ViewTransact   = TheButton(self, Btn_Def_En, 170, 110, 14, 'Show transactions',self.Clk_View_Transact)
 
         self.Btn_Test_DBcodes  = TheButton(self, Btn_Def_En,  20, 155, 14, 'Check Codes DB',   self.Clk_Check_Codes_DB)
-        self.Btn_View_Xlsx_Tot = TheButton(self, Btn_Def_En, 170, 155, 14, 'Summaries',        self.Clk_Summaries)
+        self.Btn_View_Xlsx_Tot = TheButton(self, Btn_Def_En, 170, 155, 14, 'Show messages',    self.Clk_View_Msg)
 
         self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'Show Txt List',     self.Clk_View_TxtList)
         self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En, 170, 200, 14, 'Chat Participants', self.Clk_View_Chat)
@@ -144,7 +145,6 @@ class Top_Settings(tk.Toplevel):
         self.Mod_Mngr.Sel_Codes(TOP_SETTINGS)
         pass
 
-
     def Clk_View_Codes_DB(self):
         self.Dummy = 0
         Top_View_Codes([])
@@ -169,8 +169,10 @@ class Top_Settings(tk.Toplevel):
         self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_SETTINGS)
 
     # -----------------------------------------------------------------------------------
-    def Clk_Summaries(self):
-        self.Mod_Mngr.Top_Launcher(TOP_SUMMARIES, TOP_SETTINGS)
+    @classmethod
+    def Clk_View_Msg(cls):
+        Top_View_Message('IL MIO MESSAGGIO\n1\n2\n3\n4')
+        # self.Mod_Mngr.Top_Launcher(TOP_VIEW_MESS, TOP_SETTINGS)
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Chat(self):

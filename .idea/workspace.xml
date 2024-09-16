@@ -4,21 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Ready to use for years 2018...">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_8_24,_5_00 PM_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_9_8_24__5_00PM__Changes_.xml" beforeDir="false" />
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Next step to add &#10;Top_View_Mess">
+      <change afterPath="$PROJECT_DIR$/Top_Expenses/Top_View_Message.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/Common_Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Common_Functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Common/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Main_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main_Window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Modules_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Modules_Manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Insert.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Insert.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Queries.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Widgt/Dialogs.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgt/Dialogs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Summaries.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +38,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Python.Main_Window.executor": "Run",
+    "Python.Main_Window.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "last_opened_file_path": "/home/mario/bExpenses/aExp_",
@@ -451,7 +445,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726409676384</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="Next step to add &#10;Top_View_Mess">
+      <option name="closed" value="true" />
+      <created>1726503745392</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1726503745392</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -478,7 +480,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="workspace" />
     <MESSAGE value="Created parent for Top_queries to reduce lines on Top_Queries" />
     <MESSAGE value="Start to reduce Top_Qeries lines" />
     <MESSAGE value="Top_Queries is critical&#10;it needs coherence with&#10;Year Conto Month TotMonths" />
@@ -503,7 +504,8 @@
     <MESSAGE value="The record insert on db transactions seems work correctly" />
     <MESSAGE value="This version is very near to release" />
     <MESSAGE value="Ready to use for years 2018..." />
-    <option name="LAST_COMMIT_MESSAGE" value="Ready to use for years 2018..." />
+    <MESSAGE value="Next step to add &#10;Top_View_Mess" />
+    <option name="LAST_COMMIT_MESSAGE" value="Next step to add &#10;Top_View_Mess" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -594,11 +596,6 @@
           <option name="timeStamp" value="441" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>150</line>
-          <option name="timeStamp" value="570" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
           <line>226</line>
           <option name="timeStamp" value="591" />
@@ -669,26 +666,6 @@
           <option name="timeStamp" value="772" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>69</line>
-          <option name="timeStamp" value="773" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>159</line>
-          <option name="timeStamp" value="782" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>161</line>
-          <option name="timeStamp" value="783" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Xlsx_Rows_View.py</url>
-          <line>82</line>
-          <option name="timeStamp" value="785" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
           <line>182</line>
           <option name="timeStamp" value="791" />
@@ -704,9 +681,14 @@
           <option name="timeStamp" value="805" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_View_Message.py</url>
+          <line>15</line>
+          <option name="timeStamp" value="813" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>23</line>
-          <option name="timeStamp" value="806" />
+          <line>225</line>
+          <option name="timeStamp" value="814" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

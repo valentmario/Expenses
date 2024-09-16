@@ -28,7 +28,7 @@ from Top_Expenses.Top_Xlsx_Rows_View import Top_XLSX_Rows_View
 from Top_Expenses.Top_Insert import Top_Insert
 from Top_Expenses.Top_View_Transactions import Top_View_Transact
 from Top_Expenses.Top_Queries import Top_Queries
-from Top_Expenses.Top_Summaries import Top_Summaries
+from Top_Expenses.Top_View_Message import Top_View_Message
 
 # -------------------------------------------------------------------------------------------------
 class Main_Window(tk.Tk):
@@ -172,7 +172,7 @@ class Main_Window(tk.Tk):
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_Insert,         TOP_INS])
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_View_Transact,  TOP_VIEW_TRANSACT])
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_Queries,        TOP_QUERY])
-        self.Mod_Mngr.Add_Toplevels_Id_List([Top_Summaries,      TOP_SUMMARIES])
+        self.Mod_Mngr.Add_Toplevels_Id_List([Top_View_Message,   TOP_VIEW_MESS])
         pass
 
 # ================================================================= #

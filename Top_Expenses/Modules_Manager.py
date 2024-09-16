@@ -27,6 +27,7 @@
 from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data
+from Top_Expenses.Top_View_Message import Top_View_Message
 from Widgt.Dialogs import Message_Dlg
 from Widgt.Dialogs import File_Dialog
 
@@ -191,9 +192,10 @@ class Modules_Manager:
             self.Chat.Tx_Request([Origin, [ANY], XLSX_UPDATED, []])
             return True
         else:
-            Msg = Message_Dlg(MsgBox_Err, Reply)
-            Msg.wait_window()
+            # Msg = Message_Dlg(MsgBox_Err, Reply)
+            # Msg.wait_window()
             # Launch Top_View_Message
+            Top_View_Message(Reply)
             return False
 
     # -------------------------------------------------------------------------
