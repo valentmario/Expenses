@@ -195,7 +195,8 @@ class Modules_Manager:
             # Msg = Message_Dlg(MsgBox_Err, Reply)
             # Msg.wait_window()
             # Launch Top_View_Message
-            Top_View_Message(Reply)
+            # Top_View_Message(Reply)
+            self.Top_Launcher(TOP_VIEW_MESS, TOP_SETTINGS, [Reply])
             return False
 
     # -------------------------------------------------------------------------
@@ -309,7 +310,10 @@ class Modules_Manager:
     # =========================================================================================== #
     # ----------------------     launch Top_level  after Init_ checkout     --------------------- #
     # =========================================================================================== #
-    def Top_Launcher(self, Name, Origin):
+    # Name   = Moudule Name to launch
+    # Origin = The requesting Module
+    # List   = Parameter for the Recipient
+    def Top_Launcher(self, Name, Origin, List):
         if self.Chat.Check_Name_Is_On_Participants_List(Name):
             self.Chat.Tx_Request([Origin, [Name], CODE_TO_CLOSE, []])
             return
@@ -317,7 +321,10 @@ class Modules_Manager:
             Result = self.Make_Checkout(Name, Origin)
             if Result == OK:
                 TopLevel = self.Get_TopLev(Name)
-                TopLevel()
+                if not List:
+                    TopLevel()
+                else:
+                    TopLevel(List)
     # ---------------------------------------------------------------------------------------------
     def Make_Checkout(self, Name, Origin):
         for Item in LAUNCH_CHECKOUT:

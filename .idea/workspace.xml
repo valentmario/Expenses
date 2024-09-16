@@ -4,15 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Next step to add &#10;Top_View_Mess">
-      <change afterPath="$PROJECT_DIR$/Top_Expenses/Top_View_Message.py" afterDir="false" />
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Top_View_Mess is added now modify Modules_Manager with a second parameter for a list to pass to the &#10;Toplevel">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main_Window.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Modules_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Modules_Manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Insert.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Insert.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Summaries.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_View_Message.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_View_Message.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,14 +62,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725472318728</updated>
-    </task>
-    <task id="LOCAL-00001" summary="first commit">
-      <option name="closed" value="true" />
-      <created>1725472778006</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1725472778006</updated>
     </task>
     <task id="LOCAL-00002" summary="added aDocuments">
       <option name="closed" value="true" />
@@ -453,7 +447,15 @@
       <option name="project" value="LOCAL" />
       <updated>1726503745392</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="Top_View_Mess is added now modify Modules_Manager with a second parameter for a list to pass to the &#10;Toplevel">
+      <option name="closed" value="true" />
+      <created>1726511117087</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1726511117088</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -480,7 +482,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Created parent for Top_queries to reduce lines on Top_Queries" />
     <MESSAGE value="Start to reduce Top_Qeries lines" />
     <MESSAGE value="Top_Queries is critical&#10;it needs coherence with&#10;Year Conto Month TotMonths" />
     <MESSAGE value="Selections on queries are OK" />
@@ -505,7 +506,8 @@
     <MESSAGE value="This version is very near to release" />
     <MESSAGE value="Ready to use for years 2018..." />
     <MESSAGE value="Next step to add &#10;Top_View_Mess" />
-    <option name="LAST_COMMIT_MESSAGE" value="Next step to add &#10;Top_View_Mess" />
+    <MESSAGE value="Top_View_Mess is added now modify Modules_Manager with a second parameter for a list to pass to the &#10;Toplevel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Top_View_Mess is added now modify Modules_Manager with a second parameter for a list to pass to the &#10;Toplevel" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -517,7 +519,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>256</line>
+          <line>255</line>
           <option name="timeStamp" value="149" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -534,16 +536,6 @@
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py</url>
           <line>177</line>
           <option name="timeStamp" value="206" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>226</line>
-          <option name="timeStamp" value="221" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>225</line>
-          <option name="timeStamp" value="222" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
@@ -564,21 +556,6 @@
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>
           <line>240</line>
           <option name="timeStamp" value="264" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>248</line>
-          <option name="timeStamp" value="284" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>247</line>
-          <option name="timeStamp" value="286" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>250</line>
-          <option name="timeStamp" value="290" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>
@@ -674,16 +651,6 @@
           <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
           <line>399</line>
           <option name="timeStamp" value="803" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py</url>
-          <line>20</line>
-          <option name="timeStamp" value="805" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_View_Message.py</url>
-          <line>15</line>
-          <option name="timeStamp" value="813" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>

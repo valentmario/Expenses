@@ -370,15 +370,15 @@ class Top_Insert(tk.Toplevel):
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Codes_Mngr(self):
-        self.Mod_Mngr.Top_Launcher(TOP_MNGR, TOP_INS)
+        self.Mod_Mngr.Top_Launcher(TOP_MNGR, TOP_INS, [])
 
     # -------------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_INS)
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_INS, [])
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Transact(self):
-        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_INS)
+        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_INS, [])
 
     # -------------------------------------------------------------------------------------------------
     def Test_If_Year_Month_OK(self, selected_Year, selected_nMonth):

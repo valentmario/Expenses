@@ -92,19 +92,19 @@ class Main_Window(tk.Tk):
 
     # -----------------------------------------------------------------------------------
     def Clk_Settings(self):
-        self.Mod_Mngr.Top_Launcher(TOP_SETTINGS, MAIN_WIND)
+        self.Mod_Mngr.Top_Launcher(TOP_SETTINGS, MAIN_WIND, [])
 
     # -----------------------------------------------------------------------
     # def Tx_Request(self, Tx_Req_List):       # [Txr, [RecList], Request, [Values]]
     def Clk_Manage_Codes(self):
-        self.Mod_Mngr.Top_Launcher(TOP_MNGR, MAIN_WIND)
+        self.Mod_Mngr.Top_Launcher(TOP_MNGR, MAIN_WIND, [])
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Insert(self):
-        self.Mod_Mngr.Top_Launcher(TOP_INS, MAIN_WIND)
+        self.Mod_Mngr.Top_Launcher(TOP_INS, MAIN_WIND, [])
 
     def Clk_Queries(self):
-        self.Mod_Mngr.Top_Launcher(TOP_QUERY, MAIN_WIND)
+        self.Mod_Mngr.Top_Launcher(TOP_QUERY, MAIN_WIND, [])
 
     # -----------------------------------------------------------------------------------
     def Set_Files_Names_Text(self):     # Set text for Files Names and selections
@@ -160,7 +160,7 @@ class Main_Window(tk.Tk):
     def Top_Level_Start(self):
         Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
         for Item in Top_List:
-            self.Mod_Mngr.Top_Launcher(Item, MAIN_WIND)
+            self.Mod_Mngr.Top_Launcher(Item, MAIN_WIND, [])
             pass
 
     def Top_Level_Id_Create_List(self):

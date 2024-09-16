@@ -3,6 +3,8 @@
 # ================================================================================= #
 
 import tkinter as tk
+from mailbox import Message
+
 from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data
@@ -14,7 +16,7 @@ from Widgt.Widgets import TheTextPoints
 
 
 class Top_View_Message(tk.Toplevel):
-    def __init__(self, Message):
+    def __init__(self, List):
         super().__init__()
         self.Chat = Ms_Chat
         # self.Data = Data
@@ -27,9 +29,10 @@ class Top_View_Message(tk.Toplevel):
         self.geometry(Top_View_Mess_geometry)
         self.title('***   Show  message   *** ')
         self.configure(background=BakGnd)
-
-        self.Txt1 = TheTextPoints(self, Txt_Disab,  20, 20, 50, 20, Message, 11)
-        # self.Txt2 = TheTextPoints(self, Txt_Disab, 310, 860, 60, 4, '', 11)
+        Messg = List[0]
+        if len(List) > 1:
+            pass
+        self.Txt1 = TheTextPoints(self, Txt_Disab,  20, 20, 50, 20, Messg, 11)
         TheButton(self, Btn_Def_En, 270, 410, 16, 'E X I T ', self.Call_OnClose)
 
     # ----------------------------------------------------------------------------- #
@@ -38,8 +41,9 @@ class Top_View_Message(tk.Toplevel):
         self.destroy()
 
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
-        Print_Received_Message(Transmitter_Name, MAIN_WIND, Request_Code, Values_List)
-        if Request_Code == CODE_TO_CLOSE:
-            self.Call_OnClose()
+        pass
+        # Print_Received_Message(Transmitter_Name, MAIN_WIND, Request_Code, Values_List)
+        # if Request_Code == CODE_TO_CLOSE:
+        #     self.Call_OnClose()
         # elif Request_Code == SOMETHING:
         #   pass

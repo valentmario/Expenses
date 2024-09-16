@@ -400,16 +400,13 @@ class Codes_db(Files_Names_Manager):
             return [NOK, []]
         else:
             print(Row)
-            ErrMsg = ('In Xlsx file for:\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
-            ErrMsg += '\n' + Row[iRow_Descr2] + '\n\nFound:\n'
+            ErrMsg = ('In Xlsx file on:\n\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
+            ErrMsg += '\nDescription:\n' + Row[iRow_Descr2] + '\n\nFound:\n'
             for Rec in Found_List:
                 #print(Rec)
                 strCode = str(Rec[iTR_TRcode])
                 Texto = 'Code: ' + strCode + ' Descr: ' + Rec[iTR_TRdesc] + '\n'  + 'string for search: ' + Rec[iTR_TRserc] + '\n\n' #  strCode + '  Descr: ' + Rec[iTR_TRdesc] + '\nFor search: ' + Rec[iTR_TRserc] + '\n' )
                 ErrMsg += Texto
                 pass
-
-            #print(ErrMsg)
-
             return [NOK, ErrMsg]
 # ==============================================================================================================

@@ -148,7 +148,7 @@ class Top_Settings(tk.Toplevel):
     def Clk_View_Codes_DB(self):
         self.Dummy = 0
         Top_View_Codes([])
-        # self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_SETTINGS)
+        # self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_SETTINGS, [])
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
@@ -166,13 +166,13 @@ class Top_Settings(tk.Toplevel):
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Transact(self):
-        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_SETTINGS)
+        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_SETTINGS, [])
 
     # -----------------------------------------------------------------------------------
     @classmethod
     def Clk_View_Msg(cls):
-        Top_View_Message('IL MIO MESSAGGIO\n1\n2\n3\n4')
-        # self.Mod_Mngr.Top_Launcher(TOP_VIEW_MESS, TOP_SETTINGS)
+        Top_View_Message(['IL MIO MESSAGGIO\n1\n2\n3\n4'])
+        # self.Mod_Mngr.Top_Launcher(TOP_VIEW_MESS, TOP_SETTINGS, [])
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Chat(self):
@@ -243,7 +243,6 @@ class Top_Settings(tk.Toplevel):
         self.Dummy = 0
         # self.TestTxt.PosXY(190, 245)
         self.TestTxt.PosX(190)
-
         # File_Dlg    = File_Dialog(FileBox_Codes)
         # # File_Dlg.wait_window()
         # FileSelected = File_Dlg.FileName

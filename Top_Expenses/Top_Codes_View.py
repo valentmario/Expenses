@@ -125,10 +125,10 @@ class Top_View_Codes(tk.Toplevel):
     # ---------------------------------------------------------------------------------------------
     def Clk_View_GRmngr(self):
         self.Dummy = 0
-        self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_CODES_VIEW)
+        self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_CODES_VIEW, [])
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx_File(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW,TOP_CODES_VIEW)
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW,TOP_CODES_VIEW, [])
 
 # *************************************************************************************************

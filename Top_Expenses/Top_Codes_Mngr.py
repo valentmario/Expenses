@@ -198,7 +198,7 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_GR_Mngr(self):
-        self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_MNGR)
+        self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_MNGR, [])
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Rows(self):
@@ -223,14 +223,14 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_MNGR)
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_MNGR, [])
 
     # --------------------------------------------------------------------------------------------
     def Clk_Insert(self):
-        self.Mod_Mngr.Top_Launcher(TOP_INS, TOP_MNGR)
+        self.Mod_Mngr.Top_Launcher(TOP_INS, TOP_MNGR, [])
 
     def Clk_ViewTransact(self):
-        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_MNGR)
+        self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_MNGR, [])
 
     # ---------------------------------------------------------------------------------------------
     def Reqst_Clkd_On_TRcode(self, TRcode):
