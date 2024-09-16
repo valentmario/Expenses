@@ -154,22 +154,35 @@ def TestForSign(Sign, FoundNotZ):
 def Convert_To_Float(Value):
     flVal      = Value
     Type = type(Value)
-    if Type is str or Type is None:
-        return 0.00
-    if type(Value) is int:
-        flVal = float(Value)
-    return flVal
+    if Type is float:
+        return Value
+    if Type is int:
+        return float(Value)
+    return 0.00
+
+    # flVal      = Value
+    # Type = type(Value)
+    # if Type is str or Type is None:
+    #     return 0.00
+    # if type(Value) is int:
+    #     flVal = float(Value)
+    # return flVal
 
 # ---------------------------------------------------------------------------------------
-def Float_ToString_Setup(Value):
+def Float_ToString_Setup(Val):
     Digit_List = []
     strValue = ''
-    if Value == '' or Value == ' ' or Value == 0.0:
+    if Val == '' or Val == ' ' or Val == 0.0:
         return ' '
+    Value = round(Val)
+    AbsValue = abs(Value)
+    if AbsValue < 15.0 or AbsValue > 10000.0:
+        print(Value)
+
     mySign = False
     flPositValue = Value
-    if type(Value) is not float:
-        return
+    # if type(Value) is not float:
+    #     return
 
     if Value < 0:
         mySign = True
@@ -200,9 +213,10 @@ def Float_ToString_Setup(Value):
         if CurrChar == '.':
             if FoundNotZ:
                 strValCompact += '.'
-        elif CurrChar == ',':
-            strValCompact += ','
-            FoundNotZ += 1
+        elif CurrChar == ',':  # <<<<<<<<<<<<<<<<<<<<<<
+            break
+            # strValCompact += ','
+            # FoundNotZ += 1
         elif iChar == 9:
             if CurrChar != '0':
                 FoundNotZ += 1
@@ -226,6 +240,77 @@ def Float_ToString_Setup(Value):
                 else:
                     strValCompact += ' '
     return strValCompact
+
+    # Digit_List = []
+    # strValue = ''
+    # if Val == '' or Val == ' ' or Val == 0.0:
+    #     return ' '
+    # Value = round(Val)
+    # AbsValue = abs(Value)
+    # if AbsValue < 15.0 or AbsValue > 10000.0:
+    #     print(Value)
+    #
+    # mySign = False
+    # flPositValue = Value
+    # # if type(Value) is not float:
+    # #     return
+    #
+    # if Value < 0:
+    #     mySign = True
+    #     flPositValue = -Value
+    # Intx100_Value = int((flPositValue + 0.005) *100.0)     # Truncated at 2 decimal
+    #
+    # if Intx100_Value >= 10000000000:
+    #     Intx100_Value = 9999999999
+    # #         10.000.000,00
+    # Divisor = 1000000000
+    # for iDigit in range(0,10):
+    #     Significant = int(Intx100_Value / Divisor)
+    #     Digit_List.append(Significant)
+    #     Intx100_Value = Intx100_Value - Significant*Divisor
+    #     Divisor = int(Divisor/10)
+    #
+    # for iDigit in range(0,10):          # create 00.000.000,00
+    #     strValue += str(Digit_List[iDigit])
+    #     if iDigit == 1 or iDigit == 4:
+    #         strValue += '.'
+    #     if iDigit == 7:
+    #         strValue += ','
+    #
+    # strValCompact = ''
+    # FoundNotZ = 0
+    # for iChar in range(0, 13):
+    #     CurrChar = strValue[iChar]
+    #     if CurrChar == '.':
+    #         if FoundNotZ:
+    #             strValCompact += '.'
+    #     elif CurrChar == ',':  # <<<<<<<<<<<<<<<<<<<<<<
+    #         break
+    #         # strValCompact += ','
+    #         # FoundNotZ += 1
+    #     elif iChar == 9:
+    #         if CurrChar != '0':
+    #             FoundNotZ += 1
+    #             strValCompact += TestForSign(mySign, FoundNotZ)
+    #             mySign = False
+    #             strValCompact += CurrChar
+    #         else:
+    #             FoundNotZ = 1
+    #             strValCompact += TestForSign(mySign, FoundNotZ)
+    #             mySign = False
+    #             strValCompact += '0'
+    #     else:
+    #         if CurrChar != '0':
+    #             FoundNotZ += 1
+    #             strValCompact += TestForSign(mySign, FoundNotZ)
+    #             mySign = False
+    #             strValCompact += CurrChar
+    #         else:
+    #             if FoundNotZ:
+    #                 strValCompact += CurrChar
+    #             else:
+    #                 strValCompact += ' '
+    # return strValCompact
 
 # -----------------------------------------------------------------------------
 def Get_DMY_From_Date(strDate):

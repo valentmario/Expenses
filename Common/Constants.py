@@ -88,6 +88,7 @@ CODE_CLEAR_FOCUS    = 'Clear Focus   '
 CODES_DB_UPDATED    = 'Codes database update'
 XLSX_UPDATED        = 'Xlsx Updated'
 TRANSACT_UPDATED    = 'Transactions updated'
+MULTI_MATCH         = 'Multple StrToSearc matching'
 
 CODE_CLIK_ONTREE    = 'Code_Clkd_on_Tree'             # For Testing ONLY
 
@@ -249,10 +250,10 @@ Ix_Transact_Year = 3
 
 FIDEU      = 'FIDEU'     # Fideuram Account    Must be 5 length
 FLASH      = 'FLASH'     # Flash Card          Must be 5 length
+FID_FLASH = 'FIDEU+FLASH'  # FIDEU/FLASH/POSTA   Doesn't matter
 POSTA      = 'POSTA'     # Poste Italiane      Must be 5 length
-FidFlhPost = 'FID+FSH+POSTA'  # FIDEU/FLASH/POSTA   Doesn't matter
 AMBRA      = 'AMBRA'     # Credit Card Ambra   Must be 5 length
-Conto_List = [FIDEU, FLASH, POSTA, FidFlhPost, AMBRA]
+Conto_List = [FIDEU, FLASH, FID_FLASH, POSTA, AMBRA]
 
 # -----------------------------------------------------------------------------------------------------------
 #                      0        1         2         3         4        5        6      7

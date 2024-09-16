@@ -82,7 +82,6 @@ class Top_Mngr(Super_Top_Mngr):
             self.Reqst_Clkd_On_TRcode(TRcode)
         elif Request_Code == CODES_DB_UPDATED or \
                 Request_Code == XLSX_UPDATED:   # Codes dat
-            # self.Data.Load_Xlsx_Lists()
             self.Mod_Mngr.Load_Xlsx()
             self.Load_Trees()
 
@@ -137,11 +136,10 @@ class Top_Mngr(Super_Top_Mngr):
         for RecToCheck in With_Code_List:
             Result = self.Data.Check_For_Multiple_Record_OnWitCodeList(RecToCheck)
             if Result != '':
-                # self.TotTransact_ToBeInserted = 0
-                # self.TransactRecords_ToBeInserted = []
                 Dlg_Mess = Message_Dlg(MsgBox_Err, Result)
                 Dlg_Mess.wait_window()
                 List_OK = False
+                break
 
         Total = self.Data.Get_Total_Rows()
         XlsxFilename = Get_File_Name(self.Data.Get_Txt_Member(Ix_Xlsx_File))
@@ -150,7 +148,6 @@ class Top_Mngr(Super_Top_Mngr):
         if not List_OK:
             Total_WthoutCode = 0
             Total_WithCode   = 0
-
 
         Title = "  " + XlsxFilename + " :      " + str(Total_WthoutCode) + "  Transactions without code  ...  "
         Title += str(Total[Ix_Tot_WithCode])  + "  with code   "

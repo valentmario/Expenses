@@ -128,11 +128,7 @@ class Codes_db(Files_Names_Manager):
             return 'Enter a correct string to search'
         elif TR_DescToCheck == 'Set Transaction Description':
             return 'Enter a correct Transaction description'
-        # elif not self.ChecK_StrToSearch(TR_strTo_Search, TR_FullDesc):
-        # elif StrForSearc_in_Fulldescr(TR_strTo_Search, TR_FullDesc):
-        #     return 'String To Search:\n' + TR_strTo_Search + '\ndoes not match with Full Desription:\n' + TR_FullDesc
-        Result = StrForSearc_in_Fulldescr(TR_strTo_Search, TR_FullDesc)
-        if not Result:
+        if not StrForSearc_in_Fulldescr(TR_strTo_Search, TR_FullDesc):
             return 'String To Search:\n' + TR_strTo_Search + '\ndoes not match with Full Desription:\n' + TR_FullDesc
         return OK
 
@@ -403,15 +399,17 @@ class Codes_db(Files_Names_Manager):
         elif nFound == 0:
             return [NOK, []]
         else:
-            strRec_Found = '\n'
+            print(Row)
+            ErrMsg = ('In Xlsx file for:\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
+            ErrMsg += '\n' + Row[iRow_Descr2] + '\n\nFound:\n'
             for Rec in Found_List:
-                strRec_Found += '\n' + Rec[iTR_TRserc] + '\n' + Rec[iTR_TRfullDes]
+                #print(Rec)
+                strCode = str(Rec[iTR_TRcode])
+                Texto = 'Code: ' + strCode + ' Descr: ' + Rec[iTR_TRdesc] + '\n'  + 'string for search: ' + Rec[iTR_TRserc] + '\n\n' #  strCode + '  Descr: ' + Rec[iTR_TRdesc] + '\nFor search: ' + Rec[iTR_TRserc] + '\n' )
+                ErrMsg += Texto
                 pass
-            ErrMsg  = 'ERROR multiple machting for FullDesc in Row:\n\n'
-            ErrMsg += str(Row[iRow_nRow]) + '  ' + str(Row[iRow_Contab]) + '  '
-            ErrMsg += str(Row[iRow_Valuta]) + '\n' + str(Row[iRow_Descr1])
-            ErrMsg += '\n\nWith Transaction codes:\n'
-            ErrMsg += str(Found_List[0][0]) + '   ' + str(Found_List[0][3]) +'\n'
-            ErrMsg += str(Found_List[1][0]) + '   ' + str(Found_List[1][3]) + '\n'
+
+            #print(ErrMsg)
+
             return [NOK, ErrMsg]
 # ==============================================================================================================

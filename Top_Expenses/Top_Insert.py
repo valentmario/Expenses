@@ -327,7 +327,7 @@ class Top_Insert(tk.Toplevel):
                 self.TransactRecords_ToBeInserted = []
                 Dlg_Mess = Message_Dlg(MsgBox_Err, Result)
                 Dlg_Mess.wait_window()
-                return Dlg_Mess
+                return True
 
             # On transactions database will be inserted records with
             # Year of Valuta  or Year of Contab == self.intYear

@@ -229,6 +229,9 @@ class Super_Top_Queries(tk.Toplevel):
         else:
             Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
             self.Year_Selected = Files_Ident[Ix_Transact_Year]
+            self.Mod_Mngr.Load_Transact(TOP_QUERY)
+            self.OneYear_Transact_List = self.Data.Get_Transact_Table()
+            self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], UPDATE_FILES_NAME, []])
             self.Trees_Update()
 
     # -------------------------------------------------------------------------------------------------------------
@@ -329,17 +332,10 @@ class Super_Top_Queries(tk.Toplevel):
             flVal = float(Value)
         return flVal
 
-
-    # -------------------------------------------------------------------------------------------------
-    def Get_Credit_Debit(self, Rec):
-        self.Dummy = 0
-        Credit = self.Convert_To_Float(Rec[2])
-        Debit  = self.Convert_To_Float(Rec[3])
-        return [Credit, Debit]
-
     # ------------------------------------------------------------------------------------------------------------
     # Rec Query_View_List    : Date    TR_Desc   Accred    Addeb
-    # return                  [fl, fl str, str]
+    # return                                     [fl,      fl,
+    #                                             str,     str]
     def Credit_Debit_Setup(self, Rec):
         self.Dummy = 0
         Credit     = Rec[iQuery_Accr]         # can be  float or '' or ' '

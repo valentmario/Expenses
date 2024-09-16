@@ -38,13 +38,12 @@ class Message_Dlg(tk.Toplevel):
             self.Texto += Char
             self.nCharCount_xLine += 1
             if self.nCharCount_xLine >= self.MaxChar_xLine:    # self.Nchar_xLine:
-                pass
-                # self.nCharCount_xLine = 0
-                # self.nLine += 1
+                self.nCharCount_xLine = 0
+                self.nLine += 1
             if Char == '\n':
                 self.nCharCount_xLine = 0
                 self.nLine           += 1
-                if self.nLine        > 40:
+                if self.nLine        > 80:
                     break
         self.nLine += 2
         VertFlot  = float(self.nLine) * 18.1

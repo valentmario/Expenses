@@ -188,11 +188,12 @@ class Modules_Manager:
         Reply = self.Data.Load_Xlsx_Lists()
         if Reply == OK:
             self.Files_Loaded[Ix_Xls_Loaded] = LOADED
-            self.Chat.Tx_Request([Origin, [ANY], CODES_DB_UPDATED, []])
+            self.Chat.Tx_Request([Origin, [ANY], XLSX_UPDATED, []])
             return True
         else:
             Msg = Message_Dlg(MsgBox_Err, Reply)
             Msg.wait_window()
+            # Launch Top_View_Message
             return False
 
     # -------------------------------------------------------------------------
@@ -329,21 +330,18 @@ class Modules_Manager:
                         if not self.Init_Codes(Origin):
                             return NOK
 
-                    if Check == CEK_XLSX:                           # CEK_XLSX
+                    elif Check == CEK_XLSX:                           # CEK_XLSX
                         if not self.Init_Xlsx(Origin):
                             return NOK
 
-                    if Check == CEK_XLSX_MNGR:                      # CEK_XLSX for Top_Mngr
+                    elif Check == CEK_XLSX_MNGR:                      # CEK_XLSX for Top_Mngr
                         # if not self.Init_Xlsx(Origin):
                         self.Init_Xlsx(Origin)
                         return OK
 
-                    if Check == CEK_TRANSACT:                       # CEK_TRANSACT
+                    elif Check == CEK_TRANSACT:                       # CEK_TRANSACT
                         if not self.Init_Transactions(Origin):
                             return NOK
-
-                    if Check == CEK_SUMMARIES:
-                        pass
                 return OK
 
     # ---------------------------------------------------------------------------------------------

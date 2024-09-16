@@ -2,13 +2,12 @@
 #                           ***   Top_Settings.py   ***                                           #
 #                        Settings  functions used essentially for developing                      #
 # ----------------------------------------------------------------------------------------------- #
-
 from Chat import Ms_Chat
 from Top_Expenses.Top_Codes_View import Top_View_Codes
-from Widgt.Dialogs import File_Dialog
 from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
+from Top_Expenses.Top_Xlsx_Rows_View import Top_XLSX_Rows_View
 from Data_Classes.Transact_DB import *
 
 # ================================================================================================
@@ -136,6 +135,8 @@ class Top_Settings(tk.Toplevel):
         Print_Received_Message(Transmitter_Name, MAIN_WIND, Request_Code, Values_List)
         if Request_Code == CODE_TO_CLOSE:
             self.Call_OnClose()
+        # elif Request_Code == SOMETHING:
+        #   pass
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_Codes_DB(self):
@@ -154,7 +155,9 @@ class Top_Settings(tk.Toplevel):
         self.Mod_Mngr.Sel_Xlsx(TOP_SETTINGS)
 
     def Clk_View_xlsx_File(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS)
+        # self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS)
+        self.Mod_Mngr.Load_Xlsx(TOP_SETTINGS)
+        Top_XLSX_Rows_View()
 
     # ------------------------------------------------------------------------------------
     def Clk_Sel_Transact(self):

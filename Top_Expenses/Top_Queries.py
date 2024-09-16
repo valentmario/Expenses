@@ -214,9 +214,14 @@ class Top_Queries(Super_Top_Queries):
                 pass
         else:
             return -1
-
         # Check for Conto
-        if self.Conto_Selected != Rec[iTransact_Conto]:
+        if self.Conto_Selected == FID_FLASH:
+            ContoInDB = Rec[iTransact_Conto]
+            if ContoInDB == FIDEU or ContoInDB == FLASH:
+                pass
+            else:
+                return -1
+        elif self.Conto_Selected != Rec[iTransact_Conto]:
             return -1
 
         # Check for TR
@@ -291,12 +296,6 @@ class Top_Queries(Super_Top_Queries):
                     Frame_List.append(Rec_CredDeb_List[0])
                     self.Tot_CredDeb_xTree[index][0] += Rec_CredDeb_List[1][0]
                     self.Tot_CredDeb_xTree[index][1] += Rec_CredDeb_List[1][1]
-                    # Frame_List.append(Rec)
-                    # Accr_Debits = self.Get_Credit_Debit(Rec)
-                    # Credit      = Accr_Debits[0]
-                    # Debit       = Accr_Debits[1]
-                    # self.Tot_CredDeb_xTree[index][0] += Credit
-                    # self.Tot_CredDeb_xTree[index][1] += Debit
                     Tot_Rec += 1
                 pass
 
@@ -308,7 +307,6 @@ class Top_Queries(Super_Top_Queries):
             Tot_Transact = str(LenList) + '   transactions '
             Tot_List = [[Tot_Transact, Credit, Debit]]
             Frame_Tot.Load_Row_Values(Tot_List)
-        PRINT('***  Tot of Trees records: '+str(Tot_Rec)+'  ***')
 
         Total_Credit = self.Tot_CredDeb_xTree[0][0] + self.Tot_CredDeb_xTree[1][0] + self.Tot_CredDeb_xTree[2][0]
         Total_Debit  = self.Tot_CredDeb_xTree[0][1] + self.Tot_CredDeb_xTree[1][1] + self.Tot_CredDeb_xTree[2][1]

@@ -28,6 +28,7 @@ class Xlsx_Manager(Codes_db):
         #                  nRow Contab Valuta TR_Desc Accred Addeb TRcode
         #                #   x    1       2      x       4     5     6
         self.ItemToCheck = [99,   1,      2,    99,      4,    5,    6]
+        self.strList     = ['Row.    ',  'Contab: ', 'Valuta: ', 'Descr:  ', 'Accr:   ', 'Addeb:  ', '']
 
         #                                     A      B      C      D      E     F
         self._XLSX_Rows_From_Sheet  = []  # Contab Valuta Descr1 Accred Addeb Descr2
@@ -36,7 +37,6 @@ class Xlsx_Manager(Codes_db):
         #
         self._With_Code_Tree_List   = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
         self._Wihtout_Code_Tree_List= []  # nRow Valuta Descr
-
 
     # -----------------------------------------------------------------------------------
 
@@ -83,8 +83,6 @@ class Xlsx_Manager(Codes_db):
             Found = True
             for Item in Rec:
                 Index += 1
-                if Index == 6:
-                    break
                 indexToCheck = self.ItemToCheck[Index]
                 if indexToCheck == 99:
                     pass
@@ -96,14 +94,18 @@ class Xlsx_Manager(Codes_db):
                             Found = False
             if Found:
                 nFound += 1
+
         if nFound == 1:
             return ''
         else:
-            Mess = 'Row: '
+            Messg = 'Found record:\n'
+            Index = -1
             for Item in RecToCheck:
-                Mess += str(Item) + '\n'
-            Mess += '\n\nfound in more records WitCode List\nAdjust records in Xlsx\nExit '
-            return Mess
+                Index += 1
+                Messg += self.strList[Index]
+                Messg += str(Item) + '\n'
+            Messg += '\n\nfound in more records WitCode List\nAdjust records in Xlsx\nExit '
+            return Messg
 
     # -----------------------------------------------------------------------------------
     def Transact_Year_Setup(self, Action):
@@ -229,7 +231,7 @@ class Xlsx_Manager(Codes_db):
                         myRow.append(Val)
                 self.XLSX_Rows_From_Sheet.append(myRow)          # Descripritions as in Sheet, Date is str
         if self._Tot_OK == 0:
-            return 'wny row with significant data'
+            return 'any row with significant data'
         if self._Xlsx_Conto == FLASH or self._Xlsx_Conto == AMBRA or self._Xlsx_Conto == POSTA:
             self._Adjust_Xlsx_Rows_ForFLASH()   # adjust rows as in FLASH or in AMBRA
         elif self._Xlsx_Conto == POSTA:
