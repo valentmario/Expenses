@@ -8,11 +8,22 @@ from Top_Expenses.Super_Top_Queries import Super_Top_Queries
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Tree_Widg import TheFrame
+"""
+    def __init__(self, Result, Param_List):
+        super().__init__()
+        self.Mod_Mngr = Modul_Mngr
+
+
+"""
+
 
 # ---------------------------------------------------------------------------------------------------------------------
 class Top_Queries(Super_Top_Queries):
-    def __init__(self):
+    def __init__(self, Result, Param_List):
         super().__init__(self.Trees_Update)
+
+        self.Result     = Result
+        self.Param_List = Param_List
 
         # --------------------------  Trees-Frames    for  Queries   --------------------------------------------------
         self.Frame1 = TheFrame(self, xyToHide, 10, self.Click_OnFrame)  # frames for transactions

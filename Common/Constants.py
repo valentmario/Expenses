@@ -54,22 +54,20 @@ TOP_INS        = 'Top_Ins_Tansact '      # Toplevel Insert Transactions on DB
 TOP_VIEW_TRANSACT= 'Top View Transact'   # Topleveel view transactions
 TOP_QUERY      = 'Top_Queries     '      # Toplevel for Queries
 TOP_VIEW_MESS  = 'Top show messages '    # Toplevel to shaw messages
+ANY            = 'All Modules     '
 
-CEK_CODES      = 'Check codes DB     '   # Checkes to be maade before a Tolevel launch
-CEK_XLSX       = 'Check xlsx file    '
-CEK_XLSX_MNGR  = 'Check xlsx for Top_Mngr'
+# Checkes to be maade before a Tolevel launch
+CEK_CODES      = 'Check codes DB     '
+CEK_XLSX_ROWS  = 'Check xlsx rows-list '
+CEK_XLSX_LIST  = 'Check xlsx lists   '
 CEK_TRANSACT   = 'Check transactions '
-CEK_SUMMARIES  = 'Check suumaries    '
-
-DIALOG         = 'Dialogs Widget  '      # Only for Transmitting
-ANY            = 'All Modules     '      # Any object
 
 LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
-                    [TOP_MNGR,          [CEK_CODES,  CEK_XLSX_MNGR]],
+                    [TOP_MNGR,          [CEK_CODES]],   # ,  CEK_XLSX_LIST]],
                     [TOP_CODES_VIEW,    [CEK_CODES]],
                     [TOP_GR_MNGR,       [CEK_CODES]],
-                    [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX]],
-                    [TOP_INS,           [CEK_CODES,  CEK_XLSX]],
+                    [TOP_XLSX_VIEW,     [CEK_CODES]],
+                    [TOP_INS,           [CEK_CODES,  CEK_XLSX_LIST]],
                     [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TRANSACT]],
                     [TOP_QUERY,         [CEK_CODES,  CEK_TRANSACT]],
                     [TOP_VIEW_MESS,     []] ]
@@ -80,18 +78,23 @@ Ix_TopName  = 1
 
 # Requests Code for Messages between classes
 CODE_TO_CLOSE        = 'Close window'
-CODE_SHOW_PARTIC_LIST= 'Show Participants List'       # Show Chat Participants List
+CODE_SHOW_PARTIC_LIST= 'Show Participants List'     # Show Chat Participants List
 
 UPDATE_FILES_NAME   = 'Update files names text'     # only for Main_Widow Set_Files_Names_Text()
 CODE_CLK_ON_TR_CODES= 'Clicked Row with TR Codes'   # Clkd on Codes_DB Record Values = [TRcode]
 CODE_CLIK_ON_XLSX   = 'Clkded On_Xlsx_Tree  '       # Clkd on Xlsx Row  Value = [nRow, Data_Valuta]
 CODE_CLEAR_FOCUS    = 'Clear Focus   '
 CODES_DB_UPDATED    = 'Codes database update'
-XLSX_UPDATED        = 'Xlsx Updated'
+XLSX_UPDATED        = 'Xlsx lllists created'
+XLSX_ROWS_LOADED    = 'Xlsx rows loaded'
 TRANSACT_UPDATED    = 'Transactions updated'
 MULTI_MATCH         = 'Multple StrToSearc matching'
 
-CODE_CLIK_ONTREE    = 'Code_Clkd_on_Tree'             # For Testing ONLY
+CODE_CLIK_ONTREE    = 'Code_Clkd_on_Tree'            # For Testing ONLY
+
+# Launch_List [OK-NOK, [parameters_List]
+iLaunch_Start       = 0     # Init  OK/NOK
+iLaunch_Param       = 1     # List of data for __init__() can be empty, String, ecc
 
 # =========================================================== #
 #             FILES  PARAMETERS                               #
@@ -136,10 +139,12 @@ Ix_Query_TRsel     = 3
 Ix_Query_GRsel     = 4
 Ix_Query_CAsel     = 5
 
-# Codes-DB   Xlsx  Transact loaded
-Ix_Codes_Loaded    = 0
-Ix_Xls_Loaded      = 1
-Ix_Transact_Loaded = 2
+# Used on Modules Mananager To Load Files only once
+# at startup or after a file selection
+Ix_Codes_Loaded     = 0
+Ix_Xlsx_Rows_Loaded = 1
+Ix_Xls_Lists_Loaded = 2
+Ix_Transact_Loaded  = 3
 
 # =============================================================
 #             WIDGETS  CONSTANTS                              =

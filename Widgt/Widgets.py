@@ -292,6 +292,12 @@ class TheButton(ttk.Button):
     def Btn_Disable(self):
         self.configure(state='disabled')
 
+    def Btn_Set_Status(self, Enable):
+        if Enable:
+            self.configure(state='normal')
+        else:
+            self.configure(state='disabled')
+
     def Place(self, toPlace):
         if not toPlace:
             self.place(x=xyToHide, y=xyToHide)

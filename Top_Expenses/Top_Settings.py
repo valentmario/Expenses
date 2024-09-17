@@ -6,11 +6,13 @@ from Chat import Ms_Chat
 from Top_Expenses.Top_Codes_View import Top_View_Codes
 from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
+from Widgt.Dialogs import File_Dialog
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Top_Expenses.Top_Xlsx_Rows_View import Top_XLSX_Rows_View
 from Top_Expenses.Top_View_Message import Top_View_Message
 from Data_Classes.Transact_DB import *
 
+# class Top_Settings(tk.Toplevel): see line 85
 # ================================================================================================
 class Top_String_Matching(tk.Toplevel):
     def __init__(self):
@@ -78,11 +80,9 @@ class Top_String_Matching(tk.Toplevel):
                 self.Matchings_List.append(['NONE', 'NONE'])
             self.Frame_Matchings.Load_Row_Values(self.Matchings_List)
 
-
-
 # =================================================================================================
 class Top_Settings(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, Result, Param_List):
         super().__init__()
         self.Chat     = Ms_Chat
         self.Data     = Data
@@ -95,9 +95,11 @@ class Top_Settings(tk.Toplevel):
         self.configure(background=BakGnd)
         self.title('*****     Settings     *****')
 
+        self.Result     = Result
+        self.Param_List = Param_List
         self.Dummy      = 0
         self.Files_List = []
-        self.Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
+        # self.Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
 
         self.ComboList = []
         self.StrVar     = tk.StringVar()
@@ -242,12 +244,12 @@ class Top_Settings(tk.Toplevel):
     def Clk_NotUsed(self):
         self.Dummy = 0
         # self.TestTxt.PosXY(190, 245)
-        self.TestTxt.PosX(190)
-        # File_Dlg    = File_Dialog(FileBox_Codes)
-        # # File_Dlg.wait_window()
-        # FileSelected = File_Dlg.FileName
-        # print(FileSelected)
-        # pass
+        # self.TestTxt.PosX(190)
+        File_Dlg    = File_Dialog(FileBox_Codes)
+        # File_Dlg.wait_window()
+        FileSelected = File_Dlg.FileName
+        print(FileSelected)
+        pass
 
 
     # ----------------------------------------------------------------------------------------

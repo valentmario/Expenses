@@ -15,11 +15,14 @@ from Widgt.Widgets import TheButton
 
 # ===================================================================================
 class Top_View_Transact(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, Result, Param_List):
         super().__init__()
         self.Chat = Ms_Chat
         self.Data = Data
         self.Mod_Mngr = Modul_Mngr
+
+        self.Result = Result
+        self.Param_List = Param_List
 
         self.Chat.Attach([self, TOP_VIEW_TRANSACT])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)

@@ -15,6 +15,10 @@ from Widgt.Widgets import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Top_Expenses.Top_Codes_View import Top_View_Codes
 
+"""
+        self.Result = Result
+        self.Param_List = Param_List
+"""
 # =================================================================================================================
 class Super_Top_Queries(tk.Toplevel):
     def __init__(self, Trees_Update):

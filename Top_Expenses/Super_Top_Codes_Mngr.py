@@ -28,11 +28,7 @@ class Super_Top_Mngr(tk.Toplevel):
         self.title('*****     Transactions  Codes  Manager     *****')
         self.configure(background=BakGnd)
 
-        self.Sim_TRdesc  = ''
-        self.Sim_TRserch = ''
-        self.Sim_GRcode  = 0
         self.Clicked_Mod_Code = 0  # 0=Off  1=Insert-Add  2=Update
-
         self.Txt_TR_Code = None
         self.GR_Code     = None
         self.CA_Code     = None

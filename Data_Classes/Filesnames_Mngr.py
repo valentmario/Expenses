@@ -30,6 +30,7 @@ class Files_Names_Manager:
         self.Sheet_Name          = UNKNOWN
         self._Work_Sheet         = None
         self._Transact_DB_Filename = UNKNOWN
+        self._Files_Loaded       = [False, False, False, False] # Codes_Db, Xlsx_Rows, Xlsx_Lists, Transact_Db
 
         self._Xlsx_Conto    = None  # or on selecting new file  FIDEU_2024_01.xlsx
         self._Xlsx_Year     = None  # they are  calculated on startup
@@ -40,6 +41,14 @@ class Files_Names_Manager:
         self.Curr_Month = datetime.now().month
         self.Min_Year = self.Curr_Year - 9
         self.Max_Year = self.Curr_Year + 1
+
+    # -------------------------------------------------------------------------------------
+    def Get_Files_Loaded_Stat(self, Index):
+        return self._Files_Loaded[Index]
+
+    def Set_Files_Names_Lodad(self, Index, Status):
+        self._Files_Loaded[Index] = Status
+        pass
 
     # ----------------------------------------------------------------------------------- #
     #            ----------------      public   methods   -----------------               #

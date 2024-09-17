@@ -2,7 +2,7 @@
 # *********************************************************************************************** #
 #                            ***   Main_Window.py   ***                                           #
 #      Init / Select  Codes Database                                                              #
-#      The Toplevels launch is made by Top_Launcher (that makes the initial controls              #
+#      The Top_Launcher launch a module after requested initialization                            #
 #        before launch i.e. verify Codes, Xlsx, Transactions etc.                                 #
 #      The filesnames Text box is updated at starting or from external request through Chat       #
 # *********************************************************************************************** #

@@ -119,9 +119,10 @@ class Xlsx_Manager(Codes_db):
                 filename = Get_File_Name(FullFilename)
                 self._Transact_Year  = int(filename[9:13])
 
-    # -----------------------------------------------------------------------------------------
+
+
+    # ---------------------   O L D  ---------------------------------
     def Load_Xlsx_Lists(self):
-        # self.Chat.Set_Start_Time()
         self._Tot_OK                 = 0
         self._XLSX_Rows_From_Sheet   = []  # nRow Contab Valuta  Descr1  Accred Addeb Descr2
         self.XLSX_Rows_Desc_Compact  = []
@@ -131,7 +132,7 @@ class Xlsx_Manager(Codes_db):
         Result = self._Get_XLS_Rows_From_Sheet()     # get rows from sheet
         if Result != OK:
             return Result
-        Result = self._Create_Xlsx_Tree_Rows_List()   # build lists for trees
+        Result = self._Create_Xlsx_Lists()   # build lists for trees
         if Result != OK:
             return Result
         #                    [Ix__Tot_OK,   Ix_Tot_WithCode,    Ix_Tot_Without_Code]
@@ -141,46 +142,19 @@ class Xlsx_Manager(Codes_db):
     def Get_Total_Rows(self):
         return self._Tot_RowsList
 
-    # ----------------------  Set tree rows list   ---------------------------------------  #
-    def _Create_Xlsx_Tree_Rows_List(self):
-        self.iYear_List             = []
-        self._Wihtout_Code_Tree_List = []
-        self._With_Code_Tree_List    = []
-        Tot_Rows_WithCode           = 0
-        Tot_Rows_WithoutCode        = 0
-        for Row in self._XLSX_Rows_Desc_Compact:
-            Row_Without_Code = []
-            Row_With_Code    = []
-            Full_Desc        = self.Description_Select(Row[iRow_Descr1], Row[iRow_Descr2])
-            Row[iRow_Descr1] = Full_Desc
 
-            Result = self._Find_StrToSearc_InFullDesc(Row)
-            if Result[0] == NOK:
-                if not Result[1]:
-                    Tot_Rows_WithoutCode += 1
-                    Row_Without_Code.append(Row[iRow_nRow])       # nRow
-                    Row_Without_Code.append(Row[iRow_Valuta])     # Valuta
-                    Row_Without_Code.append(Full_Desc)            # Full_Desc
-                    self._Wihtout_Code_Tree_List.append(Row_Without_Code)
-                else:
-                    self._Wihtout_Code_Tree_List = []
-                    self._With_Code_Tree_List = []
-                    self._Tot_OK   = 0
-                    self._Tot_Rows = 0
-                    return Result[1]
+    # =========================================================================================
+    # The xlsx file contains Rows that are loaded in    self._XLSX_Rows_From_Sheet
+    # used on Top_Xlsx_Rows_View
+    # Then are created   -  self._With_Code_Tree_List   -  self._Wihtout_Code_Tree_List
+    # used to insert Transactions on database
+    # ==========================================================================================
+    def Load_Xlsx_Rows_FromSheet(self):
+        return self._Get_XLS_Rows_From_Sheet()
 
-            else:
-                Rec_Found = Result[1]
-                Tot_Rows_WithCode += 1
-                Row_With_Code.append(int(Row[iRow_nRow]))    # nRow
-                Row_With_Code.append(Row[iRow_Contab])       # Contabile
-                Row_With_Code.append(Row[iRow_Valuta])       # Valuta
-                Row_With_Code.append(Rec_Found[iTR_TRdesc])  # TRdesc
-                Row_With_Code.append(Row[iRow_Accr])         # Accred
-                Row_With_Code.append(Row[iRow_Addeb])        # Addeb
-                Row_With_Code.append(Rec_Found[iTR_TRcode])  # TRcode
-                self._With_Code_Tree_List.append(Row_With_Code)
-        return OK
+    # -----------------------------------------------------------------------------------------
+    def Create_Xlsx_Lists(self):
+        return self._Create_Xlsx_Lists()
 
     # -------------------------------------  Get rows from sheet ----------------------------
     def _Get_XLS_Rows_From_Sheet(self):
@@ -190,6 +164,7 @@ class Xlsx_Manager(Codes_db):
         self.iYear_List             = []
         self._Tot_OK  = 0
         self._Tot_NOK = 0
+
         self._Get_Work_Sheet_Rows()
 
         if self._Tot_Rows <= 1:
@@ -243,6 +218,47 @@ class Xlsx_Manager(Codes_db):
             return 'xlsx file contains any row with significant data'
         else:
             return OK
+
+    # ----------------------  Set tree rows list   ---------------------------------------  #
+    def _Create_Xlsx_Lists(self):
+        self.iYear_List             = []
+        self._Wihtout_Code_Tree_List = []
+        self._With_Code_Tree_List    = []
+        Tot_Rows_WithCode           = 0
+        Tot_Rows_WithoutCode        = 0
+        for Row in self._XLSX_Rows_Desc_Compact:
+            Row_Without_Code = []
+            Row_With_Code    = []
+            Full_Desc        = self.Description_Select(Row[iRow_Descr1], Row[iRow_Descr2])
+            Row[iRow_Descr1] = Full_Desc
+
+            Result = self._Find_StrToSearc_InFullDesc(Row)
+            if Result[0] == NOK:
+                if not Result[1]:
+                    Tot_Rows_WithoutCode += 1
+                    Row_Without_Code.append(Row[iRow_nRow])       # nRow
+                    Row_Without_Code.append(Row[iRow_Valuta])     # Valuta
+                    Row_Without_Code.append(Full_Desc)            # Full_Desc
+                    self._Wihtout_Code_Tree_List.append(Row_Without_Code)
+                else:
+                    self._Wihtout_Code_Tree_List = []
+                    self._With_Code_Tree_List = []
+                    self._Tot_OK   = 0
+                    self._Tot_Rows = 0
+                    return Result[1]
+
+            else:
+                Rec_Found = Result[1]
+                Tot_Rows_WithCode += 1
+                Row_With_Code.append(int(Row[iRow_nRow]))    # nRow
+                Row_With_Code.append(Row[iRow_Contab])       # Contabile
+                Row_With_Code.append(Row[iRow_Valuta])       # Valuta
+                Row_With_Code.append(Rec_Found[iTR_TRdesc])  # TRdesc
+                Row_With_Code.append(Row[iRow_Accr])         # Accred
+                Row_With_Code.append(Row[iRow_Addeb])        # Addeb
+                Row_With_Code.append(Rec_Found[iTR_TRcode])  # TRcode
+                self._With_Code_Tree_List.append(Row_With_Code)
+        return OK
 
     # --------------------------------------------------------------------------------------------
     # List_For_XLSX_Row_Control = [

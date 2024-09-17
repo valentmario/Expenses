@@ -7,13 +7,7 @@
 #                  <-- Files_Names_Manager                                      #
 #     are instanced on Startup and will NEVER destroyed                         #
 #                                                                               #
-#    Methodes:  ( returns  True or False)                                       #
-#         Codes_DB             Xlsx               Transactions                  #
-#       Init_Codes          Init_xlsx           Init_transact                   #
-#       Cek_Codes_Name      Cek_xlsx_Name       Cek_Transactions_Name           #
-#       Sel_Codes           Sel_Xlsx            Sel_Transact                    #
-#       Load_Codes          Load_Xlsx           Load_Transact                   #
-#                                                                               #
+#                      T O   B E    U P D A T E D                               #
 #    The List on Data is                                                        #
 #     [self._Xlsx_Conto,self._Xlsx_Year,self._Xlsx_Month,self._Transact_Year]   #
 #     is created from  Xlsx_Conto_Year_Month_Setup(False/True)   and            #
@@ -37,14 +31,8 @@ class Modules_Manager:
         self.Data = Data
         self.Chat = Ms_Chat
         self.Dummy = None
-        # these attributes are not memorized on Txt_File
-        self.Files_Loaded = [NO, NO, NO]     # same structure as Files_Stat LOADED / NOK
-
         self.Toplevels_Id_List = []     # <class>,  NAME  # List of toplevel to launch in Top_Settings
 
-    # ---------------------------------------------------------------------------------------------
-    def Get_Files_Loaded_Status(self):
-        return self.Files_Loaded
 
     # =======================   Files_Names.txt  settings    ======================================
     def Cek_Create_Txt_File(self):
@@ -74,15 +62,15 @@ class Modules_Manager:
                     return True
             return False
         else:
-            if self.Files_Loaded[Ix_Codes_Loaded] == LOADED:
+            if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):
                 return True
             else:
                 if self.Load_Codes(Origin):
                     return True
                 return False
 
-    # -------------------------------------------------------------------------
-    def Init_Xlsx(self, Origin):
+    # ------------------------------------------------------------------------
+    def Init_Xlsx_Rows(self, Origin):
         Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
         if (Full_Xlsx_Filename == UNKNOWN) or \
         not (self.Cek_Xlsx_Name(Full_Xlsx_Filename)):
@@ -90,14 +78,19 @@ class Modules_Manager:
             Msg.wait_window()
             if self.Sel_Xlsx(Origin):
                 self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
-                if self.Load_Xlsx(Origin):
+                if self.Load_Xlsx_Rows(Origin):
                     return True
                 return False
+
+    # -------------------------------------------------------------------------
+    def Init_Xlsx_Lists(self, Origin):
+        if not self.Init_Xlsx_Rows(Origin):
+            return False
         else:
-            if self.Files_Loaded[Ix_Xls_Loaded] == LOADED:
+            if self.Files_Loaded[Ix_Xls_Lists_Loaded] == LOADED:
                 return True
             else:
-                if self.Load_Xlsx(Origin):
+                if self.Load_Xlsx_Lists(Origin):
                     return True
                 return False
     # -------------------------------------------------------------------------
@@ -130,6 +123,7 @@ class Modules_Manager:
     #           --------------     Sel_ file Methods    --------------                            #
     # =========================================================================================== #
     def Sel_Codes(self, Origin):
+        pass
         File_Dlg      = File_Dialog(FileBox_Codes)
         Full_Filename = File_Dlg.FileName
         if self.Cek_Codes_Name(Full_Filename):
@@ -148,10 +142,12 @@ class Modules_Manager:
         if self.Cek_Xlsx_Name(Full_Filename):
             self.Data.Update_Txt_File(Full_Filename, Ix_Xlsx_File)
             self.Data.Xlsx_Conto_Year_Month_Setup(True)
-            self.Files_Loaded[Ix_Xls_Loaded] = NOK
+            self.Files_Loaded[Ix_Xls_Lists_Loaded] = NO
             self.Chat.Tx_Request([Origin, [ANY], UPDATE_FILES_NAME, []])
+            pass
             return True
         else:
+            pass
             return False
 
     # -------------------------------------------------------------------------
@@ -170,25 +166,43 @@ class Modules_Manager:
     # =========================================================================================== #
     #           --------------    Load  Methods     --------------                                #
     # =========================================================================================== #
-    # the codes filename  and codes tables are OK
+    # the codes filename  is OK
     def Load_Codes(self, Origin):
         Reply = self.Data.Load_Codes_Table()       # reply OK or Diagnostic
-        if Reply == OK:
-            self.Files_Loaded[Ix_Codes_Loaded] = LOADED
-            self.Chat.Tx_Request([Origin, [ANY], CODES_DB_UPDATED, []])
-            return True
-        else:
+        Result = True
+        if Reply != OK:
+            Result = False
             Msg = Message_Dlg(MsgBox_Err, Reply)
             Msg.wait_window()
+        self.Chat.Tx_Request([Origin, [ANY], CODES_DB_UPDATED, []])
+        return Result
+
+    # ----------------------------------------------------------------------------------------------------- #
+    # Load_Xlsx_Rows:     _XLSX_Rows_From_Sheet   (for View Xlsx rows)  calculate Tot_OK  TOT_NOK           #
+    #                     _XLSX_Rows_Desc_Compact (for  Lists  with/out code)                               #
+    #                           *** the worse case is when any row with data OK are found                   #
+    # Create_Xlsx_List:  _With_Code_Tree_List  _Wihtout_Code_Tree_List                                      #
+    #                     *** if some Without code rows exist: Insert transaction on Db if forbidden        #
+    #                     *** the worse case is if a description is matched with more Str_ToSearch          #
+    #                                                                                                       #
+    # ----------------------------------------------------------------------------------------------------- #
+    # LOADED test may be omitted
+    def Load_Xlsx_Rows(self, Origin):
+        Reply = self.Data.Load_Xlsx_Rows_FromSheet()
+        if Reply == OK:
+            self.Chat.Tx_Request([Origin, [ANY], XLSX_ROWS_LOADED, []])
+            return True
+        else:
+            Dlg_Mess = Message_Dlg(MsgBox_Err, Reply)
+            Dlg_Mess.wait_window()
             return False
 
-    # -------------------------------------------------------------------------
-    #  the codes filename  and codes tables are OK
-    def Load_Xlsx(self, Origin):
+    # -------------------------------------------------------------------------------------------------------
+    def Load_Xlsx_Lists(self, Origin):
         self.Data.Xlsx_Conto_Year_Month_Setup(True)  # neede for lists creating
         Reply = self.Data.Load_Xlsx_Lists()
         if Reply == OK:
-            self.Files_Loaded[Ix_Xls_Loaded] = LOADED
+            self.Files_Loaded[Ix_Xls_Lists_Loaded] = LOADED
             self.Chat.Tx_Request([Origin, [ANY], XLSX_UPDATED, []])
             return True
         else:
@@ -205,9 +219,9 @@ class Modules_Manager:
         Reply = self.Data.Load_Transact_Table()
         if Reply == OK or Reply == EMPTY:
             Result = True
-            # if Reply == EMPTY:
-            #     Msg = Message_Dlg(MsgBox_Err, 'Transactions Database is EMPTY')
-            #     Msg.wait_window()
+            if Reply == EMPTY:
+                Msg = Message_Dlg(MsgBox_Err, 'Transactions Database is EMPTY')
+                Msg.wait_window()
         else:
             Result = False
             Msg = Message_Dlg(MsgBox_Err, Reply)   # display 'ERROR... '
@@ -308,23 +322,21 @@ class Modules_Manager:
 
 
     # =========================================================================================== #
-    # ----------------------     launch Top_level  after Init_ checkout     --------------------- #
+    #            ***    Toplevel    Module   launcher     ***                                     #
     # =========================================================================================== #
-    # Name   = Moudule Name to launch
-    # Origin = The requesting Module
-    # List   = Parameter for the Recipient
-    def Top_Launcher(self, Name, Origin, List):
-        if self.Chat.Check_Name_Is_On_Participants_List(Name):
-            self.Chat.Tx_Request([Origin, [Name], CODE_TO_CLOSE, []])
+    # Name           = Moudule Name to launch
+    # Origin         = The requesting Module
+    # List_For_Start =  List of Parameters to pass to Recipient
+    # -------------------------------------------------
+    def Top_Launcher(self, Name_ToLaunch, Origin, Param_List):
+        if self.Chat.Check_Name_Is_On_Participants_List(Name_ToLaunch):
+            self.Chat.Tx_Request([Origin, [Name_ToLaunch], CODE_TO_CLOSE, []])
             return
         else:
-            Result = self.Make_Checkout(Name, Origin)
-            if Result == OK:
-                TopLevel = self.Get_TopLev(Name)
-                if not List:
-                    TopLevel()
-                else:
-                    TopLevel(List)
+            TopLevel  = self.Get_TopLev(Name_ToLaunch)
+            Result    = self.Make_Checkout(Name_ToLaunch, Origin)
+            TopLevel(Result, Param_List)
+
     # ---------------------------------------------------------------------------------------------
     def Make_Checkout(self, Name, Origin):
         for Item in LAUNCH_CHECKOUT:
@@ -332,21 +344,22 @@ class Modules_Manager:
             if CheckName == Name:
                 Checklist = Item[1]
                 if not Checklist:
-                    return OK
+                    return True
                 
                 for Check in Checklist:
                     if Check == CEK_CODES:                          # CEK_CODES
                         if not self.Init_Codes(Origin):
-                            return NOK
+                            return False
 
-                    elif Check == CEK_XLSX:                           # CEK_XLSX
-                        if not self.Init_Xlsx(Origin):
-                            return NOK
+                    elif Check == CEK_XLSX_ROWS:                      # CEK_XLSX ROWS
+                        if not self.Init_Xlsx_Rows(Origin):
+                            return False
 
-                    elif Check == CEK_XLSX_MNGR:                      # CEK_XLSX for Top_Mngr
-                        # if not self.Init_Xlsx(Origin):
-                        self.Init_Xlsx(Origin)
-                        return OK
+                    elif Check == CEK_XLSX_LIST:                      # CEK_XLSX LISTS
+                        if not self.Init_Xlsx_Rows(Origin):
+                            return NOK
+                        if not self.Init_Xlsx_Lists(Origin):
+                            return True
 
                     elif Check == CEK_TRANSACT:                       # CEK_TRANSACT
                         if not self.Init_Transactions(Origin):

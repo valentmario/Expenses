@@ -51,7 +51,9 @@ class Codes_db(Files_Names_Manager):
     def Load_Codes_Table(self):
         Result = self._Load_Codes_Tables()
         if Result != OK:
+            self._Files_Loaded[Ix_Codes_Loaded] = False
             return Result
+        self._Files_Loaded[Ix_Codes_Loaded] = True
         return OK
 
     def Get_Codes_Table(self):
@@ -160,7 +162,7 @@ class Codes_db(Files_Names_Manager):
             self._TR_Codes_Table = cursor.fetchall()
         except:
             connect.close()
-            return 'Codes databaseERROR'
+            return 'Transations Codes ERROR'
         try:
             cursor.execute("SELECT * FROM GROUP_CODES")
             self._GR_Codes_Table = cursor.fetchall()

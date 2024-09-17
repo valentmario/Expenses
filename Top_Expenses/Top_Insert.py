@@ -46,9 +46,19 @@ from Widgt.Tree_Widg import TheFrame
 from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheText
 
+"""
+    def __init__(self, Result, Param_List):
+        super().__init__()
+        self.Chat = Ms_Chat
+        self.Data = Data
+        self.Mod_Mngr = Modul_Mngr
+
+        self.Result = Result
+        self.Param_List = Param_List
+"""
 # -----------------------------------------------------------------------------------------------------
 class Top_Insert(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, Result, Param_List):
         super().__init__()
         self.Chat     = Ms_Chat
         self.Data     = Data
@@ -60,6 +70,9 @@ class Top_Insert(tk.Toplevel):
         self.configure(background=BakGnd)
         self.geometry(Top_Insert_geometry)
         self.title('*****     Insert transactions on database     *****')
+
+        self.Result      = Result
+        self.Param_List  = Param_List
 
         self.Dummy       = 0
         self.Files_Ident = []  # self.Data.Get_Xlsx_Transact_Ident()
@@ -137,7 +150,7 @@ class Top_Insert(tk.Toplevel):
         self.Ins_Btn.Btn_Disable()
         if not self.Mod_Mngr.Sel_Xlsx(TOP_INS):
             return
-        if not self.Mod_Mngr.Init_Xlsx(TOP_INS):
+        if not self.Mod_Mngr.Init_Xlsx_Lists(TOP_INS):
             return
         self.Startup()
 
