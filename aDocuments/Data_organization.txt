@@ -46,9 +46,11 @@ class Top_Mngr(Super_Top_Mngr):
 
 ==========================================================================================
 
-
-
-
+Init_Codes()                    (return true/false)
+    Sel_Codes                   (return true/false)
+        Load_Codes_Table        return OK/diagn
+            OK         Dlg
+      Update_Txt_File
 
 
 

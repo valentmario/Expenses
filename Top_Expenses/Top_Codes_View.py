@@ -16,7 +16,7 @@ from Widgt.Widgets import TheButton
 
 # ---------------------------------------------------------------------------------------
 class Top_View_Codes(tk.Toplevel):
-    def __init__(self, Codes_List):
+    def __init__(self, Result, Codes_List):
         super().__init__()
         self.Chat     = Ms_Chat
         self.Data     = Data
@@ -29,7 +29,7 @@ class Top_View_Codes(tk.Toplevel):
         self.title('*****     Transactions  Codes     ***** ')
         self.configure(background=BakGnd)
 
-        self.Dummy          = None
+        self.Result = Result
         if Codes_List:
             self.Codes_List = self.Data.Create_CodesTable_FromTR(Codes_List)
         else:
@@ -124,7 +124,6 @@ class Top_View_Codes(tk.Toplevel):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_GRmngr(self):
-        self.Dummy = 0
         self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_CODES_VIEW, [])
 
     # ---------------------------------------------------------------------------------------------

@@ -48,8 +48,8 @@ class Codes_db(Files_Names_Manager):
     # -------------------------------------------------------------------------------------- #
     #      public methods invoked outside from  Top_Codes  classes                           #
     # -------------------------------------------------------------------------------------- #
-    def Load_Codes_Table(self):
-        Result = self._Load_Codes_Tables()
+    def Load_Codes_Table(self, CodesFilename):
+        Result = self._Load_Codes_Tables(CodesFilename)
         if Result != OK:
             self._Files_Loaded[Ix_Codes_Loaded] = False
             return Result
@@ -138,7 +138,7 @@ class Codes_db(Files_Names_Manager):
     # -------------------------------------------------------------------------------------- #
     #      private  _methods invoked only inside  the data classes  chain                    #
     # -------------------------------------------------------------------------------------- #
-    def _Load_Codes_Tables(self):
+    def _Load_Codes_Tables(self, CodesFilename):
         self._TR_Codes_Table  = []  # TRCode GRcode   SPcode   TRdesc  StrToSear  FullDesc
         self._GR_Codes_Table  = []  # GRcode GRdescr  CAcode
         self._CA_Codes_Table  = []  # CAcode CAdescr
@@ -149,13 +149,16 @@ class Codes_db(Files_Names_Manager):
         self.GR_Codes_Ordered  = []
         self._CA_Codes_Ordered = []
 
+        self.CodesFilename = CodesFilename
+        if not CodesFilename:
+            self.CodesFilename = self._Codes_DB_Filename
         try:
             sqlite3.connect(self._Codes_DB_Filename)
             pass
         except:
             return 'Please mount data drive'
 
-        connect = sqlite3.connect(self._Codes_DB_Filename)   # self.Files_Mngr.Codes_DB_Filename)
+        connect = sqlite3.connect(self.CodesFilename)   # self.Files_Mngr.Codes_DB_Filename)
         cursor = connect.cursor()
         try:
             cursor.execute("SELECT * FROM TRANSACT_CODES")
@@ -321,7 +324,7 @@ class Codes_db(Files_Names_Manager):
             Cursor.execute(sql, sql_data)
             Connect.commit()
             Connect.close()
-            return self._Load_Codes_Tables()
+            return self._Load_Codes_Tables('')
         except:
             Connect.close()
             return 'ERROR on Codes Database\nGR Record UPDATE'

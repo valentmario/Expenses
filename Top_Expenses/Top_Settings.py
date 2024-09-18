@@ -8,7 +8,6 @@ from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
 from Widgt.Dialogs import File_Dialog
 from Top_Expenses.Modules_Manager import Modul_Mngr
-from Top_Expenses.Top_Xlsx_Rows_View import Top_XLSX_Rows_View
 from Top_Expenses.Top_View_Message import Top_View_Message
 from Data_Classes.Transact_DB import *
 
@@ -99,7 +98,7 @@ class Top_Settings(tk.Toplevel):
         self.Param_List = Param_List
         self.Dummy      = 0
         self.Files_List = []
-        # self.Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
+        self.Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
 
         self.ComboList = []
         self.StrVar     = tk.StringVar()
@@ -148,18 +147,14 @@ class Top_Settings(tk.Toplevel):
         pass
 
     def Clk_View_Codes_DB(self):
-        self.Dummy = 0
-        Top_View_Codes([])
-        # self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_SETTINGS, [])
+        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_SETTINGS, [])
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
         self.Mod_Mngr.Sel_Xlsx(TOP_SETTINGS)
 
     def Clk_View_xlsx_File(self):
-        # self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS)
-        self.Mod_Mngr.Load_Xlsx(TOP_SETTINGS)
-        Top_XLSX_Rows_View()
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS, [])
 
     # ------------------------------------------------------------------------------------
     def Clk_Sel_Transact(self):
@@ -183,7 +178,18 @@ class Top_Settings(tk.Toplevel):
     def Clk_View_TxtList(self):
         Total = self.Data.Get_Total_Rows()
         Queries_List = self.Data.Get_Txt_Member(Ix_Query_List)
-        Files_Status = self.Mod_Mngr.Get_Files_Loaded_Status()
+        Files_Status = []
+        for Index in range (0, 4):
+            Stat = self.Data.Get_Files_Loaded_Stat(Index)
+            strStat = LOADED
+            if not Stat:
+                strStat = 'Not Loaded'
+            Files_Status.append(strStat)
+        strStat1 = Files_Status[0]
+        strStat2 = Files_Status[1]
+        strStat3 = Files_Status[2]
+        strStat4 = Files_Status[3]
+
         strText = ''
         strText +=     '-------------  Codes DB  -----------------\n'
         strText += self.Data.Get_Txt_Member(Ix_Codes_File)
@@ -192,8 +198,7 @@ class Top_Settings(tk.Toplevel):
         strText += '\n\n-----------  Transactions DB  ------------\n'
         strText += self.Data.Get_Txt_Member(Ix_Transact_File)
         strText += '\n\n----------  Files status  ----------------\n'
-        strText +=  Files_Status[0] + '   ' + Files_Status[1] + '   ' + Files_Status[2]
-
+        strText += strStat1 + '  ' + strStat2 + '  ' + strStat3 + '  ' + strStat4
         strText += '\n\n----------  Xlsx total rows   -------------\n'
         strText +=   'Total rows OK ...  ' + str(Total[Ix_Tot_OK])
         strText += '\nTotal with-code .. ' + str(Total[Ix_Tot_WithCode])

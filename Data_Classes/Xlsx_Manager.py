@@ -32,8 +32,8 @@ class Xlsx_Manager(Codes_db):
 
         #                                     A      B      C      D      E     F
         self._XLSX_Rows_From_Sheet  = []  # Contab Valuta Descr1 Accred Addeb Descr2
-        self.XLSX_Rows_Desc_Compact = []
-        self.Xlsx_Rows_NOK_List     = []
+        self._XLSX_Rows_Desc_Compact = []
+        self._Xlsx_Rows_NOK_List     = []
         #
         self._With_Code_Tree_List   = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
         self._Wihtout_Code_Tree_List= []  # nRow Valuta Descr
@@ -50,7 +50,7 @@ class Xlsx_Manager(Codes_db):
     def Get_WithoutCodeList(self):
         return self._Wihtout_Code_Tree_List
 
-    def XLSX_Rows_From_Sheet(self):
+    def Get_XLSX_Rows_From_Sheet(self):
         return self._XLSX_Rows_From_Sheet
 
     def Xlsx_Conto_Year_Month_Setup(self, Action):
@@ -125,11 +125,11 @@ class Xlsx_Manager(Codes_db):
     def Load_Xlsx_Lists(self):
         self._Tot_OK                 = 0
         self._XLSX_Rows_From_Sheet   = []  # nRow Contab Valuta  Descr1  Accred Addeb Descr2
-        self.XLSX_Rows_Desc_Compact  = []
+        self._XLSX_Rows_Desc_Compact  = []
         self._With_Code_Tree_List     = []  # nRow Contab Valuta TRcode TRdesc  Accred  Addeb
         self._Wihtout_Code_Tree_List  = []  # nRow Valuta  Descr
 
-        Result = self._Get_XLS_Rows_From_Sheet()     # get rows from sheet
+        Result = self._Load_XLS_Rows_From_Sheet()     # get rows from sheet
         if Result != OK:
             return Result
         Result = self._Create_Xlsx_Lists()   # build lists for trees
@@ -150,23 +150,45 @@ class Xlsx_Manager(Codes_db):
     # used to insert Transactions on database
     # ==========================================================================================
     def Load_Xlsx_Rows_FromSheet(self):
-        return self._Get_XLS_Rows_From_Sheet()
+        Result = self._Load_XLS_Rows_From_Sheet()
+        self._Files_Loaded[Ix_Xlsx_Rows_Loaded] = False
+        if Result == OK:
+            self._Files_Loaded[Ix_Xlsx_Rows_Loaded] = True
+            return self._XLSX_Rows_From_Sheet
+        else:
+            return Result
 
     # -----------------------------------------------------------------------------------------
-    def Create_Xlsx_Lists(self):
-        return self._Create_Xlsx_Lists()
+    def Load_Xlsx_Lists_FromData(self):
+        self._Files_Loaded[Ix_Transact_Loaded] = False
+        Result = self.Load_Xlsx_Rows_FromSheet()
+        if Result != OK:
+            return Result
+        else:
+            Result = self._Load_XLS_Rows_From_Sheet()
+            if Result == OK:
+                self._Files_Loaded[Ix_Transact_Loaded] = True
+                return self._XLSX_Rows_From_Sheet
+            else:
+                return Result
 
     # -------------------------------------  Get rows from sheet ----------------------------
-    def _Get_XLS_Rows_From_Sheet(self):
+    def _Load_XLS_Rows_From_Sheet(self):
         self.XLSX_Rows_From_Sheet   = []
         self._XLSX_Rows_Desc_Compact= []
-        self.Xlsx_Rows_NOK_List     = []
-        self.iYear_List             = []
-        self._Tot_OK  = 0
-        self._Tot_NOK = 0
+        self._Xlsx_Rows_NOK_List     = []
+        self.iYear_List              = []
 
-        self._Get_Work_Sheet_Rows()
+        self._Tot_OK   = 0
+        self._Tot_NOK  = 0
+        self._Tot_Rows = 0
 
+        self._Get_Work_Sheet_Rows()  # set  _Tot_Rows = -1 on ERROR of Loadind Rows
+        self._Files_Loaded[Ix_Xlsx_Rows_Loaded]  = False
+        self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = False
+
+        if self._Tot_Rows < 0:
+            return 'Error on loading Work sheet rows'
         if self._Tot_Rows <= 1:
             return 'No rows on the sheet'
 
@@ -183,7 +205,7 @@ class Xlsx_Manager(Codes_db):
             Checked_Row_List = self._Check_Values(XLS_Row_Compact)
             if not Checked_Row_List:
                 self._Tot_NOK += 1
-                self.Xlsx_Rows_NOK_List.append(XLS_Row_List)
+                self._Xlsx_Rows_NOK_List.append(XLS_Row_List)
             else:
                 self._Tot_OK += 1
                 self._XLSX_Rows_Desc_Compact.append(Checked_Row_List)    # Descriptions compacted
@@ -217,15 +239,18 @@ class Xlsx_Manager(Codes_db):
         if not self._XLSX_Rows_Desc_Compact:
             return 'xlsx file contains any row with significant data'
         else:
+            self._Files_Loaded[Ix_Xlsx_Rows_Loaded] = True
             return OK
 
     # ----------------------  Set tree rows list   ---------------------------------------  #
     def _Create_Xlsx_Lists(self):
-        self.iYear_List             = []
+        self.iYear_List              = []
         self._Wihtout_Code_Tree_List = []
         self._With_Code_Tree_List    = []
-        Tot_Rows_WithCode           = 0
-        Tot_Rows_WithoutCode        = 0
+        Tot_Rows_WithCode            = 0
+        Tot_Rows_WithoutCode         = 0
+        self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = False
+
         for Row in self._XLSX_Rows_Desc_Compact:
             Row_Without_Code = []
             Row_With_Code    = []
@@ -258,6 +283,7 @@ class Xlsx_Manager(Codes_db):
                 Row_With_Code.append(Row[iRow_Addeb])        # Addeb
                 Row_With_Code.append(Rec_Found[iTR_TRcode])  # TRcode
                 self._With_Code_Tree_List.append(Row_With_Code)
+        self._Files_Loaded[Ix_Xlsx_Rows_Loaded] = True
         return OK
 
     # --------------------------------------------------------------------------------------------
@@ -387,7 +413,12 @@ class Xlsx_Manager(Codes_db):
     # --------------------------------------------------------------------------------- #
     def _Get_Work_Sheet_Rows(self):
         XlsName          = self._Xlsx_Filename
-        Work_Book        = load_workbook(XlsName)
+        # Work_Book = None
+        try:
+            Work_Book = load_workbook(XlsName)
+        except:
+            self._Tot_Rows = -1
+            return
         self.SheetName   = Work_Book.sheetnames[0]   # always the first sheet
         self.Update_Txt_File(self.SheetName, Ix_Sheet_Name)
         self._Work_Sheet = Work_Book.get_sheet_by_name(self.SheetName)

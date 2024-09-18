@@ -16,7 +16,7 @@ from Widgt.Widgets import TheTextPoints
 from Top_Expenses.Modules_Manager import Modul_Mngr
 
 class Top_XLSX_Rows_View(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, Result, Param_List):
         super().__init__()
         self.Chat = Ms_Chat
         self.Data = Data
@@ -30,17 +30,17 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         self.title('***   View Sheet Rows xlsx file   *** ')
         self.configure(background=BakGnd)
 
-        self.Form_List_Tot    = []
-        self.Form_List_TRGRCA = []
+        self.Result     = Result
+        self.Param_List = Param_List
 
         self.Txt1 = TheTextPoints(self, Txt_Disab,  20, 860, 33, 4, '', 11)
         self.Txt2 = TheTextPoints(self, Txt_Disab, 310, 860, 60, 4, '', 11)
         TheButton(self, Btn_Def_En, 640, 950, 16, 'E X I T ', self.Call_OnClose)
 
         # --------------------------   Create Treeview Frame   ------------------------------------
-        self.Frame_Sheets_Rows = TheFrame(self, 20, 20, self.Clk_On_Sheets_Rows)
+        self.Frame_Sheet_Rows = TheFrame(self, 20, 20, self.Clk_On_Sheet_Rows)
         self.Frame_Sheets_Rows_Setup()
-        self.Frame_Sheets_Rows.Frame_View()
+        self.Frame_Sheet_Rows.Frame_View()
 
     # ---------------------------------------------------------------------------------------------
     def Call_OnClose(self):
@@ -56,7 +56,7 @@ class Top_XLSX_Rows_View(tk.Toplevel):
 
 
     # ---------------------------------------------------------------------------------------------
-    def Clk_On_Sheets_Rows(self, Values):
+    def Clk_On_Sheets_Row(self, Values):
         self.Txt1.Set_Text(Values[iRow_Descr1])
         self.Txt2.Set_Text(Values[iRow_Descr2])
 
@@ -69,7 +69,7 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         Anchor = ['c', 'c', 'c', 'c', 'w', 'e', 'e', 'w']
         Width  = [0,    40,  80,  80,  160, 70,  70,  250]
         Form_List = [nRows, NcolToDisp, Headings, Anchor, Width]
-        self.Frame_Sheets_Rows.Tree_Setup(Form_List)
+        self.Frame_Sheet_Rows.Tree_Setup(Form_List)
         self.Frame_Sheets_Rows_View()
 
     def Frame_Sheets_Rows_View(self):
@@ -79,20 +79,22 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         FrameText += str(Total[Ix_Tot_OK]) + '  correct transactions   '
         FrameText += str(Total[Ix_Tot_Without_Code]) + '  without code  '
 
-        self.Frame_Sheets_Rows.Frame_Title(FrameText)
-        self.Frame_Sheets_Rows.Load_Row_Values(self.Data.XLSX_Rows_From_Sheet)
+        self.Frame_Sheet_Rows.Frame_Title(FrameText)
+        Rows_List = self.Data.Get_X()
+        pass
+        self.Frame_Sheet_Rows.Load_Row_Values(Rows_List)
 
     # ---------------------------------------------------------------------------------------------
     def Set_Focus_On_Row(self, Values):
         nRow = int(Values[0])
         Date = Values[1]
         Index = -1
-        for Rec in self.Frame_Sheets_Rows.Loaded_List:
+        for Rec in self.Frame_Sheet_Rows.Loaded_List:
             Index +=1
             if Rec[iRow_nRow] == nRow:
                 myDate = Rec[iRow_Valuta]
                 if myDate == Date:
-                    self.Frame_Sheets_Rows.Set_List_For_Focus(Index)
+                    self.Frame_Sheet_Rows.Set_List_For_Focus(Index)
                     self.Txt1.Set_Text(Rec[iRow_Descr1])
                     self.Txt2.Set_Text(Rec[iRow_Descr2])
                     break

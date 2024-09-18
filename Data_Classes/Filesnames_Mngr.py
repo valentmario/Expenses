@@ -46,7 +46,7 @@ class Files_Names_Manager:
     def Get_Files_Loaded_Stat(self, Index):
         return self._Files_Loaded[Index]
 
-    def Set_Files_Names_Lodad(self, Index, Status):
+    def Set_Files_Lodad(self, Index, Status):
         self._Files_Loaded[Index] = Status
         pass
 
@@ -115,6 +115,8 @@ class Files_Names_Manager:
             filetypes=[('xlsx file', '*.xlsx')],
             initialdir=Init_Directory)
         # -----------------------------------------------------
+        if not Full_filename:
+            return ''
         return Full_filename
 
     # ----------------------------------------------------------------------------------

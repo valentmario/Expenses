@@ -66,7 +66,7 @@ LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
                     [TOP_MNGR,          [CEK_CODES]],   # ,  CEK_XLSX_LIST]],
                     [TOP_CODES_VIEW,    [CEK_CODES]],
                     [TOP_GR_MNGR,       [CEK_CODES]],
-                    [TOP_XLSX_VIEW,     [CEK_CODES]],
+                    [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX_ROWS]],
                     [TOP_INS,           [CEK_CODES,  CEK_XLSX_LIST]],
                     [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TRANSACT]],
                     [TOP_QUERY,         [CEK_CODES,  CEK_TRANSACT]],
@@ -141,10 +141,10 @@ Ix_Query_CAsel     = 5
 
 # Used on Modules Mananager To Load Files only once
 # at startup or after a file selection
-Ix_Codes_Loaded     = 0
-Ix_Xlsx_Rows_Loaded = 1
-Ix_Xls_Lists_Loaded = 2
-Ix_Transact_Loaded  = 3
+Ix_Codes_Loaded      = 0
+Ix_Xlsx_Rows_Loaded  = 1
+Ix_Xlsx_Lists_Loaded = 2
+Ix_Transact_Loaded   = 3
 
 # =============================================================
 #             WIDGETS  CONSTANTS                              =

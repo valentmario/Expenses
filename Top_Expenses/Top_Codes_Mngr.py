@@ -131,7 +131,7 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Load_Trees(self):
-        if not self.Data.Get_Files_Loaded_Stat(Ix_Xls_Lists_Loaded):
+        if not self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
             self.Frame_NoCodes.Frame_Title('  ***   Files  NOT loaded  NO  rows to insert   ***  ')
             self.Frame_WithCodes.Frame_Title('  ***   Files  NOT loaded  NO  rows to insert   ***  ')
             self.View_Without_Code  = False
@@ -183,13 +183,7 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Codes(self):
-        # This launch is not possible through Top_Launcher because Top_Codes_View
-        # require a list at __init__()
-        if self.Chat.Check_Name_Is_On_Participants_List(TOP_CODES_VIEW):
-            self.Chat.Tx_Request([TOP_MNGR, [TOP_CODES_VIEW, TOP_GR_MNGR], CODE_TO_CLOSE, []])
-            return
-        else:
-            Top_View_Codes([])
+        self.Mod_Mngr.Top_Launcher(TOP_CODES_VIEW, TOP_MNGR, [])
 
     # ---------------------------------------------------------------------------------------------
     def Clk_GR_Mngr(self):
@@ -227,14 +221,16 @@ class Top_Mngr(Super_Top_Mngr):
                                   self.ComboList, 'Select  Group', self.Clk_Combo)
 
         Status = False
-        if self.Data.Get_Files_Loaded_Stat(Ix_Xls_Lists_Loaded):
+        if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
             Status = True
         self.BtnViXlsx.Btn_Set_Status(Status)
         self.BtnVWithC.Btn_Set_Status(Status)
 
-        if self.Data.Get_Total_Rows()[Ix_Tot_Without_Code] != 0:
+        TotalRows = self.Data.Get_Total_Rows()
+        if TotalRows[Ix_Tot_WithCode] == 0 and \
+           TotalRows[Ix_Tot_Without_Code] == 0:
             self.BtnInsert.Btn_Disable()
-        else:
+        elif TotalRows[Ix_Tot_Without_Code] == 0:
             self.BtnInsert.Btn_Enable()
 
     # ---------------------------------------------------------------------------------------------

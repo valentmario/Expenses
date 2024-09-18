@@ -7,21 +7,28 @@
 #                  <-- Files_Names_Manager                                      #
 #     are instanced on Startup and will NEVER destroyed                         #
 #                                                                               #
-#                      T O   B E    U P D A T E D                               #
-#    The List on Data is                                                        #
-#     [self._Xlsx_Conto,self._Xlsx_Year,self._Xlsx_Month,self._Transact_Year]   #
-#     is created from  Xlsx_Conto_Year_Month_Setup(False/True)   and            #
-#                      Transact_Year_Setup(False/True)                          #
-#      on Cek_Create_Txt_File(),  Cek..Name(), Sel..file(),  Load..Data()       #
-#      so all TopLevels are launchd with this filled list                       #
-#      Init_Transact have a flag to force Loading data even if is LOADED        #
+#   filenames Cek:                                                              #
+#   at startup     the  names saved on Txt_File                                 #
+#   on selection   the names that are selected on File dialog                   #
 #                                                                               #
+#   'Init ' methods are invoked at startup or  before launching a module        #
+#           the file to be iniziated will be load only if not loaded            #
+#                                                                               #
+#    'Sel ' methods select a new file and if correct                            #
+#           the name is saved on Txt_File                                       #
+#                                                                               #
+#    'Load ' methods load files if not loaded                                   #
+#                                                                               #
+#   'Sel files ' methods are invoked at start or from a Click().                #
+#                if the file selection is not OK, nothing change,               #
+#                else the file is loade and marked LOADED  only on OK           #
+#                marking LOADED/NO is made on Load methods in the data class    #
 # ============================================================================= #
 
 from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data
-from Top_Expenses.Top_View_Message import Top_View_Message
+# from Top_Expenses.Top_View_Message import Top_View_Message
 from Widgt.Dialogs import Message_Dlg
 from Widgt.Dialogs import File_Dialog
 
@@ -32,7 +39,6 @@ class Modules_Manager:
         self.Chat = Ms_Chat
         self.Dummy = None
         self.Toplevels_Id_List = []     # <class>,  NAME  # List of toplevel to launch in Top_Settings
-
 
     # =======================   Files_Names.txt  settings    ======================================
     def Cek_Create_Txt_File(self):
@@ -51,15 +57,13 @@ class Modules_Manager:
     #           --------------   Init_    Methodss    --------------                              #
     # =========================================================================================== #
     def Init_Codes(self, Origin):
-        self.Dummy = Origin  # Origin NOT used
         Full_Codes_DB_Filename = self.Data.Get_Txt_Member(Ix_Codes_File)
         if (Full_Codes_DB_Filename == UNKNOWN) or \
         not (self.Cek_Codes_Name(Full_Codes_DB_Filename)):
             Msg = Message_Dlg(MsgBox_Info, 'Please select a CodesDatabe.db file')
             Msg.wait_window()
             if self.Sel_Codes(Origin):    # return True False
-                if self.Load_Codes(Origin):
-                    return True
+                return True
             return False
         else:
             if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):
@@ -67,7 +71,9 @@ class Modules_Manager:
             else:
                 if self.Load_Codes(Origin):
                     return True
-                return False
+                if self.Sel_Codes(Origin):
+                    return False
+                return True
 
     # ------------------------------------------------------------------------
     def Init_Xlsx_Rows(self, Origin):
@@ -77,7 +83,13 @@ class Modules_Manager:
             Msg = Message_Dlg(MsgBox_Info, 'Please select a file.xlsx')
             Msg.wait_window()
             if self.Sel_Xlsx(Origin):
-                self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
+                if self.Load_Xlsx_Rows(Origin):
+                    return True
+                return False
+        else:
+            if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Rows_Loaded):
+                return True
+            else:
                 if self.Load_Xlsx_Rows(Origin):
                     return True
                 return False
@@ -87,33 +99,30 @@ class Modules_Manager:
         if not self.Init_Xlsx_Rows(Origin):
             return False
         else:
-            if self.Files_Loaded[Ix_Xls_Lists_Loaded] == LOADED:
+            if self.Data.Get_Files_Loaded_Stat(Ix_Transact_Loaded):
                 return True
             else:
                 if self.Load_Xlsx_Lists(Origin):
                     return True
                 return False
+
     # -------------------------------------------------------------------------
     def Init_Transactions(self, Origin):
         Full_Transact_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
         if (Full_Transact_Filename == UNKNOWN) or \
         not (self.Cek_Transactions_Name(Full_Transact_Filename)):
-            Msg = Message_Dlg(MsgBox_Ask, 'Database not found\nSelect an existing database')
+            Msg = Message_Dlg(MsgBox_Ask, 'Please select a transactions db file')
             Msg.wait_window()
-            Reply = Msg.data
-            if Reply == YES:
-                if self.Sel_Transact(Origin):
-                    self.Chat.Tx_Request(Origin, [MAIN_WIND], UPDATE_FILES_NAME, [])
-                    if self.Load_Transact(Origin):
-                        return True
-                    else:
-                        return False
+            if self.Sel_Transact(Origin):
+                if self.Load_Transact(Origin):
+                    return True
+                else:
+                    return False
             else:
                 Msg = Message_Dlg(MsgBox_Info, 'new database must be created')
                 Msg.wait_window()
                 return False
         else:
-            #  LoadAnyway not self.Files_Loaded[Ix_Transact_Loaded] != LOADED:
                 if self.Load_Transact(Origin):
                     return True
                 else:
@@ -123,43 +132,45 @@ class Modules_Manager:
     #           --------------     Sel_ file Methods    --------------                            #
     # =========================================================================================== #
     def Sel_Codes(self, Origin):
-        pass
         File_Dlg      = File_Dialog(FileBox_Codes)
         Full_Filename = File_Dlg.FileName
         if self.Cek_Codes_Name(Full_Filename):
-            self.Data.Update_Txt_File(Full_Filename, Ix_Codes_File)
-            self.Files_Loaded[Ix_Codes_Loaded] = LOADED
-            self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
-            return True
-        else:
-            return False
+            Reply =  self.Data.Load_Codes_Table(Full_Filename)
+            if Reply == OK:    # it will set LOAD/NO
+                self.Data.Update_Txt_File(Full_Filename, Ix_Codes_File)
+                self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
+                return True
+            else:
+                Dlg_Mess = Message_Dlg(MsgBox_Err, Reply)
+                Dlg_Mess.wait_window()
+                return False
 
     # -------------------------------------------------------------------------
     def Sel_Xlsx(self, Origin):
-        # Full_Filename = self.Data.Sel_Xlsx_OnData()  # return the full filename
         File_Dlg      = File_Dialog(FileBox_Xlsx)
         Full_Filename = File_Dlg.FileName
+        if not Full_Filename:
+            return False
         if self.Cek_Xlsx_Name(Full_Filename):
-            self.Data.Update_Txt_File(Full_Filename, Ix_Xlsx_File)
-            self.Data.Xlsx_Conto_Year_Month_Setup(True)
-            self.Files_Loaded[Ix_Xls_Lists_Loaded] = NO
-            self.Chat.Tx_Request([Origin, [ANY], UPDATE_FILES_NAME, []])
-            pass
-            return True
+            Reply = self.Cek_Xlsx_Name(Full_Filename)
+            if Reply != OK:
+                pass
+            # if self.Data.Load_Xlsx_Lists_FromData():
+            #     self.Data.Update_Txt_File(Full_Filename, Ix_Xlsx_File)
+            #     self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
+            #     return True
         else:
-            pass
             return False
 
     # -------------------------------------------------------------------------
     def Sel_Transact(self, Origin):
-        # Full_Filename = self.Data.Sel_Transact_OnData()  # return the full filename
         File_Dlg      = File_Dialog(FileBox_Transact)
         Full_Filename = File_Dlg.FileName
         if self.Cek_Transactions_Name(Full_Filename):
-            self.Data.Update_Txt_File(Full_Filename, Ix_Transact_File)
-            self.Data.Transact_Year_Setup(True)
-            self.Chat.Tx_Request([Origin, [ANY], UPDATE_FILES_NAME, []])
-            return True
+            if self.Data.Load_Transact_Table():
+                self.Data.Update_Txt_File(Full_Filename, Ix_Transact_File)
+                self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
+                return True
         else:
             return False
 
@@ -168,13 +179,14 @@ class Modules_Manager:
     # =========================================================================================== #
     # the codes filename  is OK
     def Load_Codes(self, Origin):
-        Reply = self.Data.Load_Codes_Table()       # reply OK or Diagnostic
+        Reply = self.Data.Load_Codes_Table('')
         Result = True
-        if Reply != OK:
+        if Reply != OK:                     #  reply:  OK or Diagnostic
             Result = False
             Msg = Message_Dlg(MsgBox_Err, Reply)
             Msg.wait_window()
         self.Chat.Tx_Request([Origin, [ANY], CODES_DB_UPDATED, []])
+        self.Data.Check_Codesdatabase()
         return Result
 
     # ----------------------------------------------------------------------------------------------------- #
@@ -186,7 +198,6 @@ class Modules_Manager:
     #                     *** the worse case is if a description is matched with more Str_ToSearch          #
     #                                                                                                       #
     # ----------------------------------------------------------------------------------------------------- #
-    # LOADED test may be omitted
     def Load_Xlsx_Rows(self, Origin):
         Reply = self.Data.Load_Xlsx_Rows_FromSheet()
         if Reply == OK:
@@ -200,16 +211,11 @@ class Modules_Manager:
     # -------------------------------------------------------------------------------------------------------
     def Load_Xlsx_Lists(self, Origin):
         self.Data.Xlsx_Conto_Year_Month_Setup(True)  # neede for lists creating
-        Reply = self.Data.Load_Xlsx_Lists()
+        Reply = self.Data.Load_Xlsx_Lists_FromData()
         if Reply == OK:
-            self.Files_Loaded[Ix_Xls_Lists_Loaded] = LOADED
             self.Chat.Tx_Request([Origin, [ANY], XLSX_UPDATED, []])
             return True
         else:
-            # Msg = Message_Dlg(MsgBox_Err, Reply)
-            # Msg.wait_window()
-            # Launch Top_View_Message
-            # Top_View_Message(Reply)
             self.Top_Launcher(TOP_VIEW_MESS, TOP_SETTINGS, [Reply])
             return False
 
@@ -227,7 +233,7 @@ class Modules_Manager:
             Msg = Message_Dlg(MsgBox_Err, Reply)   # display 'ERROR... '
             Msg.wait_window()
 
-        self.Files_Loaded[Ix_Transact_Loaded] = LOADED
+        self.Data.Set_Files_Lodad(Ix_Transact_Loaded, True)
         self.Chat.Tx_Request([Origin, [ANY], TRANSACT_UPDATED, []])
         return Result
 

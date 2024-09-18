@@ -30,6 +30,7 @@ class Transact_Db(Xlsx_Manager):
     # --------------------------------------------------------------------------------------
     def Load_Transact_Table(self):
         self._Transact_Table = []
+        self._Files_Loaded[Ix_Transact_Loaded] = False
         connect = sqlite3.connect(self._Transact_DB_Filename)
         cursor  = connect.cursor()
         try:
@@ -40,6 +41,7 @@ class Transact_Db(Xlsx_Manager):
             connect.close()
             return 'ERROR\non loading Transactions'
 
+        self._Files_Loaded[Ix_Transact_Loaded] = True
         if not self._Transact_Table:
             return EMPTY
         return OK
