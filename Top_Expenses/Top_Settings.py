@@ -3,7 +3,7 @@
 #                        Settings  functions used essentially for developing                      #
 # ----------------------------------------------------------------------------------------------- #
 from Chat import Ms_Chat
-from Top_Expenses.Top_Codes_View import Top_View_Codes
+# from Top_Expenses.Top_Codes_View import Top_View_Codes
 from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
 from Widgt.Dialogs import File_Dialog
@@ -98,7 +98,7 @@ class Top_Settings(tk.Toplevel):
         self.Param_List = Param_List
         self.Dummy      = 0
         self.Files_List = []
-        self.Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
+        self.Top_List = self.Data.Get_Selections_Member(Ix_TOP_ToStart)
 
         self.ComboList = []
         self.StrVar     = tk.StringVar()
@@ -118,7 +118,7 @@ class Top_Settings(tk.Toplevel):
         self.Btn_Test_DBcodes  = TheButton(self, Btn_Def_En,  20, 155, 14, 'Check Codes DB',   self.Clk_Check_Codes_DB)
         self.Btn_View_Xlsx_Tot = TheButton(self, Btn_Def_En, 170, 155, 14, 'Show messages',    self.Clk_View_Msg)
 
-        self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'Show Txt List',     self.Clk_View_TxtList)
+        self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'Show Txt List',     self.Clk_View_Selections)
         self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En, 170, 200, 14, 'Chat Participants', self.Clk_View_Chat)
 
         self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'for test',         self.Clk_NotUsed)
@@ -169,15 +169,17 @@ class Top_Settings(tk.Toplevel):
     @classmethod
     def Clk_View_Msg(cls):
         Top_View_Message(['IL MIO MESSAGGIO\n1\n2\n3\n4'])
-        # self.Mod_Mngr.Top_Launcher(TOP_VIEW_MESS, TOP_SETTINGS, [])
+
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Chat(self):
         self.Chat.View_Partic()
 
-    def Clk_View_TxtList(self):
-        Total = self.Data.Get_Total_Rows()
-        Queries_List = self.Data.Get_Txt_Member(Ix_Query_List)
+    def Clk_View_Selections(self):
+        Total = [0, 0, 0]
+        if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
+            Total = self.Data.Get_Total_Rows()
+        Queries_List = self.Data.Get_Selections_Member(Ix_Query_List)
         Files_Status = []
         for Index in range (0, 4):
             Stat = self.Data.Get_Files_Loaded_Stat(Index)
@@ -192,11 +194,11 @@ class Top_Settings(tk.Toplevel):
 
         strText = ''
         strText +=     '-------------  Codes DB  -----------------\n'
-        strText += self.Data.Get_Txt_Member(Ix_Codes_File)
+        strText += self.Data.Get_Selections_Member(Ix_Codes_File)
         strText += '\n\n------------   Xlsx file  ----------------\n'
-        strText += self.Data.Get_Txt_Member(Ix_Xlsx_File)
+        strText += self.Data.Get_Selections_Member(Ix_Xlsx_File)
         strText += '\n\n-----------  Transactions DB  ------------\n'
-        strText += self.Data.Get_Txt_Member(Ix_Transact_File)
+        strText += self.Data.Get_Selections_Member(Ix_Transact_File)
         strText += '\n\n----------  Files status  ----------------\n'
         strText += strStat1 + '  ' + strStat2 + '  ' + strStat3 + '  ' + strStat4
         strText += '\n\n----------  Xlsx total rows   -------------\n'
@@ -221,29 +223,16 @@ class Top_Settings(tk.Toplevel):
 
     def Clk_Clear_Top(self):
         self.Top_List = []
-        self.Data.Update_Txt_File(self.Top_List, Ix_TOP_ToStart)
+        self.Data.Update_Selections(self.Top_List, Ix_TOP_ToStart)
         self.Part_Combo.SetSelText('')
 
     def Clk_Combo(self, Val):
         self.Top_List.append(Val)
-        self.Data.Update_Txt_File(self.Top_List, Ix_TOP_ToStart)
+        self.Data.Update_Selections(self.Top_List, Ix_TOP_ToStart)
 
     # --------------------------------------------------------------------------------------
     def Clk_Check_Codes_DB(self):
-        Multiple = self.Data.Check_Codesdatabase()
-        if not Multiple:
-            Len = self.Data.Get_TR_Codes_Table_Len()
-            Info = str(Len) + '   code records correctly checked out'
-            Message = Message_Dlg(MsgBox_Info, Info)
-        else:
-            Info = 'ERROR on checking out codes database\n\n'
-            for TRrecord in Multiple:
-                StrToserch = TRrecord[iTR_TRserc]
-                FullDescr = TRrecord[iTR_TRfullDes]
-                Info += StrToserch + '\n' + FullDescr + '\n\n'
-            Message = Message_Dlg(MsgBox_Err, Info)
-        Message.wait_window()
-        pass
+        self.Mod_Mngr.Check_Codes_Db()
 
     # ----------------------------------------------------------------------------------------
     def Clk_NotUsed(self):

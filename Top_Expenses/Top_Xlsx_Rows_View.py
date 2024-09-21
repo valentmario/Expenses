@@ -38,7 +38,7 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         TheButton(self, Btn_Def_En, 640, 950, 16, 'E X I T ', self.Call_OnClose)
 
         # --------------------------   Create Treeview Frame   ------------------------------------
-        self.Frame_Sheet_Rows = TheFrame(self, 20, 20, self.Clk_On_Sheet_Rows)
+        self.Frame_Sheet_Rows = TheFrame(self, 20, 20, self.Clk_On_Sheets_Row)
         self.Frame_Sheets_Rows_Setup()
         self.Frame_Sheet_Rows.Frame_View()
 
@@ -73,7 +73,7 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         self.Frame_Sheets_Rows_View()
 
     def Frame_Sheets_Rows_View(self):
-        XLS_Name  = Get_File_Name(self.Data.Get_Txt_Member(Ix_Xlsx_File))
+        XLS_Name  = Get_File_Name(self.Data.Get_Selections_Member(Ix_Xlsx_File))
         FrameText = ('     ' + XLS_Name + ':   ')
         Total = self.Data.Get_Total_Rows()
         FrameText += str(Total[Ix_Tot_OK]) + '  correct transactions   '

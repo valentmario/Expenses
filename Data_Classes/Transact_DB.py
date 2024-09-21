@@ -27,24 +27,52 @@ class Transact_Db(Xlsx_Manager):
     def Get_Xlsx_Transact_Ident(self):
         return [self._Xlsx_Conto, self._Xlsx_Year, self._Xlsx_Month, self._Transact_Year]
 
+
     # --------------------------------------------------------------------------------------
-    def Load_Transact_Table(self):
-        self._Transact_Table = []
-        self._Files_Loaded[Ix_Transact_Loaded] = False
-        connect = sqlite3.connect(self._Transact_DB_Filename)
+    def Load_Transact_Table(self, TransacFilename):
+        Result = self._Load_Transact_Tables(TransacFilename)
+        if Result != OK:
+            return Result
+        self._Files_Loaded[Ix_Transact_Loaded] = True
+        return OK
+
+    # -----------------------------------------------------------------------------------
+    def _Load_Transact_Tables(self, TransacFilename):
+        self._tTransact_Table = []
+        connect = sqlite3.connect(TransacFilename)
         cursor  = connect.cursor()
         try:
             cursor.execute("SELECT * FROM TRANSACT")
-            self._Transact_Table = cursor.fetchall()
+            self._tTransact_Table = cursor.fetchall()
             connect.close()
         except:
             connect.close()
             return 'ERROR\non loading Transactions'
 
-        self._Files_Loaded[Ix_Transact_Loaded] = True
+        self._Transact_Table = self._tTransact_Table
         if not self._Transact_Table:
             return EMPTY
         return OK
+
+
+    # --------------------------------------------------------------------------------------
+    # def Load_Transact_Table(self):
+    #     self._Transact_Table = []
+    #     self._Files_Loaded[Ix_Transact_Loaded] = False
+    #     connect = sqlite3.connect(self._Transact_DB_Filename)
+    #     cursor  = connect.cursor()
+    #     try:
+    #         cursor.execute("SELECT * FROM TRANSACT")
+    #         self._Transact_Table = cursor.fetchall()
+    #         connect.close()
+    #     except:
+    #         connect.close()
+    #         return 'ERROR\non loading Transactions'
+    #
+    #     self._Files_Loaded[Ix_Transact_Loaded] = True
+    #     if not self._Transact_Table:
+    #         return EMPTY
+    #     return OK
 
     # ---------------------------------------------------------------------------------------
     #                      0      1       2       3       4       5        6      7
@@ -176,7 +204,7 @@ class Transact_Db(Xlsx_Manager):
 
     # -------------------------------------------------------------------------------------------------------------
     def Get_Transact_Year_ListInData(self):
-        Full_Transact_filename = self._Txt_List[Ix_Transact_File]
+        Full_Transact_filename = self._Selections_List[Ix_Transact_File]
         if Full_Transact_filename == UNKNOWN:
             return []
         Directory  = Get_Dir_Name(Full_Transact_filename)

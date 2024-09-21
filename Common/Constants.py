@@ -8,19 +8,20 @@ BakGnd    = '#567688'     # for all widgets
 ForGnd    = "white"       # for all   " "
 PRINT_ENABLED = False     # To print or NOT
 
-DUAL_DISPLAY  = False
+DUAL_DISPLAY  = True
 if DUAL_DISPLAY:
-    Main_Wind_geometry     = '330x310+50+10'     # '330x310+3500+10'
-    Settings_geometry      = '330x400+50+370'    # '330x400+3500+370'
-    Top_Mngr_geometry      = '660x1000+1200+10'  # '660x1000+2840+10'
-    Top_View_geometry      = '840x1000+1950+10'
-    Top_GRcodes_geometry   = '830x1000+1900+10'
-    Top_Xlsx_View_geometry = '820x1000+340+10'   # '820x1000+2040+10'
-    Top_Insert_geometry    = '610x1000+1600+10'  # '610x1000+2870+10'
+    Main_Wind_geometry     = '330x310+1850+900'     # '330x310+1700+10'
+    Settings_geometry      = '330x400+1850+300'    # 330x400+1700+370
+    Top_Mngr_geometry      = '660x1000+2200+10'    # 660x1000+2100+10
+    Top_View_geometry      = '840x1000+3400+10'
+    Top_View_Mess_geometry = '450x470+600+10'
+    Top_GRcodes_geometry   = '830x1000+2600+10'
+    Top_Xlsx_View_geometry = '820x1000+3400+10'   # '820x1000+2040+10'
+    Top_Insert_geometry    = '610x1000+2300+10'  # '610x1000+2870+10'
     #                             1 Frame               2 Frames           3 Frames
-    Top_Query_geometry     = ['640x1000+1340+10', '1060x1000+920+10', '1500x1000+480+10']
-                           # ['640x1000+2840+10', '1060x1000+2420+10', '1500x1000+1980+10']
-    Top_Balances_geometry  = ['820x1000+340+10']
+    Top_Query_geometry     = ['630x1000+1060+10', '1060x1000+640+10', '1500x1000+200+10']
+                           # ['630x1000+1060+10', '1060x1000+640+10', '1500x1000+200+10']
+
 else:
     Main_Wind_geometry     = '330x310+1580+1'
     Settings_geometry      = '330x390+1580+360'
@@ -58,7 +59,6 @@ ANY            = 'All Modules     '
 
 # Checkes to be maade before a Tolevel launch
 CEK_CODES      = 'Check codes DB     '
-CEK_XLSX_ROWS  = 'Check xlsx rows-list '
 CEK_XLSX_LIST  = 'Check xlsx lists   '
 CEK_TRANSACT   = 'Check transactions '
 
@@ -66,7 +66,7 @@ LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
                     [TOP_MNGR,          [CEK_CODES]],   # ,  CEK_XLSX_LIST]],
                     [TOP_CODES_VIEW,    [CEK_CODES]],
                     [TOP_GR_MNGR,       [CEK_CODES]],
-                    [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX_ROWS]],
+                    [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX_LIST]],
                     [TOP_INS,           [CEK_CODES,  CEK_XLSX_LIST]],
                     [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TRANSACT]],
                     [TOP_QUERY,         [CEK_CODES,  CEK_TRANSACT]],
@@ -80,7 +80,7 @@ Ix_TopName  = 1
 CODE_TO_CLOSE        = 'Close window'
 CODE_SHOW_PARTIC_LIST= 'Show Participants List'     # Show Chat Participants List
 
-UPDATE_FILES_NAME   = 'Update files names text'     # only for Main_Widow Set_Files_Names_Text()
+UPDATE_FILES_NAME   = 'Update Selections'           # only for Main_Widow Set_Selections()
 CODE_CLK_ON_TR_CODES= 'Clicked Row with TR Codes'   # Clkd on Codes_DB Record Values = [TRcode]
 CODE_CLIK_ON_XLSX   = 'Clkded On_Xlsx_Tree  '       # Clkd on Xlsx Row  Value = [nRow, Data_Valuta]
 CODE_CLEAR_FOCUS    = 'Clear Focus   '
@@ -91,6 +91,8 @@ TRANSACT_UPDATED    = 'Transactions updated'
 MULTI_MATCH         = 'Multple StrToSearc matching'
 
 CODE_CLIK_ONTREE    = 'Code_Clkd_on_Tree'            # For Testing ONLY
+
+ON_SELECTIONS       = 'Filename in Selections'
 
 # Launch_List [OK-NOK, [parameters_List]
 iLaunch_Start       = 0     # Init  OK/NOK
@@ -119,9 +121,10 @@ ALL_CODES   = 'All codes'
 ALL_GROUPS  = 'All groups'
 ALL_CAT     = 'All categories'
 
-Txt_File_Dir_Name    = '/home/mario/aExpen_Init'
-Txt_File_Full_Name   = '/home/mario/aExpen_Init/Txt_File.txt'
-Default_Init_Dir     = '/'
+Selections_Dir_Name    = '/home/mario/aExp_Selections'
+Selections_Full_Name   = '/home/mario/aExp_Selections/Selections'
+# Default_Init_Dir     = '/home/mario'
+Default_Init_Dir       = '/home/mario/bXLSX_Files/FIDEU/FIDEU_2023'
 
 # Txt File Items Indexes  ----------------------------
 Ix_Codes_File    = 0
@@ -142,9 +145,8 @@ Ix_Query_CAsel     = 5
 # Used on Modules Mananager To Load Files only once
 # at startup or after a file selection
 Ix_Codes_Loaded      = 0
-Ix_Xlsx_Rows_Loaded  = 1
-Ix_Xlsx_Lists_Loaded = 2
-Ix_Transact_Loaded   = 3
+Ix_Xlsx_Lists_Loaded = 1
+Ix_Transact_Loaded   = 2
 
 # =============================================================
 #             WIDGETS  CONSTANTS                              =
@@ -390,12 +392,12 @@ Queries_nMonts_xTree = {ONE_MONTH:1, TWO_MONTHS:1, THREE_MONTHS:1, FOUR_MONTHS:2
 
 # -----------------------------------------------------------------------------------------------------------
                         #   --- Items ---
-Default_TxtFile_List = [UNKNOWN,                            # 0 Ix_Codes_File
-                        UNKNOWN,                            # 1 Ix_Xlsx_File
-                        'Sheet Name',                       # 2 Ix_Sheet_Name    ----- Elements  -----
-                        UNKNOWN,                            # 3 Ix_Transact_File [Year,Conto, Mon,Tot,
-                        [FIDEU, JAN, ONE_MONTH,             # 4 Query  [Conto, Month, Tot, ...
-                         ALL_CODES, ALL_GROUPS, ALL_CAT],   #   TR GR CA  selected]
-                        [] ]                                # 5 Top to start
+Default_Selections_List = [UNKNOWN,                           # 0 Ix_Codes_File
+                           UNKNOWN,                           # 1 Ix_Xlsx_File
+                          'Sheet Name',                       # 2 Ix_Sheet_Name    ----- Elements  -----
+                           UNKNOWN,                           # 3 Ix_Transact_File [Year,Conto, Mon,Tot,
+                          [FIDEU, JAN, ONE_MONTH,             # 4 Query  [Conto, Month, Tot, ...
+                           ALL_CODES, ALL_GROUPS, ALL_CAT],   #   TR GR CA  selected]
+                          [] ]                                # 5 Top to start
 
 # ===========================================================================================================

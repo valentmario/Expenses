@@ -49,7 +49,7 @@ class Main_Window(tk.Tk):
         self.Txt1 = TheText(self, Txt_Disab, 20, 20, 36, 6, '')
 
         # --------------------------------------------------------------------------
-        self.Mod_Mngr.Cek_Create_Txt_File()    # Check or Create Files_Names.txt
+        self.Mod_Mngr.Cek_Create_Selections()    # Check or Create Selections file
         if not self.Mod_Mngr.Init_Codes(MAIN_WIND):
             pass
         # ---------------------------------------------------------------------------
@@ -72,7 +72,7 @@ class Main_Window(tk.Tk):
         self.Btn_Query= TheButton(self, Btn_Col_En, 170, 200, 14, 'Queries',         self.Clk_Queries)
         self.Exit     = TheButton(self, Btn_Bol_En,  24, 250, 27, '  E X I T   ',    self.Call_OnClose)
 
-        self.Set_Files_Names_Text()     # Set Txt1 for Files names and selections
+        self.Set_Selections()     # Set Selections file
         self.Top_Level_Start()
         PRINT('Start Main_Wind ms:  ' + str(self.Chat.Get_Elapsed_Time()))
         self.mainloop()
@@ -88,7 +88,7 @@ class Main_Window(tk.Tk):
         if Request_Code == CODE_SHOW_PARTIC_LIST:
             self.Chat.View_Partic()
         if Request_Code == UPDATE_FILES_NAME:
-            self.Set_Files_Names_Text()
+            self.Set_Selections()
 
     # -----------------------------------------------------------------------------------
     def Clk_Settings(self):
@@ -107,8 +107,8 @@ class Main_Window(tk.Tk):
         self.Mod_Mngr.Top_Launcher(TOP_QUERY, MAIN_WIND, [])
 
     # -----------------------------------------------------------------------------------
-    def Set_Files_Names_Text(self):     # Set text for Files Names and selections
-        Full_Codes_DB_Filename = self.Data.Get_Txt_Member(Ix_Codes_File)
+    def Set_Selections(self):     # Set file Selections
+        Full_Codes_DB_Filename = self.Data.Get_Selections_Member(Ix_Codes_File)
         if Full_Codes_DB_Filename == UNKNOWN:
             Codes_Filename = UNKNOWN
         else:
@@ -117,7 +117,7 @@ class Main_Window(tk.Tk):
             else:
                 Codes_Filename = 'Codes filename NOT OK'
         # -----------------------------------------------------------
-        Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
+        Full_Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
         if Full_Xlsx_Filename == UNKNOWN:
             Xlsx_Filename = UNKNOWN
         else:
@@ -126,7 +126,7 @@ class Main_Window(tk.Tk):
             else:
                 Xlsx_Filename = 'Xlsx filename NOT OK'
         # -------------------------------------------------------------
-        Full_Transact_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
+        Full_Transact_Filename = self.Data.Get_Selections_Member(Ix_Transact_File)
         if Full_Transact_Filename == UNKNOWN:
             Transact_Filename = UNKNOWN
         else:
@@ -139,7 +139,7 @@ class Main_Window(tk.Tk):
                        "\nxlsx:           " + Xlsx_Filename + \
                        "\nTransact:   " + Transact_Filename +'\n'
 
-        Query_List  = self.Data.Get_Txt_Member(Ix_Query_List)
+        Query_List  = self.Data.Get_Selections_Member(Ix_Query_List)
         Values         = []
         for ix in range(Ix_Query_Conto, Ix_Query_CAsel+1):       # setup values for queries
             Values.append(Query_List[ix])
@@ -158,7 +158,7 @@ class Main_Window(tk.Tk):
 
  # ---------------------------------------------------------------------------------------
     def Top_Level_Start(self):
-        Top_List = self.Data.Get_Txt_Member(Ix_TOP_ToStart)
+        Top_List = self.Data.Get_Selections_Member(Ix_TOP_ToStart)
         for Item in Top_List:
             self.Mod_Mngr.Top_Launcher(Item, MAIN_WIND, [])
             pass

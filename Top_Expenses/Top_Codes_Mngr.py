@@ -53,7 +53,7 @@ class Top_Mngr(Super_Top_Mngr):
 
         # ----------------------------------    B U T T O N S     ---------------------------------
         self.BtnSelCod = TheButton(self, Btn_Def_En,  60, 860, 22, 'Select Codes DB ', self.Clk_Sel_Codes)
-        self.BtnView   = TheButton(self, Btn_Def_Dis, 60, 900, 22, 'Show Transact Codes', self.Clk_View_Codes)
+        self.BtnView   = TheButton(self, Btn_Def_En,  60, 900, 22, 'Show Transact Codes', self.Clk_View_Codes)
         self.BtnGRmngr = TheButton(self, Btn_Def_Dis, 60, 940, 22, 'Groups Codes',      self.Clk_GR_Mngr)
 
         self.BtnDel    = TheButton(self, Btn_Def_Dis,286, 772, 18, 'Delete Last Record',self.Clk_Delete_Record)
@@ -138,7 +138,7 @@ class Top_Mngr(Super_Top_Mngr):
             self.Frame_WithCodes.Frame_View()
             self.Frame_NoCodes.Frame_Hide()
         else:
-            XlsxFilename     = Get_File_Name(self.Data.Get_Txt_Member(Ix_Xlsx_File))
+            XlsxFilename     = Get_File_Name(self.Data.Get_Selections_Member(Ix_Xlsx_File))
             Total            = self.Data.Get_Total_Rows()
             Total_WthoutCode = Total[Ix_Tot_Without_Code]
             Total_WithCode   = Total[Ix_Tot_WithCode]
@@ -204,8 +204,8 @@ class Top_Mngr(Super_Top_Mngr):
     def Set_Btn_Status(self):
         Status = False
         if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):
-            Status = True
-        self.BtnView.Btn_Set_Status(Status)
+            if not self.Data.Get_Multiple_List():
+                Status = True
         self.BtnGRmngr.Btn_Set_Status(Status)
         self.BtnDel.Btn_Set_Status(Status)
         self.BtnAddNew.Btn_Set_Status(Status)
@@ -220,22 +220,26 @@ class Top_Mngr(Super_Top_Mngr):
         self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 21,
                                   self.ComboList, 'Select  Group', self.Clk_Combo)
 
-        Status = False
+        StatusLoad = False
         if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
-            Status = True
+            StatusLoad = True
         self.BtnViXlsx.Btn_Set_Status(Status)
         self.BtnVWithC.Btn_Set_Status(Status)
 
-        TotalRows = self.Data.Get_Total_Rows()
-        if TotalRows[Ix_Tot_WithCode] == 0 and \
-           TotalRows[Ix_Tot_Without_Code] == 0:
+        if StatusLoad:
+            TotalRows = self.Data.Get_Total_Rows()
+            if TotalRows[Ix_Tot_WithCode] == 0 and \
+               TotalRows[Ix_Tot_Without_Code] == 0:
+                self.BtnInsert.Btn_Disable()
+            elif TotalRows[Ix_Tot_Without_Code] == 0:
+                self.BtnInsert.Btn_Enable()
+        else:
             self.BtnInsert.Btn_Disable()
-        elif TotalRows[Ix_Tot_Without_Code] == 0:
-            self.BtnInsert.Btn_Enable()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_Codes(self):
         if self.Mod_Mngr.Sel_Codes(TOP_MNGR):
+            self.Mod_Mngr.Check_Codes_Db()
             self.Set_Btn_Status()
             pass
 
@@ -248,7 +252,7 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
-        self.Data.Load_Xlsx_Rows_FromSheet()
+        self.Data.Load_Xlsx_Lists()
         self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_MNGR, [])
         pass
 
@@ -261,17 +265,17 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Reqst_Clkd_On_TRcode(self, TRcode):
-        if self.Mod_Mngr.Files_Loaded != LOADED:
-            self.View_Descr_Text(TRcode, self.GR_Combo)
-            self.Clicked_Mod_Code = 2
-            self.BtnUpdate.Set_Btn_State(Btn_Enab)
-            return
+        # if self.Mod_Mngr.Files_Loaded != LOADED:
+        #     self.View_Descr_Text(TRcode, self.GR_Combo)
+        #     self.Clicked_Mod_Code = 2
+        #     self.BtnUpdate.Set_Btn_State(Btn_Enab)
+        #     return
         self.Frame_WithCodes.Clear_Focus()
         self.Clear_Texts()
         Index = -1
         TrCodInt = int(TRcode)
         self.Load_Trees()
-        WithList = self.Data.Get_With_Code_Tree_List
+        WithList = self.Data.Get_With_Code_Tree_List()
         for Rec in WithList:
             Index += 1
             if Rec[iWithCode_TRcode] == TrCodInt:
@@ -371,19 +375,6 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Ceck_Codes_DB(self):
-        Multiple = self.Data.Check_Codesdatabase()
-        if not Multiple:
-            Len = self.Data.Get_TR_Codes_Table_Len()
-            Info = str(Len)  + '   code records correctly checked out'
-            Message = Message_Dlg(MsgBox_Info, Info)
-        else:
-            Info = 'ERROR on checking out codes database\n\n'
-            for TRrecord in Multiple:
-                StrToserch = TRrecord[iTR_TRserc]
-                FullDescr  = TRrecord[iTR_TRfullDes]
-                Info += StrToserch + '\n' + FullDescr +'\n\n'
-            Message = Message_Dlg(MsgBox_Err, Info)
-        Message.wait_window()
-        pass
+        self.Mod_Mngr.Check_Codes_Db()
 
 # ==============================================================================================================

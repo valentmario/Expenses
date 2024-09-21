@@ -30,6 +30,8 @@ class Top_View_Codes(tk.Toplevel):
         self.configure(background=BakGnd)
 
         self.Result = Result
+        myList = self.Data.Tree_Codes_View_List
+        pass
         if Codes_List:
             self.Codes_List = self.Data.Create_CodesTable_FromTR(Codes_List)
         else:

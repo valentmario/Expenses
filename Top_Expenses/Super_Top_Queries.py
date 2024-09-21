@@ -165,7 +165,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
         Texto = '(sel) Year:   ' +str(self.Year_Selected)
         self.Btn_Clk_Year.Set_Text(Texto)
-        Queries_Sel = self.Data.Get_Txt_Member(Ix_Query_List)
+        Queries_Sel = self.Data.Get_Selections_Member(Ix_Query_List)
         self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
         self.Month_Selected = Queries_Sel[Ix_Query_Month]
         self.Tot_Selected   = Queries_Sel[Ix_Query_TotMonths]
@@ -188,11 +188,11 @@ class Super_Top_Queries(tk.Toplevel):
     def Update_Sel_onTxt(self):
         QueryList = [self.Conto_Selected, self.Month_Selected, self.Tot_Selected,
                      self.TRselected,     self.GRselected,     self.CAselected ]
-        self.Data.Update_Txt_File(QueryList, Ix_Query_List)
+        self.Data.Update_Selections(QueryList, Ix_Query_List)
 
     # -------------------------------------------------------------------------------------------------------------
     def Get_Transact_Year_List(self):
-        Full_Transact_filename = self.Data.Get_Txt_Member(Ix_Transact_File)
+        Full_Transact_filename = self.Data.Get_Selections_Member(Ix_Transact_File)
         Directory  = Get_Dir_Name(Full_Transact_filename)
         Files_List = os.listdir(Directory)
         Years_List = []
@@ -210,11 +210,11 @@ class Super_Top_Queries(tk.Toplevel):
 
     # -------------------------------------------------------------------------------------------------------------
     def Set_OnTxt_TR_GR_Sel(self):
-        QueriesSel = self.Data.Get_Txt_Member(Ix_Query_List)
+        QueriesSel = self.Data.Get_Selections_Member(Ix_Query_List)
         QueriesSel[Ix_Query_TRsel] = self.TRselected
         QueriesSel[Ix_Query_GRsel] = self.GRselected
         QueriesSel[Ix_Query_CAsel] = self.CAselected
-        self.Data.Update_Txt_File(QueriesSel, Ix_Query_List)
+        self.Data.Update_Selections(QueriesSel, Ix_Query_List)
 
     # -------------------------------------------------------------------------------------------------------------
     def Set_All_Select(self):
@@ -272,7 +272,7 @@ class Super_Top_Queries(tk.Toplevel):
             self.TRselected = ''
             self.GRselected = ''
             self.CAselected = ''
-            Top_View_Codes(self.TR_List)
+            Top_View_Codes(True, self.TR_List)
         self.Update_Sel_onTxt()
         self.Trees_Update()
 

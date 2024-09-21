@@ -152,21 +152,12 @@ def TestForSign(Sign, FoundNotZ):
 
 # -------------------------------------------------------------------------------------------------------------
 def Convert_To_Float(Value):
-    flVal      = Value
     Type = type(Value)
     if Type is float:
         return Value
     if Type is int:
         return float(Value)
     return 0.00
-
-    # flVal      = Value
-    # Type = type(Value)
-    # if Type is str or Type is None:
-    #     return 0.00
-    # if type(Value) is int:
-    #     flVal = float(Value)
-    # return flVal
 
 # ---------------------------------------------------------------------------------------
 def Float_ToString_Setup(Val):

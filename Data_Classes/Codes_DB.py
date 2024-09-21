@@ -44,15 +44,24 @@ class Codes_db(Files_Names_Manager):
                     FullDescr = Rec[iTR_TRfullDes]
                     if StrForSearc_in_Fulldescr(StrToCek, FullDescr):
                         self._Multiple_Maching_List.append(Rec)
+                        print(Rec_To_Check)
+                        print(Rec)
+                        print('')
+                        pass
         return self._Multiple_Maching_List
+
+    def Get_Multiple_List(self):
+        return self._Multiple_Maching_List
+
+
     # -------------------------------------------------------------------------------------- #
     #      public methods invoked outside from  Top_Codes  classes                           #
     # -------------------------------------------------------------------------------------- #
     def Load_Codes_Table(self, CodesFilename):
         Result = self._Load_Codes_Tables(CodesFilename)
         if Result != OK:
-            self._Files_Loaded[Ix_Codes_Loaded] = False
             return Result
+
         self._Files_Loaded[Ix_Codes_Loaded] = True
         return OK
 
@@ -137,17 +146,12 @@ class Codes_db(Files_Names_Manager):
 
     # -------------------------------------------------------------------------------------- #
     #      private  _methods invoked only inside  the data classes  chain                    #
+    #    in case of error on loading TR-GR-CA Tables nothing is changed                      #
     # -------------------------------------------------------------------------------------- #
     def _Load_Codes_Tables(self, CodesFilename):
-        self._TR_Codes_Table  = []  # TRCode GRcode   SPcode   TRdesc  StrToSear  FullDesc
-        self._GR_Codes_Table  = []  # GRcode GRdescr  CAcode
-        self._CA_Codes_Table  = []  # CAcode CAdescr
-
-        self.Tree_Codes_View_List         = []
-        self.Tree_Codes_View_List_Ordered = []
-
-        self.GR_Codes_Ordered  = []
-        self._CA_Codes_Ordered = []
+        self._tTR_Codes_Table  = []  # TRCode GRcode   SPcode   TRdesc  StrToSear  FullDesc
+        self._tGR_Codes_Table  = []  # GRcode GRdescr  CAcode
+        self._tCA_Codes_Table  = []  # CAcode CAdescr
 
         self.CodesFilename = CodesFilename
         if not CodesFilename:
@@ -162,29 +166,35 @@ class Codes_db(Files_Names_Manager):
         cursor = connect.cursor()
         try:
             cursor.execute("SELECT * FROM TRANSACT_CODES")
-            self._TR_Codes_Table = cursor.fetchall()
+            self._tTR_Codes_Table = cursor.fetchall()
         except:
             connect.close()
             return 'Transations Codes ERROR'
         try:
             cursor.execute("SELECT * FROM GROUP_CODES")
-            self._GR_Codes_Table = cursor.fetchall()
+            self._tGR_Codes_Table = cursor.fetchall()
         except:
             connect.close()
             return 'Groups table ERROR'
         try:
             cursor.execute("SELECT * FROM CATEGORY_CODES")
-            self._CA_Codes_Table = cursor.fetchall()
+            self._tCA_Codes_Table = cursor.fetchall()
         except:
             connect.close()
             return 'Categories table ERROR'
         connect.close()
 
-        if not self._TR_Codes_Table or not self._GR_Codes_Table or not self._CA_Codes_Table:
+        if not self._tTR_Codes_Table or not self._tGR_Codes_Table or not self._tCA_Codes_Table:
             return 'Codes tables EMPTY'
 
         # Create the TR_Code_Table with TRcode, TRdrsc , GRcode as in Codes_DB_yyyy-mm-dd.db
         # then update GRdesc, CAcode, CAdesc as in GR_Table and in CA_Table
+        self._TR_Codes_Table = self._tTR_Codes_Table
+        self._GR_Codes_Table = self._tGR_Codes_Table
+        self._CA_Codes_Table = self._tCA_Codes_Table
+
+        self.Tree_Codes_View_List         = []
+        self.Tree_Codes_View_List_Ordered = []
 
         Index = -1
         self._TR_Codes_Full = []
@@ -215,9 +225,9 @@ class Codes_db(Files_Names_Manager):
 
     # -----------------------------------------------------------------------
     def _GR_CA_Lists_Order(self):
-        GR_Codes_List_Copy    = self._GR_Codes_Table.copy()
-        self.GR_Codes_Ordered = List_Order(GR_Codes_List_Copy, iGR_GRdesc)
-        CA_Codes_Table_Copy   = self._CA_Codes_Table.copy()
+        GR_Codes_List_Copy     = self._GR_Codes_Table.copy()
+        self.GR_Codes_Ordered  = List_Order(GR_Codes_List_Copy, iGR_GRdesc)
+        CA_Codes_Table_Copy    = self._CA_Codes_Table.copy()
         self._CA_Codes_Ordered = List_Order(CA_Codes_Table_Copy, iCA_CAdesc)
 
     # -------------------------------------------------------------------------
@@ -394,7 +404,6 @@ class Codes_db(Files_Names_Manager):
         for TRrecord in self._TR_Codes_Table:
             StrToSearc = TRrecord[iTR_TRserc]
 
-            # if self.ChecK_StrToSearch(StrToSearc, Full_Desc):
             if StrForSearc_in_Fulldescr(StrToSearc, Full_Desc):
                 nFound += 1
                 Found_List.append(TRrecord)
@@ -410,7 +419,8 @@ class Codes_db(Files_Names_Manager):
             for Rec in Found_List:
                 #print(Rec)
                 strCode = str(Rec[iTR_TRcode])
-                Texto = 'Code: ' + strCode + ' Descr: ' + Rec[iTR_TRdesc] + '\n'  + 'string for search: ' + Rec[iTR_TRserc] + '\n\n' #  strCode + '  Descr: ' + Rec[iTR_TRdesc] + '\nFor search: ' + Rec[iTR_TRserc] + '\n' )
+                Texto   = 'Code: ' + strCode + ' Descr: ' + Rec[iTR_TRdesc] + '\n'
+                Texto += 'string for search: ' + Rec[iTR_TRserc] + '\n\n'
                 ErrMsg += Texto
                 pass
             return [NOK, ErrMsg]

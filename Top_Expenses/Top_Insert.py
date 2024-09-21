@@ -84,7 +84,7 @@ class Top_Insert(tk.Toplevel):
 
         self.Tree_Transact_Title      = ''
         self.Transact_InDatabase_List = []
-        self.Full_Filename_For_Insert = self.Data.Get_Txt_Member(Ix_Transact_File)
+        self.Full_Filename_For_Insert = self.Data.Get_Selections_Member(Ix_Transact_File)
 
         self.Txt_TransactYear = TheText(self, Txt_Disab,  20,  20, 18, 1, '')
         self.Txt_Xlsx_Year    = TheText(self, Txt_Disab, 200,  20, 19, 1, '')
@@ -228,11 +228,11 @@ class Top_Insert(tk.Toplevel):
         self.intYear     = self.Files_Ident[Ix_Xlsx_Year]
         self.intMonth    = self.Files_Ident[Ix_Xlsx_Month]
 
-        Full_Transact_Name = self.Data.Get_Txt_Member(Ix_Transact_File)
+        Full_Transact_Name = self.Data.Get_Selections_Member(Ix_Transact_File)
         Transact_Name      = Get_File_Name(Full_Transact_Name)
         self.Txt_TransactYear.Set_Text(Transact_Name)
 
-        Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
+        Full_Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
         Xlsx_Filename      = Get_File_Name(Full_Xlsx_Filename)
         self.Txt_Xlsx_Year.Set_Text(Xlsx_Filename)
 
@@ -251,7 +251,7 @@ class Top_Insert(tk.Toplevel):
         Msg_Dlg = Message_Dlg(MsgBox_Info, Messg)
         Msg_Dlg.wait_window()
 
-        Curr_Full_Filename = self.Data.Get_Txt_Member(Ix_Transact_File)
+        Curr_Full_Filename = self.Data.Get_Selections_Member(Ix_Transact_File)
         Dir_Name           = Get_Dir_Name(Curr_Full_Filename)
         Full_Filename      = Dir_Name + newTransact_Filename
         File_Exists        = os.path.isfile(Full_Filename)
@@ -261,7 +261,7 @@ class Top_Insert(tk.Toplevel):
             MsgDlg = Message_Dlg(MsgBox_Err, Messg)
             MsgDlg.wait_window()
             return False
-        self.Data.Update_Txt_File(Full_Filename, Ix_Transact_File)
+        self.Data.Update_Selections(Full_Filename, Ix_Transact_File)
         self.Data.Transact_Year_Setup(True)
         self.Set_Texts()
         return self.Mod_Mngr.Init_Transactions(TOP_INS)
@@ -280,7 +280,7 @@ class Top_Insert(tk.Toplevel):
                 Msg = Message_Dlg(MsgBox_Info, ('New:  ' + str(Year) +
                                                 '\nTransactions Db created'))
                 Msg.wait_window()
-                self.Data.Update_Txt_File(Full_Name, Ix_Transact_File)
+                self.Data.Update_Selections(Full_Name, Ix_Transact_File)
                 self.Data.Transact_Year_Setup(True)
                 self.Chat.Tx_Request([TOP_INS, [MAIN_WIND], UPDATE_FILES_NAME, []])
                 return True
@@ -301,32 +301,6 @@ class Top_Insert(tk.Toplevel):
                        RecWithCode[iWithCode_Addeb],
                        RecWithCode[iWithCode_TRcode]]
         return RecToInsert
-
-    # -------------------------------------------------------------------------------------------------
-    # The case of two identical records (Dates, value, Code etc.)
-    # (for example ATM withdrawals at the same day for the same values)
-    # Xlsx must be adjustad manually; i.e. for two 100€ Xlsx must be modified manually:
-    # in 99.99 and 100.1
-    # nRow    Contab    Valuta    TR_Desc   Accred   Addeb   TRcode
-    # -------------------------------------------------------------------------------------------------
-    # def Check_For_Multiple_Record_OnWitCodeList(self, RecToCheck):
-    #     nFound = 0
-    #     Rec    = None
-    #     for Rec in self.WithList:
-    #         Index = 0
-    #         for Item in Rec:
-    #
-    #
-    #         if Rec == RecToCheck:
-    #             nFound += 1
-    #     if nFound == 1:
-    #         return False
-    #     else:
-    #         Message = 'Row: ' + str(Rec[iWithCode_nRow]) + \
-    #                   '\nfound in more records WitCode List\nAdjust records\nExit '
-    #         Dlg_Msg = Message_Dlg(MsgBox_Err, Message)
-    #         Dlg_Msg.wait_window()
-    #         return True
 
     # -------------------------------------------------------------------------------------------------
     def Create_RecordsList_ToBeInserted(self):

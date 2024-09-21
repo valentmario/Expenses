@@ -3,14 +3,9 @@
 # ================================================================================= #
 
 import tkinter as tk
-from mailbox import Message
 
 from Common.Common_Functions import *
 from Chat import Ms_Chat
-from Data_Classes.Transact_DB import Data
-
-from Widgt.Dialogs import Print_Received_Message
-from Widgt.Tree_Widg import TheFrame
 from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheTextPoints
 

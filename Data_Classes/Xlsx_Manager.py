@@ -13,13 +13,8 @@ class Xlsx_Manager(Codes_db):
     def __init__(self):
         super().__init__()
 
-        self._Tot_RowsList  = [0, 0, 0]
-        self._Tot_OK        = 0
-        self._Tot_Rows = 0
-        self._Tot_NOK  = 0
-
-        # the lists for xlsx file   -----------------------------------------
-        self.Contab = None                       # the rows of xls file
+        # one row on xlsx file   ---------------------------------------------------------------
+        self.Contab = None
         self.Valuta = None
         self.Des1   = None
         self.Accr   = None
@@ -30,16 +25,35 @@ class Xlsx_Manager(Codes_db):
         self.ItemToCheck = [99,   1,      2,    99,      4,    5,    6]
         self.strList     = ['Row.    ',  'Contab: ', 'Valuta: ', 'Descr:  ', 'Accr:   ', 'Addeb:  ', '']
 
-        #                                     A      B      C      D      E     F
-        self._XLSX_Rows_From_Sheet  = []  # Contab Valuta Descr1 Accred Addeb Descr2
+        # ------------------------             A      B      C      D      E     F  ---------------
+        self._Xlsx_Rows_From_Sheet   = []  # Contab Valuta Descr1 Accred Addeb Descr2
         self._XLSX_Rows_Desc_Compact = []
         self._Xlsx_Rows_NOK_List     = []
         #
-        self._With_Code_Tree_List   = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
-        self._Wihtout_Code_Tree_List= []  # nRow Valuta Descr
-
-    # -----------------------------------------------------------------------------------
-
+        self._With_Code_Tree_List    = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
+        self._Wihtout_Code_Tree_List = []  # nRow Valuta Descr
+        # ------------------------
+        self._Tot_Rows = 0
+        self._Tot_OK = 0
+        self._Tot_NOK = 0
+        self._iYear_List = []
+        # -------   _t : temporary attributes  that will be coied on _Att  if all OK  -------------
+        self._tXLSX_Rows_From_Sheet    = []
+        self._tXLSX_Rows_Desc_Compact  = []
+        self._tXlsx_Rows_NOK_List      = []
+        #
+        self._tWith_Code_Tree_List     = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
+        self._tWihtout_Code_Tree_List  = []
+        # ------------------------
+        self._tTot_Rows   = 0
+        self._tTot_OK     = 0
+        self._tTot_NOK    = 0
+        self._tiYear_List = []
+        # -----------------------------------------------------------------------------------------
+        self._tXlsx_Conto    = None  # or on selecting new file  FIDEU_2024_01.xlsx
+        self._tXlsx_Year     = None  # they are  calculated on startup
+        self._tXlsx_Month    = None
+        self._tTransact_Year = None
 
     # ----------------------------------------------------------------------------------- #
     #            ----------------      public   methods   -----------------               #
@@ -50,23 +64,28 @@ class Xlsx_Manager(Codes_db):
     def Get_WithoutCodeList(self):
         return self._Wihtout_Code_Tree_List
 
-    def Get_XLSX_Rows_From_Sheet(self):
-        return self._XLSX_Rows_From_Sheet
+    def Get_Xlsx_Rows_From_Sheet(self):
+        return self._Xlsx_Rows_From_Sheet
 
-    def Xlsx_Conto_Year_Month_Setup(self, Action):
+    def Xlsx_Conto_Year_Month_Setup(self, Action, Filename):
         # FIDEU_2024_01.xlsx
+        File_Name = Filename
+        if not Filename:
+            File_Name = self._Xlsx_Filename
+
         if not Action:
-            self._Xlsx_Conto = None
-            self._Xlsx_Year  = None
-            self._Xlsx_Month = None
+            self._tXlsx_Conto = None
+            self._tXlsx_Year  = None
+            self._tXlsx_Month = None
         else:
             # Here Codes tables  are OK and the xlsx_finame too
-            FullFilename = self.Get_Txt_Member(Ix_Xlsx_File)
+            FullFilename = File_Name  # self.Get_Selections_Member(Ix_Xlsx_File)
             if FullFilename != UNKNOWN:
                 filename = Get_File_Name(FullFilename)
-                self._Xlsx_Conto = filename[0:5]
-                self._Xlsx_Year  = int(filename[6:10])
-                self._Xlsx_Month = int(filename[11:13])
+                self._tXlsx_Conto = filename[0:5]
+                self._tXlsx_Year  = int(filename[6:10])
+                self._tXlsx_Month = int(filename[11:13])
+                pass
 
     # -------------------------------------------------------------------------------------------------
     # The case of two identical records (Dates, value, Code etc.)
@@ -111,88 +130,67 @@ class Xlsx_Manager(Codes_db):
     def Transact_Year_Setup(self, Action):
         # Transact_2023.db
         if not Action:
-            self._Transact_Year = None
+            self._tTransact_Year = None
         else:
             # Here Codes tables  are OK and the xlsx_finame too
-            FullFilename = self.Get_Txt_Member(Ix_Transact_File)
+            FullFilename = self.Get_Selections_Member(Ix_Transact_File)
             if FullFilename != UNKNOWN:
                 filename = Get_File_Name(FullFilename)
-                self._Transact_Year  = int(filename[9:13])
+                self._tTransact_Year  = int(filename[9:13])
 
-
-
-    # ---------------------   O L D  ---------------------------------
-    def Load_Xlsx_Lists(self):
-        self._Tot_OK                 = 0
-        self._XLSX_Rows_From_Sheet   = []  # nRow Contab Valuta  Descr1  Accred Addeb Descr2
-        self._XLSX_Rows_Desc_Compact  = []
-        self._With_Code_Tree_List     = []  # nRow Contab Valuta TRcode TRdesc  Accred  Addeb
-        self._Wihtout_Code_Tree_List  = []  # nRow Valuta  Descr
-
-        Result = self._Load_XLS_Rows_From_Sheet()     # get rows from sheet
-        if Result != OK:
-            return Result
-        Result = self._Create_Xlsx_Lists()   # build lists for trees
-        if Result != OK:
-            return Result
-        #                    [Ix__Tot_OK,   Ix_Tot_WithCode,    Ix_Tot_Without_Code]
-        self._Tot_RowsList = [self._Tot_OK, len(self._With_Code_Tree_List), len(self._Wihtout_Code_Tree_List)]
-        return OK
-
-    def Get_Total_Rows(self):
-        return self._Tot_RowsList
-
-
-    # =========================================================================================
-    # The xlsx file contains Rows that are loaded in    self._XLSX_Rows_From_Sheet
-    # used on Top_Xlsx_Rows_View
-    # Then are created   -  self._With_Code_Tree_List   -  self._Wihtout_Code_Tree_List
-    # used to insert Transactions on database
-    # ==========================================================================================
-    def Load_Xlsx_Rows_FromSheet(self):
-        Result = self._Load_XLS_Rows_From_Sheet()
-        self._Files_Loaded[Ix_Xlsx_Rows_Loaded] = False
-        if Result == OK:
-            self._Files_Loaded[Ix_Xlsx_Rows_Loaded] = True
-            return self._XLSX_Rows_From_Sheet
-        else:
-            return Result
 
     # -----------------------------------------------------------------------------------------
-    def Load_Xlsx_Lists_FromData(self):
-        self._Files_Loaded[Ix_Transact_Loaded] = False
-        Result = self.Load_Xlsx_Rows_FromSheet()
+    def Load_Xlsx_Lists_FromData(self, Filename):
+        File_Name    = Filename
+        if Filename == ON_SELECTIONS:
+            File_Name = self._Xlsx_Filename
+        self.Xlsx_Conto_Year_Month_Setup(True, File_Name)
+        pass
+        Result = self._Load_xlsx_Rows_From_Sheet(Filename)      # Load xlsx Rows
         if Result != OK:
             return Result
         else:
-            Result = self._Load_XLS_Rows_From_Sheet()
+            Result = self._Create_Xlsx_Lists()                  # create xlsx lists
             if Result == OK:
+                self._Xlsx_Rows_From_Sheet   = self._tXlsx_Rows_From_Sheet
+                self._XLSX_Rows_Desc_Compact = self._tXlsx_Rows_Desc_Compact
+                self._Xlsx_Rows_NOK_List     = self._tXlsx_Rows_NOK_List
+                #
+                self._With_Code_Tree_List    = self._tWith_Code_Tree_List
+                self._Wihtout_Code_Tree_List = self._tWihtout_Code_Tree_List
+                # ------------------------
+                self._Tot_Rows   = self._tTot_Rows
+                self._Tot_OK     = self._tTot_OK
+                self._Tot_NOK    = self._tTot_NOK
+                self._iYear_List = self._tiYear_List
+
+                self._Xlsx_Conto = self._tXlsx_Conto
+                self._Xlsx_Year  = self._tXlsx_Year
+                self._Xlsx_Month = self._tXlsx_Month
                 self._Files_Loaded[Ix_Transact_Loaded] = True
-                return self._XLSX_Rows_From_Sheet
+                return OK
             else:
                 return Result
 
     # -------------------------------------  Get rows from sheet ----------------------------
-    def _Load_XLS_Rows_From_Sheet(self):
-        self.XLSX_Rows_From_Sheet   = []
-        self._XLSX_Rows_Desc_Compact= []
-        self._Xlsx_Rows_NOK_List     = []
-        self.iYear_List              = []
+    def _Load_xlsx_Rows_From_Sheet(self, Filename):
+        self._tXlsx_Rows_From_Sheet    = []
+        self._tXlsx_Rows_Desc_Compact  = []
+        self._tXlsx_Rows_NOK_List      = []
+        self._tiYear_List              = []
 
-        self._Tot_OK   = 0
-        self._Tot_NOK  = 0
-        self._Tot_Rows = 0
+        self._tTot_OK   = 0
+        self._tTot_NOK  = 0
+        self._tTot_Rows = 0
 
-        self._Get_Work_Sheet_Rows()  # set  _Tot_Rows = -1 on ERROR of Loadind Rows
-        self._Files_Loaded[Ix_Xlsx_Rows_Loaded]  = False
-        self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = False
+        self._Get_Work_Sheet_Rows(Filename)  # set  _Tot_Rows = -1 on ERROR of Loadind Rows
 
-        if self._Tot_Rows < 0:
+        if self._tTot_Rows < 0:
             return 'Error on loading Work sheet rows'
-        if self._Tot_Rows <= 1:
+        if self._tTot_Rows <= 1:
             return 'No rows on the sheet'
 
-        for nRow in range(1, self._Tot_Rows+1):
+        for nRow in range(1, self._tTot_Rows+1):
             self._Get_xlsx_Row(nRow)
             Des1Comp = Compact_Descr_String(self.Des1)
             Des2Comp = Compact_Descr_String(self.Des2)
@@ -204,11 +202,11 @@ class Xlsx_Manager(Codes_db):
 
             Checked_Row_List = self._Check_Values(XLS_Row_Compact)
             if not Checked_Row_List:
-                self._Tot_NOK += 1
-                self._Xlsx_Rows_NOK_List.append(XLS_Row_List)
+                self._tTot_NOK += 1
+                self._tXlsx_Rows_NOK_List.append(XLS_Row_List)
             else:
-                self._Tot_OK += 1
-                self._XLSX_Rows_Desc_Compact.append(Checked_Row_List)    # Descriptions compacted
+                self._tTot_OK += 1
+                self._tXLSX_Rows_Desc_Compact.append(Checked_Row_List)    # Descriptions compacted
                 Data_Contab = Checked_Row_List[iRow_Contab]
                 Data_Valuta = Checked_Row_List[iRow_Valuta]
                 myRow = []
@@ -220,18 +218,18 @@ class Xlsx_Manager(Codes_db):
                     elif Item == iRow_Valuta:
                         myRow.append(Data_Valuta)
                         iYear = int(Data_Valuta[0:4])
-                        if iYear in self.iYear_List or len(self.iYear_List) >= 2:
+                        if iYear in self._tiYear_List or len(self._tiYear_List) >= 2:
                             pass
                         else:
-                            self.iYear_List.append(iYear)
+                            self._tiYear_List.append(iYear)
                     else:
                         myRow.append(Val)
-                self.XLSX_Rows_From_Sheet.append(myRow)          # Descripritions as in Sheet, Date is str
-        if self._Tot_OK == 0:
+                self._tXlsx_Rows_From_Sheet.append(myRow)          # Descripritions as in Sheet, Date is str
+        if self._tTot_OK == 0:
             return 'any row with significant data'
-        if self._Xlsx_Conto == FLASH or self._Xlsx_Conto == AMBRA or self._Xlsx_Conto == POSTA:
+        if self._tXlsx_Conto == FLASH or self._tXlsx_Conto == AMBRA or self._tXlsx_Conto == POSTA:
             self._Adjust_Xlsx_Rows_ForFLASH()   # adjust rows as in FLASH or in AMBRA
-        elif self._Xlsx_Conto == POSTA:
+        elif self._tXlsx_Conto == POSTA:
             pass                                # """     "   "  "  POSTA
         else:
             pass                                # NOT identified leave as FIDEU
@@ -239,25 +237,24 @@ class Xlsx_Manager(Codes_db):
         if not self._XLSX_Rows_Desc_Compact:
             return 'xlsx file contains any row with significant data'
         else:
-            self._Files_Loaded[Ix_Xlsx_Rows_Loaded] = True
             return OK
 
     # ----------------------  Set tree rows list   ---------------------------------------  #
     def _Create_Xlsx_Lists(self):
-        self.iYear_List              = []
-        self._Wihtout_Code_Tree_List = []
-        self._With_Code_Tree_List    = []
-        Tot_Rows_WithCode            = 0
-        Tot_Rows_WithoutCode         = 0
-        self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = False
+        self._tiYear_List             = []
+        self._tWihtout_Code_Tree_List = []
+        self._tWith_Code_Tree_List    = []
+        Tot_Rows_WithCode             = 0
+        Tot_Rows_WithoutCode          = 0
 
-        for Row in self._XLSX_Rows_Desc_Compact:
+        for Row in self._tXLSX_Rows_Desc_Compact:
             Row_Without_Code = []
             Row_With_Code    = []
             Full_Desc        = self.Description_Select(Row[iRow_Descr1], Row[iRow_Descr2])
             Row[iRow_Descr1] = Full_Desc
 
             Result = self._Find_StrToSearc_InFullDesc(Row)
+            # return:      [NOK, []]  [NOK, ErrMsg] [OK, Found_List[0]]
             if Result[0] == NOK:
                 if not Result[1]:
                     Tot_Rows_WithoutCode += 1
@@ -266,12 +263,7 @@ class Xlsx_Manager(Codes_db):
                     Row_Without_Code.append(Full_Desc)            # Full_Desc
                     self._Wihtout_Code_Tree_List.append(Row_Without_Code)
                 else:
-                    self._Wihtout_Code_Tree_List = []
-                    self._With_Code_Tree_List = []
-                    self._Tot_OK   = 0
-                    self._Tot_Rows = 0
                     return Result[1]
-
             else:
                 Rec_Found = Result[1]
                 Tot_Rows_WithCode += 1
@@ -282,8 +274,7 @@ class Xlsx_Manager(Codes_db):
                 Row_With_Code.append(Row[iRow_Accr])         # Accred
                 Row_With_Code.append(Row[iRow_Addeb])        # Addeb
                 Row_With_Code.append(Rec_Found[iTR_TRcode])  # TRcode
-                self._With_Code_Tree_List.append(Row_With_Code)
-        self._Files_Loaded[Ix_Xlsx_Rows_Loaded] = True
+                self._tWith_Code_Tree_List.append(Row_With_Code)
         return OK
 
     # --------------------------------------------------------------------------------------------
@@ -292,7 +283,7 @@ class Xlsx_Manager(Codes_db):
     # [iRow_Contab, DATE],    [iRow_Valuta, DATE],   [iRow_Descr1, STRING],
     # [iRow_Accr,   NUMERIC], [iRow_Addeb, NUMERIC], [iRow_Descr2, STRING]]
     def _Check_Values(self, XLS_Row_List):
-        XLS_Row_List_Checked = []
+        Xlsx_Row_List_Checked = []
         for Item_ToCheck in List_For_XLSX_Row_Control:
             Value = XLS_Row_List[Item_ToCheck[0]]
             Type = Item_ToCheck[1]
@@ -300,8 +291,8 @@ class Xlsx_Manager(Codes_db):
             if ItemChecked is None:
                 return []
             else:
-                XLS_Row_List_Checked.append(ItemChecked)
-        return XLS_Row_List_Checked  # as in Xlsx Rows
+                Xlsx_Row_List_Checked.append(ItemChecked)
+        return Xlsx_Row_List_Checked  # as in Xlsx Rows
                                      # XLS_Row_List : nRow    Contab    Valuta    Descr1   Accred   Addeb   Descr2
     # -----------------------------------------------------------------------------------
     def _Check_Val(self, Item, Type):
@@ -341,7 +332,7 @@ class Xlsx_Manager(Codes_db):
 
     # -----------------------------------------------------------------------------------
     def _Get_xlsx_Row(self, nRow):
-        if self._Xlsx_Conto == FIDEU:                                # Get columns for FIDEU
+        if self._tXlsx_Conto == FIDEU:                                # Get columns for FIDEU
             self.Contab = self._Work_Sheet['A' + str(nRow)].value
             self.Valuta = self._Work_Sheet['B' + str(nRow)].value
             self.Des1   = self._Work_Sheet['C' + str(nRow)].value
@@ -352,7 +343,7 @@ class Xlsx_Manager(Codes_db):
             self.Accr  = Convert_To_Float(XlsxAccr)
             self.Addeb = Convert_To_Float(XlsxAddeb)
 
-        elif self._Xlsx_Conto == FLASH or self._Xlsx_Conto == AMBRA:  # Get columns for Flash/AMBRA
+        elif self._tXlsx_Conto == FLASH or self._tXlsx_Conto == AMBRA:  # Get columns for Flash/AMBRA
             self.Contab = self._Work_Sheet['A' + str(nRow)].value
             self.Valuta = self._Work_Sheet['B' + str(nRow)].value
             self.Des1   = self._Work_Sheet['C' + str(nRow)].value
@@ -372,7 +363,7 @@ class Xlsx_Manager(Codes_db):
             elif typeValuta is datetime:
                 self.Contab = self.Valuta
 
-        elif self._Xlsx_Conto == POSTA:                              # Get columns for POSTA
+        elif self._tXlsx_Conto == POSTA:                              # Get columns for POSTA
             self.Contab = self._Work_Sheet['A' + str(nRow)].value
             self.Valuta = self._Work_Sheet['B' + str(nRow)].value
             self.Des1   = ''  #self.Work_Sheet['C' + str(nRow)].value
@@ -390,12 +381,12 @@ class Xlsx_Manager(Codes_db):
             elif typeValuta is datetime:
                 self.Contab = self.Valuta
 
-        elif self._Xlsx_Conto == AMBRA:                              # Get columns for AMBRA
+        elif self._tXlsx_Conto == AMBRA:                              # Get columns for AMBRA
             pass
 
     # ---------------------------------------------------------------
     def _Adjust_Xlsx_Rows_ForFLASH(self):
-        Copy1 = self.XLSX_Rows_From_Sheet.copy()
+        Copy1 = self._Xlsx_Rows_From_Sheet.copy()
         self.XLSX_Rows_From_Sheet = []
         Copy2 = self._XLSX_Rows_Desc_Compact
         self._XLSX_Rows_Desc_Compact = []
@@ -411,18 +402,17 @@ class Xlsx_Manager(Codes_db):
     #  Workbook is the container of all Worksheets                                      #
     #  while the Worksheet is the container of Data of one Sheet                        #
     # --------------------------------------------------------------------------------- #
-    def _Get_Work_Sheet_Rows(self):
-        XlsName          = self._Xlsx_Filename
+    def _Get_Work_Sheet_Rows(self, Filename):
         # Work_Book = None
         try:
-            Work_Book = load_workbook(XlsName)
+            Work_Book = load_workbook(Filename)
         except:
-            self._Tot_Rows = -1
+            self._tTot_Rows = -1
             return
         self.SheetName   = Work_Book.sheetnames[0]   # always the first sheet
-        self.Update_Txt_File(self.SheetName, Ix_Sheet_Name)
+        self.Update_Selections(self.SheetName, Ix_Sheet_Name)
         self._Work_Sheet = Work_Book.get_sheet_by_name(self.SheetName)
-        self._Tot_Rows    = self._Work_Sheet.max_row
+        self._tTot_Rows   = self._Work_Sheet.max_row
         pass
 
     # -----------------------------------------------------------------------------------

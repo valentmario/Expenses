@@ -22,9 +22,8 @@ from datetime import datetime
 class Files_Names_Manager:
     def __init__(self):
         self.Dummy = 0   # to avoid @classmethod
-
-        # the /home/mario/aTxt_File/Files_Names.txt skeleton -----------------
-        self._Txt_List           = []
+        # '/home/mario/aExpen_Init/Selections'
+        self._Selections_List    = []
         self._Codes_DB_Filename  = UNKNOWN
         self._Xlsx_Filename      = UNKNOWN
         self.Sheet_Name          = UNKNOWN
@@ -53,43 +52,43 @@ class Files_Names_Manager:
     # ----------------------------------------------------------------------------------- #
     #            ----------------      public   methods   -----------------               #
     # ----------------------------------------------------------------------------------- #
-    def Check_Create_Txt_File(self):
-        if not os.path.exists(Txt_File_Full_Name):
-            if not os.path.isdir(Txt_File_Dir_Name):
-                os.mkdir(Txt_File_Dir_Name)
-            Txt_File = open(Txt_File_Full_Name, "w")
-            Txt_File.write("")
-            Txt_File.close()
-            Txt_File = open(Txt_File_Full_Name, "a")
+    def Check_Create_Selections(self):
+        if not os.path.exists(Selections_Full_Name):
+            if not os.path.isdir(Selections_Dir_Name):
+                os.mkdir(Selections_Dir_Name)
+            Selections = open(Selections_Full_Name, "w")
+            Selections.write("")
+            Selections.close()
+            Selections = open(Selections_Full_Name, "a")
             # Casting the list to a string before writing
-            Txt_File.write(str(Default_TxtFile_List))  # Write default Files_Names.txt
-            Txt_File.close()
-            self._Txt_List = Default_TxtFile_List
+            Selections.write(str(Default_Selections_List))  # Write default Files_Names.txt
+            Selections.close()
+            self._Selections_List = Default_Selections_List
             return NEW
         else:  # ---  Files_Names.txt exists ----
-            self._Read_Txt_File()
+            self._Read_Selections()
             return OK
 
-    def Get_Txt_Member(self, Index):
-        return self._Txt_List[Index]
+    def Get_Selections_Member(self, Index):
+        return self._Selections[Index]
 
     def Get_TopToStart_List(self):
-        return self._Txt_List[Ix_TOP_ToStart]
+        return self._Selections[Ix_TOP_ToStart]
 
-    def Read_Txt_File(self):        # used only on Settings
-        self._Read_Txt_File()
-        return self._Txt_List
+    def Read_Selections(self):        # used only on Settings
+        self._Read_Selections()
+        return self._Selections
 
     # -----------------------------------------------------------------------------------
-    def Update_Txt_File(self, Value, Index):     # Update an Item
-        self._Update_Txt_File( Value, Index)
+    def Update_Selections(self, Value, Index):     # Update an Item
+        self._Update_Selections(Value, Index)
 
     # -----------------------------------------------------------------------------------
     def Update_Query_List(self, Value, Index):
-        Query_List = self._Txt_List[Ix_Query_List]
+        Query_List = self._Selections_List[Ix_Query_List]
         Query_List[Index]            = Value
-        self._Txt_List[Ix_Query_List] = Query_List
-        self._Update_Txt_File(Query_List, Ix_Query_List)
+        self._Selections_List[Ix_Query_List] = Query_List
+        self._Update_Selections(Query_List, Ix_Query_List)
 
     # ----------------------------------------------------------------------------------
     def Sel_Codes_OnData(self, Parent):
@@ -102,6 +101,8 @@ class Files_Names_Manager:
             filetypes=[('db file', '*.db')],
             initialdir=Init_Directory)
         # -----------------------------------------------------
+        if not Full_filename:
+            return ''
         return Full_filename
 
     # ----------------------------------------------------------------------------------
@@ -109,6 +110,9 @@ class Files_Names_Manager:
         Init_Directory = Default_Init_Dir
         if self._Xlsx_Filename != UNKNOWN:
             Init_Directory = Get_Dir_Name(self._Xlsx_Filename)
+
+
+
         # -----------------------------------------------------
         Full_filename = tk.filedialog.askopenfilename(parent=Parent,
             title='Select xlsx file',
@@ -130,6 +134,8 @@ class Files_Names_Manager:
             filetypes=[('db file', '*.db')],
             initialdir=Init_Directory)
         # -----------------------------------------------------
+        if not Full_filename:
+            return ''
         return Full_filename
 
     # -------------------------------------------------------------------------------------
@@ -166,30 +172,30 @@ class Files_Names_Manager:
     # ----------------------------------------------------------------------------------- #
     #            ----------------      internal  methods   ---------------                #
     # ----------------------------------------------------------------------------------- #
-    def _Read_Txt_File(self):
-        self._Txt_List = []
-        Txt_File = open(Txt_File_Full_Name)  # default is 'r'
-        for Line in Txt_File:
-            self._Txt_List = eval(Line)
-        Txt_File.close()
-        self._Codes_DB_Filename = self._Txt_List[Ix_Codes_File]
-        self._Xlsx_Filename     = self._Txt_List[Ix_Xlsx_File]
-        self.Sheet_Name         = self._Txt_List[Ix_Sheet_Name]
-        self._Transact_DB_Filename = self._Txt_List[Ix_Transact_File]
-        self.Top_ToStart        = self._Txt_List[Ix_TOP_ToStart]
+    def _Read_Selections(self):
+        self._Selections_List = []
+        Selection_File = open(Selections_Full_Name)  # default is 'r'
+        for Line in Selection_File:
+            self._Selections = eval(Line)
+        Selection_File.close()
+        self._Codes_DB_Filename = self._Selections[Ix_Codes_File]
+        self._Xlsx_Filename     = self._Selections[Ix_Xlsx_File]
+        self.Sheet_Name         = self._Selections[Ix_Sheet_Name]
+        self._Transact_DB_Filename = self._Selections[Ix_Transact_File]
+        self.Top_ToStart        = self._Selections[Ix_TOP_ToStart]
 
     # ------------------------------------------------------------------------------------
-    def _Update_Txt_File(self, Value, Index):
-        self._Txt_List = self.Read_Txt_File()
-        self._Txt_List[Index] = Value
-        Txt_File = open(Txt_File_Full_Name, "w")  #
-        Txt_File.write("")
-        Txt_File.close()
-        Txt_File = open(Txt_File_Full_Name, "a")
+    def _Update_Selections(self, Value, Index):
+        self._Selections_List = self.Read_Selections()
+        self._Selections_List[Index] = Value
+        Selections = open(Selections_Full_Name, "w")  #
+        Selections.write("")
+        Selections.close()
+        Selections = open(Selections_Full_Name, "a")
         # Casting the list to a string before writing
-        Txt_File.write(str(self._Txt_List))
-        Txt_File.close()
-        self._Read_Txt_File()
+        Selections.write(str(self._Selections_List))
+        Selections.close()
+        self._Read_Selections()
 
 
 # =======================================================================================

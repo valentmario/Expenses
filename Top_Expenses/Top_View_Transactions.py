@@ -28,7 +28,7 @@ class Top_View_Transact(tk.Toplevel):
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
 
         self.resizable(False, False)
-        self.geometry(Top_TrView_geometry)
+        self.geometry(Top_View_geometry)
         self.title('***   View transactions database  *** ')
         self.configure(background=BakGnd)
 
@@ -89,7 +89,7 @@ class Top_View_Transact(tk.Toplevel):
         # self.Frame_Sheets_Rows_View()
 
     def Frame_Sheets_Rows_View(self):
-        TR_Name   = Get_File_Name(self.Data.Get_Txt_Member(Ix_Transact_File))
+        TR_Name   = Get_File_Name(self.Data.Get_Selections_Member(Ix_Transact_File))
         FrameText = ('     ' + TR_Name + '   ' + str(self.Data.Get_Len_Transact_Table()) + '   Transactions')
         self.Frame_Sheets_Rows.Frame_Title(FrameText)
         self.Frame_Sheets_Rows.Load_Row_Values(self.Data.Get_Transact_Table())
