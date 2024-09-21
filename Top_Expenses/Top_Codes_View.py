@@ -9,7 +9,7 @@ from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data
 
-from Widgt.Dialogs import Print_Received_Message
+from Widgt.Dialogs import Print_Received_Message, Message_Dlg
 from Widgt.Tree_Widg import TheFrame
 from Widgt.Widgets import TheButton
 
@@ -30,8 +30,10 @@ class Top_View_Codes(tk.Toplevel):
         self.configure(background=BakGnd)
 
         self.Result = Result
-        myList = self.Data.Tree_Codes_View_List
-        pass
+        if not self.Result:
+            Msg_Dlg = Message_Dlg(MsgBox_Err, 'Codes database NOT OK')
+            Msg_Dlg.wait_window()
+
         if Codes_List:
             self.Codes_List = self.Data.Create_CodesTable_FromTR(Codes_List)
         else:

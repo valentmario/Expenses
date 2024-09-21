@@ -58,10 +58,12 @@ class Codes_db(Files_Names_Manager):
     #      public methods invoked outside from  Top_Codes  classes                           #
     # -------------------------------------------------------------------------------------- #
     def Load_Codes_Table(self, CodesFilename):
-        Result = self._Load_Codes_Tables(CodesFilename)
+        Codes_Name = CodesFilename
+        if CodesFilename == ON_SELECTIONS:
+            Codes_Name = self._Codes_DB_Filename
+        Result = self._Load_Codes_Tables(Codes_Name)
         if Result != OK:
             return Result
-
         self._Files_Loaded[Ix_Codes_Loaded] = True
         return OK
 
@@ -153,6 +155,9 @@ class Codes_db(Files_Names_Manager):
         self._tGR_Codes_Table  = []  # GRcode GRdescr  CAcode
         self._tCA_Codes_Table  = []  # CAcode CAdescr
 
+        self.Tree_Codes_View_List         = []
+        self.Tree_Codes_View_List_Ordered = []
+
         self.CodesFilename = CodesFilename
         if not CodesFilename:
             self.CodesFilename = self._Codes_DB_Filename
@@ -192,9 +197,6 @@ class Codes_db(Files_Names_Manager):
         self._TR_Codes_Table = self._tTR_Codes_Table
         self._GR_Codes_Table = self._tGR_Codes_Table
         self._CA_Codes_Table = self._tCA_Codes_Table
-
-        self.Tree_Codes_View_List         = []
-        self.Tree_Codes_View_List_Ordered = []
 
         Index = -1
         self._TR_Codes_Full = []

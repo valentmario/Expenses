@@ -48,12 +48,6 @@ class Main_Window(tk.Tk):
         self.Top_Level_Id_Create_List()
         self.Txt1 = TheText(self, Txt_Disab, 20, 20, 36, 6, '')
 
-        # --------------------------------------------------------------------------
-        self.Mod_Mngr.Cek_Create_Selections()    # Check or Create Selections file
-        if not self.Mod_Mngr.Init_Codes(MAIN_WIND):
-            pass
-        # ---------------------------------------------------------------------------
-
         self.geometry(Main_Wind_geometry)
         self.title('*****     Family Expenses     *****')
 
@@ -72,9 +66,13 @@ class Main_Window(tk.Tk):
         self.Btn_Query= TheButton(self, Btn_Col_En, 170, 200, 14, 'Queries',         self.Clk_Queries)
         self.Exit     = TheButton(self, Btn_Bol_En,  24, 250, 27, '  E X I T   ',    self.Call_OnClose)
 
-        self.Set_Selections()     # Set Selections file
+        # -------------------------------------------------------------------------------------------------
+        self.Mod_Mngr.Cek_Create_Selections()    # Check or Create Selections file
+        if not self.Mod_Mngr.Init_Codes(MAIN_WIND):
+            pass
+        self.Set_Selections()     # Set Selections filenames, files_satus, [tot], Queries,
         self.Top_Level_Start()
-        PRINT('Start Main_Wind ms:  ' + str(self.Chat.Get_Elapsed_Time()))
+
         self.mainloop()
 
     # ---------------------------------------------------------------------------------------------
@@ -115,7 +113,7 @@ class Main_Window(tk.Tk):
             if self.Mod_Mngr.Cek_Codes_Name(Full_Codes_DB_Filename):
                 Codes_Filename = Get_File_Name(Full_Codes_DB_Filename)
             else:
-                Codes_Filename = 'Codes filename NOT OK'
+                Codes_Filename = UNKNOWN
         # -----------------------------------------------------------
         Full_Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
         if Full_Xlsx_Filename == UNKNOWN:
@@ -124,7 +122,7 @@ class Main_Window(tk.Tk):
             if self.Mod_Mngr.Cek_Xlsx_Name(Full_Xlsx_Filename):
                 Xlsx_Filename = Get_File_Name(Full_Xlsx_Filename)
             else:
-                Xlsx_Filename = 'Xlsx filename NOT OK'
+                Xlsx_Filename = UNKNOWN
         # -------------------------------------------------------------
         Full_Transact_Filename = self.Data.Get_Selections_Member(Ix_Transact_File)
         if Full_Transact_Filename == UNKNOWN:
@@ -133,7 +131,7 @@ class Main_Window(tk.Tk):
             if self.Mod_Mngr.Cek_Transactions_Name(Full_Transact_Filename):
                 Transact_Filename = Get_File_Name(Full_Transact_Filename)
             else:
-                Transact_Filename = 'Transactions filename NOT OK'
+                Transact_Filename = UNKNOWN
         # --------------------------------------------------------------
         Filenames      = "Codes:      " + Codes_Filename + \
                        "\nxlsx:           " + Xlsx_Filename + \

@@ -51,7 +51,8 @@ class Modules_Manager:
             Msg  = Message_Dlg(MsgBox_Info, Text)
             Msg.wait_window()
         else:
-            self.Data.Xlsx_Conto_Year_Month_Setup(True, '')
+            Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
+            self.Data.Xlsx_Conto_Year_Month_Setup(True, Filename)
             self.Data.Transact_Year_Setup(True)
 
     # =========================================================================================== #
@@ -72,10 +73,11 @@ class Modules_Manager:
             if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):
                 return True
             else:
-                myData = self.Data.Get_Transact_Table()
-                pass
-                if self.Data.Load_Codes_Table(ON_SELECTIONS):
-                    return True
+                Result = self.Data.Load_Codes_Table(ON_SELECTIONS)
+                if Result != OK:
+                    Msg_Dlg = Message_Dlg(MsgBox_Err, Result)
+                    Msg_Dlg.wait_window()
+                    return False
                 return False
 
     # ---------------------------------------------------------------------------------------------
@@ -167,12 +169,22 @@ class Modules_Manager:
     #                                                                                                 #
     # =============================================================================================== #
     def Init_Xlsx_Lists(self, Origin):
-        if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
-            return True
-        else:
-            if self.Load_Xlsx_Lists(Origin, ON_SELECTIONS):
+        Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
+        if (Full_Xlsx_Filename == UNKNOWN) or \
+        not (self.Cek_Codes_Name(Full_Xlsx_Filename)):
+            Msg = Message_Dlg(MsgBox_Info, 'Please select an xlsx file')
+            Msg.wait_window()
+            if self.Sel_Xlsx(Origin):    # return True False
                 return True
             return False
+        else:
+            if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_File):
+                return True
+            else:
+                if self.Load_Xlsx_Lists(Origin, ON_SELECTIONS):
+                    return True
+                return False
+
 
     # -------------------------------------------------------------------------
     # /home/mario/bExpenses/bFiles/bXLSX_Files/FIDEU/FIDEU_2023/ FIDEU_2023_01.xlsx
@@ -204,7 +216,7 @@ class Modules_Manager:
         if errMessage != '':
             Msg = Message_Dlg(MsgBox_Err, errMessage)
             Msg.wait_window()
-            self.Data.Xlsx_Conto_Year_Month_Setup(False)
+            self.Data.Xlsx_Conto_Year_Month_Setup(False, '')
             return False
         return True
 
@@ -212,33 +224,35 @@ class Modules_Manager:
     def Sel_Xlsx(self, Origin):
         File_Dlg      = File_Dialog(FileBox_Xlsx)
         Full_Filename = File_Dlg.FileName
-        Reply = ''
         if not Full_Filename:
             return False
         if self.Cek_Xlsx_Name(Full_Filename):
-            Reply = self.Load_Xlsx_Lists(Origin, Full_Filename)
+            Reply =  self.Data.Load_Xlsx_Lists_FromData(Full_Filename)
             if Reply == OK:
                 self.Data.Update_Selections(Full_Filename, Ix_Xlsx_File)
                 self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
                 return True
-        else:
-            Dlg_Mess = Message_Dlg(MsgBox_Err, Reply)
-            Dlg_Mess.wait_window()
-            return False
+            else:
+                Dlg_Mess = Message_Dlg(MsgBox_Err, Reply)
+                Dlg_Mess.wait_window()
+                return False
 
     # -------------------------------------------------------------------------------------------------------
     def Load_Xlsx_Lists(self, Origin, Filename):
-        self.Data.Xlsx_Conto_Year_Month_Setup(True, Filename)  # neede for lists creating
+        File_Name = Filename
+        if Filename == ON_SELECTIONS:
+            File_Name = self.Data.Get_Selections_Member(Ix_Xlsx_File)
+        self.Data.Xlsx_Conto_Year_Month_Setup(True, File_Name)  # neede for lists creating
         Reply = self.Data.Load_Xlsx_Lists_FromData(Filename)
         if Reply == OK:
+            self.Data.Update_Selections(Filename, Ix_Xlsx_File)
+            self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
             self.Chat.Tx_Request([Origin, [ANY], XLSX_UPDATED, []])
             return True
         else:
             Msg_Dlg = Message_Dlg(MsgBox_Err, Reply)
             Msg_Dlg.wait_window()
             return False
-
-
 
     # =========================================================================================== #
     #     --------------      Transactions  manage     --------------                             #
@@ -362,9 +376,8 @@ class Modules_Manager:
                 
                 for Check in Checklist:
                     if Check == CEK_CODES:                          # CEK_CODES
-                        pass
-                        # if not self.Init_Codes(Origin):
-                        #     return False
+                        if not self.Init_Codes(Origin):
+                            return False
 
                     elif Check == CEK_XLSX_LIST:                      # CEK_XLSX LISTS
                         if not self.Init_Xlsx_Lists(Origin):
@@ -372,8 +385,8 @@ class Modules_Manager:
 
                     elif Check == CEK_TRANSACT:                       # CEK_TRANSACT
                         if not self.Init_Transactions(Origin):
-                            return NOK
-                return OK
+                            return False
+                return True
 
     # ---------------------------------------------------------------------------------------------
     def Add_Toplevels_Id_List(self, Id):

@@ -252,7 +252,7 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
-        self.Data.Load_Xlsx_Lists()
+        # self.Data.Load_Xlsx_Lists()
         self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_MNGR, [])
         pass
 

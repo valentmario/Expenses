@@ -70,18 +70,19 @@ class Files_Names_Manager:
             return OK
 
     def Get_Selections_Member(self, Index):
-        return self._Selections[Index]
+        return self._Selections_List[Index]
 
     def Get_TopToStart_List(self):
-        return self._Selections[Ix_TOP_ToStart]
+        return self._Selections_List[Ix_TOP_ToStart]
 
     def Read_Selections(self):        # used only on Settings
         self._Read_Selections()
-        return self._Selections
+        return self._Selections_List
 
     # -----------------------------------------------------------------------------------
     def Update_Selections(self, Value, Index):     # Update an Item
         self._Update_Selections(Value, Index)
+        pass
 
     # -----------------------------------------------------------------------------------
     def Update_Query_List(self, Value, Index):
@@ -176,14 +177,14 @@ class Files_Names_Manager:
         self._Selections_List = []
         Selection_File = open(Selections_Full_Name)  # default is 'r'
         for Line in Selection_File:
-            self._Selections = eval(Line)
+            self._Selections_List = eval(Line)
         Selection_File.close()
-        self._Codes_DB_Filename = self._Selections[Ix_Codes_File]
-        self._Xlsx_Filename     = self._Selections[Ix_Xlsx_File]
-        self.Sheet_Name         = self._Selections[Ix_Sheet_Name]
-        self._Transact_DB_Filename = self._Selections[Ix_Transact_File]
-        self.Top_ToStart        = self._Selections[Ix_TOP_ToStart]
-
+        self._Codes_DB_Filename = self._Selections_List[Ix_Codes_File]
+        self._Xlsx_Filename     = self._Selections_List[Ix_Xlsx_File]
+        self.Sheet_Name         = self._Selections_List[Ix_Sheet_Name]
+        self._Transact_DB_Filename = self._Selections_List[Ix_Transact_File]
+        self.Top_ToStart        = self._Selections_List[Ix_TOP_ToStart]
+        pass
     # ------------------------------------------------------------------------------------
     def _Update_Selections(self, Value, Index):
         self._Selections_List = self.Read_Selections()

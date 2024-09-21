@@ -27,17 +27,20 @@ class Xlsx_Manager(Codes_db):
 
         # ------------------------             A      B      C      D      E     F  ---------------
         self._Xlsx_Rows_From_Sheet   = []  # Contab Valuta Descr1 Accred Addeb Descr2
-        self._XLSX_Rows_Desc_Compact = []
+        self._Xlsx_Rows_Desc_Compact = []
         self._Xlsx_Rows_NOK_List     = []
         #
         self._With_Code_Tree_List    = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
         self._Wihtout_Code_Tree_List = []  # nRow Valuta Descr
         # ------------------------
-        self._Tot_Rows = 0
-        self._Tot_OK = 0
-        self._Tot_NOK = 0
-        self._iYear_List = []
-        # -------   _t : temporary attributes  that will be coied on _Att  if all OK  -------------
+        self._Tot_Rows        = 0
+        self._Tot_NOK         = 0
+        self._Tot_OK          = 0
+        self._TotWith_Code    = 0
+        self._TotWihtout_Code = 0
+        self._iYear_List      = []
+
+        # -------   _tAtt : temporary attributes  that will be coied on _Att  if all OK  -------------
         self._tXLSX_Rows_From_Sheet    = []
         self._tXLSX_Rows_Desc_Compact  = []
         self._tXlsx_Rows_NOK_List      = []
@@ -45,10 +48,12 @@ class Xlsx_Manager(Codes_db):
         self._tWith_Code_Tree_List     = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
         self._tWihtout_Code_Tree_List  = []
         # ------------------------
-        self._tTot_Rows   = 0
-        self._tTot_OK     = 0
-        self._tTot_NOK    = 0
-        self._tiYear_List = []
+        self._tTot_Rows     = 0
+        self._tTot_OK       = 0
+        self._tTot_NOK      = 0
+        self._tTotWith_Code    = 0
+        self._tTotWihtout_Code = 0
+        self._tiYear_List   = []
         # -----------------------------------------------------------------------------------------
         self._tXlsx_Conto    = None  # or on selecting new file  FIDEU_2024_01.xlsx
         self._tXlsx_Year     = None  # they are  calculated on startup
@@ -58,6 +63,10 @@ class Xlsx_Manager(Codes_db):
     # ----------------------------------------------------------------------------------- #
     #            ----------------      public   methods   -----------------               #
     # ----------------------------------------------------------------------------------- #
+    def Get_Total_Rows(self):
+        # Ix_Tot_OK, Ix_Tot_WithCode, Ix_Tot_Without_Code
+        return [self._Tot_OK, self._TotWith_Code, self._TotWihtout_Code]
+
     def Get_WithCodeList(self):
         return self._With_Code_Tree_List
 
@@ -69,17 +78,13 @@ class Xlsx_Manager(Codes_db):
 
     def Xlsx_Conto_Year_Month_Setup(self, Action, Filename):
         # FIDEU_2024_01.xlsx
-        File_Name = Filename
-        if not Filename:
-            File_Name = self._Xlsx_Filename
-
         if not Action:
             self._tXlsx_Conto = None
             self._tXlsx_Year  = None
             self._tXlsx_Month = None
         else:
             # Here Codes tables  are OK and the xlsx_finame too
-            FullFilename = File_Name  # self.Get_Selections_Member(Ix_Xlsx_File)
+            FullFilename = Filename  # self.Get_Selections_Member(Ix_Xlsx_File)
             if FullFilename != UNKNOWN:
                 filename = Get_File_Name(FullFilename)
                 self._tXlsx_Conto = filename[0:5]
@@ -151,9 +156,10 @@ class Xlsx_Manager(Codes_db):
             return Result
         else:
             Result = self._Create_Xlsx_Lists()                  # create xlsx lists
+            Result = OK
             if Result == OK:
                 self._Xlsx_Rows_From_Sheet   = self._tXlsx_Rows_From_Sheet
-                self._XLSX_Rows_Desc_Compact = self._tXlsx_Rows_Desc_Compact
+                self._Xlsx_Rows_Desc_Compact = self._tXlsx_Rows_Desc_Compact
                 self._Xlsx_Rows_NOK_List     = self._tXlsx_Rows_NOK_List
                 #
                 self._With_Code_Tree_List    = self._tWith_Code_Tree_List
@@ -167,7 +173,8 @@ class Xlsx_Manager(Codes_db):
                 self._Xlsx_Conto = self._tXlsx_Conto
                 self._Xlsx_Year  = self._tXlsx_Year
                 self._Xlsx_Month = self._tXlsx_Month
-                self._Files_Loaded[Ix_Transact_Loaded] = True
+                self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
+                pass
                 return OK
             else:
                 return Result
@@ -226,7 +233,7 @@ class Xlsx_Manager(Codes_db):
                         myRow.append(Val)
                 self._tXlsx_Rows_From_Sheet.append(myRow)          # Descripritions as in Sheet, Date is str
         if self._tTot_OK == 0:
-            return 'any row with significant data'
+            return 'no correct rows found on xlsx file'
         if self._tXlsx_Conto == FLASH or self._tXlsx_Conto == AMBRA or self._tXlsx_Conto == POSTA:
             self._Adjust_Xlsx_Rows_ForFLASH()   # adjust rows as in FLASH or in AMBRA
         elif self._tXlsx_Conto == POSTA:
@@ -234,7 +241,7 @@ class Xlsx_Manager(Codes_db):
         else:
             pass                                # NOT identified leave as FIDEU
         # -------------
-        if not self._XLSX_Rows_Desc_Compact:
+        if not self._tXLSX_Rows_Desc_Compact:
             return 'xlsx file contains any row with significant data'
         else:
             return OK
@@ -244,8 +251,8 @@ class Xlsx_Manager(Codes_db):
         self._tiYear_List             = []
         self._tWihtout_Code_Tree_List = []
         self._tWith_Code_Tree_List    = []
-        Tot_Rows_WithCode             = 0
-        Tot_Rows_WithoutCode          = 0
+        self._tTot_WithCode           = 0
+        self._tTot_WithoutCode        = 0
 
         for Row in self._tXLSX_Rows_Desc_Compact:
             Row_Without_Code = []
@@ -257,7 +264,7 @@ class Xlsx_Manager(Codes_db):
             # return:      [NOK, []]  [NOK, ErrMsg] [OK, Found_List[0]]
             if Result[0] == NOK:
                 if not Result[1]:
-                    Tot_Rows_WithoutCode += 1
+                    self._tTot_WithoutCode += 1
                     Row_Without_Code.append(Row[iRow_nRow])       # nRow
                     Row_Without_Code.append(Row[iRow_Valuta])     # Valuta
                     Row_Without_Code.append(Full_Desc)            # Full_Desc
@@ -266,7 +273,7 @@ class Xlsx_Manager(Codes_db):
                     return Result[1]
             else:
                 Rec_Found = Result[1]
-                Tot_Rows_WithCode += 1
+                self._tTot_WithCode += 1
                 Row_With_Code.append(int(Row[iRow_nRow]))    # nRow
                 Row_With_Code.append(Row[iRow_Contab])       # Contabile
                 Row_With_Code.append(Row[iRow_Valuta])       # Valuta
@@ -388,14 +395,14 @@ class Xlsx_Manager(Codes_db):
     def _Adjust_Xlsx_Rows_ForFLASH(self):
         Copy1 = self._Xlsx_Rows_From_Sheet.copy()
         self.XLSX_Rows_From_Sheet = []
-        Copy2 = self._XLSX_Rows_Desc_Compact
-        self._XLSX_Rows_Desc_Compact = []
+        Copy2 = self._Xlsx_Rows_Desc_Compact
+        self._Xlsx_Rows_Desc_Compact = []
         Index = self._Tot_OK -1
         for j in range(0, self._Tot_OK):
             Row1 = Copy1[Index]
             self.XLSX_Rows_From_Sheet.append(Row1)
             Row2 = Copy2[Index]
-            self._XLSX_Rows_Desc_Compact.append(Row2)
+            self._Xlsx_Rows_Desc_Compact.append(Row2)
             Index -= 1
 
     # --------------------------------------------------------------------------------- #

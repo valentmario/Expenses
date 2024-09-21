@@ -152,6 +152,7 @@ class Top_Settings(tk.Toplevel):
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
         self.Mod_Mngr.Sel_Xlsx(TOP_SETTINGS)
+        pass
 
     def Clk_View_xlsx_File(self):
         self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS, [])

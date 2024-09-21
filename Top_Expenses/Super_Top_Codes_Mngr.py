@@ -16,7 +16,7 @@ from Widgt.Widgets import TheCombo
 
 # -------------------------------------------------------------------------------------------------
 class Super_Top_Mngr(tk.Toplevel):
-    def __init__(self):
+    def __init__(self, Result, List):
         super().__init__()
         self.Chat = Ms_Chat
         self.Data = Data
