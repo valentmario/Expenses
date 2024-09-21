@@ -169,9 +169,9 @@ class Modules_Manager:
     #                                                                                                 #
     # =============================================================================================== #
     def Init_Xlsx_Lists(self, Origin):
-        Full_Xlsx_Filename = self.Data.Get_Txt_Member(Ix_Xlsx_File)
+        Full_Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
         if (Full_Xlsx_Filename == UNKNOWN) or \
-        not (self.Cek_Codes_Name(Full_Xlsx_Filename)):
+        not (self.Cek_Xlsx_Name(Full_Xlsx_Filename)):
             Msg = Message_Dlg(MsgBox_Info, 'Please select an xlsx file')
             Msg.wait_window()
             if self.Sel_Xlsx(Origin):    # return True False
@@ -243,9 +243,9 @@ class Modules_Manager:
         if Filename == ON_SELECTIONS:
             File_Name = self.Data.Get_Selections_Member(Ix_Xlsx_File)
         self.Data.Xlsx_Conto_Year_Month_Setup(True, File_Name)  # neede for lists creating
-        Reply = self.Data.Load_Xlsx_Lists_FromData(Filename)
+        Reply = self.Data.Load_Xlsx_Lists_FromData(File_Name)
         if Reply == OK:
-            self.Data.Update_Selections(Filename, Ix_Xlsx_File)
+            self.Data.Update_Selections(File_Name, Ix_Xlsx_File)
             self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
             self.Chat.Tx_Request([Origin, [ANY], XLSX_UPDATED, []])
             return True

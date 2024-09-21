@@ -156,7 +156,6 @@ class Xlsx_Manager(Codes_db):
             return Result
         else:
             Result = self._Create_Xlsx_Lists()                  # create xlsx lists
-            Result = OK
             if Result == OK:
                 self._Xlsx_Rows_From_Sheet   = self._tXlsx_Rows_From_Sheet
                 self._Xlsx_Rows_Desc_Compact = self._tXlsx_Rows_Desc_Compact
@@ -165,10 +164,12 @@ class Xlsx_Manager(Codes_db):
                 self._With_Code_Tree_List    = self._tWith_Code_Tree_List
                 self._Wihtout_Code_Tree_List = self._tWihtout_Code_Tree_List
                 # ------------------------
-                self._Tot_Rows   = self._tTot_Rows
-                self._Tot_OK     = self._tTot_OK
-                self._Tot_NOK    = self._tTot_NOK
-                self._iYear_List = self._tiYear_List
+                self._Tot_Rows        = self._tTot_Rows
+                self._Tot_OK          = self._tTot_OK
+                self._TotWith_Code    = self._tTot_WithCode
+                self._TotWihtout_Code = self._tTot_WithoutCode
+                self._Tot_NOK         = self._tTot_NOK
+                self._iYear_List      = self._tiYear_List
 
                 self._Xlsx_Conto = self._tXlsx_Conto
                 self._Xlsx_Year  = self._tXlsx_Year

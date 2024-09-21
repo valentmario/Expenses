@@ -80,7 +80,7 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         FrameText += str(Total[Ix_Tot_Without_Code]) + '  without code  '
 
         self.Frame_Sheet_Rows.Frame_Title(FrameText)
-        Rows_List = self.Data.Get_X()
+        Rows_List = self.Data.Get_Xlsx_Rows_From_Sheet()
         pass
         self.Frame_Sheet_Rows.Load_Row_Values(Rows_List)
 
