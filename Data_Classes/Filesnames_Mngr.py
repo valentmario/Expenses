@@ -75,6 +75,9 @@ class Files_Names_Manager:
     def Get_TopToStart_List(self):
         return self._Selections_List[Ix_TOP_ToStart]
 
+    def Get_TransacYear(self):
+        return self._Transact_Year
+
     def Read_Selections(self):        # used only on Settings
         self._Read_Selections()
         return self._Selections_List

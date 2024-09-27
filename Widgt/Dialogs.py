@@ -129,7 +129,7 @@ class File_Dialog(tk.Toplevel):
     def __init__(self, Option):
         super().__init__()
         self.resizable(False, False)
-        self.geometry('500x500+800+100')
+        self.geometry('500x380+800+100')
         self.title('File Select  Dialog')
         self.configure(bg='white')
         self.Data = Data

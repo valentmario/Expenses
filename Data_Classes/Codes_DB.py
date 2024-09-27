@@ -43,21 +43,18 @@ class Codes_db(Files_Names_Manager):
                 else:
                     FullDescr = Rec[iTR_TRfullDes]
                     if StrForSearc_in_Fulldescr(StrToCek, FullDescr):
+                        self._Multiple_Maching_List.append(Rec_To_Check)
                         self._Multiple_Maching_List.append(Rec)
-                        print(Rec_To_Check)
-                        print(Rec)
-                        print('')
-                        pass
         return self._Multiple_Maching_List
 
+    # ----------------------------------------------------------------------------------------
     def Get_Multiple_List(self):
         return self._Multiple_Maching_List
-
 
     # -------------------------------------------------------------------------------------- #
     #      public methods invoked outside from  Top_Codes  classes                           #
     # -------------------------------------------------------------------------------------- #
-    def Load_Codes_Table(self, CodesFilename):
+    def Load_Codes_Tables(self, CodesFilename):
         Codes_Name = CodesFilename
         if CodesFilename == ON_SELECTIONS:
             Codes_Name = self._Codes_DB_Filename
@@ -165,7 +162,7 @@ class Codes_db(Files_Names_Manager):
             sqlite3.connect(self._Codes_DB_Filename)
             pass
         except:
-            return 'Please mount data drive'
+            return 'Error on connect Codes Db\nmay be the data drive is not mounted'
 
         connect = sqlite3.connect(self.CodesFilename)   # self.Files_Mngr.Codes_DB_Filename)
         cursor = connect.cursor()
@@ -405,7 +402,8 @@ class Codes_db(Files_Names_Manager):
         Found_List  = []
         for TRrecord in self._TR_Codes_Table:
             StrToSearc = TRrecord[iTR_TRserc]
-
+            if StrToSearc == '' and Full_Desc == '':
+                pass
             if StrForSearc_in_Fulldescr(StrToSearc, Full_Desc):
                 nFound += 1
                 Found_List.append(TRrecord)

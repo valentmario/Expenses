@@ -74,6 +74,7 @@ class Main_Window(tk.Tk):
         self.Top_Level_Start()
 
         self.mainloop()
+        pass
 
     # ---------------------------------------------------------------------------------------------
     def Call_OnClose(self):

@@ -8,7 +8,7 @@ BakGnd    = '#567688'     # for all widgets
 ForGnd    = "white"       # for all   " "
 PRINT_ENABLED = False     # To print or NOT
 
-DUAL_DISPLAY  = True
+DUAL_DISPLAY  = False
 if DUAL_DISPLAY:
     Main_Wind_geometry     = '330x310+1850+900'     # '330x310+1700+10'
     Settings_geometry      = '330x400+1850+300'    # 330x400+1700+370
@@ -63,7 +63,7 @@ CEK_XLSX_LIST  = 'Check xlsx lists   '
 CEK_TRANSACT   = 'Check transactions '
 
 LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
-                    [TOP_MNGR,          [CEK_CODES]],   # ,  CEK_XLSX_LIST]],
+                    [TOP_MNGR,          [CEK_CODES, CEK_XLSX_LIST]],   # ,  CEK_XLSX_LIST]],
                     [TOP_CODES_VIEW,    [CEK_CODES]],
                     [TOP_GR_MNGR,       [CEK_CODES]],
                     [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX_LIST]],
@@ -330,6 +330,9 @@ List_For_XLSX_Row_Control = [
 # the frames used are three:  Frame1             Frame2             Fraame 3
 # the months inserted are     1 (Jan-Dec)
 #
+VIEW_WITHCODE = 'View with Frames With Codes'
+VIEW_WITHOUT  = 'View Frame Without Codes'
+
 SELTR  = 'Select a Code'
 ALLTR  = 'All codes'
 ALLGR  = 'All groups'

@@ -1,6 +1,6 @@
 # ---------------------------------------------------------------------------------- #
 #                  *****     Top_Codes_Mngr.py     *****                             #
-#                    VIEW  DELETE  ADD  UPDATE   Code                                #
+#                    VIEW  DELETE  ADD  UPDATE   Codes                               #
 #      List_Rows_WithoutCode : nRow    Date      FullDesc                            #
 #      List View Codes       : TRcode  TR_Desc   GR_Desc  CA_Desc  StrToSearch       #
 # ---------------------------------------------------------------------------------- #
@@ -8,7 +8,6 @@
 from Common.Common_Functions import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Top_Expenses.Super_Top_Codes_Mngr import Super_Top_Mngr
-from Top_Expenses.Top_Codes_View import Top_View_Codes
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Dialogs import Message_Dlg
@@ -72,7 +71,6 @@ class Top_Mngr(Super_Top_Mngr):
         self.Set_Btn_Status()
         self.Load_Trees()
 
-
     # ------------------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
         Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Values_List)
@@ -82,17 +80,17 @@ class Top_Mngr(Super_Top_Mngr):
             TRcode = Values_List[0]
             self.Reqst_Clkd_On_TRcode(TRcode)
         elif Request_Code == CODES_DB_UPDATED or \
-                Request_Code == XLSX_UPDATED:   # Codes dat
+                Request_Code == XLSX_UPDATED:
             self.Mod_Mngr.Load_Xlsx()
             self.Load_Trees()
 
     # --------------------------  T R E E     Without  Codes   ------------------------------------
     def Frame_NoCodes_Setup(self):
         Nrows     = 30
-        nColToVis = 3
-        Headings  = ['#0', 'nRow', 'Date', 'Full Description']
-        Anchor    = ['c', 'c', 'c', 'w']
-        Width     = [0, 60, 80, 470]
+        nColToVis = 4
+        Headings  = ['#0', 'nRow', 'Date', 'Accred', 'Full Description']
+        Anchor    = ['c',   'c',    'c',   'e',      'w']
+        Width     = [0,      60,     80,    90,       470]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_NoCodes.Tree_Setup(Form_List)
 
@@ -134,26 +132,13 @@ class Top_Mngr(Super_Top_Mngr):
         if not self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
             self.Frame_NoCodes.Frame_Title('  ***   Files  NOT loaded  NO  rows to insert   ***  ')
             self.Frame_WithCodes.Frame_Title('  ***   Files  NOT loaded  NO  rows to insert   ***  ')
-            self.View_Without_Code  = False
-            self.Frame_WithCodes.Frame_View()
-            self.Frame_NoCodes.Frame_Hide()
+            self.View_Frames(0)
         else:
+            With_Code_List   = self.Data.Get_WithCodeList()
             XlsxFilename     = Get_File_Name(self.Data.Get_Selections_Member(Ix_Xlsx_File))
             Total            = self.Data.Get_Total_Rows()
             Total_WthoutCode = Total[Ix_Tot_Without_Code]
             Total_WithCode   = Total[Ix_Tot_WithCode]
-
-            #    nRow Contab Valuta  TRdesc  Accred Addeb TRcode
-            With_Code_List = self.Data.Get_WithCodeList()
-            self.Multiple_Matching = False
-            for RecToCheck in With_Code_List:
-                Result = self.Data.Check_For_Multiple_Record_OnWitCodeList(RecToCheck)
-                if Result != '':
-                    Dlg_Mess = Message_Dlg(MsgBox_Err, Result)
-                    Dlg_Mess.wait_window()
-                    self.Multiple_Matching = True
-
-
             TitleNoCode = "  " + XlsxFilename + " :      " + str(Total_WthoutCode) + "  Transactions without code  ...  "
             TitleNoCode += str(Total[Ix_Tot_WithCode])  + "  with code   "
             TitleWith = "   " + XlsxFilename + " :      " + str(Total_WithCode) + "  Transactions with code  ...    "
@@ -161,25 +146,33 @@ class Top_Mngr(Super_Top_Mngr):
             self.Frame_NoCodes.Frame_Title(TitleNoCode)
             self.Frame_WithCodes.Frame_Title(TitleWith)
 
-            if self.Multiple_Matching or Total[Ix_Tot_Without_Code] == 0:
-                self.View_Without_Code = False
-                self.Frame_WithCodes.Frame_View()
-                self.Frame_NoCodes.Frame_Hide()
-            else:
-                self.View_Without_Code = True
-                self.Frame_WithCodes.Frame_Hide()
-                self.Frame_NoCodes.Frame_View()
+            self.Frame_NoCodes.Load_Row_Values(self.Data.Get_WithoutCodeList())
+            self.Frame_WithCodes.Load_Row_Values(With_Code_List)
+            self.View_Frames(Total_WthoutCode)
 
     # ---------------------------------------------------------------------------------------------
     def Frames_Refresh(self):
-        self.Mod_Mngr.Load_Xlsx(TOP_MNGR)
+        self.Mod_Mngr.Load_Codes(TOP_MNGR, ON_SELECTIONS)
         self.Load_Trees()
-        if self.View_Without_Code:
-            self.Frame_NoCodes.Frame_View()
-            self.Frame_WithCodes.Frame_Hide()
-        else:
-            self.Frame_NoCodes.Frame_Hide()
+        self.View_Frames(-1)
+
+    # ---------------------------------------------------------------------------------------------
+    def View_Frames(self, Total_WthoutCode):
+        if Total_WthoutCode == 0:               # 0 No Rows Without codes
+            self.View_Without_Code = False
             self.Frame_WithCodes.Frame_View()
+            self.Frame_NoCodes.Frame_Hide()
+        elif Total_WthoutCode > 0:              # some Rows Without codes
+            self.View_Without_Code = True
+            self.Frame_WithCodes.Frame_Hide()
+            self.Frame_NoCodes.Frame_View()
+        elif Total_WthoutCode < 0:              # -1 view frames as selected
+            if self.View_Without_Code:
+                self.Frame_WithCodes.Frame_Hide()
+                self.Frame_NoCodes.Frame_View()
+            else:
+                self.Frame_WithCodes.Frame_View()
+                self.Frame_NoCodes.Frame_Hide()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Codes(self):
@@ -191,14 +184,11 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Rows(self):
-        if not self.View_Without_Code:
-            self.Frame_NoCodes.Frame_View()
-            self.Frame_WithCodes.Frame_Hide()
-            self.View_Without_Code = True
-        else:
-            self.Frame_NoCodes.Frame_Hide()
-            self.Frame_WithCodes.Frame_View()
+        if self.View_Without_Code:
             self.View_Without_Code = False
+        else:
+            self.View_Without_Code = True
+        self.View_Frames(-1)
 
     # ----------------------------------------------------------------------------------------------
     def Set_Btn_Status(self):
@@ -219,7 +209,6 @@ class Top_Mngr(Super_Top_Mngr):
 
         self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 21,
                                   self.ComboList, 'Select  Group', self.Clk_Combo)
-
         StatusLoad = False
         if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
             StatusLoad = True
@@ -246,13 +235,11 @@ class Top_Mngr(Super_Top_Mngr):
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_xlsx(self):
         if self.Mod_Mngr.Sel_Xlsx(TOP_MNGR):
-            if self.Mod_Mngr.Load_Xlsx_Rows(TOP_MNGR):
-                self.Set_Btn_Status()
-                self.Load_Trees()
+            self.Set_Btn_Status()
+            self.Load_Trees()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):
-        # self.Data.Load_Xlsx_Lists()
         self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_MNGR, [])
         pass
 
@@ -265,17 +252,12 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Reqst_Clkd_On_TRcode(self, TRcode):
-        # if self.Mod_Mngr.Files_Loaded != LOADED:
-        #     self.View_Descr_Text(TRcode, self.GR_Combo)
-        #     self.Clicked_Mod_Code = 2
-        #     self.BtnUpdate.Set_Btn_State(Btn_Enab)
-        #     return
         self.Frame_WithCodes.Clear_Focus()
         self.Clear_Texts()
         Index = -1
         TrCodInt = int(TRcode)
         self.Load_Trees()
-        WithList = self.Data.Get_With_Code_Tree_List()
+        WithList = self.Data.Get_WithCodeList()
         for Rec in WithList:
             Index += 1
             if Rec[iWithCode_TRcode] == TrCodInt:
@@ -297,7 +279,7 @@ class Top_Mngr(Super_Top_Mngr):
         self.Frame_WithCodes.Clear_Focus()
         nRow = int(Values[0])  # Row number + Date is Unic
         Date = str(Values[1])
-        Descr = Values[2]
+        Descr = Values[3]
         Index = - 1
         Without_Recs = self.Data.Get_WithoutCodeList()
         for Rec in Without_Recs:     # Wihtout_Code_Tree_List:

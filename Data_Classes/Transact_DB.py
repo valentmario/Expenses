@@ -30,14 +30,18 @@ class Transact_Db(Xlsx_Manager):
 
     # --------------------------------------------------------------------------------------
     def Load_Transact_Table(self, TransacFilename):
-        Result = self._Load_Transact_Tables(TransacFilename)
+        Transact_Name = TransacFilename
+        if TransacFilename == ON_SELECTIONS:
+            Transact_Name = self._Transact_DB_Filename
+        Result = self._Load_Transact_Table(Transact_Name)
         if Result != OK:
             return Result
-        self._Files_Loaded[Ix_Transact_Loaded] = True
+        self._Files_Loaded[Ix_Codes_Loaded] = True
+        self.Transact_Year_Setup(True)
         return OK
 
     # -----------------------------------------------------------------------------------
-    def _Load_Transact_Tables(self, TransacFilename):
+    def _Load_Transact_Table(self, TransacFilename):
         self._tTransact_Table = []
         connect = sqlite3.connect(TransacFilename)
         cursor  = connect.cursor()

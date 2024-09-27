@@ -13,13 +13,12 @@
 #
 # ---------------------------------
 # main procedures:
-# Startup:              - Init_Transact_Db (Create_New_Transact_Db)
+# Files_Init:           - Init_Transact_Db (Create_New_Transact_Db)
 #                       - Check_Files
 #                       - Create_RecordsList_ToBeInserted
 #                       - Set_Texts
 #                       - Load_Tree
 #                       - Ins_Btn.En-Disab
-#
 #
 # Clk_Insert            - insert the RecordsList_ToBeInserted
 #                       - Init_Transact_Db (Load_anyway)
@@ -29,7 +28,7 @@
 #                       - Ins_Btn.En-Disab
 #
 # Clk_Sel_Xlx           - Sel_Xlsx    then
-#                       - as in Startup
+#                       - as in Files_Init
 #                                                                                       #
 # ------------------------------------------------------------------------------------- #
 
@@ -111,7 +110,7 @@ class Top_Insert(tk.Toplevel):
         self.TransactRecords_ToBeInserted = []
         self.TotTransact_ToBeInserted     = 0
 
-        self.Startup()
+        self.Files_Init()
 
     # -------------------------------------------------------------------------------------------------
     def Call_OnClose(self):
@@ -133,7 +132,7 @@ class Top_Insert(tk.Toplevel):
             self.Load_Tree()
 
     # --------------------------------------------------------------------------------------------------
-    def Startup(self):
+    def Files_Init(self):
         self.Ins_Btn.Btn_Disable()
         if not self.Check_For_Files():
             return
@@ -152,7 +151,7 @@ class Top_Insert(tk.Toplevel):
             return
         if not self.Mod_Mngr.Init_Xlsx_Lists(TOP_INS):
             return
-        self.Startup()
+        self.Files_Init()
 
     # -------------------------------------------------------------------------------------------------
     def ViewErr_OnTransact_Db(self):
@@ -212,7 +211,7 @@ class Top_Insert(tk.Toplevel):
             if XlsxYear != TransactYear:    # the name may be UNKNOWN
                 TRansact_Years_List = self.Data.Get_Transact_Year_ListInData()
                 if XlsxYear in TRansact_Years_List:
-                    self. Load_Transact_Found(XlsxYear, TransactYear)
+                    self.Load_Transact_XlsxYear(XlsxYear, TransactYear)
                 else:
                     if not self.Create_New_Transact_Db(XlsxYear):
                         return False
@@ -243,7 +242,7 @@ class Top_Insert(tk.Toplevel):
         self.Txt_Conto.Set_Text(Conto)
 
     # -------------------------------------------------------------------------------------------------
-    def Load_Transact_Found(self, XlsxYear, TransactYear):
+    def Load_Transact_XlsxYear(self, XlsxYear, TransactYear):
         newTransact_Filename = Transact_ + str(XlsxYear) + '.db'
         Messg  = str(XlsxYear) + ' Year for Xlsx\n'
         Messg += str(TransactYear) + ' Year for Transactions Db\n'
@@ -251,8 +250,8 @@ class Top_Insert(tk.Toplevel):
         Msg_Dlg = Message_Dlg(MsgBox_Info, Messg)
         Msg_Dlg.wait_window()
 
-        Curr_Full_Filename = self.Data.Get_Selections_Member(Ix_Transact_File)
-        Dir_Name           = Get_Dir_Name(Curr_Full_Filename)
+        Curr_Transact_Filename = self.Data.Get_Selections_Member(Ix_Transact_File)
+        Dir_Name           = Get_Dir_Name(Curr_Transact_Filename)
         Full_Filename      = Dir_Name + newTransact_Filename
         File_Exists        = os.path.isfile(Full_Filename)
         if not File_Exists:

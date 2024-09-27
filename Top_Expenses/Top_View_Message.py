@@ -14,8 +14,6 @@ class Top_View_Message(tk.Toplevel):
     def __init__(self, List):
         super().__init__()
         self.Chat = Ms_Chat
-        # self.Data = Data
-        # self.Mod_Mngr = Modul_Mngr
 
         self.Chat.Attach([self, TOP_XLSX_VIEW])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
@@ -37,8 +35,3 @@ class Top_View_Message(tk.Toplevel):
 
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
         pass
-        # Print_Received_Message(Transmitter_Name, MAIN_WIND, Request_Code, Values_List)
-        # if Request_Code == CODE_TO_CLOSE:
-        #     self.Call_OnClose()
-        # elif Request_Code == SOMETHING:
-        #   pass

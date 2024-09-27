@@ -3,7 +3,6 @@
 #                        Settings  functions used essentially for developing                      #
 # ----------------------------------------------------------------------------------------------- #
 from Chat import Ms_Chat
-# from Top_Expenses.Top_Codes_View import Top_View_Codes
 from Widgt.Widgets import *
 from Widgt.Tree_Widg import *
 from Widgt.Dialogs import File_Dialog
@@ -100,17 +99,17 @@ class Top_Settings(tk.Toplevel):
         self.Files_List = []
         self.Top_List = self.Data.Get_Selections_Member(Ix_TOP_ToStart)
 
-        self.ComboList = []
-        self.StrVar     = tk.StringVar()
-        self.ComboList  = [TOP_SETTINGS, TOP_MNGR, TOP_CODES_VIEW, TOP_VIEW_TRANSACT,
-                           TOP_GR_MNGR,  TOP_INS,  TOP_QUERY,      TOP_XLSX_VIEW]
-        self.Part_Combo = TheCombo(self, self.StrVar, 20, 292, 32, 16,
+        self.ComboList      = []
+        self.StrVar         = tk.StringVar()
+        self.ComboList      = [TOP_SETTINGS, TOP_MNGR, TOP_CODES_VIEW, TOP_VIEW_TRANSACT,
+                               TOP_GR_MNGR,  TOP_INS,  TOP_QUERY,      TOP_XLSX_VIEW]
+        self.Part_Combo = TheCombo(self, self.StrVar, 20, 292, 32, 15,
                                    self.ComboList, '', self.Clk_Combo)
         self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 20, 14, 'Select Codes DB file', self.Clk_Sel_Codes_DB)
         self.Btn_View_Codes    = TheButton(self, Btn_Def_En, 170, 20, 14, 'Show Codes DB',        self.Clk_View_Codes_DB)
 
         self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En,  20, 65, 14, 'Select xlsx File',  self.Clk_Sel_xlsx_File)
-        self.Btn_View_Xlsx     = TheButton(self, Btn_Def_En, 170, 65, 14, 'Show Xlsx File',    self.Clk_View_xlsx_File)
+        self.Btn_View_Xlsx     = TheButton(self, Btn_Def_En, 170, 65, 14, 'Show Xlsx File',   self.Clk_View_xlsx_File)
 
         self.Btn_Tsel_Transact  = TheButton(self, Btn_Def_En,  20, 110, 14, 'Sel transact file',self.Clk_Sel_Transact)
         self.Btn_ViewTransact   = TheButton(self, Btn_Def_En, 170, 110, 14, 'Show transactions',self.Clk_View_Transact)
@@ -118,14 +117,14 @@ class Top_Settings(tk.Toplevel):
         self.Btn_Test_DBcodes  = TheButton(self, Btn_Def_En,  20, 155, 14, 'Check Codes DB',   self.Clk_Check_Codes_DB)
         self.Btn_View_Xlsx_Tot = TheButton(self, Btn_Def_En, 170, 155, 14, 'Show messages',    self.Clk_View_Msg)
 
-        self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'Show Txt List',     self.Clk_View_Selections)
+        self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'Show selections', self.Clk_View_Selections)
         self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En, 170, 200, 14, 'Chat Participants', self.Clk_View_Chat)
 
         self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'for test',         self.Clk_NotUsed)
         # self.Btn_StrMatching   = TheButton(self, Btn_Def_En, 170, 245, 14, 'Strings matching',  self.Clk_Matching)
-        self.TestTxt           = TheText(self, Txt_Disab,    170, 245, 14, 1, 'Text')
+        self.TestTxt           = TheText(self, Txt_Disab,    170, 248, 16, 1, 'Text')
 
-        self.Btn_Clear_Top     = TheButton(self, Btn_Def_En, 180, 290, 14, 'Clear',  self.Clk_Clear_Top)
+        self.Btn_Clear_Top     = TheButton(self, Btn_Def_En, 170, 290, 14, 'Clear',  self.Clk_Clear_Top)
         self.Exit              = TheButton(self, Btn_Def_En,  24, 335, 30, 'EXIT',   self.Call_OnClose)
 
     # ----------------------------------------------------------------------------------------------------------
@@ -151,8 +150,8 @@ class Top_Settings(tk.Toplevel):
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
-        self.Mod_Mngr.Sel_Xlsx(TOP_SETTINGS)
-        pass
+        self.Mod_Mngr.Sel_Xlsx(TOP_MNGR)
+
 
     def Clk_View_xlsx_File(self):
         self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS, [])
@@ -207,7 +206,9 @@ class Top_Settings(tk.Toplevel):
         strText += '\nTotal with-code .. ' + str(Total[Ix_Tot_WithCode])
         strText += '\nTotal without-code ' + str(Total[Ix_Tot_Without_Code])
 
+        TransactYear = str(self.Data.Get_TransacYear())
         strText += '\n\n---  Queries  selections  -----------------'
+        strText +=   '\nQuery Year:       ' + TransactYear
         strText +=   '\nQuery Conto:      ' + Queries_List[Ix_Query_Conto]
         strText +=   '\nQuery month:      ' + Queries_List[Ix_Query_Month]
         strText +=   '\nQuery tot months: ' + Queries_List[Ix_Query_TotMonths]

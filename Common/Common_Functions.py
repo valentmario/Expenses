@@ -332,6 +332,20 @@ def GetStrList_ForFind(strToFind):
     return strList
 
 # -----------------------------------------------------------------------------
+# def StrForSearc_in_Fulldescr(strToFind, String):
+#     strList = GetStrList_ForFind(strToFind)
+#     if not strList:
+#         return False
+#     index = 0
+#     CurrString = String
+#     for Item in strList:
+#         FirstOccurence = CurrString.find(Item)
+#         if FirstOccurence == -1:
+#             return False
+#         index += FirstOccurence
+#         CurrString = String[index:]
+#     return True
+
 def StrForSearc_in_Fulldescr(strToFind, String):
     strList = GetStrList_ForFind(strToFind)
     if not strList:

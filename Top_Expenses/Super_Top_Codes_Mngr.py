@@ -16,7 +16,7 @@ from Widgt.Widgets import TheCombo
 
 # -------------------------------------------------------------------------------------------------
 class Super_Top_Mngr(tk.Toplevel):
-    def __init__(self, Result, List):
+    def __init__(self):
         super().__init__()
         self.Chat = Ms_Chat
         self.Data = Data
@@ -24,7 +24,7 @@ class Super_Top_Mngr(tk.Toplevel):
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
 
         self.resizable(False, False)
-        self.geometry('5x5+900+600')
+        self.geometry('5x5+10000+10000')
         self.title('*****     Transactions  Codes  Manager     *****')
         self.configure(background=BakGnd)
 
@@ -33,10 +33,7 @@ class Super_Top_Mngr(tk.Toplevel):
         self.GR_Code     = None
         self.CA_Code     = None
 
-        # --------------------------------     C O M B O s           ------------------------------
-        self.StrVar_Conto  = tk.StringVar
-        # self.OptMenu_Conto = TheCombo(self, self.StrVar_Conto, self.Widg_PosX,  55, 21, 16, Conto_List,
-        #                              FIDEU, self.Clk_Conto)
+        # --------------------------------   Groups    C O M B O            -----------------------
         self.StrVar    = tk.StringVar()
         self.GR_Combo  = TheCombo(self, self.StrVar, xyToHide, xyToHide, 1, 1, [], '', self.Clk_Combo)
 
@@ -91,7 +88,7 @@ class Super_Top_Mngr(tk.Toplevel):
             if Result != OK:
                 return Result
 
-        Result = self.Data.Load_Codes_Table()
+        Result = self.Data.Load_Codes_Tables()
         if Result != OK:
             errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
             errMessage += Result
@@ -136,7 +133,7 @@ class Super_Top_Mngr(tk.Toplevel):
                 errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
                 errMessage += Result
                 return errMessage
-            Result = self.Data.Load_Codes_Table()
+            Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
             if Result != OK:
                 errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
                 errMessage += Result
@@ -179,7 +176,7 @@ class Super_Top_Mngr(tk.Toplevel):
                 errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
                 errMessage += Result
                 return errMessage
-            Result = self.Data.Load_Codes_Table()
+            Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
             if Result != OK:
                 errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
                 errMessage += Result

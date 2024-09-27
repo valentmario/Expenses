@@ -143,54 +143,70 @@ class Xlsx_Manager(Codes_db):
                 filename = Get_File_Name(FullFilename)
                 self._tTransact_Year  = int(filename[9:13])
 
+    # --------------------------------------------------------------------------------------------
+    def _Init_Xlsx_Data(self):
+        self._tXLSX_Rows_From_Sheet   = []
+        self._tXLSX_Rows_Desc_Compact = []
+        self._tXlsx_Rows_NOK_List     = []
+        #
+        self._tWith_Code_Tree_List    = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
+        self._tWihtout_Code_Tree_List = []
+        # ------------------------
+        self._tTot_Rows     = 0
+        self._tTot_OK       = 0
+        self._tTot_NOK      = 0
+        self._tTotWith_Code = 0
+        self._tTotWihtout_Code = 0
+        self._tiYear_List = []
+        # -----------------------------------------------------------------------------------------
+        self._tXlsx_Conto    = None  # or on selecting new file  FIDEU_2024_01.xlsx
+        self._tXlsx_Year     = None  # they are  calculated on startup
+        self._tXlsx_Month    = None
+        self._tTransact_Year = None
+
+    # --------------------------------------------------------------------------------------------
+    def _Save_Xlsx_Data(self):
+        self._Xlsx_Rows_From_Sheet = self._tXLSX_Rows_From_Sheet
+        self._Xlsx_Rows_Desc_Compact = self._tXLSX_Rows_Desc_Compact
+        self._Xlsx_Rows_NOK_List = self._tXlsx_Rows_NOK_List
+        #
+        self._With_Code_Tree_List    = self._tWith_Code_Tree_List
+        self._Wihtout_Code_Tree_List = self._tWihtout_Code_Tree_List
+        # ------------------------
+        self._Tot_Rows = self._tTot_Rows
+        self._Tot_OK = self._tTot_OK
+        self._Tot_NOK = self._tTot_NOK
+        self._TotWith_Code = self._tTot_WithCode
+        self._TotWihtout_Code = self._tTot_WithoutCode
+        self._iYear_List = self._tiYear_List
+
+        self._Xlsx_Conto = self._tXlsx_Conto
+        self._Xlsx_Year = self._tXlsx_Year
+        self._Xlsx_Month = self._tXlsx_Month
+        self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
 
     # -----------------------------------------------------------------------------------------
     def Load_Xlsx_Lists_FromData(self, Filename):
         File_Name    = Filename
         if Filename == ON_SELECTIONS:
             File_Name = self._Xlsx_Filename
+
+        self._Init_Xlsx_Data()
         self.Xlsx_Conto_Year_Month_Setup(True, File_Name)
-        pass
-        Result = self._Load_xlsx_Rows_From_Sheet(Filename)      # Load xlsx Rows
+
+        Result = self._Load_xlsx_Rows_From_Sheet(File_Name)      # Load xlsx Rows
         if Result != OK:
             return Result
         else:
             Result = self._Create_Xlsx_Lists()                  # create xlsx lists
             if Result == OK:
-                self._Xlsx_Rows_From_Sheet   = self._tXlsx_Rows_From_Sheet
-                self._Xlsx_Rows_Desc_Compact = self._tXlsx_Rows_Desc_Compact
-                self._Xlsx_Rows_NOK_List     = self._tXlsx_Rows_NOK_List
-                #
-                self._With_Code_Tree_List    = self._tWith_Code_Tree_List
-                self._Wihtout_Code_Tree_List = self._tWihtout_Code_Tree_List
-                # ------------------------
-                self._Tot_Rows        = self._tTot_Rows
-                self._Tot_OK          = self._tTot_OK
-                self._TotWith_Code    = self._tTot_WithCode
-                self._TotWihtout_Code = self._tTot_WithoutCode
-                self._Tot_NOK         = self._tTot_NOK
-                self._iYear_List      = self._tiYear_List
-
-                self._Xlsx_Conto = self._tXlsx_Conto
-                self._Xlsx_Year  = self._tXlsx_Year
-                self._Xlsx_Month = self._tXlsx_Month
-                self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
-                pass
+                self._Save_Xlsx_Data()
                 return OK
             else:
                 return Result
 
     # -------------------------------------  Get rows from sheet ----------------------------
     def _Load_xlsx_Rows_From_Sheet(self, Filename):
-        self._tXlsx_Rows_From_Sheet    = []
-        self._tXlsx_Rows_Desc_Compact  = []
-        self._tXlsx_Rows_NOK_List      = []
-        self._tiYear_List              = []
-
-        self._tTot_OK   = 0
-        self._tTot_NOK  = 0
-        self._tTot_Rows = 0
-
         self._Get_Work_Sheet_Rows(Filename)  # set  _Tot_Rows = -1 on ERROR of Loadind Rows
 
         if self._tTot_Rows < 0:
@@ -232,7 +248,7 @@ class Xlsx_Manager(Codes_db):
                             self._tiYear_List.append(iYear)
                     else:
                         myRow.append(Val)
-                self._tXlsx_Rows_From_Sheet.append(myRow)          # Descripritions as in Sheet, Date is str
+                self._tXLSX_Rows_From_Sheet.append(myRow)    # Descripritions as in Sheet, Date is str
         if self._tTot_OK == 0:
             return 'no correct rows found on xlsx file'
         if self._tXlsx_Conto == FLASH or self._tXlsx_Conto == AMBRA or self._tXlsx_Conto == POSTA:
@@ -268,8 +284,9 @@ class Xlsx_Manager(Codes_db):
                     self._tTot_WithoutCode += 1
                     Row_Without_Code.append(Row[iRow_nRow])       # nRow
                     Row_Without_Code.append(Row[iRow_Valuta])     # Valuta
+                    Row_Without_Code.append(Row[iRow_Addeb])      # Addebiti
                     Row_Without_Code.append(Full_Desc)            # Full_Desc
-                    self._Wihtout_Code_Tree_List.append(Row_Without_Code)
+                    self._tWihtout_Code_Tree_List.append(Row_Without_Code)
                 else:
                     return Result[1]
             else:
