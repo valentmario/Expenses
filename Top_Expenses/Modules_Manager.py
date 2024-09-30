@@ -16,7 +16,6 @@ from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data
 from Top_Expenses.Top_View_Message import Top_View_Message
-# from Top_Expenses.Top_View_Message import Top_View_Message
 from Widgt.Dialogs import Message_Dlg
 from Widgt.Dialogs import File_Dialog
 
@@ -26,6 +25,7 @@ class Modules_Manager:
         self.Data = Data
         self.Chat = Ms_Chat
         self.Dummy = None
+        self.Check_Result      = False
         self.Toplevels_Id_List = []   # <class>,  NAME
                                       # List of toplevel to launch in Top_Settings
 
@@ -33,15 +33,13 @@ class Modules_Manager:
     def Cek_Create_Selections(self):
         Result = self.Data.Check_Create_Selections()
         if Result == NEW:
-            self.Data.Xlsx_Conto_Year_Month_Setup(False, '')
-            self.Data.Transact_Year_Setup(False)
+            self.Data.Clear_Xlsx_Conto_Year_Month()
+            self.Data.Clear_Transact_Year()
             Text = "New Selections file created\nmount the data drive if necessary"
             Msg  = Message_Dlg(MsgBox_Info, Text)
             Msg.wait_window()
         else:
-            Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
-            self.Data.Xlsx_Conto_Year_Month_Setup(True, Filename)
-            self.Data.Transact_Year_Setup(True)
+            pass
 
 
     # =========================================================================================== #
@@ -209,7 +207,7 @@ class Modules_Manager:
         if errMessage != '':
             Msg = Message_Dlg(MsgBox_Err, errMessage)
             Msg.wait_window()
-            self.Data.Transact_Year_Setup(False)   # clear Transact_Year
+            self.Data.Clear_Transact_Year()   # clear Transact_Year
             return False
         else:
             return True
@@ -251,7 +249,6 @@ class Modules_Manager:
     #                                                                                                 #
     #                     _With_Code_Tree_List  _Wihtout_Code_Tree_List                               #
     #                     *** if some Without code rows exist: Insert transaction on Db if forbidden  #
-    #                     *** the worse case is if a description is matched with more Str_ToSearch    #
     #                                                                                                 #
     # =============================================================================================== #
     def Init_Xlsx_Lists(self, Origin):
@@ -277,33 +274,32 @@ class Modules_Manager:
         errMessage = ''
         if Full_Xlsx_Filename == UNKNOWN:
             errMessage = 'Filename unknown\nPlease select a file'
-            return False
-
-        filename = Get_File_Name(Full_Xlsx_Filename)
-        if len(filename) < Len_Xlsx_Filename_Min:
-            pass
-            errMessage = 'Length of xlsx filename INCORRECT'
         else:
-            iLastBar  = int(Full_Xlsx_Filename.rfind("/") + 1)
-            ContoDir  = Full_Xlsx_Filename[(iLastBar - 17):(iLastBar - 12)]
-            ContoYear = Full_Xlsx_Filename[(iLastBar - 11):iLastBar]
-            ContoYearOnfilename = filename[0:11]
-            strYear    = filename[6:10]
-            strMonth   = filename[11:13]
-            pass
-            if ContoDir != FIDEU and ContoDir != FLASH and ContoDir != POSTA and ContoDir != AMBRA:
-                errMessage = 'Xlsx Conto not correct'
-            elif ContoDir not in ContoYear or ContoDir not in ContoYearOnfilename:
-                errMessage =  'On xlsx filename\n'
-                errMessage += 'Mismatching with\n' + ContoDir + '\n' + ContoYear + '\n' + ContoYearOnfilename
-            elif not (Check_strYear(strYear, self.Data.Min_Year, self.Data.Max_Year)):
-                errMessage = 'Year  not OK:  ' + strYear
-            elif not (Check_strMonth(strMonth)):
-                errMessage = 'Xlsx Month  not OK:  '  + strMonth
+            filename = Get_File_Name(Full_Xlsx_Filename)
+            if len(filename) < Len_Xlsx_Filename_Min:
+                pass
+                errMessage = 'Length of xlsx filename INCORRECT'
+            else:
+                iLastBar  = int(Full_Xlsx_Filename.rfind("/") + 1)
+                ContoDir  = Full_Xlsx_Filename[(iLastBar - 17):(iLastBar - 12)]
+                ContoYear = Full_Xlsx_Filename[(iLastBar - 11):iLastBar]
+                ContoYearOnfilename = filename[0:11]
+                strYear    = filename[6:10]
+                strMonth   = filename[11:13]
+                pass
+                if ContoDir != FIDEU and ContoDir != FLASH and ContoDir != POSTA and ContoDir != AMBRA:
+                    errMessage = 'Xlsx Conto not correct'
+                elif ContoDir not in ContoYear or ContoDir not in ContoYearOnfilename:
+                    errMessage =  'On xlsx filename\n'
+                    errMessage += 'Mismatching with\n' + ContoDir + '\n' + ContoYear + '\n' + ContoYearOnfilename
+                elif not (Check_strYear(strYear, self.Data.Min_Year, self.Data.Max_Year)):
+                    errMessage = 'Year  not OK:  ' + strYear
+                elif not (Check_strMonth(strMonth)):
+                    errMessage = 'Xlsx Month  not OK:  '  + strMonth
         if errMessage != '':
             Msg = Message_Dlg(MsgBox_Err, errMessage)
             Msg.wait_window()
-            self.Data.Xlsx_Conto_Year_Month_Setup(False, '')
+            self.Data.Clear_Xlsx_Conto_Year_Month()
             return False
         return True
 
@@ -347,9 +343,9 @@ class Modules_Manager:
             return
         else:
             TopLevel  = self.Get_TopLev(Name_ToLaunch)
-            Result    = self.Make_Checkout(Name_ToLaunch, Origin)
+            self.Check_Result = self.Make_Checkout(Name_ToLaunch, Origin)
             try:
-                TopLevel(Result, Param_List)
+                TopLevel(self.Check_Result, Param_List)
             except:
                 print('Launcher ERROR')
                 print(Name_ToLaunch)
@@ -362,6 +358,7 @@ class Modules_Manager:
 
     # ---------------------------------------------------------------------------------------------
     def Make_Checkout(self, Name, Origin):
+        self.Check_Result = False
         CheckList = []
         for Item in LAUNCH_CHECKOUT:
             CheckName    = Item[0]
@@ -371,7 +368,7 @@ class Modules_Manager:
                     CheckList.append(Check)
                 break
         if not CheckList:
-                return True
+            return True
                 
         for Check in CheckList:
             if Check == CEK_CODES:                          # CEK_CODES
@@ -380,12 +377,22 @@ class Modules_Manager:
 
             if Check == CEK_XLSX_LIST:                      # CEK_XLSX LISTS
                 if not self.Init_Xlsx_Lists(Origin):
-                    return False
+                    if not self.Xlsx_Sel_Request(Origin):
+                        return False
 
             if Check == CEK_TRANSACT:                       # CEK_TRANSACT
                 if not self.Init_Transactions(Origin):
                     return False
         return True
+
+    # ---------------------------------------------------------------------------------------------
+    def Xlsx_Sel_Request(self, Origin):
+        Msg_Dlg = Message_Dlg(MsgBox_Err, 'an Xlsx file must be selected')
+        Msg_Dlg.wait_window()
+        if self.Sel_Xlsx(Origin):
+            return True
+        else:
+            return False
 
     # ---------------------------------------------------------------------------------------------
     def Add_Toplevels_Id_List(self, Id):

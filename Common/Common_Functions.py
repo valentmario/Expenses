@@ -21,11 +21,6 @@ def Get_intMonth_FromStr(nameStr):
             return intMonth
     return 0
 
-def Get_Year_On_Xlsx_Filename(Full_Name):
-    fileName = Get_File_Name(Full_Name)
-    Year = fileName[6:10]
-    return int(Year)
-
 # -----------------------------------------------------------------------------
 def Compact_Descr_String(Descr):
     Type = type(Descr)
@@ -128,20 +123,30 @@ def Get_List_Record(List, Ncol_For_Find, ValueToFind, default):
             return Rec
     return default
 
+# -----------------------------------------------------------------------------
+def Get_Xlsx_Year(Xlsx_Name):
+    Filename = Get_File_Name(Xlsx_Name)
+    Year = Filename[6:10]
+    return int(Year)
+
+def Get_Transactions_Year(Transact_Filenae):
+    Filename = Get_File_Name(Transact_Filenae)
+    return int(Filename[9:13])
+
 def Get_YearMonthDay(TheDate):
     iYear  = int(TheDate[:4])
     iMonth = int(TheDate[5:7])
     iDay   = int(TheDate[8:10])
     return [iYear, iMonth, iDay]
 
-def It_Date(theDate):
+def Conv_En_To_It_Date(Eng_Date):
     # 2023/01/31
     # 0123456789
-    Day = theDate[8:10]
-    Month = theDate[5:7]
-    Year  = theDate[2:4]
-    Italy_Date = Day + '/' + Month + '/' + Year
-    return Italy_Date
+    Day   = Eng_Date[8:10]    # 31
+    Month = Eng_Date[5:7]     # 05
+    Year  = Eng_Date[2:4]     # 24
+    Italian_Date = Day + '/' + Month + '/' + Year
+    return Italian_Date
 
 # ----------------------------------------------------------------------------#
 def TestForSign(Sign, FoundNotZ):
@@ -302,16 +307,6 @@ def Float_ToString_Setup(Val):
     #             else:
     #                 strValCompact += ' '
     # return strValCompact
-
-# -----------------------------------------------------------------------------
-def Get_DMY_From_Date(strDate):
-    #  2022-10-03
-    Year  = int(strDate[0:4])
-    Month = int(strDate[5:7])
-    Day   = int(strDate[8:10])
-    myDate = [Day, Month, Year]
-    return myDate
-
 
 # -----------------------------------------------------------------------------
 def GetStrList_ForFind(strToFind):

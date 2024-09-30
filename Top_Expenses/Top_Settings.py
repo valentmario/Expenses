@@ -175,6 +175,24 @@ class Top_Settings(tk.Toplevel):
     def Clk_View_Chat(self):
         self.Chat.View_Partic()
 
+    # ------------------------------------------------------------------------------------
+    @classmethod
+    def Val_Check(cls, Value):
+        if Value is None:
+            return NONE
+        else:
+            return str(Value)
+
+    def Get_Ident(self):
+        # [self._Xlsx_Conto, self._Xlsx_Year, self._Xlsx_Month, self._Transact_Year]
+        Files_Ident   = self.Data.Get_Xlsx_Transact_Ident()
+        Xlsx_Conto    = self.Val_Check(Files_Ident[Ix_Xlsx_Conto])
+        Xlsx_Year     = self.Val_Check(Files_Ident[Ix_Xlsx_Year])
+        Xlsx_Month    = self.Val_Check(Files_Ident[Ix_Xlsx_Month])
+        Transact_Year = self.Val_Check(Files_Ident[Ix_Transact_Year])
+        return [Xlsx_Conto, Xlsx_Year, Xlsx_Month, Transact_Year]
+
+    # ------------------------------------------------------------------------------------
     def Clk_View_Selections(self):
         Total = [0, 0, 0]
         if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
@@ -201,6 +219,12 @@ class Top_Settings(tk.Toplevel):
         strText += self.Data.Get_Selections_Member(Ix_Transact_File)
         strText += '\n\n----------  Files status  ----------------\n'
         strText += strStat1 + '  ' + strStat2 + '  ' + strStat3 + '  ' + strStat4
+
+        # [self._Xlsx_Conto, self._Xlsx_Year, self._Xlsx_Month, self._Transact_Year]
+        Str = self.Get_Ident()
+        strText += '\n\n--------  Xlsx Transactions  ident -------\n'
+        strText += Str[0] + '   ' + Str[1] + '   ' + Str[2] + '   ' + Str[3]
+
         strText += '\n\n----------  Xlsx total rows   -------------\n'
         strText +=   'Total rows OK ...  ' + str(Total[Ix_Tot_OK])
         strText += '\nTotal with-code .. ' + str(Total[Ix_Tot_WithCode])

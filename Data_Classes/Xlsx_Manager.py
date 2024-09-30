@@ -55,10 +55,9 @@ class Xlsx_Manager(Codes_db):
         self._tTotWihtout_Code = 0
         self._tiYear_List   = []
         # -----------------------------------------------------------------------------------------
-        self._tXlsx_Conto    = None  # or on selecting new file  FIDEU_2024_01.xlsx
-        self._tXlsx_Year     = None  # they are  calculated on startup
+        self._tXlsx_Conto    = None  # these attributs are not saved on Selections
+        self._tXlsx_Year     = None  # they wil be calculated in Load_Xlsx_Lists()
         self._tXlsx_Month    = None
-        self._tTransact_Year = None
 
     # ----------------------------------------------------------------------------------- #
     #            ----------------      public   methods   -----------------               #
@@ -76,21 +75,22 @@ class Xlsx_Manager(Codes_db):
     def Get_Xlsx_Rows_From_Sheet(self):
         return self._Xlsx_Rows_From_Sheet
 
-    def Xlsx_Conto_Year_Month_Setup(self, Action, Filename):
-        # FIDEU_2024_01.xlsx
-        if not Action:
+    def Clear_Xlsx_Conto_Year_Month(self):
+        self._tXlsx_Conto = None
+        self._tXlsx_Year  = None
+        self._tXlsx_Month = None
+
+    def _Set_Xlsx_Conto_Year_Month(self, Filename):
+        FullFilename = Filename  # self.Get_Selections_Member(Ix_Xlsx_File)
+        if FullFilename != UNKNOWN:
+            filename = Get_File_Name(FullFilename)
+            self._tXlsx_Conto = filename[0:5]
+            self._tXlsx_Year = int(filename[6:10])
+            self._tXlsx_Month = int(filename[11:13])
+        else:
             self._tXlsx_Conto = None
             self._tXlsx_Year  = None
             self._tXlsx_Month = None
-        else:
-            # Here Codes tables  are OK and the xlsx_finame too
-            FullFilename = Filename  # self.Get_Selections_Member(Ix_Xlsx_File)
-            if FullFilename != UNKNOWN:
-                filename = Get_File_Name(FullFilename)
-                self._tXlsx_Conto = filename[0:5]
-                self._tXlsx_Year  = int(filename[6:10])
-                self._tXlsx_Month = int(filename[11:13])
-                pass
 
     # -------------------------------------------------------------------------------------------------
     # The case of two identical records (Dates, value, Code etc.)
@@ -131,18 +131,6 @@ class Xlsx_Manager(Codes_db):
             Messg += '\n\nfound in more records WitCode List\nAdjust records in Xlsx\nExit '
             return Messg
 
-    # -----------------------------------------------------------------------------------
-    def Transact_Year_Setup(self, Action):
-        # Transact_2023.db
-        if not Action:
-            self._tTransact_Year = None
-        else:
-            # Here Codes tables  are OK and the xlsx_finame too
-            FullFilename = self.Get_Selections_Member(Ix_Transact_File)
-            if FullFilename != UNKNOWN:
-                filename = Get_File_Name(FullFilename)
-                self._tTransact_Year  = int(filename[9:13])
-
     # --------------------------------------------------------------------------------------------
     def _Init_Xlsx_Data(self):
         self._tXLSX_Rows_From_Sheet   = []
@@ -162,7 +150,6 @@ class Xlsx_Manager(Codes_db):
         self._tXlsx_Conto    = None  # or on selecting new file  FIDEU_2024_01.xlsx
         self._tXlsx_Year     = None  # they are  calculated on startup
         self._tXlsx_Month    = None
-        self._tTransact_Year = None
 
     # --------------------------------------------------------------------------------------------
     def _Save_Xlsx_Data(self):
@@ -191,13 +178,18 @@ class Xlsx_Manager(Codes_db):
         if Filename == ON_SELECTIONS:
             File_Name = self._Xlsx_Filename
 
+        # Xlsx file ident is clear on _Init_Xlsx_Data
         self._Init_Xlsx_Data()
-        self.Xlsx_Conto_Year_Month_Setup(True, File_Name)
+        # the xlsx filename is surely correct and Conto Year Month can be setted
+        # these attribute are necessary for _Load_xlsx_Rows_From_Sheet
+        # to adjust the rows values for different Conto (FIDEU_2024_09.xlsx)
+        self._Set_Xlsx_Conto_Year_Month(File_Name)
 
         Result = self._Load_xlsx_Rows_From_Sheet(File_Name)      # Load xlsx Rows
         if Result != OK:
             return Result
         else:
+
             Result = self._Create_Xlsx_Lists()                  # create xlsx lists
             if Result == OK:
                 self._Save_Xlsx_Data()
@@ -361,8 +353,8 @@ class Xlsx_Manager(Codes_db):
             self.Contab = self._Work_Sheet['A' + str(nRow)].value
             self.Valuta = self._Work_Sheet['B' + str(nRow)].value
             self.Des1   = self._Work_Sheet['C' + str(nRow)].value
-            XlsxAccr   = self._Work_Sheet['D' + str(nRow)].value
-            XlsxAddeb  = self._Work_Sheet['E' + str(nRow)].value
+            XlsxAccr    = self._Work_Sheet['D' + str(nRow)].value
+            XlsxAddeb   = self._Work_Sheet['E' + str(nRow)].value
             self.Des2   = self._Work_Sheet['F' + str(nRow)].value
             # ----------   Credits and Debits  type are :  float   -------
             self.Accr  = Convert_To_Float(XlsxAccr)

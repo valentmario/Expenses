@@ -23,6 +23,11 @@ class Transact_Db(Xlsx_Manager):
         self.Connect = None
         self.Cursor  = None
         self.Dummy   = 0
+
+        self._tTransact_Year = None   # this attribute is calculated in _Load_Transact_Table()
+        self._Transact_xMonth_List_ForInsert = [[], [], [], [], [], [], [], [], [], [], [], []]
+        self._Transact_xMonth_List_Empty     = [False, False, False, False, False, False,
+                                                False, False, False, False, False, False]
     # --------------------------------------------------------------------------------------
     def Get_Xlsx_Transact_Ident(self):
         return [self._Xlsx_Conto, self._Xlsx_Year, self._Xlsx_Month, self._Transact_Year]
@@ -37,7 +42,7 @@ class Transact_Db(Xlsx_Manager):
         if Result != OK:
             return Result
         self._Files_Loaded[Ix_Codes_Loaded] = True
-        self.Transact_Year_Setup(True)
+        self._Set_Transact_Year()
         return OK
 
     # -----------------------------------------------------------------------------------
@@ -58,25 +63,19 @@ class Transact_Db(Xlsx_Manager):
             return EMPTY
         return OK
 
+    # ---------------------------------------------------------------------------------------
+    def Clear_Transact_Year(self):
+        self._Transact_Year = None
 
-    # --------------------------------------------------------------------------------------
-    # def Load_Transact_Table(self):
-    #     self._Transact_Table = []
-    #     self._Files_Loaded[Ix_Transact_Loaded] = False
-    #     connect = sqlite3.connect(self._Transact_DB_Filename)
-    #     cursor  = connect.cursor()
-    #     try:
-    #         cursor.execute("SELECT * FROM TRANSACT")
-    #         self._Transact_Table = cursor.fetchall()
-    #         connect.close()
-    #     except:
-    #         connect.close()
-    #         return 'ERROR\non loading Transactions'
-    #
-    #     self._Files_Loaded[Ix_Transact_Loaded] = True
-    #     if not self._Transact_Table:
-    #         return EMPTY
-    #     return OK
+    # ---------------------------------------------------------------------------------------
+    def _Set_Transact_Year(self):
+        # Transact_2023.db
+        FullFilename = self.Get_Selections_Member(Ix_Transact_File)
+        if FullFilename != UNKNOWN:
+            filename = Get_File_Name(FullFilename)
+            self._tTransact_Year = int(filename[9:13])
+        else:
+            self._tTransact_Year = None
 
     # ---------------------------------------------------------------------------------------
     #                      0      1       2       3       4       5        6      7
@@ -121,6 +120,7 @@ class Transact_Db(Xlsx_Manager):
                                        "TRcode INTEGER)" )
             Connect.commit()
             Connect.close()
+            self._Set_Transact_Year()
         except:
             Connect.close()
             return False
@@ -199,12 +199,25 @@ class Transact_Db(Xlsx_Manager):
                     ListOnDb[iTransact_Valuta] == RecToInsert[iTransact_Valuta] and \
                     ListOnDb[iTransact_Accred] == RecToInsert[iTransact_Accred] and \
                     ListOnDb[iTransact_Addeb]  == RecToInsert[iTransact_Addeb]:
-                        return [Transact_Rec[iTransact_nRow],   Transact_Rec[iTransact_Conto],
-                                Transact_Rec[iTransact_Contab], Transact_Rec[iTransact_Valuta],
-                                Transact_Rec[iTransact_TRdesc],
-                                Transact_Rec[iTransact_Accred], Transact_Rec[iTransact_Addeb],
-                                Transact_Rec[iTransact_TRcode]]
-        return []
+                    return True
+        return False
+
+    # -------------------------------------------------------------------------------------------------------------
+    def Create_Transact_Month_List_Empty(self):
+        self._Transact_xMonth_List_Empty     = [False, False, False, False, False, False,
+                                                False, False, False, False, False, False]
+        for Rec in self._Transact_Table:
+            YearMonthV = Get_YearMonthDay(Rec[iTransact_Valuta])
+            Year  = YearMonthV[0]
+            Month = YearMonthV[1]
+            if Year == self._Transact_Year:
+                self._Transact_xMonth_List_Empty[Month] = True
+            YearMonthC = Get_YearMonthDay(Rec[iTransact_Contab])
+            Year = YearMonthC[0]
+            Month = YearMonthC[1]
+            if Year == self._Transact_Year:
+                self._Transact_xMonth_List_Empty[Month] = True
+        return self._Transact_xMonth_List_Empty
 
     # -------------------------------------------------------------------------------------------------------------
     def Get_Transact_Year_ListInData(self):

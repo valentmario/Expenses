@@ -8,14 +8,6 @@ from Top_Expenses.Super_Top_Queries import Super_Top_Queries
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Tree_Widg import TheFrame
-"""
-    def __init__(self, Result, Param_List):
-        super().__init__()
-        self.Mod_Mngr = Modul_Mngr
-
-
-"""
-
 
 # ---------------------------------------------------------------------------------------------------------------------
 class Top_Queries(Super_Top_Queries):
