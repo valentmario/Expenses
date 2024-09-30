@@ -20,7 +20,7 @@ from Widgt.Widgets import TheCombo
 
 # =============================================================================
 class Top_GR_Codes_Mngr(tk.Toplevel):
-    def __init__(self, Status, Data_List):
+    def __init__(self, List):
         super().__init__()
         self.Chat  = Ms_Chat
         self.Data  = Data
@@ -33,8 +33,7 @@ class Top_GR_Codes_Mngr(tk.Toplevel):
         self.title('*****     Manage Groups Codes     *****')
         self.configure(background=BakGnd)
 
-        self.Status    = Status
-        self.Data_List = Data_List
+        self.Data_List = List
         self.Dummy     = None
         self.Value     = []
 

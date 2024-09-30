@@ -2,12 +2,10 @@
 #                           ***   Top_Settings.py   ***                                           #
 #                        Settings  functions used essentially for developing                      #
 # ----------------------------------------------------------------------------------------------- #
-from Chat import Ms_Chat
-from Widgt.Widgets import *
+
 from Widgt.Tree_Widg import *
-from Widgt.Dialogs import File_Dialog
+from Widgt.Dialogs import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
-from Top_Expenses.Top_View_Message import Top_View_Message
 from Data_Classes.Transact_DB import *
 
 # class Top_Settings(tk.Toplevel): see line 85
@@ -80,7 +78,7 @@ class Top_String_Matching(tk.Toplevel):
 
 # =================================================================================================
 class Top_Settings(tk.Toplevel):
-    def __init__(self, Result, Param_List):
+    def __init__(self, List):
         super().__init__()
         self.Chat     = Ms_Chat
         self.Data     = Data
@@ -93,8 +91,7 @@ class Top_Settings(tk.Toplevel):
         self.configure(background=BakGnd)
         self.title('*****     Settings     *****')
 
-        self.Result     = Result
-        self.Param_List = Param_List
+        self.Data_List  = List
         self.Dummy      = 0
         self.Files_List = []
         self.Top_List = self.Data.Get_Selections_Member(Ix_TOP_ToStart)

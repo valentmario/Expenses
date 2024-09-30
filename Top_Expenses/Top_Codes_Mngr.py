@@ -18,13 +18,11 @@ from Widgt.Widgets import TheCombo
 
 # -------------------------------------------------------------------------------------------------
 class Top_Mngr(Super_Top_Mngr):
-    def __init__(self, Stat, Param_List):
+    def __init__(self, List):
         super().__init__()
         self.Mod_Mngr = Modul_Mngr
-
-        self.Stat       = Stat
-        self.Param_List = Param_List
-        self.Dummy      = 0
+        self.List     = List
+        self.Dummy    = 0
         self.Multiple_Matching = True
 
         # ----------------------   Frames   -------------------------------------------------------

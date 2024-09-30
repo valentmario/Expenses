@@ -29,13 +29,12 @@ from Widgt.Widgets import TheText
 #  --------------------        class Top_Insert(tk.Toplevel)        --------------------------------   #
 # ==================================================================================================== #
 class Top_Insert(tk.Toplevel):
-    def __init__(self, Result, Param_List):
+    def __init__(self, List):
         super().__init__()
-        self.Chat       = Ms_Chat
-        self.Data       = Data
-        self.Mod_Mngr   = Modul_Mngr
-        self.Result     = Result
-        self.Param_List = Param_List
+        self.Chat     = Ms_Chat
+        self.Data     = Data
+        self.Mod_Mngr = Modul_Mngr
+        self.List     = List
 
         self.Chat.Attach([self, TOP_INS])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)

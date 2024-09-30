@@ -11,11 +11,9 @@ from Widgt.Tree_Widg import TheFrame
 
 # ---------------------------------------------------------------------------------------------------------------------
 class Top_Queries(Super_Top_Queries):
-    def __init__(self, Result, Param_List):
+    def __init__(self, List):
         super().__init__(self.Trees_Update)
-
-        self.Result     = Result
-        self.Param_List = Param_List
+        self.Data_List = List
 
         # --------------------------  Trees-Frames    for  Queries   --------------------------------------------------
         self.Frame1 = TheFrame(self, xyToHide, 10, self.Click_OnFrame)  # frames for transactions

@@ -12,11 +12,7 @@
 #                                                                               #
 #    'Load ' methods load files data and if OK  it updates Selections           #
 # ============================================================================= #
-from Common.Common_Functions import *
-from Chat import Ms_Chat
-from Data_Classes.Transact_DB import Data
-from Top_Expenses.Top_View_Message import Top_View_Message
-from Widgt.Dialogs import Message_Dlg
+from Widgt.Dialogs import *
 from Widgt.Dialogs import File_Dialog
 
 # -------------------------------------------------------------------------------
@@ -337,7 +333,7 @@ class Modules_Manager:
     # Origin         = The requesting Module
     # List_For_Start =  List of Parameters to pass to Recipient
     # -------------------------------------------------
-    def Top_Launcher(self, Name_ToLaunch, Origin, Param_List):
+    def Top_Launcher(self, Name_ToLaunch, Origin, List):
         if self.Chat.Check_Name_Is_On_Participants_List(Name_ToLaunch):
             self.Chat.Tx_Request([Origin, [Name_ToLaunch], CODE_TO_CLOSE, []])
             return
@@ -345,7 +341,7 @@ class Modules_Manager:
             TopLevel  = self.Get_TopLev(Name_ToLaunch)
             self.Check_Result = self.Make_Checkout(Name_ToLaunch, Origin)
             try:
-                TopLevel(self.Check_Result, Param_List)
+                TopLevel(List)
             except:
                 print('Launcher ERROR')
                 print(Name_ToLaunch)

@@ -16,7 +16,7 @@ from Widgt.Widgets import TheTextPoints
 from Top_Expenses.Modules_Manager import Modul_Mngr
 
 class Top_XLSX_Rows_View(tk.Toplevel):
-    def __init__(self, Result, Param_List):
+    def __init__(self, List):
         super().__init__()
         self.Chat = Ms_Chat
         self.Data = Data
@@ -30,8 +30,7 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         self.title('***   View Sheet Rows xlsx file   *** ')
         self.configure(background=BakGnd)
 
-        self.Result     = Result
-        self.Param_List = Param_List
+        self.Data_List = List
 
         self.Txt1 = TheTextPoints(self, Txt_Disab,  20, 860, 33, 4, '', 11)
         self.Txt2 = TheTextPoints(self, Txt_Disab, 310, 860, 60, 4, '', 11)
