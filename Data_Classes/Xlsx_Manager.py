@@ -178,8 +178,8 @@ class Xlsx_Manager(Codes_db):
         if Filename == ON_SELECTIONS:
             File_Name = self._Xlsx_Filename
 
+        self._Init_Xlsx_Data()    # ------------------------------------------------
         # Xlsx file ident is clear on _Init_Xlsx_Data
-        self._Init_Xlsx_Data()
         # the xlsx filename is surely correct and Conto Year Month can be setted
         # these attribute are necessary for _Load_xlsx_Rows_From_Sheet
         # to adjust the rows values for different Conto (FIDEU_2024_09.xlsx)
@@ -189,10 +189,9 @@ class Xlsx_Manager(Codes_db):
         if Result != OK:
             return Result
         else:
-
             Result = self._Create_Xlsx_Lists()                  # create xlsx lists
             if Result == OK:
-                self._Save_Xlsx_Data()
+                self._Save_Xlsx_Data()   # -------------------------------------------
                 return OK
             else:
                 return Result

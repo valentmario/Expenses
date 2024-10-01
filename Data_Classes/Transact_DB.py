@@ -24,7 +24,9 @@ class Transact_Db(Xlsx_Manager):
         self.Cursor  = None
         self.Dummy   = 0
 
-        self._tTransact_Year = None   # this attribute is calculated in _Load_Transact_Table()
+        self._tTransact_Year  = None   #for _Load_Transact_Table()
+        self._tTransact_Table = []
+
         self._Transact_xMonth_List_ForInsert = [[], [], [], [], [], [], [], [], [], [], [], []]
         self._Transact_xMonth_List_Empty     = [False, False, False, False, False, False,
                                                 False, False, False, False, False, False]
@@ -35,11 +37,14 @@ class Transact_Db(Xlsx_Manager):
 
     # --------------------------------------------------------------------------------------
     def Load_Transact_Table(self, TransacFilename):
-        Transact_Name = TransacFilename
+        self._tTransact_Table = []
+        Transact_Name      = TransacFilename
         if TransacFilename == ON_SELECTIONS:
-            Transact_Name = self._Transact_DB_Filename
+            Transact_Name = self.Get_Selections_Member()
         Result = self._Load_Transact_Table(Transact_Name)
-        if Result != OK:
+        if Result == OK or Result == EMPTY:
+            self._Transact_Year = Get_Transactions_Year(Transact_Name)
+        else:
             return Result
         self._Files_Loaded[Ix_Codes_Loaded] = True
         self._Set_Transact_Year()
@@ -47,7 +52,6 @@ class Transact_Db(Xlsx_Manager):
 
     # -----------------------------------------------------------------------------------
     def _Load_Transact_Table(self, TransacFilename):
-        self._tTransact_Table = []
         connect = sqlite3.connect(TransacFilename)
         cursor  = connect.cursor()
         try:
@@ -59,7 +63,7 @@ class Transact_Db(Xlsx_Manager):
             return 'ERROR\non loading Transactions'
 
         self._Transact_Table = self._tTransact_Table
-        if not self._Transact_Table:
+        if not self._tTransact_Table:
             return EMPTY
         return OK
 
@@ -105,6 +109,10 @@ class Transact_Db(Xlsx_Manager):
     # used in Top_Insert()
     def Create_Transact_DB_File(self, FullName):
         self.Dummy = 0
+        File_Exists = os.path.isfile(FullName)
+        if File_Exists:
+            return True
+
         Connect    = None
         try:
             Connect = sqlite3.connect(FullName)
@@ -204,19 +212,19 @@ class Transact_Db(Xlsx_Manager):
 
     # -------------------------------------------------------------------------------------------------------------
     def Create_Transact_Month_List_Empty(self):
-        self._Transact_xMonth_List_Empty     = [False, False, False, False, False, False,
-                                                False, False, False, False, False, False]
+        self._Transact_xMonth_List_Empty     = [True, True, True, True, True, True,
+                                                True, True, True, True, True, True]
         for Rec in self._Transact_Table:
             YearMonthV = Get_YearMonthDay(Rec[iTransact_Valuta])
             Year  = YearMonthV[0]
-            Month = YearMonthV[1]
+            Month = YearMonthV[1] -1
             if Year == self._Transact_Year:
                 self._Transact_xMonth_List_Empty[Month] = True
             YearMonthC = Get_YearMonthDay(Rec[iTransact_Contab])
             Year = YearMonthC[0]
-            Month = YearMonthC[1]
+            Month = YearMonthC[1] -1
             if Year == self._Transact_Year:
-                self._Transact_xMonth_List_Empty[Month] = True
+                self._Transact_xMonth_List_Empty[Month] = False
         return self._Transact_xMonth_List_Empty
 
     # -------------------------------------------------------------------------------------------------------------

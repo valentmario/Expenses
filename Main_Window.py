@@ -13,13 +13,8 @@
 # *********************************************************************************************** #
 
 from Top_Expenses.Modules_Manager import Modul_Mngr
-
-from Data_Classes.Transact_DB import Data
-from Chat import Ms_Chat
-
-from Common.Common_Functions import *
+from Widgt.Dialogs import *
 from Widgt.Widgets import *
-
 from Top_Expenses.Top_Settings import Top_Settings
 from Top_Expenses.Top_Codes_Mngr import Top_Mngr
 from Top_Expenses.Top_Codes_View import Top_View_Codes
@@ -28,7 +23,6 @@ from Top_Expenses.Top_Xlsx_Rows_View import Top_XLSX_Rows_View
 from Top_Expenses.Top_Insert import Top_Insert
 from Top_Expenses.Top_View_Transactions import Top_View_Transact
 from Top_Expenses.Top_Queries import Top_Queries
-from Top_Expenses.Top_View_Message import Top_View_Message
 
 # -------------------------------------------------------------------------------------------------
 class Main_Window(tk.Tk):

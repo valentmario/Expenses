@@ -82,7 +82,7 @@ class Modules_Manager:
     def Cek_Codes_Name(cls, Filename):
         errMessage = ''
         if Filename == UNKNOWN:
-            errMessage = 'Filename unknown\nPlease select a file'
+            errMessage = 'Codes filename unknown\nPlease select a Codes file'
         else:
             Dirname  = Get_Dir_Name(Filename)
             filename = Get_File_Name(Filename)
@@ -184,7 +184,7 @@ class Modules_Manager:
         errMessage = ''
         File_Name  = Filename
         if File_Name == UNKNOWN:
-            errMessage = 'Filename unknown\nPlease select a file'
+            errMessage = 'Transactions ilename unknown\nPlease select a Transactions file'
         else:
             TransactionsIdent = TRANSACTIONS + '/' + Transact_
             filename = Get_File_Name(File_Name)
@@ -269,7 +269,7 @@ class Modules_Manager:
     def Cek_Xlsx_Name(self, Full_Xlsx_Filename):
         errMessage = ''
         if Full_Xlsx_Filename == UNKNOWN:
-            errMessage = 'Filename unknown\nPlease select a file'
+            errMessage = 'Xlsx filename unknown\nPlease select an Xlsx file'
         else:
             filename = Get_File_Name(Full_Xlsx_Filename)
             if len(filename) < Len_Xlsx_Filename_Min:

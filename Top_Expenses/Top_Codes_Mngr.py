@@ -194,6 +194,9 @@ class Top_Mngr(Super_Top_Mngr):
         if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):
             if not self.Data.Get_Multiple_List():
                 Status = True
+        else:
+            Status = False
+        self.BtnView.Btn_Set_Status(Status)
         self.BtnGRmngr.Btn_Set_Status(Status)
         self.BtnDel.Btn_Set_Status(Status)
         self.BtnAddNew.Btn_Set_Status(Status)
