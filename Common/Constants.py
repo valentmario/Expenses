@@ -21,7 +21,6 @@ if DUAL_DISPLAY:
     #                             1 Frame               2 Frames           3 Frames
     Top_Query_geometry     = ['630x1000+1060+10', '1060x1000+640+10', '1500x1000+200+10']
                            # ['630x1000+1060+10', '1060x1000+640+10', '1500x1000+200+10']
-
 else:
     Main_Wind_geometry     = '330x310+1580+1'
     Settings_geometry      = '330x390+1580+360'
@@ -30,8 +29,8 @@ else:
     Top_GRcodes_geometry   = '830x1000+20+1'
     Top_Xlsx_View_geometry = '820x1000+10+1'
     Top_View_Mess_geometry = '450x470+600+10'
-    Top_Insert_geometry    = '610x1000+1300+1'
-    Top_TrView_geometry    = '800x1000+10+1'
+    Top_Insert_geometry    = '740x1000+900+1'
+    Top_TrView_geometry    = '900x1000+10+1'
     #                         one frame           two frames          three frames
     Top_Query_geometry     = ['630x1000+940+10', '1060x1000+510+1', '1490x1000+80+1']
 
@@ -85,7 +84,7 @@ CODE_CLK_ON_TR_CODES= 'Clicked Row with TR Codes'   # Clkd on Codes_DB Record Va
 CODE_CLIK_ON_XLSX   = 'Clkded On_Xlsx_Tree  '       # Clkd on Xlsx Row  Value = [nRow, Data_Valuta]
 CODE_CLEAR_FOCUS    = 'Clear Focus   '
 CODES_DB_UPDATED    = 'Codes database update'
-XLSX_UPDATED        = 'Xlsx lllists created'
+XLSX_UPDATED        = 'Xlsx ists created'
 XLSX_ROWS_LOADED    = 'Xlsx rows loaded'
 TRANSACT_UPDATED    = 'Transactions updated'
 MULTI_MATCH         = 'Multple StrToSearc matching'
@@ -240,8 +239,9 @@ Def_CAcode = 0
 
 #   -----  Database  /TRNSACTIONS/Transact_2024.db  ----------
 TRANSACTIONS = 'TRANSACTIONS'
-Transact_ = 'Transact_'
-Len_Transact_Filename = 16
+Transact_    = 'Transact_'
+TRANSACT_ID  = 'TRANSACTIONS/Transact_'
+Len_Transact_Filename = 22
 iTransact_nRow   = 0
 iTransact_Conto  = 1
 iTransact_Contab = 2

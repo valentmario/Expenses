@@ -79,8 +79,8 @@ class Top_Mngr(Super_Top_Mngr):
             self.Reqst_Clkd_On_TRcode(TRcode)
         elif Request_Code == CODES_DB_UPDATED or \
                 Request_Code == XLSX_UPDATED:
-            self.Mod_Mngr.Load_Xlsx()
-            self.Load_Trees()
+                self.Mod_Mngr.Load_Xlsx()
+                self.Load_Trees()
 
     # --------------------------  T R E E     Without  Codes   ------------------------------------
     def Frame_NoCodes_Setup(self):
@@ -151,6 +151,7 @@ class Top_Mngr(Super_Top_Mngr):
     # ---------------------------------------------------------------------------------------------
     def Frames_Refresh(self):
         self.Mod_Mngr.Load_Codes(TOP_MNGR, ON_SELECTIONS)
+        self.Mod_Mngr.Load_Xlsx_Lists()
         self.Load_Trees()
         self.View_Frames(-1)
 

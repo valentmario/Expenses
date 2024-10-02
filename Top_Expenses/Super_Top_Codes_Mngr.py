@@ -88,7 +88,7 @@ class Super_Top_Mngr(tk.Toplevel):
             if Result != OK:
                 return Result
 
-        Result = self.Data.Load_Codes_Tables()
+        Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
         if Result != OK:
             errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
             errMessage += Result

@@ -40,7 +40,7 @@ class Transact_Db(Xlsx_Manager):
         self._tTransact_Table = []
         Transact_Name      = TransacFilename
         if TransacFilename == ON_SELECTIONS:
-            Transact_Name = self.Get_Selections_Member()
+            Transact_Name = self.Get_Selections_Member(Ix_Transact_File)
         Result = self._Load_Transact_Table(Transact_Name)
         if Result == OK or Result == EMPTY:
             self._Transact_Year = Get_Transactions_Year(Transact_Name)
@@ -219,7 +219,7 @@ class Transact_Db(Xlsx_Manager):
             Year  = YearMonthV[0]
             Month = YearMonthV[1] -1
             if Year == self._Transact_Year:
-                self._Transact_xMonth_List_Empty[Month] = True
+                self._Transact_xMonth_List_Empty[Month] = False
             YearMonthC = Get_YearMonthDay(Rec[iTransact_Contab])
             Year = YearMonthC[0]
             Month = YearMonthC[1] -1

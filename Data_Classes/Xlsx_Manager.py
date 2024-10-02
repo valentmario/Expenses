@@ -92,45 +92,6 @@ class Xlsx_Manager(Codes_db):
             self._tXlsx_Year  = None
             self._tXlsx_Month = None
 
-    # -------------------------------------------------------------------------------------------------
-    # The case of two identical records (Dates, value, Code etc.)
-    # (for example ATM withdrawals at the same day for the same values)
-    # Xlsx must be adjustad manually; i.e. for two 100€ Xlsx must be modified manually:
-    # in 99.99 and 100.1
-    # nRow    Contab    Valuta    TR_Desc   Accred   Addeb   TRcode
-    #   x        1         2         x         3       4        5
-    # -------------------------------------------------------------------------------------------------
-    def Check_For_Multiple_Record_OnWitCodeList(self, RecToCheck):
-        nFound = 0
-        for Rec in self._With_Code_Tree_List:
-            Index = -1
-            Found = True
-            for Item in Rec:
-                Index += 1
-                indexToCheck = self.ItemToCheck[Index]
-                if indexToCheck == 99:
-                    pass
-                else:
-                    if Item == '' or Item == ' ':
-                        pass
-                    else:
-                        if Item != RecToCheck[indexToCheck]:
-                            Found = False
-            if Found:
-                nFound += 1
-
-        if nFound == 1:
-            return ''
-        else:
-            Messg = 'Found record:\n'
-            Index = -1
-            for Item in RecToCheck:
-                Index += 1
-                Messg += self.strList[Index]
-                Messg += str(Item) + '\n'
-            Messg += '\n\nfound in more records WitCode List\nAdjust records in Xlsx\nExit '
-            return Messg
-
     # --------------------------------------------------------------------------------------------
     def _Init_Xlsx_Data(self):
         self._tXLSX_Rows_From_Sheet   = []
@@ -153,22 +114,22 @@ class Xlsx_Manager(Codes_db):
 
     # --------------------------------------------------------------------------------------------
     def _Save_Xlsx_Data(self):
-        self._Xlsx_Rows_From_Sheet = self._tXLSX_Rows_From_Sheet
+        self._Xlsx_Rows_From_Sheet   = self._tXLSX_Rows_From_Sheet
         self._Xlsx_Rows_Desc_Compact = self._tXLSX_Rows_Desc_Compact
-        self._Xlsx_Rows_NOK_List = self._tXlsx_Rows_NOK_List
+        self._Xlsx_Rows_NOK_List     = self._tXlsx_Rows_NOK_List
         #
         self._With_Code_Tree_List    = self._tWith_Code_Tree_List
         self._Wihtout_Code_Tree_List = self._tWihtout_Code_Tree_List
         # ------------------------
-        self._Tot_Rows = self._tTot_Rows
-        self._Tot_OK = self._tTot_OK
-        self._Tot_NOK = self._tTot_NOK
+        self._Tot_Rows     = self._tTot_Rows
+        self._Tot_OK       = self._tTot_OK
+        self._Tot_NOK      = self._tTot_NOK
         self._TotWith_Code = self._tTot_WithCode
         self._TotWihtout_Code = self._tTot_WithoutCode
-        self._iYear_List = self._tiYear_List
+        self._iYear_List    = self._tiYear_List
 
         self._Xlsx_Conto = self._tXlsx_Conto
-        self._Xlsx_Year = self._tXlsx_Year
+        self._Xlsx_Year  = self._tXlsx_Year
         self._Xlsx_Month = self._tXlsx_Month
         self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
 

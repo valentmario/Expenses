@@ -55,7 +55,7 @@ class Top_View_Transact(tk.Toplevel):
         elif Request_Code == CODE_CLEAR_FOCUS or Request_Code == CODE_CLK_ON_TR_CODES or Request_Code\
                           == CODE_CLIK_ON_XLSX or Request_Code == XLSX_UPDATED:
             self.Frame_Sheets_Rows.Clear_Focus()
-            self.Frame_Sheets_Rows.Load_Row_Values(self.Data.XLSX_Rows_From_Sheet)
+            self.Frame_Sheets_Rows.Load_Row_Values(self.Data.Load_Transact_Table(ON_SELECTIONS))
 
     # ---------------------------------------------------------------------------------------------
     def Clk_On_Sheets_Rows(self, Values):
@@ -75,7 +75,7 @@ class Top_View_Transact(tk.Toplevel):
         Ncol = 8
         Headings = ['#0', 'row', 'Conto', "Contab", 'Valuta', 'Description', 'Accred  ', 'Addebit  ', 'TRcode']
         Anchor   = ['c',  'c',   'c',     'c',      'c',      'w',           'e',       'e',       'c'     ]
-        Width    = [ 0,    60,    80,      80,       80,       200,           80,        80,        80     ]
+        Width    = [ 0,    60,    80,      90,       90,       200,           80,        80,        80     ]
         Form_List = [Nrow, Ncol, Headings, Anchor, Width]
         self.Frame_Sheets_Rows.Tree_Setup(Form_List)
         # self.Frame_Sheets_Rows_View()

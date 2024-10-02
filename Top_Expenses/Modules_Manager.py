@@ -79,18 +79,18 @@ class Modules_Manager:
 
     # ---------------------------------------------------------------------------------------------
     @classmethod
-    def Cek_Codes_Name(cls, Filename):
+    def Cek_Codes_Name(cls, Full_Filename):
         errMessage = ''
-        if Filename == UNKNOWN:
+        if Full_Filename == UNKNOWN:
             errMessage = 'Codes filename unknown\nPlease select a Codes file'
         else:
-            Dirname  = Get_Dir_Name(Filename)
-            filename = Get_File_Name(Filename)
+            Dirname  = Get_Dir_Name(Full_Filename)
+            filename = Get_File_Name(Full_Filename)
             if len(filename) < Len_Codes_Filename_Min:
                 errMessage = 'Len of Codes filename INCORRECT'
             else:
-                iLastBar = int(Filename.rfind("/") + 1)
-                strCodes = Filename[(iLastBar - 9):(iLastBar + 11)]
+                iLastBar = int(Full_Filename.rfind("/") + 1)
+                strCodes = Full_Filename[(iLastBar - 9):(iLastBar + 11)]
                 if strCodes != Ident_DB_Filename:
                     errMessage = 'DBcodes filename ERROR:\n\n'
                     errMessage += filename + '\n' + Dirname  + '\n\nexpected:  ' + Ident_DB_Filename
@@ -180,23 +180,23 @@ class Modules_Manager:
     # -----------------------------------------------------------------------------------------
     # 210987654321 0 12345678901234
     # TRANSACTIONS / Transact_2024.db
-    def Cek_Transactions_Name(self, Filename):
+    def Cek_Transactions_Name(self, Full_Filename):
         errMessage = ''
-        File_Name  = Filename
+        File_Name  = Full_Filename
         if File_Name == UNKNOWN:
             errMessage = 'Transactions ilename unknown\nPlease select a Transactions file'
         else:
-            TransactionsIdent = TRANSACTIONS + '/' + Transact_
             filename = Get_File_Name(File_Name)
             if len(filename) < Len_Transact_Filename:
                 errMessage = 'Len of Transactions filename INCORRECT'
             else:
+                #  TRANSACTIONS/Transact_   2024.db
                 iLastBar = int(File_Name.rfind("/") + 1)
-                Transact_Str = File_Name[(iLastBar - 13):(iLastBar + 9)]
+                Transact_Str_Id = File_Name[(iLastBar - 13):(iLastBar + 9)]
                 strYear = filename[9:13]
-                if Transact_Str != TransactionsIdent:
+                if Transact_Str_Id != TRANSACT_ID:
                     errMessage = 'Transactions filename ERROR:\n\n'
-                    errMessage += filename + '\n' + Transact_Str
+                    errMessage += filename + '\n' + Transact_Str_Id
                 else:
                     if not (Check_strYear(strYear, self.Data.Min_Year, self.Data.Max_Year)):
                         errMessage = 'Transactions Year  not OK:  ' + strYear
