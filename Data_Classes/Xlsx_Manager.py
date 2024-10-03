@@ -229,7 +229,7 @@ class Xlsx_Manager(Codes_db):
             Full_Desc        = self.Description_Select(Row[iRow_Descr1], Row[iRow_Descr2])
             Row[iRow_Descr1] = Full_Desc
 
-            Result = self._Find_StrToSearc_InFullDesc(Row)
+            Result = self._Find_StrToFind_InFullDesc(Row)
             # return:      [NOK, []]  [NOK, ErrMsg] [OK, Found_List[0]]
             if Result[0] == NOK:
                 if not Result[1]:
@@ -380,7 +380,6 @@ class Xlsx_Manager(Codes_db):
     #  while the Worksheet is the container of Data of one Sheet                        #
     # --------------------------------------------------------------------------------- #
     def _Get_Work_Sheet_Rows(self, Filename):
-        # Work_Book = None
         try:
             Work_Book = load_workbook(Filename)
         except:
@@ -388,8 +387,8 @@ class Xlsx_Manager(Codes_db):
             return
         self.SheetName   = Work_Book.sheetnames[0]   # always the first sheet
         self.Update_Selections(self.SheetName, Ix_Sheet_Name)
-        self._Work_Sheet = Work_Book.get_sheet_by_name(self.SheetName)
-        self._tTot_Rows   = self._Work_Sheet.max_row
+        self._Work_Sheet = Work_Book[self.SheetName]
+        self._tTot_Rows  = self._Work_Sheet.max_row
         pass
 
     # -----------------------------------------------------------------------------------

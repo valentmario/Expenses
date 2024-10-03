@@ -23,7 +23,6 @@ class Top_Mngr(Super_Top_Mngr):
         self.Mod_Mngr = Modul_Mngr
         self.List     = List
         self.Dummy    = 0
-        self.Multiple_Matching = True
 
         # ----------------------   Frames   -------------------------------------------------------
         self.Frame_NoCodes = TheFrame(self, 10, 20, self.Clk_OnTree_NoCodes)
@@ -40,7 +39,7 @@ class Top_Mngr(Super_Top_Mngr):
                                   [], 'Select  Group', self.Clk_Combo)
         # --------------------------------------  TEXT Boxes  -------------------------------------
         self.Txt_StrFullDesc = TheText(self, Txt_DisBlak,280, 680, 44, 4, '')
-        self.Txt_StrToSerc   = TheText(self, Txt_Enab,    10, 680, 31, 2, '')
+        self.Txt_StrToFind   = TheText(self, Txt_Enab,    10, 680, 31, 2, '')
         self.Txt_TR_Desc     = TheText(self, Txt_Enab,    60, 734, 25, 1, '')
         self.Txt_TR_Code     = TheText(self, Txt_DisBlak, 10, 734,  4, 1, 0)
 
@@ -61,7 +60,7 @@ class Top_Mngr(Super_Top_Mngr):
 
         self.BtnUpdate = TheButton(self, Btn_Def_Dis,474, 772, 17, 'Update Code',          self.Clk_Update_Record)
         self.BtnVWithC = TheButton(self, Btn_Def_Dis,474, 815, 18, 'Show with/hout codes', self.Clk_View_Rows)
-        self.BtnInsert = TheButton(self, Btn_Def_Dis,474, 860, 17, 'Insert Transactions',  self.Clk_Insert)
+        self.BtnInsert = TheButton(self, Btn_Def_Dis,474, 860, 17, 'Load Transactions',    self.Clk_Load_Transact)
         self.BtnTransact=TheButton(self, Btn_Def_Dis,474, 900, 17, 'Show Transactions',    self.Clk_ViewTransact)
         self.BtnExit   = TheButton(self, Btn_Def_En, 474, 940, 18, 'E X I T ',             self.Call_OnClose)
 
@@ -79,27 +78,26 @@ class Top_Mngr(Super_Top_Mngr):
             self.Reqst_Clkd_On_TRcode(TRcode)
         elif Request_Code == CODES_DB_UPDATED or \
                 Request_Code == XLSX_UPDATED:
-                self.Mod_Mngr.Load_Xlsx()
+                # self.Mod_Mngr.Load_Xlsx()
                 self.Load_Trees()
 
     # --------------------------  T R E E     Without  Codes   ------------------------------------
     def Frame_NoCodes_Setup(self):
         Nrows     = 30
         nColToVis = 4
-        Headings  = ['#0', 'nRow', 'Date', 'Accred', 'Full Description']
+        Headings  = ['#0', 'nRow', 'Date', 'Adeb  ', ' Full Description']
         Anchor    = ['c',   'c',    'c',   'e',      'w']
         Width     = [0,      60,     80,    90,       470]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_NoCodes.Tree_Setup(Form_List)
 
     def Clk_OnTree_NoCodes(self, Values):
+        #  nRow    Date   Accred  Full Descrip
         self.Frame_WithCodes.Clear_Focus()
         self.Chat.Tx_Request([TOP_MNGR, [ANY], CODE_CLEAR_FOCUS, []])
-        self.Clicked_Mod_Code = 1
         self.Clear_Texts()
         self.Set_Row_Without_Code(Values)
-        myList = [Values[1], Values[2]]
-        self.Chat.Tx_Request([ TOP_MNGR, [TOP_XLSX_VIEW], CODE_CLIK_ON_XLSX, myList ])
+        self.Chat.Tx_Request([ TOP_MNGR, [TOP_XLSX_VIEW], CODE_CLIK_ON_XLSX, [] ])
 
     # --------------------------  T R E E     With  Codes   ---------------------------------------
     def Frame_WithCodes_Setup(self):
@@ -114,15 +112,16 @@ class Top_Mngr(Super_Top_Mngr):
 
     def Clk_OnTree_WithCodes(self, Values):
         #  nRow    Date   Descrip   Accred   Addeb   TRcode
+        nRow      = int(Values[iWithCode_nRow])
+        TRcode    = int(Values[iWithCode_TRcode])
+        Descrip = Values[iWithCode_TR_Desc]
+        if int(nRow) < 1 or not Descrip:
+            return
         self.Frame_NoCodes.Clear_Focus()
         self.Chat.Tx_Request([TOP_MNGR, [ANY,], CODE_CLEAR_FOCUS, []])
-        nRow      = int(Values[iWithCode_nRow])
-        Date      = ' '  # Values[iWithCode_Date]
-        TRcode    = int(Values[iWithCode_TRcode])
         self.View_Descr_Text(TRcode, self.GR_Combo)
-        self.Clicked_Mod_Code = 2
         self.Set_State_Butt_New_Updt('disabled', 'normal')
-        self.Chat.Tx_Request([TOP_MNGR, [TOP_XLSX_VIEW], CODE_CLIK_ON_XLSX, [nRow, Date] ])
+        self.Chat.Tx_Request([TOP_MNGR, [TOP_XLSX_VIEW], CODE_CLIK_ON_XLSX, [] ])
         self.Chat.Tx_Request([TOP_MNGR, [TOP_XLSX_VIEW, TOP_GR_MNGR], CODE_CLK_ON_TR_CODES, [TRcode] ])
 
     # ---------------------------------------------------------------------------------------------
@@ -149,11 +148,12 @@ class Top_Mngr(Super_Top_Mngr):
             self.View_Frames(Total_WthoutCode)
 
     # ---------------------------------------------------------------------------------------------
+    # invoked on  Delete  Add  and Update  Record
     def Frames_Refresh(self):
-        self.Mod_Mngr.Load_Codes(TOP_MNGR, ON_SELECTIONS)
-        self.Mod_Mngr.Load_Xlsx_Lists()
+        self.Mod_Mngr.Load_Xlsx_Lists(TOP_MNGR, ON_SELECTIONS)
         self.Load_Trees()
         self.View_Frames(-1)
+        return True
 
     # ---------------------------------------------------------------------------------------------
     def View_Frames(self, Total_WthoutCode):
@@ -246,7 +246,7 @@ class Top_Mngr(Super_Top_Mngr):
         pass
 
     # --------------------------------------------------------------------------------------------
-    def Clk_Insert(self):
+    def Clk_Load_Transact(self):
         self.Mod_Mngr.Top_Launcher(TOP_INS, TOP_MNGR, [])
 
     def Clk_ViewTransact(self):
@@ -266,7 +266,6 @@ class Top_Mngr(Super_Top_Mngr):
                 self.Frame_WithCodes.Set_List_For_Focus(Index)
                 break
         self.View_Descr_Text(TRcode, self.GR_Combo)
-        self.Clicked_Mod_Code = 2
         self.Set_State_Butt_New_Updt('disabled', 'normal')
 
     # -------------------------------------------------------------------------------------------------
@@ -279,16 +278,15 @@ class Top_Mngr(Super_Top_Mngr):
     def Set_Row_Without_Code(self, Values):  # nRow, Data_Valuta Full_Description
         self.Frame_NoCodes.Clear_Focus()
         self.Frame_WithCodes.Clear_Focus()
-        nRow = int(Values[0])  # Row number + Date is Unic
-        Date = str(Values[1])
-        Descr = Values[3]
+        nRow = int(Values[iNoCode_nRow])  # Row number + Date is Unic
+        Date = str(Values[iNoCode_Date])
+        Descr = Values[iNoCode_FullDesc]
         Index = - 1
         Without_Recs = self.Data.Get_WithoutCodeList()
         for Rec in Without_Recs:     # Wihtout_Code_Tree_List:
             Index += 1
             if Rec[0] == nRow and Rec[1] == Date:
                 self.Frame_NoCodes.Set_Focus(Index)
-                self.Clicked_Mod_Code = 1
                 self.Clear_Texts()
                 #                     nRow              Date           Full Description
                 Full_Desc = 'nRow=' + str(nRow) + '  ' + Date + '-' + Descr
@@ -309,29 +307,28 @@ class Top_Mngr(Super_Top_Mngr):
         if Result == OK:
             Msg = Message_Dlg(MsgBox_Info, 'Code has correctly deleted')
             Msg.wait_window()
-            self.Frames_Refresh()
-            self.Chat.Tx_Request([TOP_MNGR, [ANY], CODES_DB_UPDATED, []])
+            if self.Frames_Refresh():
+                self.Set_Btn_Status()
+                self.Chat.Tx_Request([TOP_MNGR, [ANY], CODES_DB_UPDATED, []])
         elif Result == NONE:
             pass
         else:
             Msg = Message_Dlg(MsgBox_Err, Result)
             Msg.wait_window()
 
-
     # ------------------------     ***   Add new code Record  the last TR Record      -------------
     def Clk_Add_New_Record(self):
-        if self.Clicked_Mod_Code != 1:
-            Msg_Dlg = Message_Dlg(MsgBox_Info, 'please setup:\n Transaction\nand Group data')
-            Msg_Dlg.wait_window()
+        if not self.Test_Transaction_Data():
             return
         else:
             Result = self.Add_Record_Code()
             if Result == OK:
                 Msg = Message_Dlg(MsgBox_Info, 'Code has correctly added')
                 Msg.wait_window()
-                self.Frames_Refresh()
-                self.Chat.Tx_Request([TOP_MNGR, [ANY], CODES_DB_UPDATED, []])
-            elif Result == NONE:
+                if self.Frames_Refresh():
+                    self.Set_Btn_Status()
+                    self.Chat.Tx_Request([TOP_MNGR, [ANY], CODES_DB_UPDATED, []])
+            elif Result == NONE:    # In case of "NO" to add record request
                 pass
             else:
                 Msg = Message_Dlg(MsgBox_Err, Result)
@@ -339,9 +336,7 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ------------------------     ***   Update TR code Record      -------------------------------
     def Clk_Update_Record(self):
-        if self.Clicked_Mod_Code != 2:
-            Msg_Dlg = Message_Dlg(MsgBox_Info, 'Insert data')
-            Msg_Dlg.wait_window()
+        if not self.Test_Transaction_Data():
             return
         else:
             self.Set_State_Butt_New_Updt('disabled', 'disabled')
@@ -349,13 +344,33 @@ class Top_Mngr(Super_Top_Mngr):
             if Result == OK:
                 Msg = Message_Dlg(MsgBox_Info, 'Code  correctly updated')
                 Msg.wait_window()
-                self.Frames_Refresh()
-                self.Chat.Tx_Request([TOP_MNGR, [ANY], CODES_DB_UPDATED, []])
+                if self.Frames_Refresh():
+                    self.Chat.Tx_Request([TOP_MNGR, [ANY], CODES_DB_UPDATED, []])
             elif Result == NONE:
                 pass
             else:
                 Msg = Message_Dlg(MsgBox_Err, Result)
                 Msg.wait_window()
+
+    # ---------------------------------------------------------------------------------------------
+    def Test_Transaction_Data(self):
+        TRcode      = self.Txt_TR_Code.Get_Text(INTEGER)
+        TRdesc      = self.Txt_TR_Desc.Get_Text(STRING)
+        GRcode      = self.Txt_GR_Code.Get_Text(INTEGER)
+        Txt_StrToFind  = self.Txt_StrToFind.Get_Text(STRING)
+        StrFullDesc = self.Txt_StrFullDesc.Get_Text(STRING)
+        if TRcode != 0 and TRdesc != '' and GRcode != 0:
+            if StrToFind_in_Fulldescr(Txt_StrToFind, StrFullDesc):
+                return True
+            else:
+                Msg_Dlg = Message_Dlg(MsgBox_Err, 'String to find\nNot matched with Full description')
+                Msg_Dlg.wait_window()
+                return False
+
+        else:
+            Msg_Dlg = Message_Dlg(MsgBox_Err, 'Please complete Transaction data')
+            Msg_Dlg.wait_window()
+            return False
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Ceck_Codes_DB(self):

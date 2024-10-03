@@ -209,7 +209,8 @@ class TheText(tk.Text):
                 intTxt = Texto.replace('\n', '', 5)
             return int(intTxt)
         else:
-            return Texto
+            CleanTexto = Texto.replace('\n', '', 5)
+            return CleanTexto
     @classmethod
     def Test_Dec(cls, Texto):
         for Digit in Texto:

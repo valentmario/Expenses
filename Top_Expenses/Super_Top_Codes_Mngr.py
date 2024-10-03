@@ -28,7 +28,6 @@ class Super_Top_Mngr(tk.Toplevel):
         self.title('*****     Transactions  Codes  Manager     *****')
         self.configure(background=BakGnd)
 
-        self.Clicked_Mod_Code = 0  # 0=Off  1=Insert-Add  2=Update
         self.Txt_TR_Code = None
         self.GR_Code     = None
         self.CA_Code     = None
@@ -39,7 +38,7 @@ class Super_Top_Mngr(tk.Toplevel):
 
         # --------------------------------------  TEXT Boxes  -------------------------------------
         self.Txt_StrFullDesc = TheText(self, ANY, 0, 0, 0, 0, '')
-        self.Txt_StrToSerc   = TheText(self, ANY, 0, 0, 0, 0, '')
+        self.Txt_StrToFind   = TheText(self, ANY, 0, 0, 0, 0, '')
         self.Txt_TR_Desc     = TheText(self, ANY, 0, 0, 0, 0, '')
         self.Txt_TR_Code     = TheText(self, ANY, 0, 0, 0, 0, '')
 
@@ -55,20 +54,16 @@ class Super_Top_Mngr(tk.Toplevel):
 
     # -----------------------------------------------------------------------------------------------
     def Clk_Combo(self, GRdesc):
-        if self.Clicked_Mod_Code == 0:
-            self.GR_Combo.SetSelText('Select  Group')
-        else:
-
-            GRrec = Get_List_Record(self.Data.Get_GR_Codes_Table(), iGR_GRdesc, GRdesc, [])
-            if not GRrec:
-                return
-            CAcode = GRrec[iGR_CAcode]
-            CArec = Get_List_Record(self.Data.Get_CA_Codes_Table(), iCA_CAcode, CAcode, -1)
-            if not CArec:
-                return
-            self.Txt_GR_Code.Set_Text(GRrec[iGR_Grcode])
-            self.Txt_CA_Code.Set_Text(CArec[iCA_CAcode])
-            self.Txt_CAdesc.Set_Text(CArec[iCA_CAdesc])
+        GRrec = Get_List_Record(self.Data.Get_GR_Codes_Table(), iGR_GRdesc, GRdesc, [])
+        if not GRrec:
+            return
+        CAcode = GRrec[iGR_CAcode]
+        CArec = Get_List_Record(self.Data.Get_CA_Codes_Table(), iCA_CAcode, CAcode, -1)
+        if not CArec:
+            return
+        self.Txt_GR_Code.Set_Text(GRrec[iGR_Grcode])
+        self.Txt_CA_Code.Set_Text(CArec[iCA_CAcode])
+        self.Txt_CAdesc.Set_Text(CArec[iCA_CAdesc])
 
     # ------------------------     ***   Delete  the last Tr Record      --------------------------
     def Delete_Code_Record(self):
@@ -90,7 +85,7 @@ class Super_Top_Mngr(tk.Toplevel):
 
         Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
         if Result != OK:
-            errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
+            errMessage = 'ERROR on reloading codes dababase\nafter a delete operation\n\n'
             errMessage += Result
             return errMessage
 
@@ -108,7 +103,7 @@ class Super_Top_Mngr(tk.Toplevel):
         CA_Code = self.Txt_CA_Code.Get_Text(INTEGER)
         TR_Desc_Full = self.Txt_TR_Desc.Get_Text('Str')
         TR_Desc = TR_Desc_Full.replace('\n', '', 5)
-        StringToSearch = self.Txt_StrToSerc.Get_Text('Str').replace('\n', '', 5)
+        StringToSearch = self.Txt_StrToFind.Get_Text('Str').replace('\n', '', 5)
         String_FullDesc = self.Txt_StrFullDesc.Get_Text('Str').replace('\n', '', 5)
         TR_Record = [TR_Code, GR_Code, CA_Code, TR_Desc, StringToSearch, String_FullDesc]
 
@@ -120,7 +115,7 @@ class Super_Top_Mngr(tk.Toplevel):
             return 'The code number exists\nand can not be inserted'
 
         Msg = 'Confirm to add Code  ' + str(TR_Code)
-        Msg += '\nDescription  : ' + str(TR_Desc)
+        Msg += '\nDescription: ' + str(TR_Desc)
         Msg_Dlg = Message_Dlg(MsgBox_Ask, Msg)
         Msg_Dlg.wait_window()
         Reply = Msg_Dlg.data
@@ -130,18 +125,13 @@ class Super_Top_Mngr(tk.Toplevel):
             # -------------  Add Transact Code ------------------------
             Result = self.Data.Add_TR_Record(TR_Record)
             if Result != OK:
-                errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
-                errMessage += Result
-                return errMessage
+                return Result
             Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
             if Result != OK:
-                errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
+                errMessage = 'ERROR on reloading codes dababase\nafter an add operation\n\n'
                 errMessage += Result
                 return errMessage
-
-            self.Chat.Tx_Request([TOP_MNGR, [ANY],  CODES_DB_UPDATED, []])
-
-            if not self.Data.Check_If_Code_Exist(TR_Code):  # check if record has canceled
+            if not self.Data.Check_If_Code_Exist(TR_Code):  # check if record has inserted
                 Msg = ('Code ' + str(TR_Code) + '  ' + TR_Desc + '\n NOT  added ???')
                 return Msg
             else:
@@ -154,7 +144,7 @@ class Super_Top_Mngr(tk.Toplevel):
         CA_Code = self.Txt_CA_Code.Get_Text(INTEGER)
 
         TR_Desc = self.Txt_TR_Desc.Get_Text('Str').replace('\n', '', 5)
-        StringToSearch     = self.Txt_StrToSerc.Get_Text('Str').replace('\n', '', 5)
+        StringToSearch     = self.Txt_StrToFind.Get_Text('Str').replace('\n', '', 5)
         FullDesc           = self.Txt_StrFullDesc.Get_Text('str')
         # --------------------------------------------------------------------------------
         TR_Record_ToUpdate = [TR_Code, GR_Code, CA_Code, TR_Desc, StringToSearch, FullDesc]
@@ -173,12 +163,10 @@ class Super_Top_Mngr(tk.Toplevel):
             # -------------  Update Transact Code ------------------------
             Result = self.Data.Update_DB_TR_Codes(TR_Record_ToUpdate)
             if Result != OK:
-                errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
-                errMessage += Result
-                return errMessage
+                 return Result
             Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
             if Result != OK:
-                errMessage = 'ERRON on reloading codes dababase\nafter a delete operation\n\n'
+                errMessage = 'ERROR on reloading codes dababase\nafter an update operation\n\n'
                 errMessage += Result
                 return errMessage
             else:
@@ -195,7 +183,7 @@ class Super_Top_Mngr(tk.Toplevel):
         self.Txt_GR_Code.Set_Text(TRfullRec[iTR_Ful_GRcode])
         self.Txt_CA_Code.Set_Text(TRfullRec[iTR_Ful_CAcode])
         self.Txt_TR_Desc.Set_Text(TRfullRec[iTR_Ful_TRdesc])
-        self.Txt_StrToSerc.Set_Text(TRfullRec[iTR_Ful_TRsearc])
+        self.Txt_StrToFind.Set_Text(TRfullRec[iTR_Ful_TRfind])
         self.Txt_StrFullDesc.Set_Text(TRfullRec[iTR_Ful_TRful])
         self.Txt_CA_Code.Set_Text(TRfullRec[iTR_Ful_CAcode])
         self.Txt_CAdesc.Set_Text(TRfullRec[iTR_Ful_CAdesc])
@@ -205,7 +193,7 @@ class Super_Top_Mngr(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------------
     def Clear_Only_Text_Widg(self):
         self.Txt_StrFullDesc.Set_Text('')
-        self.Txt_StrToSerc.Set_Text('')
+        self.Txt_StrToFind.Set_Text('')
         self.Txt_TR_Desc.Set_Text('')
         self.Txt_TR_Code.Set_Text('')
         self.Txt_GR_Code.Set_Text('')

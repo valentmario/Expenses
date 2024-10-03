@@ -26,23 +26,23 @@ class Codes_db(Files_Names_Manager):
         self._GRdescr_Ordered_List = []
         self._CA_Codes_Ordered     = []
 
-        self._Multiple_Maching_List = []  # full descriptions matching with the same StrToSearch
+        self._Multiple_Maching_List = []  # full descriptions matching with the same StrToFind
 
 
     # ----------------------   Check the database  codes table   --------------------------------
     # for each code record to check verify if in the restant code records
-    # exists a record that has a fullDescr that match with the strToSearch to check
+    # exists a record that has a fullDescr that match with the StrToFind to check
     # -------------------------------------------------------------------------------------------
     def Check_Codesdatabase(self):
         self._Multiple_Maching_List = []
         for Rec_To_Check in self._TR_Codes_Table:
-            StrToCek = Rec_To_Check[iTR_TRserc]
+            StrToCek = Rec_To_Check[iTR_TRstrToFind]
             for Rec in self._TR_Codes_Table:
                 if Rec == Rec_To_Check:
                     pass
                 else:
                     FullDescr = Rec[iTR_TRfullDes]
-                    if StrForSearc_in_Fulldescr(StrToCek, FullDescr):
+                    if StrToFind_in_Fulldescr(StrToCek, FullDescr):
                         self._Multiple_Maching_List.append(Rec_To_Check)
                         self._Multiple_Maching_List.append(Rec)
         return self._Multiple_Maching_List
@@ -122,7 +122,7 @@ class Codes_db(Files_Names_Manager):
     @classmethod
     def Check_Codes_Record_Is_OK(cls, TR_RecToCheck):
         TR_CodeToCheck  = TR_RecToCheck[iTR_TRcode]
-        TR_strTo_Search = TR_RecToCheck[iTR_TRserc]
+        TR_strTo_Find  = TR_RecToCheck[iTR_TRstrToFind]
         TR_FullDesc     = TR_RecToCheck[iTR_TRfullDes]
         GR_CodeToCheck  = TR_RecToCheck[iTR_GRcode]
         TR_DescToCheck  = TR_RecToCheck[iTR_TRdesc]
@@ -132,14 +132,14 @@ class Codes_db(Files_Names_Manager):
             return 'a TR or GR code is zero'
         elif len(TR_DescToCheck) < 3:
             return 'TR description too short'
-        elif len(TR_strTo_Search) < 3:
-            return 'String to search too short'
-        elif TR_strTo_Search == 'Enter a String To Search':
-            return 'Enter a correct string to search'
+        elif len(TR_strTo_Find) < 3:
+            return 'String to find too short'
+        elif TR_strTo_Find == 'Enter a String to find':
+            return 'Enter a correct string to find'
         elif TR_DescToCheck == 'Set Transaction Description':
             return 'Enter a correct Transaction description'
-        if not StrForSearc_in_Fulldescr(TR_strTo_Search, TR_FullDesc):
-            return 'String To Search:\n' + TR_strTo_Search + '\ndoes not match with Full Desription:\n' + TR_FullDesc
+        if not StrToFind_in_Fulldescr(TR_strTo_Find, TR_FullDesc):
+            return 'String To Find:\n' + TR_strTo_Find + '\ndoes not match with Full Desription:\n' + TR_FullDesc
         return OK
 
 
@@ -216,7 +216,7 @@ class Codes_db(Files_Names_Manager):
 
             TR_Cod_Full = [ TRcode, GRcode, CAcode,
                             TRdesc, GRdesc, CAdesc,
-                            TRlist[iTR_TRserc], TRlist[iTR_TRfullDes] ]
+                            TRlist[iTR_TRstrToFind], TRlist[iTR_TRfullDes] ]
             self._TR_Codes_Full.append(TR_Cod_Full)
         self._Set_TR_View_List()
         self._GR_CA_Lists_Order()
@@ -242,11 +242,11 @@ class Codes_db(Files_Names_Manager):
             GRdesc = GRrec[iGR_GRdesc]
             CAcode = GRrec[iGR_CAcode]
             CAdesc = self._Get_CA_Descr(CAcode)
-            List_View_Codes = [TRcode,              # 0
-                               Rec[iTR_TRdesc],     # 1 ----------------------------------|
-                               GRdesc,              # 2                                   |
-                               CAdesc,              # 3                                   |
-                               Rec[iTR_TRserc]]     # 4                                   |
+            List_View_Codes = [TRcode,               # 0
+                               Rec[iTR_TRdesc],      # 1 ----------------------------------|
+                               GRdesc,               # 2
+                               CAdesc,               # 3                                   |
+                               Rec[iTR_TRstrToFind]] # 4                                   |
             self.Tree_Codes_View_List.append(List_View_Codes)              #              |
             self.Tree_Codes_View_List_Ordered.append(List_View_Codes)      #              !
         self.Tree_Codes_View_List_Ordered = List_Order(self.Tree_Codes_View_List_Ordered, 1)
@@ -278,18 +278,18 @@ class Codes_db(Files_Names_Manager):
 
     # -----------------------------------------------------------------------------------------------------------------
     def Add_TR_Record(self, Record):
-        Connect = sqlite3.connect(self._Codes_DB_Filename)
-        cursor  = Connect.cursor()
-        TR      = Record[iTR_TRcode]
-        GR      = Record[iTR_GRcode]
-        CA      = self._Get_CA_Code_From_GR_Code(iGR_CAcode)
-        Desc         = Record[iTR_TRdesc]
-        StrToSearch  = Compact_Descr_String(Record[iTR_TRserc])
+        Connect   = sqlite3.connect(self._Codes_DB_Filename)
+        cursor    = Connect.cursor()
+        TR        = Record[iTR_TRcode]
+        GR        = Record[iTR_GRcode]
+        CA        = self._Get_CA_Code_From_GR_Code(iGR_CAcode)
+        Desc      = Record[iTR_TRdesc]
+        StrToFind = Compact_Descr_String(Record[iTR_TRstrToFind])
         Full_Descrip = Record[iTR_TRfullDes]
         try:
             cursor.execute("""
                      INSERT INTO TRANSACT_CODES (TR_Code, GR_Code, SP_Code, TR_Descr, Str_To_Search, Str_Full_Descrip)
-                             VALUES (?, ?, ?, ?, ?, ?)""", (TR, GR, CA, Desc, StrToSearch, Full_Descrip))
+                             VALUES (?, ?, ?, ?, ?, ?)""", (TR, GR, CA, Desc, StrToFind, Full_Descrip))
             Connect.commit()
             Connect.close()
             return OK
@@ -305,11 +305,11 @@ class Codes_db(Files_Names_Manager):
         GR   = Record[iTR_GRcode]
         CA   = Record[iTR_CAcode]
         Desc = Record[iTR_TRdesc]
-        StrToSearch  = Compact_Descr_String(Record[iTR_TRserc])
+        StrToFind    = Compact_Descr_String(Record[iTR_TRstrToFind])
         Full_Descrip = Record[iTR_TRfullDes]
 
         sql = "UPDATE TRANSACT_CODES SET GR_Code=?, SP_Code=?, TR_Descr=?, Str_To_Search=?, Str_Full_Descrip=? WHERE TR_Code==?"
-        sql_data = (GR, CA, Desc, StrToSearch, Full_Descrip, TR)
+        sql_data = (GR, CA, Desc, StrToFind, Full_Descrip, TR)
         try:
             Cursor.execute(sql, sql_data)
             Connect.commit()
@@ -396,15 +396,15 @@ class Codes_db(Files_Names_Manager):
 
 
     # ---------------------------------------------------------------------------------------------
-    def _Find_StrToSearc_InFullDesc(self, Row):  # nRow Contab Valuta   Full_Desc ....
+    def _Find_StrToFind_InFullDesc(self, Row):  # nRow Contab Valuta   Full_Desc ....
         Full_Desc   = Row[iRow_Descr1]
         nFound      = 0
         Found_List  = []
         for TRrecord in self._TR_Codes_Table:
-            StrToSearc = TRrecord[iTR_TRserc]
-            if StrToSearc == '' and Full_Desc == '':
+            StrToFind = TRrecord[iTR_TRstrToFind]
+            if StrToFind == '' and Full_Desc == '':
                 pass
-            if StrForSearc_in_Fulldescr(StrToSearc, Full_Desc):
+            if StrToFind_in_Fulldescr(StrToFind, Full_Desc):
                 nFound += 1
                 Found_List.append(TRrecord)
 
@@ -420,7 +420,7 @@ class Codes_db(Files_Names_Manager):
                 #print(Rec)
                 strCode = str(Rec[iTR_TRcode])
                 Texto   = 'Code: ' + strCode + ' Descr: ' + Rec[iTR_TRdesc] + '\n'
-                Texto += 'string for search: ' + Rec[iTR_TRserc] + '\n\n'
+                Texto += 'string To find: ' + Rec[iTR_TRstrToFind] + '\n\n'
                 ErrMsg += Texto
                 pass
             return [NOK, ErrMsg]

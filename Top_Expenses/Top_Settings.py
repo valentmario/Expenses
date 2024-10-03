@@ -66,10 +66,10 @@ class Top_String_Matching(tk.Toplevel):
             StrToMach = self.Txt_StrToMatch.Get_Text('ASCII').replace('\n', '')
 
             for Rec in Data.Get_Codes_Table():  # Get_Codes_Table():
-                StrToSerch =  Rec[iTR_TRserc].replace('\n', '', 5)
+                Txt_StrToFind =  Rec[iTR_TRstrToFind].replace('\n', '', 5)
                 FullDesc   = Rec[iTR_TRfullDes].replace('\n', '', 5)
-                if StrForSearc_in_Fulldescr(StrToMach, FullDesc):
-                    self.Matchings_List.append([StrToSerch, FullDesc])
+                if StrToFind_in_Fulldescr(StrToMach, FullDesc):
+                    self.Matchings_List.append([Txt_StrToFind, FullDesc])
                 if Rec[iTR_TRcode] == 9999:
                     pass
             if not self.Matchings_List:     # [['StringToSearch', 'StringFullDesc'], ..]
@@ -274,19 +274,4 @@ class Top_Settings(tk.Toplevel):
     def Clk_Matching():
         Top_String_Matching()
 
-    # ------------------------------------------------------------------------------------------
-    def Get_Match_List(self, Match_String):
-        Search_Match_list  = []
-        FullDesc_Mach_List = []
-        for Rec in self.Data.Get_Codes_Table():
-            TRsearch = Rec[iTR_TRserc]
-            FullDesc = Rec[iTR_TRfullDes]
-            if Match_String in TRsearch:
-                pass
-            if Match_String in FullDesc:
-                NoLF_str = FullDesc.replace('\n', '', -1)
-                found = NoLF_str + '\n'
-                FullDesc_Mach_List.append(found)
-        return [Search_Match_list, FullDesc_Mach_List]
-        pass
 # ==============================================================================================================

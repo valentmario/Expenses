@@ -3,7 +3,7 @@
 on Codes database only the following columns can be modified:                           *
 TRdesc  GRdesc  CAdesc   GRcode associated with TRcode   CAcode associetad With GRcode  *
 DO NOT CHANGE:                                                                          *
-*****************      TRcode  and  String to search       ******************************
+*****************      TRcode  and  String to find         ******************************
 *****************************************************************************************
 
 

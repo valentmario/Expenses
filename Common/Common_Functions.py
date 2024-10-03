@@ -237,77 +237,6 @@ def Float_ToString_Setup(Val):
                     strValCompact += ' '
     return strValCompact
 
-    # Digit_List = []
-    # strValue = ''
-    # if Val == '' or Val == ' ' or Val == 0.0:
-    #     return ' '
-    # Value = round(Val)
-    # AbsValue = abs(Value)
-    # if AbsValue < 15.0 or AbsValue > 10000.0:
-    #     print(Value)
-    #
-    # mySign = False
-    # flPositValue = Value
-    # # if type(Value) is not float:
-    # #     return
-    #
-    # if Value < 0:
-    #     mySign = True
-    #     flPositValue = -Value
-    # Intx100_Value = int((flPositValue + 0.005) *100.0)     # Truncated at 2 decimal
-    #
-    # if Intx100_Value >= 10000000000:
-    #     Intx100_Value = 9999999999
-    # #         10.000.000,00
-    # Divisor = 1000000000
-    # for iDigit in range(0,10):
-    #     Significant = int(Intx100_Value / Divisor)
-    #     Digit_List.append(Significant)
-    #     Intx100_Value = Intx100_Value - Significant*Divisor
-    #     Divisor = int(Divisor/10)
-    #
-    # for iDigit in range(0,10):          # create 00.000.000,00
-    #     strValue += str(Digit_List[iDigit])
-    #     if iDigit == 1 or iDigit == 4:
-    #         strValue += '.'
-    #     if iDigit == 7:
-    #         strValue += ','
-    #
-    # strValCompact = ''
-    # FoundNotZ = 0
-    # for iChar in range(0, 13):
-    #     CurrChar = strValue[iChar]
-    #     if CurrChar == '.':
-    #         if FoundNotZ:
-    #             strValCompact += '.'
-    #     elif CurrChar == ',':  # <<<<<<<<<<<<<<<<<<<<<<
-    #         break
-    #         # strValCompact += ','
-    #         # FoundNotZ += 1
-    #     elif iChar == 9:
-    #         if CurrChar != '0':
-    #             FoundNotZ += 1
-    #             strValCompact += TestForSign(mySign, FoundNotZ)
-    #             mySign = False
-    #             strValCompact += CurrChar
-    #         else:
-    #             FoundNotZ = 1
-    #             strValCompact += TestForSign(mySign, FoundNotZ)
-    #             mySign = False
-    #             strValCompact += '0'
-    #     else:
-    #         if CurrChar != '0':
-    #             FoundNotZ += 1
-    #             strValCompact += TestForSign(mySign, FoundNotZ)
-    #             mySign = False
-    #             strValCompact += CurrChar
-    #         else:
-    #             if FoundNotZ:
-    #                 strValCompact += CurrChar
-    #             else:
-    #                 strValCompact += ' '
-    # return strValCompact
-
 # -----------------------------------------------------------------------------
 def GetStrList_ForFind(strToFind):
     if strToFind[0:1] != '#':
@@ -327,21 +256,7 @@ def GetStrList_ForFind(strToFind):
     return strList
 
 # -----------------------------------------------------------------------------
-# def StrForSearc_in_Fulldescr(strToFind, String):
-#     strList = GetStrList_ForFind(strToFind)
-#     if not strList:
-#         return False
-#     index = 0
-#     CurrString = String
-#     for Item in strList:
-#         FirstOccurence = CurrString.find(Item)
-#         if FirstOccurence == -1:
-#             return False
-#         index += FirstOccurence
-#         CurrString = String[index:]
-#     return True
-
-def StrForSearc_in_Fulldescr(strToFind, String):
+def StrToFind_in_Fulldescr(strToFind, String):
     strList = GetStrList_ForFind(strToFind)
     if not strList:
         return False

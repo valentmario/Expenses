@@ -93,10 +93,6 @@ CODE_CLIK_ONTREE    = 'Code_Clkd_on_Tree'            # For Testing ONLY
 
 ON_SELECTIONS       = 'Filename in Selections'
 
-# Launch_List [OK-NOK, [parameters_List]
-iLaunch_Start       = 0     # Init  OK/NOK
-iLaunch_Param       = 1     # List of data for __init__() can be empty, String, ecc
-
 # =========================================================== #
 #             FILES  PARAMETERS                               #
 # =========================================================== #
@@ -205,7 +201,7 @@ iTR_TRcode    = 0  # UNIC TR CODE
 iTR_GRcode    = 1
 iTR_CAcode    = 2  # Must be selected fro GROUPS_TABLE
 iTR_TRdesc    = 3
-iTR_TRserc    = 4
+iTR_TRstrToFind    = 4
 iTR_TRfullDes = 5
 TR_Rec_Default = [0, 0, 0, 'Desc', 'Search', 'Full_Desc']
 
@@ -215,7 +211,7 @@ iTR_Ful_CAcode  = 2
 iTR_Ful_TRdesc  = 3
 iTR_Ful_GRdesc  = 4
 iTR_Ful_CAdesc  = 5
-iTR_Ful_TRsearc = 6
+iTR_Ful_TRfind  = 6
 iTR_Ful_TRful   = 7
 
 MAX_TR_CODE_NUM = 500
@@ -241,7 +237,7 @@ Def_CAcode = 0
 TRANSACTIONS = 'TRANSACTIONS'
 Transact_    = 'Transact_'
 TRANSACT_ID  = 'TRANSACTIONS/Transact_'
-Len_Transact_Filename = 22
+Len_Transact_Filename = 16
 iTransact_nRow   = 0
 iTransact_Conto  = 1
 iTransact_Contab = 2
@@ -291,6 +287,12 @@ iRow_Addeb  = 5
 iRow_Descr2 = 6
 
 # List_WithCode
+iNoCode_nRow     = 0
+iNoCode_Date     = 1
+iNoCode_Addeb    = 2
+iNoCode_FullDesc = 3
+
+# List_WithCode
 iWithCode_nRow    = 0
 iWithCode_Contab  = 1
 iWithCode_Valuta  = 2
@@ -302,9 +304,9 @@ iWithCode_TRcode  = 6
 # List_View_Codes
 iView_TRcode    = 0
 iView_TRdesc    = 1
-iView_GRdesc    = 2
-iView_CAdesc    = 3
-iView_StrToSerc = 4
+iView_GRdesc    = 2 # these constants are not used
+iView_CAdesc    = 3 # because GRdesc CAdesc StrToFind are
+iView_StrToFind = 4 # as on Codes Tables
 
 iQuery_Date     = 0
 iQuery_Descr    = 1

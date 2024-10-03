@@ -145,10 +145,10 @@ class Modules_Manager:
                 nLine += 1
                 strCode    = 'Code: ' + str(TRrecord[iTR_TRcode])
                 strDesc    = TRrecord[iTR_TRdesc]
-                StrToserch = TRrecord[iTR_TRserc]
+                StrToFind = TRrecord[iTR_TRstrToFind]
                 FullDescr = TRrecord[iTR_TRfullDes]
                 Info += strCode + '\n' + strDesc + '\n'
-                Info += StrToserch + '\n' + FullDescr
+                Info += StrToFind + '\n' + FullDescr
                 if (nLine % 2) == 0:
                     Info += '\n-----------------\n'
                 else:
