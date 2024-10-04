@@ -125,9 +125,27 @@ def Get_List_Record(List, Ncol_For_Find, ValueToFind, default):
 
 # -----------------------------------------------------------------------------
 def Get_Xlsx_Year(Xlsx_Name):
+    # FIDEU_2024_09-1.xlsx
     Filename = Get_File_Name(Xlsx_Name)
     Year = Filename[6:10]
     return int(Year)
+
+def Get_Xlsx_FullMonth(Xlsx_Name):
+    # FIDEU_2024_09-1.xlsx
+    Filename    = Get_File_Name(Xlsx_Name)
+    FullMonth   = ''
+    Under_Found = 0
+    for Char in Filename:
+        if Char == '.':
+            break
+        elif Char == '_':
+            Under_Found += 1
+        elif Under_Found == 2:
+            FullMonth += Char
+    if not FullMonth:
+        return '??'
+    else:
+        return FullMonth
 
 def Get_Transactions_Year(Transact_Filenae):
     Filename = Get_File_Name(Transact_Filenae)
@@ -147,6 +165,18 @@ def Conv_En_To_It_Date(Eng_Date):
     Year  = Eng_Date[2:4]     # 24
     Italian_Date = Day + '/' + Month + '/' + Year
     return Italian_Date
+
+# 2024-06-07
+def Set_Month_Day(FullDate, Counts):
+    iMonth    = int(FullDate[5:7]) -1
+    if Counts == 1:
+        MonthName = Month_Names_Compact[iMonth]
+    else:
+        MonthName = '     '
+    Day       = FullDate[8:10]
+    MonthDay_Date = MonthName + ' ' + Day
+    return MonthDay_Date
+
 
 # ----------------------------------------------------------------------------#
 def TestForSign(Sign, FoundNotZ):
@@ -173,7 +203,8 @@ def Float_ToString_Setup(Val):
     Value = round(Val)
     AbsValue = abs(Value)
     if AbsValue < 15.0 or AbsValue > 10000.0:
-        print(Value)
+        pass
+        # print(Value)
 
     mySign = False
     flPositValue = Value

@@ -34,7 +34,6 @@ class Transact_Db(Xlsx_Manager):
     def Get_Xlsx_Transact_Ident(self):
         return [self._Xlsx_Conto, self._Xlsx_Year, self._Xlsx_Month, self._Transact_Year]
 
-
     # --------------------------------------------------------------------------------------
     def Load_Transact_Table(self, TransacFilename):
         self._tTransact_Table = []
@@ -58,14 +57,24 @@ class Transact_Db(Xlsx_Manager):
             cursor.execute("SELECT * FROM TRANSACT")
             self._tTransact_Table = cursor.fetchall()
             connect.close()
-        except:
-            connect.close()
-            return 'ERROR\non loading Transactions'
+        except sqlite3.Error as e:
+            print(e)
+            return e
+        finally:
+            if connect:
+                connect.close()
+            self._Transact_Table = self._tTransact_Table
+            if not self._tTransact_Table:
+                return EMPTY
+            return OK
+        # except:
+        #     connect.close()
+        #     return 'ERROR\non loading Transactions'
 
-        self._Transact_Table = self._tTransact_Table
-        if not self._tTransact_Table:
-            return EMPTY
-        return OK
+        # self._Transact_Table = self._tTransact_Table
+        # if not self._tTransact_Table:
+        #     return EMPTY
+        # return OK
 
     # ---------------------------------------------------------------------------------------
     def Clear_Transact_Year(self):
@@ -112,12 +121,14 @@ class Transact_Db(Xlsx_Manager):
         File_Exists = os.path.isfile(FullName)
         if File_Exists:
             return True
-
-        Connect    = None
+        DirName = Get_Dir_Name(FullName)
+        if not os.path.isdir(DirName):
+            os.mkdir(DirName)
+        connect    = None
         try:
-            Connect = sqlite3.connect(FullName)
-            Cursor = Connect.cursor()
-            Cursor.execute(
+            connect = sqlite3.connect(FullName)
+            cursor = connect.cursor()
+            cursor.execute(
                 "CREATE TABLE TRANSACT (nRow   INTEGER, "
                                        "Conto  TEXT, "
                                        "Contab TEXT, "
@@ -126,12 +137,15 @@ class Transact_Db(Xlsx_Manager):
                                        "Accred FLOAT, "
                                        "Addeb  FLOAT ,"
                                        "TRcode INTEGER)" )
-            Connect.commit()
-            Connect.close()
+            connect.commit()
+            connect.close()
             self._Set_Transact_Year()
-        except:
-            Connect.close()
+        except sqlite3.Error as e:
+            print(e)
             return False
+        finally:
+            if connect:
+                connect.close()
         return True
 
     # ---------------------------------------------------------------------------------------------
@@ -141,12 +155,19 @@ class Transact_Db(Xlsx_Manager):
                 self.Connect = sqlite3.connect(Transact_Filename)
                 self.Cursor = self.Connect.cursor()
                 return True
-            except:
+            except sqlite3.Error as e:
+                print(e)
                 return False
-
-        else:
-            self.Connect.close()
-            return True
+            finally:
+                if self.Connect:
+                    self.Connect.close()
+                return True
+        #     except:
+        #         return False
+        #
+        # else:
+        #     self.Connect.close()
+        #     return True
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7
@@ -161,7 +182,6 @@ class Transact_Db(Xlsx_Manager):
         Accred = Record_List[iTransact_Accred]
         Addeb  = Record_List[iTransact_Addeb]
         TRcode = Record_List[iTransact_TRcode]
-        Cursor = None
         # self.Connect(TransactDB_Filename) is  made before the loop for insert
         try:
             Connect = sqlite3.connect(self._Transact_DB_Filename)
@@ -173,10 +193,17 @@ class Transact_Db(Xlsx_Manager):
                              (nRow, Conto, Contab, Valuta, TRdesc, Accred, Addeb, TRcode))
             Connect.commit()
             Cursor.close()
-            return True
-        except:
-            Cursor.close()
+        except sqlite3.Error as e:
+            print(e)
             return False
+        finally:
+            if self.Connect:
+                self.Connect.close()
+            return True
+
+        # except:
+        #     Cursor.close()
+        #     return False
 
         # self.Connect.commit()
         # self.Connect.close() #  is  made at the end of loop for insert
@@ -231,7 +258,7 @@ class Transact_Db(Xlsx_Manager):
     def Get_Transact_Year_ListInData(self):
         Full_Transact_filename = self._Selections_List[Ix_Transact_File]
         if Full_Transact_filename == UNKNOWN:
-            return []
+            return [0, []]
         Directory  = Get_Dir_Name(Full_Transact_filename)
         Files_List = os.listdir(Directory)
         Years_List = []
@@ -241,7 +268,9 @@ class Transact_Db(Xlsx_Manager):
             if CheckInteger(strYear):
                 iYear = int(strYear)
                 Years_List.append(iYear)
-        return Years_List
+        SelectedFile = Get_File_Name(Full_Transact_filename)
+        strYear = SelectedFile[9:13]
+        return [strYear, Years_List]
 
 # ===========================================================================================
 

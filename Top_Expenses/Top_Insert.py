@@ -48,6 +48,7 @@ class Top_Insert(tk.Toplevel):
         self.Conto       = self.Files_Ident[Ix_Xlsx_Conto]
         self.intYear     = self.Files_Ident[Ix_Xlsx_Year]
         self.intMonth    = self.Files_Ident[Ix_Xlsx_Month]
+        self.Full_Month  = ''
 
         self.WithList                       = []
         self.TransactRecords_ToBeInserted   = []
@@ -142,6 +143,7 @@ class Top_Insert(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------
     def Create_New_Transact_Db(self, Year):
         Full_Name = self.Data.Create_TRansact_Filename(Year)
+        # Full_Name ="/home/mario/myDatabase.db"
         if self.Data.Create_Transact_DB_File(Full_Name):
             self.Init_Status_Texto = ('New:  ' + str(Year) + '   Transactions Db created')
             Result = self.Data.Load_Transact_Table(Full_Name)
@@ -159,10 +161,10 @@ class Top_Insert(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------
     def Check_For_Xlsx_Transact_Year(self):
         # -----------------   years   NOT  EQUAL    ---------------------------
-        TRansact_Years_List = Data.Get_Transact_Year_ListInData()
+        TRansact_Years_List = self.Data.Get_Transact_Year_ListInData()[1]
         if self.Xlsx_Year in TRansact_Years_List:
             newTransact_Filename = Transact_ + str(self.Xlsx_Year) + '.db'
-            Dir_Name = Get_Dir_Name(Data.Get_Selections_Member(Ix_Transact_File))
+            Dir_Name = Get_Dir_Name(self.Data.Get_Selections_Member(Ix_Transact_File))
             Full_Filename = Dir_Name + newTransact_Filename
             File_Exists = os.path.isfile(Full_Filename)
             if not File_Exists:
@@ -175,11 +177,14 @@ class Top_Insert(tk.Toplevel):
             self.Data.Update_Selections(newTransact_Filename, Ix_Transact_File)
             return True
 
-
         else:  # ------------------  any transactions file found ----------
             if not self.Create_New_Transact_Db(self.Xlsx_Year):
+                Msg_Dlg = Message_Dlg(MsgBox_Err, self.Data.Init_Status_Texto)
+                Msg_Dlg.wait_window()
                 return False
             else:
+                Msg_Dlg = Message_Dlg(MsgBox_Info, self.Data.Init_Status_Texto)
+                Msg_Dlg.wait_window()
                 return True
 
     # --------------------------------------------------------------------------------------------------
@@ -192,7 +197,7 @@ class Top_Insert(tk.Toplevel):
             return False
         self.Xlsx_Filename   = self.Data.Get_Selections_Member(Ix_Xlsx_File)
         self.Xlsx_Year       = Get_Xlsx_Year(self.Xlsx_Filename)
-        self.Total           = Data.Get_Total_Rows()
+        self.Total           = self.Data.Get_Total_Rows()
         self.Tot_WithoutCode = self.Total[Ix_Tot_Without_Code]
         # -------------------  some Xlsx rows without code  -----------------
         if self.Tot_WithoutCode != 0:
@@ -202,7 +207,7 @@ class Top_Insert(tk.Toplevel):
 
         # -----------------  Transactions file name is unknown    -------------
         else:
-            self.Transact_Filename    = Data.Get_Selections_Member(Ix_Transact_File)
+            self.Transact_Filename    = self.Data.Get_Selections_Member(Ix_Transact_File)
             if self.Transact_Filename == UNKNOWN:
                 if not self.Create_New_Transact_Db(self.Xlsx_Year):
                     return False
@@ -245,7 +250,6 @@ class Top_Insert(tk.Toplevel):
         else:
             Msg_Dlg = Message_Dlg(MsgBox_Info, self.Init_Status_Texto)
             Msg_Dlg.wait_window()
-
 
     # -------------------------------------------------------------------------------------------------
     def ViewErr_OnTransact_Db(self, Texto):
@@ -290,14 +294,15 @@ class Top_Insert(tk.Toplevel):
         Full_Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
         Xlsx_Filename      = Get_File_Name(Full_Xlsx_Filename)
         self.Txt_Xlsx_Name.Set_Text(Xlsx_Filename)
+
         Conto = 'Conto: ' + self.Conto
         self.Txt_Conto.Set_Text(Conto)
         Year = 'Year: ' + str(self.intYear)
         self.Txt_Xlsx_Year.Set_Text(Year)
-        Month = 'Month: ' + '09-12'
+
+        self.Full_Month    = Get_Xlsx_FullMonth(Full_Xlsx_Filename)
+        Month = 'Month: ' + str(self.Full_Month)
         self.Txt_Xlsx_Month.Set_Text(Month)
-
-
 
     # -------------------------------------------------------------------------------------------------
     def Create_RecToInsert_From_RowWithCode(self, RecWithCode):

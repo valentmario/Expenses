@@ -29,7 +29,7 @@ class Top_View_Codes(tk.Toplevel):
         self.title('*****     Transactions  Codes     ***** ')
         self.configure(background=BakGnd)
 
-        self.Codes_List = List
+        self.Codes_List = List  # can be a reduced list for selection TRcode on Query or full Table
         if self.Codes_List:
             self.Codes_List = self.Data.Create_CodesTable_FromTR(self.Codes_List)
         else:

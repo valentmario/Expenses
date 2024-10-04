@@ -98,6 +98,7 @@ class Main_Window(tk.Tk):
 
     def Clk_Queries(self):
         self.Mod_Mngr.Top_Launcher(TOP_QUERY, MAIN_WIND, [])
+        # Top_Queries([])
 
     # -----------------------------------------------------------------------------------
     def Set_Selections(self):     # Set file Selections
@@ -168,9 +169,26 @@ class Main_Window(tk.Tk):
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_View_Message,   TOP_VIEW_MESS])
         pass
 
+
+
+import sqlite3
+def create_sqlite_database(filename):
+    """ create a database connection to an SQLite database """
+    conn = None
+    try:
+        conn = sqlite3.connect(filename)
+        print(sqlite3.sqlite_version)
+    except sqlite3.Error as e:
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+
 # ================================================================= #
 #                                                                   #
 if __name__ == "__main__":                                          #
+
+    # create_sqlite_database("/home/mario/myDatabase.db")
     Main_WIN = Main_Window()                                        #
 #                                                                   #
 # ================================================================= #

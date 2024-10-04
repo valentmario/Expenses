@@ -13,7 +13,7 @@ from Widgt.Tree_Widg import TheFrame
 class Top_Queries(Super_Top_Queries):
     def __init__(self, List):
         super().__init__(self.Trees_Update)
-        self.Data_List = List
+        self.Data_List = List   # Not used
 
         # --------------------------  Trees-Frames    for  Queries   --------------------------------------------------
         self.Frame1 = TheFrame(self, xyToHide, 10, self.Click_OnFrame)  # frames for transactions
@@ -44,7 +44,7 @@ class Top_Queries(Super_Top_Queries):
 
         self.Show_Selections()  # show the selections for year, conto, month, total months, TR, GR, CA
         self.Trees_Update()     # setup frames geometry, load values on trees
-
+        pass
     # ------------------------------------------------------------------------------------------------
     def Trees_Update(self):
         self.Setup_Year_Conto_Month_Tot_Date()
@@ -72,9 +72,9 @@ class Top_Queries(Super_Top_Queries):
     def Frames_Setup(self):
         Nrows     = 42
         nColToVis = 4
-        Headings  = ['#0', 'Date',  'Description', 'Credits  ', 'Debits  ']
+        Headings  = ['#0', 'Data',  'Descrizione ', 'Entrate  ', 'Uscite  ']
         Anchor    = ['c',   'c',       'w',           'e',       'e']
-        Width     = [0,      100,      160,           70,        70]
+        Width     = [0,      70,        180,           80,        80]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         for Frame in self.Frames_List:
             Frame.Tree_Setup(Form_List)
@@ -84,9 +84,9 @@ class Top_Queries(Super_Top_Queries):
     def Tot_Frames_Setup(self):
         Nrows     = 1
         nColToVis = 3
-        Headings  = ['#0', '      Total  ',  'Credits  ', 'Debits  ']
-        Anchor    = ['c',   'c',                  'e',       'e']
-        Width     = [ 0,     220,                  90,        90]
+        Headings  = ['#0', '      Totale ',  'Entrate  ', 'Uscite  ']
+        Anchor    = ['c',  'c',               'e',        'e']
+        Width     = [ 0,    180,              100,        100]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         for Frame in self.Frames_Tot_List:
             Frame.Tree_Setup(Form_List)
@@ -95,9 +95,9 @@ class Top_Queries(Super_Top_Queries):
     def Frame_Average_Setup(self):
         Nrows     = 1
         nColToVis = 1
-        Headings  = ['#0', 'month  average  ']
+        Headings  = ['#0', 'media   mese  ']
         Anchor    = ['c',  'e']
-        Width     = [ 0,    140]
+        Width     = [ 0,    125]
         Form_ListT = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_Average.Tree_Setup(Form_ListT)
 
@@ -105,9 +105,9 @@ class Top_Queries(Super_Top_Queries):
     def TotRows_Frame_Setup(self):
         Nrows     = 1
         nColToVis = 1
-        Headings  = ['#0', 'total   rows  ']
+        Headings  = ['#0', 'totale    righe  ']
         Anchor    = ['c',  'e']
-        Width     = [ 0,    140]
+        Width     = [ 0,    125]
         Form_ListT = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_TotRows.Tree_Setup(Form_ListT)
 
@@ -115,9 +115,9 @@ class Top_Queries(Super_Top_Queries):
     def Credit_Frame_Setup(self):
         Nrows     = 1
         nColToVis = 1
-        HeadingsC = ['#0', 'total  credits  ']
+        HeadingsC = ['#0', 'totale    entrate  ']
         Anchor    = ['c',  'e']
-        Width     = [ 0,    140]
+        Width     = [ 0,    125]
         Form_ListCred     = [Nrows, nColToVis, HeadingsC, Anchor, Width]
         self.Frame_TotCred = TheFrame(self, xyToHide, 10, self.Click_OnTot)
         self.Frame_TotCred.Tree_Setup(Form_ListCred)
@@ -125,9 +125,9 @@ class Top_Queries(Super_Top_Queries):
     def Debit_Frame_Setup(self):
         Nrows     = 1
         nColToVis = 1
-        HeadingsC = ['#0', 'total  debits  ']
+        HeadingsC = ['#0', 'totale    uscite ']
         Anchor    = ['c',  'e']
-        Width     = [ 0,    140]
+        Width     = [ 0,    125]
         Form_ListDeb = [Nrows, nColToVis, HeadingsC, Anchor, Width]
         self.Frame_TotDebit = TheFrame(self, xyToHide, 10, self.Click_OnTot)
         self.Frame_TotDebit.Tree_Setup(Form_ListDeb)
@@ -163,7 +163,7 @@ class Top_Queries(Super_Top_Queries):
     def Set_Widgets_PosX(self):
         # 10,  xyToHide,  xyToHide,  450
         PosXok = self.Widgtes_PosX[3]
-        self.Btn_Clk_Year.SetX(PosXok)
+        self.OptMenu_Year.PosX(PosXok)
         self.OptMenu_Conto.PosX(PosXok)
         self.OptMenu_Start.PosX(PosXok)
         self.OptMenu_Tot.PosX(PosXok)
@@ -211,7 +211,7 @@ class Top_Queries(Super_Top_Queries):
         Date = Rec[iTransact_Valuta]
         if self.Date_Selected == ACC_DATE:
             Date = Rec[iTransact_Contab]
-        if int(Date[0:4]) == self.Year_Selected:
+        if int(Date[0:4]) == int(self.Year_Selected):
                 pass
         else:
             return -1
@@ -261,11 +261,19 @@ class Top_Queries(Super_Top_Queries):
         if self.Date_Selected == ACC_DATE:
             DateIndex = iTransact_Contab
         self.Transact_xMonth_List  = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
+        self.DateCount_PerMonth    = [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 ]
         for Rec in self.OneYear_Transact_List:
             iMonth = self.CheckForInsert(Rec)
             if iMonth >= 0:
+                Counts = self.DateCount_PerMonth[iMonth]
+                Counts += 1
+                if Counts > 10:
+                    Counts = 0
+                self.DateCount_PerMonth[iMonth] = Counts
                 # ['Date', 'Description', 'Credits  ', 'Debits  ']
-                View_Rec = [Rec[DateIndex], Rec[iTransact_TRdesc], Rec[iTransact_Accred], Rec[iTransact_Addeb]]
+                FullDate = Rec[DateIndex]
+                Date     = Set_Month_Day(FullDate, Counts)
+                View_Rec = [Date, Rec[iTransact_TRdesc], Rec[iTransact_Accred], Rec[iTransact_Addeb]]
                 self.Transact_xMonth_List[iMonth].append(View_Rec)
         pass
 
@@ -305,7 +313,7 @@ class Top_Queries(Super_Top_Queries):
             Debit  = Float_ToString_Setup(self.Tot_CredDeb_xTree[index][1])
             LenList= len(Frame_List)
             self.Total_Rows += LenList
-            Tot_Transact = str(LenList) + '   transactions '
+            Tot_Transact = str(LenList) + '   Movimenti '
             Tot_List = [[Tot_Transact, Credit, Debit]]
             Frame_Tot.Load_Row_Values(Tot_List)
 
@@ -321,8 +329,9 @@ class Top_Queries(Super_Top_Queries):
         self.Frame_TotDebit.Load_Row_Values([[strTot_Debit]])
         self.Frame_TotRows.Load_Row_Values([[self.Total_Rows, 2]])
 
-    # selections for conto, month, total months, TR, GR, CA
+    # selections for year conto, month, total months, TR, GR, CA
     def Show_Selections(self):
+        self.OptMenu_Year.SetSelText(self.Year_Selected)
         self.OptMenu_Conto.SetSelText(self.Conto_Selected)
         self.OptMenu_Start.SetSelText(self.Month_Selected)
         self.OptMenu_Tot.SetSelText(self.Tot_Selected)

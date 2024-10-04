@@ -76,7 +76,11 @@ class Top_String_Matching(tk.Toplevel):
                 self.Matchings_List.append(['NONE', 'NONE'])
             self.Frame_Matchings.Load_Row_Values(self.Matchings_List)
 
-# =================================================================================================
+# ============================================================================================= #
+#                                                                                               #
+#                 ***   Top_Settings.py   ***                                                   #
+#                                                                                               #
+# ============================================================================================= #
 class Top_Settings(tk.Toplevel):
     def __init__(self, List):
         super().__init__()

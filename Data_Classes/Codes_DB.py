@@ -413,7 +413,6 @@ class Codes_db(Files_Names_Manager):
         elif nFound == 0:
             return [NOK, []]
         else:
-            print(Row)
             ErrMsg = ('In Xlsx file on:\n\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
             ErrMsg += '\nDescription:\n' + Row[iRow_Descr2] + '\n\nFound:\n'
             for Rec in Found_List:

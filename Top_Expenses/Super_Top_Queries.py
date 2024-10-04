@@ -6,7 +6,6 @@
 #       the method  Trees_Update is passed from Top_Queries as in __init__           #
 #                                                                                    #
 # ---------------------------------------------------------------------------------- #
-import os
 
 from Chat import Ms_Chat
 from Common.Common_Functions import *
@@ -47,16 +46,17 @@ class Super_Top_Queries(tk.Toplevel):
         # This list is created on startup or at each Selection
         # based on Year, Conto (ValDate/AccDate) TR GR CA for each month
         self.Transact_xMonth_List = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
+        self.DateCount_PerMonth   = [ 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0  ]
 
         # [Credits, Debits]  for   Frame1, Frame2, Frame3
         self.Tot_CredDeb_xTree  = [[0, 0], [0, 0], [0, 0]]
 
-        self.Years_List  = []  # The years transactions contained on TRANSATCION directory
+        self.Transact_Years_List = []  # The years transactions contained on TRANSATCION directory
         self.Tot_List    = [ONE_MONTH,TWO_MONTHS,FOUR_MONTHS,SIX_MONTHS,TWELVE_MONTHS]
         self.Date_List   = [VAL_DATE, ACC_DATE]
         self.Files_Ident = []   # self.Data.Get_Xlsx_Transact_Ident()
 
-        self.Year_Selected  = 0    # all the possible selections
+        self.Year_Selected  = 0
         self.Conto_Selected = ''
         self.Month_Selected = ''
         self.Tot_Selected   = ''
@@ -70,41 +70,42 @@ class Super_Top_Queries(tk.Toplevel):
         self.GR_List     = []   # same per GR
         self.CA_List     = []   # same per CA
 
-        # ------------  Year Button   and     C O M B O s ---------------------------------------------------
-        self.Btn_Clk_Year = TheButton(self, Btn_Def_En, self.Widg_PosX, 20, 15, '', self.Clk_Year)
+        # ------------------    C O M B O s       ---------------------------------------------------
+        self.StrVar_Year   = tk.StringVar
+        self.OptMenu_Year  = TheCombo(self, self.StrVar_Year, self.Widg_PosX, 20, 15, 16, [''],
+                                      'Seleziona un anno', self.Clk_ComboYear)
 
         self.StrVar_Conto  = tk.StringVar
-        self.OptMenu_Conto = TheCombo(self, self.StrVar_Conto, self.Widg_PosX, 75, 15, 16, Conto_List,
+        self.OptMenu_Conto = TheCombo(self, self.StrVar_Conto, self.Widg_PosX, 55, 15, 16, Conto_List,
                                       FIDEU, self.Clk_Conto)
 
         self.StrVar_Start  = tk.StringVar
-        self.OptMenu_Start = TheCombo(self, self.StrVar_Start, self.Widg_PosX, 110, 21, 16,  Month_Names,
+        self.OptMenu_Start = TheCombo(self, self.StrVar_Start, self.Widg_PosX, 90, 21, 16,  Month_Names,
                                       JAN, self.Clk_Month)
         self.StrVar_Tot   = tk.StringVar
-        self.OptMenu_Tot  = TheCombo(self,  self.StrVar_Tot,   self.Widg_PosX, 145, 21, 16,  self.Tot_List,
+        self.OptMenu_Tot  = TheCombo(self,  self.StrVar_Tot,   self.Widg_PosX, 125, 21, 16,  self.Tot_List,
                                      ONE_MONTH, self.Clk_Tot)
 
         self.StrVar_Date  = tk.StringVar
-        self.OptMenu_Date = TheCombo(self,  self.StrVar_Date,  self.Widg_PosX, 180, 21, 16,  self.Date_List,
+        self.OptMenu_Date = TheCombo(self,  self.StrVar_Date,  self.Widg_PosX, 160, 21, 16,  self.Date_List,
                                      self.Date_Selected , self.Clk_Date)
 
         self.StrVar_TR  = tk.StringVar
-        self.OptMenu_TR = TheCombo(self, self.StrVar_TR,      self.Widg_PosX, 240, 41, 16, self.TR_List,
-                                    'Transaction code', self.Clk_TRsel)
+        self.OptMenu_TR = TheCombo(self, self.StrVar_TR,      self.Widg_PosX, 210, 41, 16, self.TR_List,
+                                    'Codice Movimenti', self.Clk_TRsel)
         self.StrVar_GR  = tk.StringVar
-        self.OptMenu_GR = TheCombo(self, self.StrVar_GR,     self.Widg_PosX, 275, 41, 16,  self.GR_List,
-                                   'Group code', self.Clk_GRsel)
+        self.OptMenu_GR = TheCombo(self, self.StrVar_GR,     self.Widg_PosX,  245, 41, 16,  self.GR_List,
+                                   'Codici Gruppoi', self.Clk_GRsel)
         self.StrVar_CA  = tk.StringVar
-        self.OptMenu_CA = TheCombo(self,  self.StrVar_CA,    self.Widg_PosX, 310, 21, 16,  self.CA_List,
-                                   'Category code', self.Clk_CAsel)
+        self.OptMenu_CA = TheCombo(self,  self.StrVar_CA,    self.Widg_PosX,  280, 21, 16,  self.CA_List,
+                                   'Codici Categorie', self.Clk_CAsel)
 
         # ---------------------------------    Buttons   ----------------------------------------------------------
-        self.Btn_DB_View = TheButton(self, Btn_Def_En, self.Widg_PosX,   370, 17, 'show transactions', self.Clk_ViewTransact)
-        self.Btn_xlsx_file = TheButton(self, Btn_Def_En, self.Widg_PosX, 410, 17, 'xlsx file select',  self.Clk_SelXlsx)
-        self.Btn_xlsx_View = TheButton(self, Btn_Def_En, self.Widg_PosX, 450, 17, 'show xlsx file',    self.Clk_XlsxView)
+        self.Btn_DB_View   = TheButton(self, Btn_Def_En, self.Widg_PosX, 370, 15, 'Mostra i Movimenti', self.Clk_ViewTransact)
+        self.Btn_xlsx_file = TheButton(self, Btn_Def_En, self.Widg_PosX, 410, 15, 'Selez. un file Xlsx',  self.Clk_SelXlsx)
+        self.Btn_xlsx_View = TheButton(self, Btn_Def_En, self.Widg_PosX, 450, 15, 'Mostra file Xlsx',    self.Clk_XlsxView)
 
-        self.Btn_Exit = TheButton(self, Btn_Bol_En, self.Widg_PosX, 936, 15, '  E X I T  ', self.Call_OnClose)
-
+        self.Btn_Exit = TheButton(self, Btn_Bol_En, self.Widg_PosX, 936, 13, '  E S C I  ', self.Call_OnClose)
         self.OneYear_Transact_List = self.Data.Get_Transact_Table()
         self.Set_TR_GR_CA_Sel_List()
         self.Setup_TR_GR_CA_OptManu()
@@ -152,15 +153,18 @@ class Super_Top_Queries(tk.Toplevel):
         self.CA_List = [ALLCA]
         for Item in CA_List:
             self.CA_List.append(Item)
-
         self.Setup_Year_Conto_Month_Tot_Date()
 
     # -------------------------------------------------------------------------------------------------------------
     def Setup_Year_Conto_Month_Tot_Date(self):
         self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()   # list created on ModulesManager
-        self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
-        Texto = '(sel) Year:   ' +str(self.Year_Selected)
-        self.Btn_Clk_Year.Set_Text(Texto)
+        # self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
+
+        List = Data.Get_Transact_Year_ListInData()
+        self.Transact_Years_List = List[1]
+        self.OptMenu_Year.SetValues(self.Transact_Years_List)
+        self.Year_Selected       = List[0]
+
         Queries_Sel = self.Data.Get_Selections_Member(Ix_Query_List)
         self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
         self.Month_Selected = Queries_Sel[Ix_Query_Month]
@@ -187,19 +191,6 @@ class Super_Top_Queries(tk.Toplevel):
         self.Data.Update_Selections(QueryList, Ix_Query_List)
 
     # -------------------------------------------------------------------------------------------------------------
-    def Get_Transact_Year_List(self):
-        Full_Transact_filename = self.Data.Get_Selections_Member(Ix_Transact_File)
-        Directory  = Get_Dir_Name(Full_Transact_filename)
-        Files_List = os.listdir(Directory)
-        Years_List = []
-        for Filename in Files_List:
-            # Transact_2024.db
-            strYear = Filename[9:13]
-            if CheckInteger(strYear):
-                iYear = int(strYear)
-                Years_List.append(iYear)
-        return Years_List
-    # -------------------------------------------------------------------------------------------------------------
     def Call_OnClose(self):
         self.Chat.Detach(TOP_QUERY)
         self.destroy()
@@ -223,13 +214,12 @@ class Super_Top_Queries(tk.Toplevel):
         self.Set_OnTxt_TR_GR_Sel()
 
     # -------------------------------------------------------------------------------------------------------------
-    def Clk_Year(self):
-        if not self.Mod_Mngr.Sel_Transact(TOP_QUERY):
-            pass
-        else:
-            Files_Ident = self.Data.Get_Xlsx_Transact_Ident()
-            self.Year_Selected = Files_Ident[Ix_Transact_Year]
-            self.Trees_Update()
+    def Clk_ComboYear(self, Value):
+        self.Dummy = 0
+        print(Value)
+        # Create filename for transactions,             if self.Load_Transact(Origin, ON_SELECTIONS):
+
+        pass
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Conto(self, Value):

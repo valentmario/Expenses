@@ -19,7 +19,7 @@ if DUAL_DISPLAY:
     Top_Xlsx_View_geometry = '820x1000+3400+10'   # '820x1000+2040+10'
     Top_Insert_geometry    = '610x1000+2300+10'  # '610x1000+2870+10'
     #                             1 Frame               2 Frames           3 Frames
-    Top_Query_geometry     = ['630x1000+1060+10', '1060x1000+640+10', '1500x1000+200+10']
+    Top_Query_geometry     = ['500x1000+1060+10', '1080x1000+640+10', '1500x1000+200+10']
                            # ['630x1000+1060+10', '1060x1000+640+10', '1500x1000+200+10']
 else:
     Main_Wind_geometry     = '330x310+1580+1'
@@ -32,7 +32,79 @@ else:
     Top_Insert_geometry    = '740x1000+900+1'
     Top_TrView_geometry    = '900x1000+10+1'
     #                         one frame           two frames          three frames
-    Top_Query_geometry     = ['630x1000+940+10', '1060x1000+510+1', '1490x1000+80+1']
+    Top_Query_geometry     = ['630x1000+1020+10', '1080x1000+570+10', '1520x1000+130+10']
+
+# ---------------------------   for queries  ----------------------------------------------------------------
+# on the panel for queries can appear the following frames depending on Month and Total Months
+# the frames used are three:  Frame1             Frame2             Fraame 3
+# the months inserted are     1 (Jan-Dec)
+#
+VIEW_WITHCODE = 'View with Frames With Codes'
+VIEW_WITHOUT  = 'View Frame Without Codes'
+
+SELTR  = 'Scegli un codice'
+ALLTR  = 'Tutti i codici'
+ALLGR  = 'Tutti i gruppi'
+ALLCA  = 'Tutte le categorie'
+
+JAN   = 'Gennaio'
+FEB   = 'Febbraio'
+MARCH = 'Marzo'
+APR   = 'Aprile'
+MAY   = 'Maggio'
+JUNE  = 'Giugno'
+JULY  = 'Luglio'
+AUG   = 'Agosto'
+SEPT  = 'Settembre'
+OCT   = 'Ottobre'
+NOV   = 'Novembre'
+DEC   = 'Dicembre'
+
+Month_Names    = (JAN, FEB, MARCH, APR, MAY, JUNE, JULY, AUG, SEPT, OCT, NOV, DEC)
+Month_Names_Compact = ('Gen  ','Feb  ','Mar  ','Apr  ','Mag  ','Giu  ','Lug  ','Ago  ','Set ','Ott  ','Nov  ','Dic')
+
+ONE_MONTH     = '1  mese'
+TWO_MONTHS    = '2  mesi'
+THREE_MONTHS  = '3  mesi'
+FOUR_MONTHS   = '4  mesi'
+SIX_MONTHS    = '6  mesi'
+TWELVE_MONTHS = '12 mesi'
+
+MONTH_INT     = {JAN: 1, FEB:2, MARCH:3, APR:4, MAY:5, JUNE:6, JULY:7, AUG:8, SEPT:9, OCT:10, NOV:11, DEC:12}
+
+TOT_MONTH_INT = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:4, SIX_MONTHS:6, TWELVE_MONTHS:12}
+
+LIST_TOT_12 = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS, SIX_MONTHS, TWELVE_MONTHS]
+LIST_TOT_6  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS, SIX_MONTHS]
+LIST_TOT_4  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS]
+LIST_TOT_3  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS]
+LIST_TOT_2  = [ONE_MONTH, TWO_MONTHS]
+LIST_TOT_1  = [ONE_MONTH]
+Queries_Tot_Dict = {JAN:  LIST_TOT_12, FEB: LIST_TOT_6,  MARCH: LIST_TOT_6, APR: LIST_TOT_6,
+                    MAY: LIST_TOT_6,   JUNE: LIST_TOT_6, JULY:LIST_TOT_6,   AUG: LIST_TOT_4,
+                    SEPT: LIST_TOT_4,  OCT: LIST_TOT_3,  NOV: LIST_TOT_2,   DEC: LIST_TOT_1}
+
+xyToHide    = 10000
+# ----------------------------------   queries :  trees, months, geomety  -----------------------------------
+# Frames in view :   Frame1   Frame1-Frame2  Frame1-Frame2 -Frame3
+#                          Frame geometry index per total Months   (see Top_Query_geometry)
+Queries_Geometry_Index  = {ONE_MONTH:0, TWO_MONTHS:1, THREE_MONTHS:2, FOUR_MONTHS:1, SIX_MONTHS:2, TWELVE_MONTHS:2}
+
+
+# Widgets (Text, Button, Combo) position for  1, 2 or 3 frames
+#                               0   one Frame            1        two Frames       2  three Frames
+Queries_Frames_PosX = [ [10, xyToHide, xyToHide, 465], [10, 455, xyToHide, 910], [10, 455, 900, 1350] ]
+Widgets_PosY        = [450, 880, 1310]
+#                          total frames per total months
+Queries_nFrames     = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:2, SIX_MONTHS:3, TWELVE_MONTHS:3}
+
+#                          total months per frame
+Queries_nMonts_xTree = {ONE_MONTH:1, TWO_MONTHS:1, THREE_MONTHS:1, FOUR_MONTHS:2, SIX_MONTHS:2, TWELVE_MONTHS:4}
+
+
+
+
+
 
 # =========================================================== #
 #       CHAT for  echanging   DATA between classes            #
@@ -118,8 +190,8 @@ ALL_CAT     = 'All categories'
 
 Selections_Dir_Name    = '/home/mario/aExp_Selections'
 Selections_Full_Name   = '/home/mario/aExp_Selections/Selections'
-# Default_Init_Dir     = '/home/mario'
-Default_Init_Dir       = '/home/mario/bXLSX_Files/FIDEU/FIDEU_2023'
+Default_Init_Dir     = '/home/mario'
+#Default_Init_Dir       = '/home/mario/bXLSX_Files/FIDEU/FIDEU_2023'
 
 # Txt File Items Indexes  ----------------------------
 Ix_Codes_File    = 0
@@ -146,7 +218,7 @@ Ix_Transact_Loaded   = 2
 # =============================================================
 #             WIDGETS  CONSTANTS                              =
 # =============================================================
-xyToHide    = 10000
+# xyToHide    = 10000
 Lab_Blue    = 1
 Lab_FileSel = 2
 Lab_Err     = 3
@@ -319,81 +391,80 @@ NOT_INT = 'String'
 NUMERIC = 'Numeric'
 DATE    = 'Date'
 STRING  = 'String'
-VAL_DATE = 'value date'
-ACC_DATE = 'accounting date'
+VAL_DATE = 'Data valuta'
+ACC_DATE = 'Data contabile'
 
 List_For_XLSX_Row_Control = [
     [iRow_nRow,   INTEGER],
     [iRow_Contab, DATE],    [iRow_Valuta, DATE],   [iRow_Descr1, STRING],
     [iRow_Accr,   NUMERIC], [iRow_Addeb, NUMERIC], [iRow_Descr2, STRING]]
 
-# ---------------------------   for queries  ----------------------------------------------------------------
-# on the panel for queries can appear the following frames depending on Month and Total Months
-# the frames used are three:  Frame1             Frame2             Fraame 3
-# the months inserted are     1 (Jan-Dec)
+# # ---------------------------   for queries  ----------------------------------------------------------------
+# # on the panel for queries can appear the following frames depending on Month and Total Months
+# # the frames used are three:  Frame1             Frame2             Fraame 3
+# # the months inserted are     1 (Jan-Dec)
+# #
+# VIEW_WITHCODE = 'View with Frames With Codes'
+# VIEW_WITHOUT  = 'View Frame Without Codes'
 #
-VIEW_WITHCODE = 'View with Frames With Codes'
-VIEW_WITHOUT  = 'View Frame Without Codes'
-
-SELTR  = 'Select a Code'
-ALLTR  = 'All codes'
-ALLGR  = 'All groups'
-ALLCA  = 'All categories'
-
-JAN   = 'January'
-FEB   = 'February'
-MARCH = 'March'
-APR   = 'April'
-MAY   = 'May'
-JUNE  = 'June'
-JULY  = 'July'
-AUG   = 'August'
-SEPT  = 'September'
-OCT   = 'October'
-NOV   = 'November'
-DEC   = 'December'
-
-Month_Names    = (JAN, FEB, MARCH, APR, MAY, JUNE, JULY, AUG, SEPT, OCT, NOV, DEC)
-
-ONE_MONTH     = '1 month'
-TWO_MONTHS    = '2 months'
-THREE_MONTHS  = '3 months'
-FOUR_MONTHS   = '4 months'
-SIX_MONTHS    = '6 months'
-TWELVE_MONTHS = '12 months'
-
-MONTH_INT     = {JAN: 1, FEB:2, MARCH:3, APR:4, MAY:5, JUNE:6, JULY:7, AUG:8, SEPT:9, OCT:10, NOV:11, DEC:12}
-
-TOT_MONTH_INT = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:4, SIX_MONTHS:6, TWELVE_MONTHS:12}
-
-LIST_TOT_12 = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS, SIX_MONTHS, TWELVE_MONTHS]
-LIST_TOT_6  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS, SIX_MONTHS]
-LIST_TOT_4  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS]
-LIST_TOT_3  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS]
-LIST_TOT_2  = [ONE_MONTH, TWO_MONTHS]
-LIST_TOT_1  = [ONE_MONTH]
-Queries_Tot_Dict = {JAN:  LIST_TOT_12, FEB: LIST_TOT_6,  MARCH: LIST_TOT_6, APR: LIST_TOT_6,
-                    MAY: LIST_TOT_6,   JUNE: LIST_TOT_6, JULY:LIST_TOT_6,   AUG: LIST_TOT_4,
-                    SEPT: LIST_TOT_4,  OCT: LIST_TOT_3,  NOV: LIST_TOT_2,   DEC: LIST_TOT_1}
-
-
-# ----------------------------------   queries :  trees, months, geomety  -----------------------------------
-# Frames in view :   Frame1   Frame1-Frame2  Frame1-Frame2 -Frame3
-#                          Frame geometry index per total Months   (see Top_Query_geometry)
-Queries_Geometry_Index  = {ONE_MONTH:0, TWO_MONTHS:1, THREE_MONTHS:2, FOUR_MONTHS:1, SIX_MONTHS:2, TWELVE_MONTHS:2}
-
-
-# Widgets (Text, Button, Combo) position for  1, 2 or 3 frames
-#                               0   one Frame                  1        two Frames       2  three Frames
-Queries_Frames_PosX = [ [10, xyToHide, xyToHide, 450], [10, 440, xyToHide, 880], [10, 440, 870, 1310] ]
-
-Widgets_PosY        = [450, 880, 1310]
-
-#                          total frames per total months
-Queries_nFrames     = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:2, SIX_MONTHS:3, TWELVE_MONTHS:3}
-
-#                          total months per frame
-Queries_nMonts_xTree = {ONE_MONTH:1, TWO_MONTHS:1, THREE_MONTHS:1, FOUR_MONTHS:2, SIX_MONTHS:2, TWELVE_MONTHS:4}
+# SELTR  = 'Scegli un codice'
+# ALLTR  = 'Tutti i codici'
+# ALLGR  = 'Tutti i gruppi'
+# ALLCA  = 'Tutte le categorie'
+#
+# JAN   = 'Gennaio'
+# FEB   = 'Febbraio'
+# MARCH = 'Marzo'
+# APR   = 'Aprile'
+# MAY   = 'Maggio'
+# JUNE  = 'Giugno'
+# JULY  = 'Luglio'
+# AUG   = 'Agosto'
+# SEPT  = 'Settembre'
+# OCT   = 'Ottobre'
+# NOV   = 'Novembre'
+# DEC   = 'Dicembre'
+#
+# Month_Names    = (JAN, FEB, MARCH, APR, MAY, JUNE, JULY, AUG, SEPT, OCT, NOV, DEC)
+# Month_Names_Compact = ('Gen  ','Feb  ','Mar  ','Apr  ','Mag  ','Giu  ','Lug  ','Ago  ','Set ','Ott  ','Nov  ','Dic')
+#
+# ONE_MONTH     = '1  mese'
+# TWO_MONTHS    = '2  mesi'
+# THREE_MONTHS  = '3  mesi'
+# FOUR_MONTHS   = '4  mesi'
+# SIX_MONTHS    = '6  mesi'
+# TWELVE_MONTHS = '12 mesi'
+#
+# MONTH_INT     = {JAN: 1, FEB:2, MARCH:3, APR:4, MAY:5, JUNE:6, JULY:7, AUG:8, SEPT:9, OCT:10, NOV:11, DEC:12}
+#
+# TOT_MONTH_INT = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:4, SIX_MONTHS:6, TWELVE_MONTHS:12}
+#
+# LIST_TOT_12 = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS, SIX_MONTHS, TWELVE_MONTHS]
+# LIST_TOT_6  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS, SIX_MONTHS]
+# LIST_TOT_4  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS, FOUR_MONTHS]
+# LIST_TOT_3  = [ONE_MONTH, TWO_MONTHS, THREE_MONTHS]
+# LIST_TOT_2  = [ONE_MONTH, TWO_MONTHS]
+# LIST_TOT_1  = [ONE_MONTH]
+# Queries_Tot_Dict = {JAN:  LIST_TOT_12, FEB: LIST_TOT_6,  MARCH: LIST_TOT_6, APR: LIST_TOT_6,
+#                     MAY: LIST_TOT_6,   JUNE: LIST_TOT_6, JULY:LIST_TOT_6,   AUG: LIST_TOT_4,
+#                     SEPT: LIST_TOT_4,  OCT: LIST_TOT_3,  NOV: LIST_TOT_2,   DEC: LIST_TOT_1}
+#
+#
+# # ----------------------------------   queries :  trees, months, geomety  -----------------------------------
+# # Frames in view :   Frame1   Frame1-Frame2  Frame1-Frame2 -Frame3
+# #                          Frame geometry index per total Months   (see Top_Query_geometry)
+# Queries_Geometry_Index  = {ONE_MONTH:0, TWO_MONTHS:1, THREE_MONTHS:2, FOUR_MONTHS:1, SIX_MONTHS:2, TWELVE_MONTHS:2}
+#
+#
+# # Widgets (Text, Button, Combo) position for  1, 2 or 3 frames
+# #                               0   one Frame            1        two Frames       2  three Frames
+# Queries_Frames_PosX = [ [10, xyToHide, xyToHide, 465], [10, 455, xyToHide, 910], [10, 465, 900, 1310] ]
+# Widgets_PosY        = [450, 880, 1310]
+# #                          total frames per total months
+# Queries_nFrames     = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:2, SIX_MONTHS:3, TWELVE_MONTHS:3}
+#
+# #                          total months per frame
+# Queries_nMonts_xTree = {ONE_MONTH:1, TWO_MONTHS:1, THREE_MONTHS:1, FOUR_MONTHS:2, SIX_MONTHS:2, TWELVE_MONTHS:4}
 
 # -----------------------------------------------------------------------------------------------------------
                         #   --- Items ---

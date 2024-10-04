@@ -2,16 +2,19 @@
 #                 -----   Modules_Mnager.py   -----                             #
 #                                                                               #
 #    ------------------------------------------------------------------         #
-#     Modul_Mngr = Modules_Manager()                                            #
-#     Data       = Transact_DB <-- Xlsx_Manager <--                             #
+#  Modul_Mngr = Modules_Manager()                                               #
+#  Data       = Transact_DB <-- Xlsx_Manager <-- Codes_DB <-- Filesnames_Mngr   #
 #                                                                               #
 #   'Init ' methods are invoked at startup or  before launching a module        #
 #           the file to be iniziated will be load only if not loaded            #
 #                                                                               #
 #    'Sel ' methods select a new file and if correct  it calls Load             #
 #                                                                               #
+#    'Cek_Name'  check if the filename is correct                               #
+#                                                                               #
 #    'Load ' methods load files data and if OK  it updates Selections           #
 # ============================================================================= #
+import sqlite3
 from Widgt.Dialogs import *
 from Widgt.Dialogs import File_Dialog
 
@@ -332,7 +335,8 @@ class Modules_Manager:
     # Name           = Moudule Name to launch
     # Origin         = The requesting Module
     # List_For_Start =  List of Parameters to pass to Recipient
-    # -------------------------------------------------
+    #                   until 2024 10 03  is used only on TopCodes_View
+    # ---------------------------------------------------------------------------------------------
     def Top_Launcher(self, Name_ToLaunch, Origin, List):
         if self.Chat.Check_Name_Is_On_Participants_List(Name_ToLaunch):
             self.Chat.Tx_Request([Origin, [Name_ToLaunch], CODE_TO_CLOSE, []])
@@ -340,17 +344,18 @@ class Modules_Manager:
         else:
             TopLevel  = self.Get_TopLev(Name_ToLaunch)
             self.Check_Result = self.Make_Checkout(Name_ToLaunch, Origin)
+            if self.Check_Result >= 2:  # Transactions NOK
+                return
             try:
                 TopLevel(List)
-            except:
-                print('Launcher ERROR')
+            except sqlite3.Error as e:
                 print(Name_ToLaunch)
                 print(Origin)
-                Messg = 'Launcher ERROR\n' + 'Toplevel to be launched:  ' + Name_ToLaunch
-                Messg += '\nOrigin:   ' + Origin
-                Dlg_Ms = Message_Dlg(MsgBox_Err, Messg)
-                Dlg_Ms.wait_window()
+                print(e)
+                return False
+            finally:
                 pass
+                return True
 
     # ---------------------------------------------------------------------------------------------
     def Make_Checkout(self, Name, Origin):
@@ -364,22 +369,22 @@ class Modules_Manager:
                     CheckList.append(Check)
                 break
         if not CheckList:
-            return True
+            return -1
                 
         for Check in CheckList:
             if Check == CEK_CODES:                          # CEK_CODES
                 if not self.Init_Codes(Origin):
-                    return False
+                    return 1
 
             if Check == CEK_XLSX_LIST:                      # CEK_XLSX LISTS
                 if not self.Init_Xlsx_Lists(Origin):
                     if not self.Xlsx_Sel_Request(Origin):
-                        return False
+                        return 2
 
             if Check == CEK_TRANSACT:                       # CEK_TRANSACT
                 if not self.Init_Transactions(Origin):
-                    return False
-        return True
+                    return 3
+        return -1
 
     # ---------------------------------------------------------------------------------------------
     def Xlsx_Sel_Request(self, Origin):
