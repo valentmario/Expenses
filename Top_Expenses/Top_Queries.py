@@ -12,7 +12,7 @@ from Widgt.Tree_Widg import TheFrame
 # ---------------------------------------------------------------------------------------------------------------------
 class Top_Queries(Super_Top_Queries):
     def __init__(self, List):
-        super().__init__(self.Trees_Update)
+        super().__init__(self.Load_All_Data)
         self.Data_List = List   # Not used
 
         # --------------------------  Trees-Frames    for  Queries   --------------------------------------------------
@@ -42,12 +42,16 @@ class Top_Queries(Super_Top_Queries):
         self.Frame_TotDebit = TheFrame(self, xyToHide, 10, self.Click_OnTot)  # the frame for total debits
         self.Debit_Frame_Setup()
 
-        self.Show_Selections()  # show the selections for year, conto, month, total months, TR, GR, CA
-        self.Trees_Update()     # setup frames geometry, load values on trees
-        pass
+        self.Load_All_Data()
+
     # ------------------------------------------------------------------------------------------------
-    def Trees_Update(self):
+    def Load_All_Data(self):
+        self.OneYear_Transact_List = self.Data.Get_Transact_Table()
+        self.Set_TR_GR_CA_Sel_List()
+        self.Setup_TR_GR_CA_OptManu()
+
         self.Setup_Year_Conto_Month_Tot_Date()
+        # show the selections for year, conto, month, total months, TR, GR, CA
         self.Show_Selections()
         self.Set_Geometry_Frames()
         self.Set_Widgets_PosX()
@@ -122,6 +126,7 @@ class Top_Queries(Super_Top_Queries):
         self.Frame_TotCred = TheFrame(self, xyToHide, 10, self.Click_OnTot)
         self.Frame_TotCred.Tree_Setup(Form_ListCred)
 
+    # --------------------------------------------------------------------------------------------------
     def Debit_Frame_Setup(self):
         Nrows     = 1
         nColToVis = 1
@@ -134,7 +139,6 @@ class Top_Queries(Super_Top_Queries):
 
     # -------------------------------------------------------------------------------------------------
     def Click_OnTot(self, Value):
-        self.Dummy = Value
         self.Frame_TotRows.Clear_Focus()
         self.Frame_TotCred.Clear_Focus()
         self.Frame_TotDebit.Clear_Focus()
@@ -144,7 +148,7 @@ class Top_Queries(Super_Top_Queries):
 
     # -------------------------------------------------------------------------------------------------
     def Click_OnFrame(self, Value):
-        self.Dummy = Value
+        self.Click_OnTot(Value)
 
    # -------------------------------------------------------------------------------------------------
     def Set_Geometry_Frames(self):
@@ -329,6 +333,7 @@ class Top_Queries(Super_Top_Queries):
         self.Frame_TotDebit.Load_Row_Values([[strTot_Debit]])
         self.Frame_TotRows.Load_Row_Values([[self.Total_Rows, 2]])
 
+    # -------------------------------------------------------------------------------------------------
     # selections for year conto, month, total months, TR, GR, CA
     def Show_Selections(self):
         self.OptMenu_Year.SetSelText(self.Year_Selected)

@@ -59,7 +59,8 @@ class Transact_Db(Xlsx_Manager):
             connect.close()
         except sqlite3.Error as e:
             print(e)
-            return e
+            MsgErr = 'ERROR on loading Transactions Table:\n' + str(e)
+            return MsgErr
         finally:
             if connect:
                 connect.close()
@@ -67,14 +68,6 @@ class Transact_Db(Xlsx_Manager):
             if not self._tTransact_Table:
                 return EMPTY
             return OK
-        # except:
-        #     connect.close()
-        #     return 'ERROR\non loading Transactions'
-
-        # self._Transact_Table = self._tTransact_Table
-        # if not self._tTransact_Table:
-        #     return EMPTY
-        # return OK
 
     # ---------------------------------------------------------------------------------------
     def Clear_Transact_Year(self):

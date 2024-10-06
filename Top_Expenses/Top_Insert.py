@@ -164,9 +164,9 @@ class Top_Insert(tk.Toplevel):
         TRansact_Years_List = self.Data.Get_Transact_Year_ListInData()[1]
         if self.Xlsx_Year in TRansact_Years_List:
             newTransact_Filename = Transact_ + str(self.Xlsx_Year) + '.db'
-            Dir_Name = Get_Dir_Name(self.Data.Get_Selections_Member(Ix_Transact_File))
+            Dir_Name      = Get_Dir_Name(self.Data.Get_Selections_Member(Ix_Transact_File))
             Full_Filename = Dir_Name + newTransact_Filename
-            File_Exists = os.path.isfile(Full_Filename)
+            File_Exists   = os.path.isfile(Full_Filename)
             if not File_Exists:
                 self.Init_Status_Texto = ('inexplicably transactions Db  ' + Full_Filename +
                                           '\nfor xlsx year: ' + str(self.Xlsx_Year) + 'doesn"t exist')

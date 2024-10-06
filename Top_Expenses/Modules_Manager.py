@@ -344,8 +344,9 @@ class Modules_Manager:
         else:
             TopLevel  = self.Get_TopLev(Name_ToLaunch)
             self.Check_Result = self.Make_Checkout(Name_ToLaunch, Origin)
-            if self.Check_Result >= 2:  # Transactions NOK
-                return
+            if self.Check_Result == 3:  # Transactions NOK
+                if not self.Sel_Transact(TOP_MNGR):
+                    return
             try:
                 TopLevel(List)
             except sqlite3.Error as e:

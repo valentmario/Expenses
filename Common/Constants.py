@@ -43,9 +43,9 @@ VIEW_WITHCODE = 'View with Frames With Codes'
 VIEW_WITHOUT  = 'View Frame Without Codes'
 
 SELTR  = 'Scegli un codice'
-ALLTR  = 'Tutti i codici'
-ALLGR  = 'Tutti i gruppi'
-ALLCA  = 'Tutte le categorie'
+ALLTR  = 'ogni codice'
+ALLGR  = 'ogni gruppo'
+ALLCA  = 'ogni categoria'
 
 JAN   = 'Gennaio'
 FEB   = 'Febbraio'

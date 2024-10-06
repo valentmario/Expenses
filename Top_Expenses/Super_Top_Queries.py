@@ -3,7 +3,7 @@
 #      the parent of Top_Queries contains:                                           #
 #                                   all attributs excepted the frames                #
 #                                   all click methods                                #
-#       the method  Trees_Update is passed from Top_Queries as in __init__           #
+#      the method  Load_All_Data is contained in the child of  Super_Top_Queries     #
 #                                                                                    #
 # ---------------------------------------------------------------------------------- #
 
@@ -16,13 +16,13 @@ from Top_Expenses.Top_Codes_View import Top_View_Codes
 
 # =================================================================================================================
 class Super_Top_Queries(tk.Toplevel):
-    def __init__(self, Trees_Update):
+    def __init__(self, Load_All_Data):
         super().__init__()
         self.Chat     = Ms_Chat
         self.Data     = Data
         self.Mod_Mngr = Modul_Mngr
 
-        self.Trees_Update = Trees_Update
+        self.Load_All_Data = Load_All_Data
         self.Dummy    = 0
         self.geometry('15x15+900+490')
         self.resizable(False, False)
@@ -102,14 +102,10 @@ class Super_Top_Queries(tk.Toplevel):
 
         # ---------------------------------    Buttons   ----------------------------------------------------------
         self.Btn_DB_View   = TheButton(self, Btn_Def_En, self.Widg_PosX, 370, 15, 'Mostra i Movimenti', self.Clk_ViewTransact)
-        self.Btn_xlsx_file = TheButton(self, Btn_Def_En, self.Widg_PosX, 410, 15, 'Selez. un file Xlsx',  self.Clk_SelXlsx)
+        self.Btn_xlsx_file = TheButton(self, Btn_Def_En, self.Widg_PosX, 410, 15, 'Selez. un file Xlsx', self.Clk_SelXlsx)
         self.Btn_xlsx_View = TheButton(self, Btn_Def_En, self.Widg_PosX, 450, 15, 'Mostra file Xlsx',    self.Clk_XlsxView)
 
         self.Btn_Exit = TheButton(self, Btn_Bol_En, self.Widg_PosX, 936, 13, '  E S C I  ', self.Call_OnClose)
-        self.OneYear_Transact_List = self.Data.Get_Transact_Table()
-        self.Set_TR_GR_CA_Sel_List()
-        self.Setup_TR_GR_CA_OptManu()
-        pass
 
     # -------------------------------------------------------------------------------------------------------------
     def Clear_Code_Sel(self):
@@ -158,12 +154,11 @@ class Super_Top_Queries(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------------------
     def Setup_Year_Conto_Month_Tot_Date(self):
         self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()   # list created on ModulesManager
-        # self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
+        self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
 
         List = Data.Get_Transact_Year_ListInData()
         self.Transact_Years_List = List[1]
         self.OptMenu_Year.SetValues(self.Transact_Years_List)
-        self.Year_Selected       = List[0]
 
         Queries_Sel = self.Data.Get_Selections_Member(Ix_Query_List)
         self.Conto_Selected = Queries_Sel[Ix_Query_Conto]
@@ -189,6 +184,7 @@ class Super_Top_Queries(tk.Toplevel):
         QueryList = [self.Conto_Selected, self.Month_Selected, self.Tot_Selected,
                      self.TRselected,     self.GRselected,     self.CAselected ]
         self.Data.Update_Selections(QueryList, Ix_Query_List)
+        self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], UPDATE_FILES_NAME, []])
 
     # -------------------------------------------------------------------------------------------------------------
     def Call_OnClose(self):
@@ -216,10 +212,19 @@ class Super_Top_Queries(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------------------
     def Clk_ComboYear(self, Value):
         self.Dummy = 0
-        print(Value)
         # Create filename for transactions,             if self.Load_Transact(Origin, ON_SELECTIONS):
-
-        pass
+        newTransact_Filename = Transact_ + str(Value) + '.db'
+        Dir_Name = Get_Dir_Name(self.Data.Get_Selections_Member(Ix_Transact_File))
+        Full_Filename = Dir_Name + newTransact_Filename
+        # Init Transactions
+        if not self.Mod_Mngr.Cek_Transactions_Name(Full_Filename):
+            return
+        if self.Mod_Mngr.Load_Transact(TOP_QUERY, Full_Filename):
+            # self.OneYear_Transact_List = self.Data.Get_Transact_Table()
+            # self.Data.Update_Selections(Full_Filename, Ix_Transact_File)
+            # self.Set_TR_GR_CA_Sel_List()
+            # self.Setup_TR_GR_CA_OptManu()
+            self.Load_All_Data()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Conto(self, Value):
@@ -227,7 +232,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Month_Selected = Month_Names[0]
         self.Tot_Selected   = ONE_MONTH
         self.Update_Sel_onTxt()
-        self.Trees_Update()
+        self.Load_All_Data()
 
     def Clk_Month(self, Value):
         self.Month_Selected = Value
@@ -235,19 +240,19 @@ class Super_Top_Queries(tk.Toplevel):
         self.OptMenu_Tot.SetValues(self.Tot_List)
         self.OptMenu_Tot.SetSelText(self.Tot_Selected[0])
         self.Update_Sel_onTxt()
-        self.Trees_Update()
+        self.Load_All_Data()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Tot(self, Value):
         self.Tot_Selected = Value
         self.Tot_List = Queries_Tot_Dict[self.Month_Selected]
         self.Update_Sel_onTxt()
-        self.Trees_Update()
+        self.Load_All_Data()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Date(self, Value):
         self.Date_Selected = Value
-        self.Trees_Update()
+        self.Load_All_Data()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_TRsel(self, Value):
@@ -260,7 +265,7 @@ class Super_Top_Queries(tk.Toplevel):
             self.CAselected = ''
             Top_View_Codes(self.TR_List)
         self.Update_Sel_onTxt()
-        self.Trees_Update()
+        self.Load_All_Data()
 
     # ------------  see above  ------------------------
     # called from TOP_CODES_VIEW on click on tree
@@ -269,7 +274,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.GRselected = ''
         self.CAselected = ''
         self.Update_Sel_onTxt()
-        self.Trees_Update()
+        self.Load_All_Data()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_GRsel(self, Value):
@@ -280,7 +285,7 @@ class Super_Top_Queries(tk.Toplevel):
             self.TRselected = ''
             self.CAselected = ''
             self.Update_Sel_onTxt()
-        self.Trees_Update()
+        self.Load_All_Data()
 
     def Clk_CAsel(self, Value):
         if Value == ALLCA:
@@ -290,7 +295,7 @@ class Super_Top_Queries(tk.Toplevel):
             self.TRselected = ''
             self.GRselected = ''
             self.Update_Sel_onTxt()
-        self.Trees_Update()
+        self.Load_All_Data()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_ViewTransact(self):

@@ -53,12 +53,12 @@ class Main_Window(tk.Tk):
         self.Top_Mngr   = None
         self.Top_View   = None
 
-        self.Btn_Chat = TheButton(self, Btn_Def_En,  20, 150, 14, 'Settings',        self.Clk_Settings)
-        self.Btn_Mng = TheButton(self,  Btn_Def_En, 170, 150, 14, 'Files manager',   self.Clk_Manage_Codes)
+        self.Btn_Chat = TheButton(self, Btn_Def_En,  20, 150, 14, 'Prove ausiliarie',        self.Clk_Settings)
+        self.Btn_Mng = TheButton(self,  Btn_Def_En, 170, 150, 14, 'Gestione files',   self.Clk_Manage_Codes)
 
-        self.Btn_Ins  = TheButton(self, Btn_Col_En,  20, 200, 14, 'Load transactions', self.Clk_Insert)
+        self.Btn_Ins  = TheButton(self, Btn_Col_En,  20, 200, 14, 'Carica movimenti', self.Clk_Insert)
         self.Btn_Query= TheButton(self, Btn_Col_En, 170, 200, 14, 'Queries',         self.Clk_Queries)
-        self.Exit     = TheButton(self, Btn_Bol_En,  24, 250, 27, '  E X I T   ',    self.Call_OnClose)
+        self.Exit     = TheButton(self, Btn_Bol_En,  24, 250, 27, '  E S C I   ',    self.Call_OnClose)
 
         # -------------------------------------------------------------------------------------------------
         self.Mod_Mngr.Cek_Create_Selections()    # Check or Create Selections file
@@ -129,20 +129,27 @@ class Main_Window(tk.Tk):
             else:
                 Transact_Filename = UNKNOWN
         # --------------------------------------------------------------
-        Filenames      = "Codes:      " + Codes_Filename + \
-                       "\nxlsx:           " + Xlsx_Filename + \
-                       "\nTransact:   " + Transact_Filename +'\n'
+        Filenames      = "Codici:        " + Codes_Filename + \
+                       "\nxlsx:             " + Xlsx_Filename + \
+                       "\nMovimenti:   " + Transact_Filename +'\n'
 
         Query_List  = self.Data.Get_Selections_Member(Ix_Query_List)
         Values         = []
         for ix in range(Ix_Query_Conto, Ix_Query_CAsel+1):       # setup values for queries
             Values.append(Query_List[ix])
-
-        strQuery       = 'Query:  ' + \
-                         str(Values[Ix_Query_Conto]) + '  ' + \
-                         str(Values[Ix_Query_Month]) + '  ' + \
+        FirstVal = str(Values[0])
+        Space = ''
+        if FirstVal == ALL_CODES:
+            Space = '    '
+        strQuery       = 'Queries:    ' + \
+                         str(Values[Ix_Query_Conto]) + '   ' + \
+                         str(Values[Ix_Query_Month]) + '   ' + \
                          str(Values[Ix_Query_TotMonths])
-        strSelect      = '\nSel:  ' + \
+        FirstVal = str(Values[0])
+        Space = ''
+        if FirstVal == ALL_CODES:
+            Space = '    '
+        strSelect      = '\nSelezioni:\n' + \
                          str(Values[Ix_Query_TRsel]) + '   ' + \
                          str(Values[Ix_Query_GRsel]) + '   ' + \
                          str(Values[Ix_Query_CAsel])
