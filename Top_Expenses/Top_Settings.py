@@ -7,6 +7,7 @@ from Widgt.Tree_Widg import *
 from Widgt.Dialogs import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Data_Classes.Transact_DB import *
+from Data_Classes.Transact_DB import Data_Manager
 
 # class Top_Settings(tk.Toplevel): see line 85
 # ================================================================================================
@@ -14,6 +15,7 @@ class Top_String_Matching(tk.Toplevel):
     def __init__(self):
         super().__init__()
 
+        self.Data = Data_Manager
         self.resizable(False, False)
         self.configure(background=BakGnd)
         self.title('***   Find  strings  matchings   ***')
@@ -65,7 +67,7 @@ class Top_String_Matching(tk.Toplevel):
             self.Matchings_List = []
             StrToMach = self.Txt_StrToMatch.Get_Text('ASCII').replace('\n', '')
 
-            for Rec in Data.Get_Codes_Table():  # Get_Codes_Table():
+            for Rec in self.Data.Get_Codes_Table():  # Get_Codes_Table():
                 Txt_StrToFind =  Rec[iTR_TRstrToFind].replace('\n', '', 5)
                 FullDesc   = Rec[iTR_TRfullDes].replace('\n', '', 5)
                 if StrToFind_in_Fulldescr(StrToMach, FullDesc):
@@ -85,7 +87,7 @@ class Top_Settings(tk.Toplevel):
     def __init__(self, List):
         super().__init__()
         self.Chat     = Ms_Chat
-        self.Data     = Data
+        self.Data     = Data_Manager
         self.Mod_Mngr = Modul_Mngr
         self.Chat.Attach([self, TOP_SETTINGS])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)

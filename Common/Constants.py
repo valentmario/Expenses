@@ -131,7 +131,8 @@ ANY            = 'All Modules     '
 # Checkes to be maade before a Tolevel launch
 CEK_CODES      = 'Check codes DB     '
 CEK_XLSX_LIST  = 'Check xlsx lists   '
-CEK_TRANSACT   = 'Check transactions '
+CEK_TOP_INSERT = 'Check for Top_Insert '
+CEK_TOP_QUERIES= 'Check for Top_Queries '
 
 LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
                     [TOP_MNGR,          [CEK_CODES, CEK_XLSX_LIST]],   # ,  CEK_XLSX_LIST]],
@@ -139,8 +140,8 @@ LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
                     [TOP_GR_MNGR,       [CEK_CODES]],
                     [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX_LIST]],
                     [TOP_INS,           [CEK_CODES,  CEK_XLSX_LIST]],
-                    [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TRANSACT]],
-                    [TOP_QUERY,         [CEK_CODES,  CEK_TRANSACT]],
+                    [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TOP_INSERT]],
+                    [TOP_QUERY,         [CEK_CODES,  CEK_TOP_QUERIES]],
                     [TOP_VIEW_MESS,     []] ]
 
 # Participants_List  [<class name>,  Name]

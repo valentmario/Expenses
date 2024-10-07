@@ -9,7 +9,7 @@
 
 from Chat import Ms_Chat
 from Common.Common_Functions import *
-from Data_Classes.Transact_DB import Data
+from Data_Classes.Transact_DB import Data_Manager
 from Widgt.Widgets import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Top_Expenses.Top_Codes_View import Top_View_Codes
@@ -19,7 +19,7 @@ class Super_Top_Queries(tk.Toplevel):
     def __init__(self, Load_All_Data):
         super().__init__()
         self.Chat     = Ms_Chat
-        self.Data     = Data
+        self.Data     = Data_Manager
         self.Mod_Mngr = Modul_Mngr
 
         self.Load_All_Data = Load_All_Data
@@ -156,7 +156,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()   # list created on ModulesManager
         self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
 
-        List = Data.Get_Transact_Year_ListInData()
+        List = Data_Manager.Get_Transact_Year_ListInData()
         self.Transact_Years_List = List[1]
         self.OptMenu_Year.SetValues(self.Transact_Years_List)
 

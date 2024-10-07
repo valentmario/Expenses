@@ -9,7 +9,7 @@
 import tkinter as tk
 
 from Chat import Ms_Chat
-from Data_Classes.Transact_DB import Data
+from Data_Classes.Transact_DB import Data_Manager
 from Common.Common_Functions import *
 
 from Widgt.Dialogs import Print_Received_Message
@@ -23,7 +23,7 @@ class Top_GR_Codes_Mngr(tk.Toplevel):
     def __init__(self, List):
         super().__init__()
         self.Chat  = Ms_Chat
-        self.Data  = Data
+        self.Data  = Data_Manager
 
         self.Chat.Attach([self, TOP_GR_MNGR])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)

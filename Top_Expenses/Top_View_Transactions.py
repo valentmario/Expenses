@@ -5,7 +5,7 @@
 
 from Common.Common_Functions import *
 from Chat import Ms_Chat
-from Data_Classes.Transact_DB import Data
+from Data_Classes.Transact_DB import Data_Manager
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Tree_Widg import *
@@ -18,7 +18,7 @@ class Top_View_Transact(tk.Toplevel):
     def __init__(self, List):
         super().__init__()
         self.Chat      = Ms_Chat
-        self.Data      = Data
+        self.Data      = Data_Manager
         self.Mod_Mngr  = Modul_Mngr
         self.Data_List = List
 

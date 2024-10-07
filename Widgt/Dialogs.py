@@ -77,6 +77,7 @@ class Message_Dlg(tk.Toplevel):
         self.wait_visibility()
         self.grab_set()
         self.transient()
+        pass
 
     def Clk_OK(self):
         self.data = OK
@@ -161,7 +162,7 @@ class Combo_Dlg(tk.Toplevel):
 
 # =================================================================================
 
-from Data_Classes.Transact_DB import Data
+from Data_Classes.Transact_DB import Data_Manager
 
 # =======================   F I L E     D I A L O G       ========================
 class File_Dialog(tk.Toplevel):
@@ -171,7 +172,7 @@ class File_Dialog(tk.Toplevel):
         self.geometry('500x380+800+100')
         self.title('File Select  Dialog')
         self.configure(bg='white')
-        self.Data = Data
+        self.Data = Data_Manager
 
         self.FileName = ''
         if Option == FileBox_Codes:

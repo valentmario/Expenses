@@ -29,7 +29,7 @@ class Main_Window(tk.Tk):
     def __init__(self):
         super().__init__()
         self.Chat     = Ms_Chat
-        self.Data     = Data
+        self.Data     = Data_Manager
         self.Mod_Mngr = Modul_Mngr
         self.Chat.Attach([self, MAIN_WIND])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
@@ -53,7 +53,7 @@ class Main_Window(tk.Tk):
         self.Top_Mngr   = None
         self.Top_View   = None
 
-        self.Btn_Chat = TheButton(self, Btn_Def_En,  20, 150, 14, 'Prove ausiliarie',        self.Clk_Settings)
+        self.Btn_Chat = TheButton(self, Btn_Def_En,  20, 150, 14, 'Test',        self.Clk_Settings)
         self.Btn_Mng = TheButton(self,  Btn_Def_En, 170, 150, 14, 'Gestione files',   self.Clk_Manage_Codes)
 
         self.Btn_Ins  = TheButton(self, Btn_Col_En,  20, 200, 14, 'Carica movimenti', self.Clk_Insert)

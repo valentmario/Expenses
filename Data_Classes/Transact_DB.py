@@ -3,8 +3,8 @@
 #              last child class  of data chainse                                #
 #                                                                               #
 #    ----------------------------------                                         #
-#     Modul_Mngr = Modules_Manager()                                            #
-#     Data       = Transact_DB()                                                #
+#     Modul_Mngr    = Modules_Manager()                                         #
+#     Data_Manager  = Transact_DB()                                             #
 #    ----------------------------------                                         #
 #     are istanced on Startup and will NEVER destroyed                          #
 #  for more informations see Data_Organization.txt                              #
@@ -110,10 +110,12 @@ class Transact_Db(Xlsx_Manager):
     # ---------------------------------------------------------------------------------------
     # used in Top_Insert()
     def Create_Transact_DB_File(self, FullName):
-        self.Dummy = 0
+        Filename = ''
         File_Exists = os.path.isfile(FullName)
         if File_Exists:
-            return True
+            Filename = Get_File_Name(FullName)
+            ErrList = [1, [Filename + '   Già esistente']]
+            return ErrList
         DirName = Get_Dir_Name(FullName)
         if not os.path.isdir(DirName):
             os.mkdir(DirName)
@@ -135,11 +137,12 @@ class Transact_Db(Xlsx_Manager):
             self._Set_Transact_Year()
         except sqlite3.Error as e:
             print(e)
-            return False
+            ErMessg = [ 0, ['Errore nel creare  ' + Filename]]
+            return ErMessg
         finally:
             if connect:
                 connect.close()
-        return True
+        return [-1, [OK]]
 
     # ---------------------------------------------------------------------------------------------
     def OpenClose_Transactions_Database(self, Open, Transact_Filename):
@@ -269,6 +272,6 @@ class Transact_Db(Xlsx_Manager):
 
 # ========================== #
 #                            #
-Data = Transact_Db()         #
+Data_Manager = Transact_Db() #
 #                            #
 # ========================== #

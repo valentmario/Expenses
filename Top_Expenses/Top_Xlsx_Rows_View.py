@@ -6,7 +6,7 @@
 import tkinter as tk
 from Common.Common_Functions import *
 from Chat import Ms_Chat
-from Data_Classes.Transact_DB import Data
+from Data_Classes.Transact_DB import Data_Manager
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Tree_Widg import TheFrame
@@ -18,8 +18,8 @@ from Top_Expenses.Modules_Manager import Modul_Mngr
 class Top_XLSX_Rows_View(tk.Toplevel):
     def __init__(self, List):
         super().__init__()
-        self.Chat = Ms_Chat
-        self.Data = Data
+        self.Chat     = Ms_Chat
+        self.Data     = Data_Manager
         self.Mod_Mngr = Modul_Mngr
 
         self.Chat.Attach([self, TOP_XLSX_VIEW])

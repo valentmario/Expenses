@@ -8,7 +8,7 @@
 import tkinter as tk
 from Common.Common_Functions import *
 from Chat import Ms_Chat
-from Data_Classes.Transact_DB import Data
+from Data_Classes.Transact_DB import Data_Manager
 
 from Widgt.Dialogs import Message_Dlg
 from Widgt.Widgets import TheText
@@ -19,7 +19,7 @@ class Super_Top_Mngr(tk.Toplevel):
     def __init__(self):
         super().__init__()
         self.Chat = Ms_Chat
-        self.Data = Data
+        self.Data = Data_Manager
         self.Chat.Attach([self, TOP_MNGR])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
 
