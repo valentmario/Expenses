@@ -194,8 +194,6 @@ def create_sqlite_database(filename):
 # ================================================================= #
 #                                                                   #
 if __name__ == "__main__":                                          #
-
-    # create_sqlite_database("/home/mario/myDatabase.db")
     Main_WIN = Main_Window()                                        #
 #                                                                   #
 # ================================================================= #

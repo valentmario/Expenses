@@ -89,7 +89,6 @@ class Codes_db(Files_Names_Manager):
                 List.append(Rec)
         return List
 
-
     def Get_GR_Codes_Table(self):
         return self._GR_Codes_Table
 
@@ -117,6 +116,20 @@ class Codes_db(Files_Names_Manager):
             self.Dummy = TRrecord
             Index += 1
         return self._TR_Codes_Table[Index]
+
+    # ----------------------------------------------------------------------------------------
+    def Check_StrToFind_Exist_OnCodTable(self, StrToFind, Code):
+        for Rec in self._TR_Codes_Table:
+            FullDesc = Rec[iTR_TRfullDes]
+            if StrToFind_in_Fulldescr(StrToFind, FullDesc):
+                if Rec[iTR_TRcode] == Code:
+                    pass
+                else:
+                    ErrMsg = ('New string to find:\n' + StrToFind +
+                              '\n\nFound also on Record:\n' +
+                              'Code: ' + str(Rec[iTR_TRcode]) + '\n' + FullDesc)
+                    return [NOK, ErrMsg]
+        return [OK, '']
 
     # ---------------------------------------------------------------------------------------------------
     @classmethod
@@ -394,10 +407,8 @@ class Codes_db(Files_Names_Manager):
                                 break
         return [TRdesc, GRdesc, CAdesc]
 
-
     # ---------------------------------------------------------------------------------------------
-    def _Find_StrToFind_InFullDesc(self, Row):  # nRow Contab Valuta   Full_Desc ....
-        Full_Desc   = Row[iRow_Descr1]
+    def _Find_StrToFind_InFullDesc(self, Row, Full_Desc):  # nRow Contab Valuta   Full_Desc ....
         nFound      = 0
         Found_List  = []
         for TRrecord in self._TR_Codes_Table:
@@ -406,6 +417,8 @@ class Codes_db(Files_Names_Manager):
                 pass
             if StrToFind_in_Fulldescr(StrToFind, Full_Desc):
                 nFound += 1
+                if nFound > 1:
+                    pass
                 Found_List.append(TRrecord)
 
         if nFound == 1:
@@ -413,8 +426,8 @@ class Codes_db(Files_Names_Manager):
         elif nFound == 0:
             return [NOK, []]
         else:
-            ErrMsg = ('In Xlsx file on:\n\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
-            ErrMsg += '\nDescription:\n' + Row[iRow_Descr2] + '\n\nFound:\n'
+            ErrMsg = ('In Xlsx file for:\n\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
+            ErrMsg += '\nFull Description:\n' + Full_Desc + '\n\nFound:\n'
             for Rec in Found_List:
                 #print(Rec)
                 strCode = str(Rec[iTR_TRcode])

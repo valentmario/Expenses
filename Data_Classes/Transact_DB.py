@@ -42,32 +42,38 @@ class Transact_Db(Xlsx_Manager):
             Transact_Name = self.Get_Selections_Member(Ix_Transact_File)
         Result = self._Load_Transact_Table(Transact_Name)
         if Result == OK or Result == EMPTY:
-            self._Transact_Year = Get_Transactions_Year(Transact_Name)
+            self._Files_Loaded[Ix_Codes_Loaded] = True
+            return OK
         else:
             return Result
-        self._Files_Loaded[Ix_Codes_Loaded] = True
-        self._Set_Transact_Year()
-        return OK
+
 
     # -----------------------------------------------------------------------------------
     def _Load_Transact_Table(self, TransacFilename):
+        self._tTransact_Year = Get_Transactions_Year(TransacFilename)
         connect = sqlite3.connect(TransacFilename)
         cursor  = connect.cursor()
         try:
             cursor.execute("SELECT * FROM TRANSACT")
-            self._tTransact_Table = cursor.fetchall()
+            self._tTransact_Table = cursor.fetchall()   # _tTransact_Table  temporary table
             connect.close()
-        except sqlite3.Error as e:
+        except sqlite3.Error as e:                      # in case of error nothing change
             print(e)
             MsgErr = 'ERROR on loading Transactions Table:\n' + str(e)
             return MsgErr
         finally:
             if connect:
                 connect.close()
-            self._Transact_Table = self._tTransact_Table
-            if not self._tTransact_Table:
+
+            self._Transact_Table = self._tTransact_Table    # table with new values
+            self._Transact_Year  = self._tTransact_Year     # new Year
+
+            # the Selections are upadated because TransacFilename can be origened from Sarch on TRANSACTIONS
+            self.Update_Selections(TransacFilename, Ix_Transact_File)
+            if not self._Transact_Table:
                 return EMPTY
             return OK
+
 
     # ---------------------------------------------------------------------------------------
     def Clear_Transact_Year(self):
@@ -110,12 +116,19 @@ class Transact_Db(Xlsx_Manager):
     # ---------------------------------------------------------------------------------------
     # used in Top_Insert()
     def Create_Transact_DB_File(self, FullName):
-        Filename = ''
+        Filename    = ''
         File_Exists = os.path.isfile(FullName)
         if File_Exists:
-            Filename = Get_File_Name(FullName)
-            ErrList = [1, [Filename + '   Già esistente']]
-            return ErrList
+            Result = self._Load_Transact_Table(FullName)
+            if Result == OK or Result == EMPTY:
+                Filename = Get_File_Name(FullName)
+                ErrList = [1, [Filename + '   Già esistente']]
+                return ErrList
+            else:
+                Filename = Get_File_Name(FullName)
+                ErMessg = [0, ['Errore nel caricare  ' + Filename + '\nappena trovato']]
+                return ErMessg
+
         DirName = Get_Dir_Name(FullName)
         if not os.path.isdir(DirName):
             os.mkdir(DirName)
@@ -133,15 +146,18 @@ class Transact_Db(Xlsx_Manager):
                                        "Addeb  FLOAT ,"
                                        "TRcode INTEGER)" )
             connect.commit()
-            connect.close()
-            self._Set_Transact_Year()
         except sqlite3.Error as e:
             print(e)
-            ErMessg = [ 0, ['Errore nel creare  ' + Filename]]
+            ErMessg = [ 0, ['Errore nel creare  ' + Filename + '\n' + str(e)]]
             return ErMessg
         finally:
             if connect:
                 connect.close()
+            if not self._Load_Transact_Table(FullName):
+                ErMessg = [0, ['Errore nel caricare  ' + Filename + '\nappena creato']]
+                return ErMessg
+        self.Update_Selections(FullName, Ix_Transact_File)
+        self._Set_Transact_Year()
         return [-1, [OK]]
 
     # ---------------------------------------------------------------------------------------------
@@ -158,12 +174,6 @@ class Transact_Db(Xlsx_Manager):
                 if self.Connect:
                     self.Connect.close()
                 return True
-        #     except:
-        #         return False
-        #
-        # else:
-        #     self.Connect.close()
-        #     return True
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7
@@ -196,13 +206,6 @@ class Transact_Db(Xlsx_Manager):
             if self.Connect:
                 self.Connect.close()
             return True
-
-        # except:
-        #     Cursor.close()
-        #     return False
-
-        # self.Connect.commit()
-        # self.Connect.close() #  is  made at the end of loop for insert
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7
@@ -259,11 +262,12 @@ class Transact_Db(Xlsx_Manager):
         Files_List = os.listdir(Directory)
         Years_List = []
         for Filename in Files_List:
-            # Transact_2024.db
-            strYear = Filename[9:13]
-            if CheckInteger(strYear):
-                iYear = int(strYear)
-                Years_List.append(iYear)
+            if Transact_ in Filename:
+                # Transact_2024.db
+                strYear = Filename[9:13]
+                if CheckInteger(strYear):
+                    iYear = int(strYear)
+                    Years_List.append(iYear)
         SelectedFile = Get_File_Name(Full_Transact_filename)
         strYear = SelectedFile[9:13]
         return [strYear, Years_List]

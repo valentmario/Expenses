@@ -120,10 +120,10 @@ class Top_Settings(tk.Toplevel):
         self.Btn_Test_DBcodes  = TheButton(self, Btn_Def_En,  20, 155, 14, 'Check Codes DB',   self.Clk_Check_Codes_DB)
         self.Btn_View_Xlsx_Tot = TheButton(self, Btn_Def_En, 170, 155, 14, 'Show messages',    self.Clk_View_Msg)
 
-        self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'Show selections', self.Clk_View_Selections)
+        self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 200, 14, 'Show selections',   self.Clk_View_Selections)
         self.Btn_Sel_xlsx_File = TheButton(self, Btn_Def_En, 170, 200, 14, 'Chat Participants', self.Clk_View_Chat)
 
-        self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'for test',         self.Clk_NotUsed)
+        self.Btn_TxtScroll     = TheButton(self, Btn_Def_En,  20, 245, 14, 'for test',         self.Clk_ForTest)
         # self.Btn_StrMatching   = TheButton(self, Btn_Def_En, 170, 245, 14, 'Strings matching',  self.Clk_Matching)
         self.TestTxt           = TheText(self, Txt_Disab,    170, 248, 16, 1, 'Text')
 
@@ -172,7 +172,6 @@ class Top_Settings(tk.Toplevel):
     @classmethod
     def Clk_View_Msg(cls):
         Top_View_Message(['IL MIO MESSAGGIO\n1\n2\n3\n4'])
-
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Chat(self):
@@ -264,16 +263,28 @@ class Top_Settings(tk.Toplevel):
         self.Mod_Mngr.Check_Codes_Db()
 
     # ----------------------------------------------------------------------------------------
-    def Clk_NotUsed(self):
-        self.Dummy = 0
-        # self.TestTxt.PosXY(190, 245)
-        # self.TestTxt.PosX(190)
-        File_Dlg    = File_Dialog(FileBox_Codes)
-        # File_Dlg.wait_window()
-        FileSelected = File_Dlg.FileName
-        print(FileSelected)
-        pass
+    def Clk_ForTest(self):
+        # Ix_Tot_OK, Ix_Tot_WithCode, Ix_Tot_Without_Code
+        T          = self.Data.Get_Total_Rows()
+        strTot     = (str(T[Ix_Tot_OK]) + '   ', str(T[Ix_Tot_WithCode]) + '   ' , str(T[Ix_Tot_OK] ))
+        print(strTot)
 
+        XlsxFilename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
+        print(XlsxFilename)
+
+        strXlsxYear = 'Xlsx Year= ' + str(self.Data.Get_Xlsx_Transact_Ident()[Ix_Xlsx_Year])
+        print(strXlsxYear)
+
+        strLen = str(len(self.Data.Get_WithCodeList()))
+        print('Len with code = ' + strLen)
+        strLen = str(len(self.Data.Get_WithCodeList()))
+        print('Len without code = ' + strLen)
+
+        # strLen = str(len(self.Data.TransactRecords_ToBeInserted()))
+        # print('Len Transactions to be inserted = ' + strLen)
+
+        print(self.Data.Get_Selections_Member(Ix_Transact_File))
+        print(self.Data.Get_TransacYear())
 
     # ----------------------------------------------------------------------------------------
     @staticmethod

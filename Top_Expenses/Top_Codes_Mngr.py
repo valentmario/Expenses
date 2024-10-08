@@ -318,7 +318,7 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ------------------------     ***   Add new code Record  the last TR Record      -------------
     def Clk_Add_New_Record(self):
-        if not self.Test_Transaction_Data():
+        if not self.Test_Transaction_Data(-1):
             return
         else:
             Result = self.Add_Record_Code()
@@ -336,7 +336,8 @@ class Top_Mngr(Super_Top_Mngr):
 
     # ------------------------     ***   Update TR code Record      -------------------------------
     def Clk_Update_Record(self):
-        if not self.Test_Transaction_Data():
+        TrCode = int(self.Txt_TR_Code.Get_Text(NOT_INT))
+        if not self.Test_Transaction_Data(TrCode):
             return
         else:
             self.Set_State_Butt_New_Updt('disabled', 'disabled')
@@ -353,15 +354,23 @@ class Top_Mngr(Super_Top_Mngr):
                 Msg.wait_window()
 
     # ---------------------------------------------------------------------------------------------
-    def Test_Transaction_Data(self):
+    def Test_Transaction_Data(self, Code):
         TRcode      = self.Txt_TR_Code.Get_Text(INTEGER)
         TRdesc      = self.Txt_TR_Desc.Get_Text(STRING)
         GRcode      = self.Txt_GR_Code.Get_Text(INTEGER)
         Txt_StrToFind  = self.Txt_StrToFind.Get_Text(STRING)
         StrFullDesc = self.Txt_StrFullDesc.Get_Text(STRING)
         if TRcode != 0 and TRdesc != '' and GRcode != 0:
+            # check if Txt_StrToFind  exists  on StrFullDesc
             if StrToFind_in_Fulldescr(Txt_StrToFind, StrFullDesc):
-                return True
+                # check if  Txt_StrToFind  not matches with Full Descriptions on Codes Table
+                Result = self.Data.Check_StrToFind_Exist_OnCodTable(Txt_StrToFind, Code)
+                if Result[0] == OK:
+                    return True
+                else:
+                    Msg_Dlg = Message_Dlg(MsgBox_Err, Result[1])
+                    Msg_Dlg.wait_window()
+                    return False
             else:
                 Msg_Dlg = Message_Dlg(MsgBox_Err, 'String to find\nNot matched with Full description')
                 Msg_Dlg.wait_window()

@@ -11,7 +11,7 @@ from Data_Classes.Transact_DB import Data_Manager
 
 from Widgt.Dialogs import Print_Received_Message
 from Widgt.Tree_Widg import TheFrame
-from Widgt.Widgets import TheButton
+from Widgt.Widgets import TheButton, TheText
 
 
 # ---------------------------------------------------------------------------------------
@@ -44,8 +44,11 @@ class Top_View_Codes(tk.Toplevel):
         self.Row_Count       = 0
 
         # ----------------------------------    B U T T O N S     ---------------------------------
-        self.Btn_Order  = TheButton(self, Btn_Def_En, 20, 940, 12, 'ordered', self.Clk_Order)
-        self.Btn_Exit   = TheButton(self, Btn_Def_En, 705, 940, 10, '  E X I T ', self.Call_OnClose)
+
+        self.Txt_StrSerch = TheText(self,Txt_Disab,      20, 900, 24, 4, '')
+        self.Txt_FullDesc = TheText(self, Txt_Disab,    230, 900, 55, 4, '')
+        self.Btn_Order    = TheButton(self, Btn_Def_En, 700, 900, 12, 'order', self.Clk_Order)
+        self.Btn_Exit     = TheButton(self, Btn_Def_En, 700, 950, 12, '  E X I T ', self.Call_OnClose)
 
         # ---------------------------------    T R E E   of  Codes    -----------------------------
         self.Frame_Codes = TheFrame(self,  10,  10, self.Clk_OnTree_Codes)
@@ -98,7 +101,7 @@ class Top_View_Codes(tk.Toplevel):
         # strTot_Cod = str(self.Data.Get_TR_Codes_Table_Len())
         Title = '   ' + str(self.List_Len) + '   Transactions Codes   '
         self.Frame_Codes.configure(text=Title)
-        Nrows     = 43
+        Nrows     = 41
         nColToVis = 5
         Headings  = ['#0', 'Code', 'Transaction', "Group", 'Category', 'String To Search']
         Anchor    = [' c',  'c',   'w',           'w',     'w',        'w']
@@ -108,7 +111,11 @@ class Top_View_Codes(tk.Toplevel):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_OnTree_Codes(self, Values):
-        TRcode = int(Values[iView_TRcode])
+        TRcode    = int(Values[iView_TRcode])
+        StrToFind = Values[iView_StrToFind]
+        Full_Rec  = self.Data.Get_TR_Codes_Full(TRcode)
+        self.Txt_FullDesc.Set_Text(Full_Rec[iTR_Ful_TRful])
+        self.Txt_StrSerch.Set_Text(StrToFind)
         self.Chat.Tx_Request([TOP_CODES_VIEW, [TOP_MNGR, TOP_QUERY], CODE_CLK_ON_TR_CODES, [TRcode] ])
 
     # ----------------------------------------------------------------------------------------------

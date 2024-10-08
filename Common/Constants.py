@@ -139,8 +139,8 @@ LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
                     [TOP_CODES_VIEW,    [CEK_CODES]],
                     [TOP_GR_MNGR,       [CEK_CODES]],
                     [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX_LIST]],
-                    [TOP_INS,           [CEK_CODES,  CEK_XLSX_LIST]],
-                    [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TOP_INSERT]],
+                    [TOP_INS,           [CEK_CODES,  CEK_XLSX_LIST, CEK_TOP_INSERT]],
+                    [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TOP_QUERIES]],
                     [TOP_QUERY,         [CEK_CODES,  CEK_TOP_QUERIES]],
                     [TOP_VIEW_MESS,     []] ]
 

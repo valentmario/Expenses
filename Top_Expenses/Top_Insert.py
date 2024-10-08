@@ -71,7 +71,7 @@ class Top_Insert(tk.Toplevel):
         self.Cod_Mngr     = TheButton(self, Btn_Def_Dis, 260, 900, 23, 'Gestore files',         self.Clk_Codes_Mngr)
         self.ViewTransact = TheButton(self, Btn_Def_Dis, 260, 940, 23, 'Mostra movimenti nel Db',self.Clk_View_Transact)
 
-        self.Ins_Btn      = TheButton(self, Btn_Def_Dis, 500, 900, 23, 'Inserire Movimenti nel Db', self.Clk_Insert)
+        self.Ins_Btn      = TheButton(self, Btn_Def_En, 500, 900, 23, 'Inserire Movimenti nel Db', self.Clk_Insert)
         self.Exit         = TheButton(self, Btn_Def_En,  500, 940, 23, '  F I N E  ',               self.Call_OnClose)
 
         self.Total                        = []
@@ -80,6 +80,7 @@ class Top_Insert(tk.Toplevel):
         self.Xlsx_Year                    = 0
         self.WithList                     = []
         self.TransactRecords_ToBeInserted = []
+        self.TotTra_ToInset               = []
         self.TotTransact_ToBeInserted     = 0
         self.Transact_Filename            = ''
         self.Transact_Year                = 0
@@ -119,149 +120,45 @@ class Top_Insert(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------
     def Disable_Buttons(self):
         self.ViewXlsx.Btn_Disable()
-        self.Cod_Mngr.Btn_Disable()
         self.ViewTransact.Btn_Disable()
         self.Ins_Btn.Btn_Disable()
 
         # -------------------------------------------------------------------------------------------------
     def Set_Buttons(self):
-        self.ViewXlsx.Btn_Enable()
-        self.Cod_Mngr.Btn_Enable()
-        self.ViewTransact.Btn_Enable()
+        Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
+        if Xlsx_Filename != UNKNOWN:
+            if self.Mod_Mngr.Cek_Xlsx_Name(Xlsx_Filename):
+                self.ViewXlsx.Btn_Enable()
+        Transact_Filename = self.Data.Get_Selections_Member(Ix_Transact_File)
+        if Transact_Filename != UNKNOWN:
+            if self.Mod_Mngr.Cek_Transactions_Name(Transact_Filename):
+                self.ViewTransact.Btn_Enable()
+        self.Set_Data()
         if self.Total[Ix_Tot_Without_Code] == 0:
             self.Ins_Btn.Btn_Enable()
-        pass
-
-    # # -------------------------------------------------------------------------------------------------
-    # def TryTo_Load_Transact_Table(self, Full_Name):
-    #     Result = self.Data.Load_Transact_Table(Full_Name)
-    #     if Result == OK:
-    #         self.Data.Update_Selections(Full_Name, Ix_Transact_File)
-    #         self.Chat.Tx_Request([TOP_INS, [MAIN_WIND], UPDATE_FILES_NAME, []])
-    #         return True
-    #     else:
-    #         Dlg_Msg = Message_Dlg(MsgBox_Info, Result)
-    #         Dlg_Msg.wait_window()
-    #         return False
-    #
-    # # -------------------------------------------------------------------------------------------------
-    # def Create_New_Transact_Db(self, Year):
-    #     Full_Name = self.Data.Create_TRansact_Filename(Year)
-    #     # Full_Name ="/home/mario/myDatabase.db"
-    #     ResCreate = self.Data.Create_Transact_DB_File(Full_Name)
-    #     if ResCreate[0] == -1:
-    #         Messg = 'Creato un nuovo file movimenti\nper l"anno   ' + str(Year)
-    #         Dlg_Msg = Message_Dlg(MsgBox_Info, Messg)
-    #         Dlg_Msg.wait_window()
-    #         return self.TryTo_Load_Transact_Table(Full_Name)
-    #
-    #     elif ResCreate[0] == 1:
-    #         Messg = 'File movimenti per l"anno   ' + str(Year) + '\ngià esistente'
-    #         Dlg_Msg = Message_Dlg(MsgBox_Info, Messg)
-    #         Dlg_Msg.wait_window()
-    #         pass
-    #         return self.TryTo_Load_Transact_Table(Full_Name)
-    #
-    #     else:
-    #         Dlg_Msg = Message_Dlg(MsgBox_Err, ResCreate[1])
-    #         Dlg_Msg.wait_window()
-    #         return False
-    #
-    # # -------------------------------------------------------------------------------------------------
-    # def Check_For_Xlsx_Transact_Year(self):
-    #     # -----------------   years   NOT  EQUAL    ---------------------------
-    #     TRansact_Years_List = self.Data.Get_Transact_Year_ListInData()[1]
-    #     if self.Xlsx_Year in TRansact_Years_List:
-    #         newTransact_Filename = Transact_ + str(self.Xlsx_Year) + '.db'
-    #         Dir_Name      = Get_Dir_Name(self.Data.Get_Selections_Member(Ix_Transact_File))
-    #         Full_Filename = Dir_Name + newTransact_Filename
-    #         File_Exists   = os.path.isfile(Full_Filename)
-    #         if not File_Exists:
-    #             Messg = ('inspiegabilmente il file  ' + Full_Filename +
-    #                                       '\nper l"anno: ' + str(self.Xlsx_Year) + 'non esiste')
-    #             Msg_Dlg = Message_Dlg(MsgBox_Err, Messg)
-    #             Msg_Dlg.wait_window()
-    #             return False
-    #         Messg = (str(self.Xlsx_Year) + ' L"anno del file Xlsx  ' + newTransact_Filename +
-    #                                   '   e l"anno dei movimenti sono OK')
-    #         Msg_Dlg = Message_Dlg(MsgBox_Err, Messg)
-    #         Msg_Dlg.wait_window()
-    #         self.Data.Update_Selections(newTransact_Filename, Ix_Transact_File)
-    #         return True
-    #
-    #     else:  # ------------------  any transactions file found ----------
-    #         if not self.Create_New_Transact_Db(self.Xlsx_Year):
-    #             Msg_Dlg = Message_Dlg(MsgBox_Err, 'Init_Status_Texto')
-    #             Msg_Dlg.wait_window()
-    #             return False
-    #         else:
-    #             Msg_Dlg = Message_Dlg(MsgBox_Info, 'Init_Status_Texto')
-    #             Msg_Dlg.wait_window()
-    #             return True
-    #
-    # # --------------------------------------------------------------------------------------------------
-    # def Initialize(self):          # called on startup and on click Sel file Xlsx
-    #     self.Disable_Buttons()
-    #     # self.Init_Status_Texto = ''
-    #     # -------------------  an xlsx file must be loaded  -----------------
-    #     if not self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_File):
-    #         # self.Init_Status_Texto = 'Occorre selezionare un file Xlsx'
-    #         return False
-    #     self.Xlsx_Filename   = self.Data.Get_Selections_Member(Ix_Xlsx_File)
-    #     self.Xlsx_Year       = Get_Xlsx_Year(self.Xlsx_Filename)
-    #     self.Total           = self.Data.Get_Total_Rows()
-    #     self.Tot_WithoutCode = self.Total[Ix_Tot_Without_Code]
-    #     # -------------------  some Xlsx rows without code  -----------------
-    #     if self.Tot_WithoutCode != 0:
-    #         # self.Init_Status_Texto = (str(self.Tot_WithoutCode) + '  Trovato movimenti senza codice\n'
-    #                                    #     'Inserisci nuovi codici\te poi riprova')
-    #         return False
-    #
-    #     # -----------------  Transactions file name is unknown    -------------
-    #     else:
-    #         self.Transact_Filename    = self.Data.Get_Selections_Member(Ix_Transact_File)
-    #         if self.Transact_Filename == UNKNOWN:
-    #             if not self.Create_New_Transact_Db(self.Xlsx_Year):
-    #                 return False
-    #             else:
-    #                 self.Initialize_Tansactions()
-    #                 return True
-    #
-    #     # -------- Check for transactions year same as xlsx year   -------------
-    #     self.Transact_Year = Get_Transactions_Year(self.Transact_Filename)
-    #     if self.Xlsx_Year == self.Transact_Year:
-    #         return self.Initialize_Tansactions()
-    #     else:
-    #         return self.Check_For_Xlsx_Transact_Year()
-    #
-    # # ------------------------------------------------------------------------------------------------
-    # def Initialize_Tansactions(self):
-    #     Result = self.Data.Load_Transact_Table(self.Transact_Filename)
-    #     if Result == OK:
-    #         return True
-    #     else:
-    #         # self.Init_Status_Texto = Result
-    #         return False
 
     # -------------------------------------------------------------------------------------------------
+    def Set_Data(self):
+        # Ix_Tot_OK, Ix_Tot_WithCode, Ix_Tot_Without_Code
+        self.Total             = self.Data.Get_Total_Rows()
+        self.Xlsx_Filename     = self.Data.Get_Xlsx_Transact_Ident()[Ix_Xlsx_File]
+        self.TotTra_ToInset    = self.TotTransact_ToBeInserted
+        self.Transact_Filename = self.Data.Get_Xlsx_Transact_Ident()[Ix_Transact_File]
+        self.Transact_Year     = self.Data.Get_TransacYear()
+
+        # -------------------------------------------------------------------------------------------------
     def Clk_Sel_Xlsx(self):
         if not self.Mod_Mngr.Sel_Xlsx(TOP_INS):
             return
-
         self.Disable_Buttons()
-        if not self.Mod_Mngr.Init_Xlsx_Lists(TOP_INS):
+        self.Data.Set_Files_Lodad(Ix_Transact_File, False)
+        if not self.Mod_Mngr.Init_Top_Insert(TOP_INS):
             return
-        # if self.Initialize():
-        #     if self.Init_Status_Texto != '':
-        #         Msg_Dlg = Message_Dlg(MsgBox_Info, self.Init_Status_Texto)
-        #         Msg_Dlg.wait_window()
-        #     self.Set_Texts()
-        #     self.Create_RecordsList_ToBeInserted()
-        #     self.Load_Tree()
-        #     self.Set_Buttons()
-        # else:
-        #     Msg_Dlg = Message_Dlg(MsgBox_Info, self.Init_Status_Texto)
-        #     Msg_Dlg.wait_window()
+        self.Set_Data()
+        self.Set_Texts()
+        self.Create_RecordsList_ToBeInserted()
+        self.Load_Tree()
+        self.Set_Buttons()
 
     # -------------------------------------------------------------------------------------------------
     def ViewErr_OnTransact_Db(self, Texto):
@@ -287,10 +184,12 @@ class Top_Insert(tk.Toplevel):
         # Check for insertion on Db --------------------
         if not Modul_Mngr.Init_Transactions(TOP_INS):
             return
-        self.Create_RecordsList_ToBeInserted()
-        self.Set_Texts()
-        self.Load_Tree()
-        self.Ins_Btn.Btn_Enable()
+        if self.Mod_Mngr.Init_Top_Insert(TOP_INS):
+            self.Create_RecordsList_ToBeInserted()
+            self.Set_Data()
+            self.Set_Texts()
+            self.Load_Tree()
+            self.Ins_Btn.Btn_Enable()
 
     # -------------------------------------------------------------------------------------------------
     def Set_Texts(self):
@@ -304,8 +203,8 @@ class Top_Insert(tk.Toplevel):
         self.Txt_TransactName.Set_Text(Transact_Name)
 
         Full_Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
-        Xlsx_Filename      = Get_File_Name(Full_Xlsx_Filename)
-        self.Txt_Xlsx_Name.Set_Text(Xlsx_Filename)
+        self.Xlsx_Filename = Get_File_Name(Full_Xlsx_Filename)
+        self.Txt_Xlsx_Name.Set_Text(self.Xlsx_Filename)
 
         Conto = 'Conto: ' + self.Conto
         self.Txt_Conto.Set_Text(Conto)
