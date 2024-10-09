@@ -305,10 +305,15 @@ class Codes_db(Files_Names_Manager):
                              VALUES (?, ?, ?, ?, ?, ?)""", (TR, GR, CA, Desc, StrToFind, Full_Descrip))
             Connect.commit()
             Connect.close()
+        except sqlite3.Error as e:                      # in case of error nothing change
+            strErr = Db_Error(e)
+            MsgErr = ('ERROR on inserting:\n\n' + 'Code: ' + str(TR) + '\n\n'
+                      ' in Codes Table:\n\n') + str(strErr)
+            return MsgErr
+        finally:
+            if Connect:
+                Connect.close()
             return OK
-        except:
-            Connect.close()
-            return 'ERROR on Codes database:\for record INSERT'
 
     # --------------   update a codes record on data base  --------------------------------
     def Update_DB_TR_Codes(self, Record):

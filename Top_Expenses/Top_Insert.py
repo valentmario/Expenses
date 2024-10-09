@@ -173,11 +173,12 @@ class Top_Insert(tk.Toplevel):
     # ---------------------------------------------------------------------------------------------------
     def Clk_Insert(self):
         self.Ins_Btn.Btn_Disable()
-        if not self.Data.OpenClose_Transactions_Database(True, self.Full_Filename_For_Insert):
-            self.ViewErr_OnTransact_Db('Errore fatale\n nell"aprire il Movimenti')
-            return
+        Result = self.Data.OpenClose_Transactions_Database(True, self.Full_Filename_For_Insert)
+        if Result != OK:
+            return Result
         for Rec in self.TransactRecords_ToBeInserted:
-            if not self.Data.Insert_Transact_Record(Rec):
+            Result = self.Data.Insert_Transact_Record(Rec)
+            if Result != OK:
                 self.ViewErr_OnTransact_Db('Errore fatale\n nell"inserire Movimenti')
                 return
         self.Data.OpenClose_Transactions_Database(False, self.Full_Filename_For_Insert)

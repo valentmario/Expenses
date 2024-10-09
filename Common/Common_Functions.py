@@ -1,7 +1,6 @@
 # ----------------------------------------------------------------------------#
 #               *****     Common_Functions.py      *****                      #
 # ----------------------------------------------------------------------------#
-
 from Common.Constants import *
 
 # --------- get  ['Dir_Name', 'Filename']  from a generic path ----------------
@@ -287,19 +286,68 @@ def GetStrList_ForFind(strToFind):
     return strList
 
 # -----------------------------------------------------------------------------
-def StrToFind_in_Fulldescr(strToFind, String):
+def StrToFind_in_Fulldescr(strToFind, Full_String):
+    if strToFind == '#CARREFOUR#CHAMBERY#':
+        if 'CARREFOUR' in Full_String:
+            pass
+
     strList = GetStrList_ForFind(strToFind)
     if not strList:
         return False
     index = 0
-    CurrString = String
+    CurrString = Full_String
     for Item in strList:
         FirstOccurence = CurrString.find(Item)
         if FirstOccurence == -1:
             return False
         index += FirstOccurence
-        CurrString = String[index:]
+        CurrString = Full_String[index:]
     return True
+
+# -----------------------------------------------------------------------------
+# def StrToFind_in_Fulldescr(strToFind, Full_String):
+#     if strToFind == '#CARREFOUR#CHAMBERY#':
+#         if 'CARREFOUR' in Full_String:
+#             pass
+#
+#     strList = GetStrList_ForFind(strToFind)
+#     if not strList:
+#         return False
+#     index = 0
+#     CurrString = Full_String
+#     for Item in strList:
+#         FirstOccurence = CurrString.find(Item)
+#         if FirstOccurence == -1:
+#             return False
+#         index += FirstOccurence
+#         CurrString = Full_String[index:]
+#     return True
+# -----------------------------------------------------------------------------
+# def StrToFind_in_Fulldescr(strToFind, String):
+#     strList = GetStrList_ForFind(strToFind)
+#     if not strList:
+#         return False
+#     index = 0
+#     CurrString = String
+#     for Item in strList:
+#         FirstOccurence = CurrString.find(Item)
+#         if FirstOccurence == -1:
+#             return False
+#         index += FirstOccurence
+#         CurrString = String[index:]
+#     return True
+
+# -------------------------------------------------------------------------------------
+def Db_Error(e):
+    Error = str(e)
+    print(Error)
+    print(type(Error))
+    NewErr = ''
+    for Char in Error:
+        NewErr += Char
+        if Char == ':' or Char == '/' :
+            NewErr += '\n'
+    return NewErr
 
 # -------------------------------------------------------------------------------------
 def PRINT(message):

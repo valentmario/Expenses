@@ -223,12 +223,13 @@ class Xlsx_Manager(Codes_db):
         self._tTot_WithCode           = 0
         self._tTot_WithoutCode        = 0
 
-
         for Row in self._tXLSX_Rows_Desc_Compact:
             Row_Without_Code = []
             Row_With_Code    = []
             Full_Desc        = self.Description_Select(Row[iRow_Descr1], Row[iRow_Descr2])
             Row[iRow_Descr1] = Full_Desc
+            if int(Row[iRow_nRow]) == 35:
+                pass
 
             # Find for Full Description of Row  a String_To_Find on Codes Table
             # If more than one String_To_Find exists : ERROR

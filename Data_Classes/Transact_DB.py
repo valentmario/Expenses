@@ -58,8 +58,8 @@ class Transact_Db(Xlsx_Manager):
             self._tTransact_Table = cursor.fetchall()   # _tTransact_Table  temporary table
             connect.close()
         except sqlite3.Error as e:                      # in case of error nothing change
-            print(e)
-            MsgErr = 'ERROR on loading Transactions Table:\n' + str(e)
+            strErr = Db_Error(e)
+            MsgErr = 'ERROR on loading Transactions Table:\n' + str(strErr)
             return MsgErr
         finally:
             if connect:
@@ -147,8 +147,8 @@ class Transact_Db(Xlsx_Manager):
                                        "TRcode INTEGER)" )
             connect.commit()
         except sqlite3.Error as e:
-            print(e)
-            ErMessg = [ 0, ['Errore nel creare  ' + Filename + '\n' + str(e)]]
+            strErr    = Db_Error(e)
+            ErMessg = [ 0, ['Errore nel creare  ' + Filename + '\n' + str(strErr)]]
             return ErMessg
         finally:
             if connect:
@@ -166,14 +166,15 @@ class Transact_Db(Xlsx_Manager):
             try:
                 self.Connect = sqlite3.connect(Transact_Filename)
                 self.Cursor = self.Connect.cursor()
-                return True
             except sqlite3.Error as e:
-                print(e)
-                return False
+                strErr = Db_Error(e)
+                ErMessg = [0, ['Errore nel creare  ' + Transact_Filename + '\n' + str(strErr)]]
+                return ErMessg
+
             finally:
                 if self.Connect:
                     self.Connect.close()
-                return True
+                return OK
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7
@@ -192,7 +193,6 @@ class Transact_Db(Xlsx_Manager):
         try:
             Connect = sqlite3.connect(self._Transact_DB_Filename)
             Cursor  = Connect.cursor()
-            # self.Cursor.execute("""
             Cursor.execute("""
                              INSERT INTO TRANSACT (nRow, Conto, Contab, Valuta, TRdesc, Accred, Addeb, TRcode)
                              VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
@@ -200,12 +200,14 @@ class Transact_Db(Xlsx_Manager):
             Connect.commit()
             Cursor.close()
         except sqlite3.Error as e:
-            print(e)
-            return False
+            strErr = Db_Error(e)
+            MsgErr = ('ERROR on inserting:\n\n' + TRdesc + '\n\n'
+                      'in Codes Table:\n\n') + str(strErr)
+            return MsgErr
         finally:
             if self.Connect:
                 self.Connect.close()
-            return True
+            return OK
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7

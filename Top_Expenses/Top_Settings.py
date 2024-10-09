@@ -155,9 +155,15 @@ class Top_Settings(tk.Toplevel):
     def Clk_Sel_xlsx_File(self):
         self.Mod_Mngr.Sel_Xlsx(TOP_MNGR)
 
-
+    # -----------------------------------------------------------------------------------
     def Clk_View_xlsx_File(self):
-        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS, [])
+        File_Dlg      = File_Dialog(FileBox_Xlsx)
+        Full_Filename = File_Dlg.FileName
+        if not Full_Filename:
+            return
+        else:
+            pass
+        # self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS, [])
 
     # ------------------------------------------------------------------------------------
     def Clk_Sel_Transact(self):

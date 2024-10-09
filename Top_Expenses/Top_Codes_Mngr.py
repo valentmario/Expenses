@@ -9,8 +9,7 @@ from Common.Common_Functions import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Top_Expenses.Super_Top_Codes_Mngr import Super_Top_Mngr
 
-from Widgt.Dialogs import Print_Received_Message
-from Widgt.Dialogs import Message_Dlg
+from Widgt.Dialogs import *
 from Widgt.Tree_Widg import TheFrame
 from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheText
@@ -35,7 +34,7 @@ class Top_Mngr(Super_Top_Mngr):
 
         # --------------------------- Group Select Combo  -----------------------------------------
         self.ComboList = []
-        self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 21,
+        self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 23,
                                   [], 'Select  Group', self.Clk_Combo)
         # --------------------------------------  TEXT Boxes  -------------------------------------
         self.Txt_StrFullDesc = TheText(self, Txt_DisBlak,280, 680, 44, 4, '')
@@ -209,7 +208,7 @@ class Top_Mngr(Super_Top_Mngr):
             for Rec in self.Data.GR_Codes_Ordered:
                 self.ComboList.append(Rec[iGR_GRdesc])
 
-        self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 21,
+        self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 23,
                                   self.ComboList, 'Select  Group', self.Clk_Combo)
         StatusLoad = False
         if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
@@ -331,8 +330,9 @@ class Top_Mngr(Super_Top_Mngr):
             elif Result == NONE:    # In case of "NO" to add record request
                 pass
             else:
-                Msg = Message_Dlg(MsgBox_Err, Result)
-                Msg.wait_window()
+                Top_View_Message([Result])
+                # Msg = Message_Dlg(MsgBox_Err, Result)
+                # Msg.wait_window()
 
     # ------------------------     ***   Update TR code Record      -------------------------------
     def Clk_Update_Record(self):
@@ -368,8 +368,7 @@ class Top_Mngr(Super_Top_Mngr):
                 if Result[0] == OK:
                     return True
                 else:
-                    Msg_Dlg = Message_Dlg(MsgBox_Err, Result[1])
-                    Msg_Dlg.wait_window()
+                    Top_View_Message([Result[1]])
                     return False
             else:
                 Msg_Dlg = Message_Dlg(MsgBox_Err, 'String to find\nNot matched with Full description')

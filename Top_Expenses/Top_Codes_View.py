@@ -65,12 +65,12 @@ class Top_View_Codes(tk.Toplevel):
     # ---------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Value):
         Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Value)
-        if Request_Code == CODE_TO_CLOSE:               # Close
+        if Request_Code == CODE_TO_CLOSE:              # Close
             self.Call_OnClose()
 
-        elif Request_Code == CODE_CLEAR_FOCUS:          # Clear Focus
-            self.Frame_Codes.Clear_Focus()
-            # self.Frame_Codes.Load_Row_Values(self.List_View_Codes)
+        elif Request_Code == CODE_CLEAR_FOCUS:         # Clear Focus
+            pass
+            # self.Frame_Codes.Clear_Focus()
 
         elif Request_Code == CODE_CLK_ON_TR_CODES:      # Clicked on Codes Tree [TRcode]
             self.Set_Focus_On_Tcode(int(Value))
