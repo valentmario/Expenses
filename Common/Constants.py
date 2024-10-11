@@ -26,6 +26,7 @@ else:
     Settings_geometry      = '330x390+1580+360'
     Top_Mngr_geometry      = '660x1000+1000+1'
     Top_View_geometry      = '840x1000+350+1'
+    Top_View_geom_reduced  = '840x470+350+200'
     Top_GRcodes_geometry   = '830x1000+20+1'
     Top_Xlsx_View_geometry = '820x1000+10+1'
     Top_View_Mess_geometry = '450x470+600+10'
@@ -102,31 +103,27 @@ Queries_nFrames     = {ONE_MONTH:1, TWO_MONTHS:2, THREE_MONTHS:3, FOUR_MONTHS:2,
 Queries_nMonts_xTree = {ONE_MONTH:1, TWO_MONTHS:1, THREE_MONTHS:1, FOUR_MONTHS:2, SIX_MONTHS:2, TWELVE_MONTHS:4}
 
 
-
-
-
-
 # =========================================================== #
 #       CHAT for  echanging   DATA between classes            #
 # =========================================================== #
 MAIN_WIND        = 'Main_Window     '
-MODULES_MNGR   = 'Modules Manager'       # Top_Level Launcher
+MODULES_MNGR     = 'Modules Manager'       # Top_Level Launcher
 FILES_NAMES_MNGR = 'Files_Names_Mngr'    # .txt .db .xlsx files names manager
 CODES_CLASS      = 'Codes_Class     '    # Codes Manager
 XLSX_CLASS       = 'Xlsx_Class      '    # xlsx File Manager
 TRANSACT_CLASS   = 'Transact_Class  '    # Transactions DB Manager
 DATA_CLASS       = 'Data_Class'          # Class derived from all Data_Classe
 
-TOP_SETTINGS   = 'Top_Settings    '      # Toplevel for Settings
-TOP_MNGR       = 'Top_Codes_Mngr  '      # Toplevel TR Codes Manager
-TOP_CODES_VIEW = 'Top_Codes_View  '      # Toplevel Codes Viewer
-TOP_GR_MNGR    = 'Top_GR_Manager  '      # Toplevel GR Codes Manager
-TOP_XLSX_VIEW  = 'Xlsx Rows View  '      # Toplevel  xlsx File Viewer
-TOP_INS        = 'Top_Ins_Tansact '      # Toplevel Insert Transactions on DB
+TOP_SETTINGS     = 'Top_Settings    '      # Toplevel for Settings
+TOP_CODES_MNGR   = 'Top_Codes_Mngr  '      # Toplevel TR Codes Manager
+TOP_CODES_VIEW   = 'Top_Codes_View  '      # Toplevel Codes Viewer
+TOP_GR_MNGR      = 'Top_GR_Manager  '      # Toplevel GR Codes Manager
+TOP_XLSX_VIEW    = 'Xlsx Rows View  '      # Toplevel  xlsx File Viewer
+TOP_INS          = 'Top_Ins_Tansact '      # Toplevel Insert Transactions on DB
 TOP_VIEW_TRANSACT= 'Top View Transact'   # Topleveel view transactions
-TOP_QUERY      = 'Top_Queries     '      # Toplevel for Queries
-TOP_VIEW_MESS  = 'Top show messages '    # Toplevel to shaw messages
-ANY            = 'All Modules     '
+TOP_QUERY        = 'Top_Queries     '      # Toplevel for Queries
+TOP_VIEW_MESS    = 'Top show messages '    # Toplevel to shaw messages
+ANY              = 'All Modules     '
 
 # Checkes to be maade before a Tolevel launch
 CEK_CODES      = 'Check codes DB     '
@@ -135,7 +132,7 @@ CEK_TOP_INSERT = 'Check for Top_Insert '
 CEK_TOP_QUERIES= 'Check for Top_Queries '
 
 LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
-                    [TOP_MNGR,          [CEK_CODES, CEK_XLSX_LIST]],   # ,  CEK_XLSX_LIST]],
+                    [TOP_CODES_MNGR,    [CEK_CODES, CEK_XLSX_LIST]],
                     [TOP_CODES_VIEW,    [CEK_CODES]],
                     [TOP_GR_MNGR,       [CEK_CODES]],
                     [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX_LIST]],
@@ -263,6 +260,11 @@ iTreeWidth = 4
 
 NoFocus    = -1
 
+VIEW_ALPHAB    = 'alfabeticamente'
+VIEWxCODE      = 'ordine per codice'
+VIEW_SEARCH    = 'Stringa chiave'
+CODES_VIEW_SEL = [VIEW_ALPHAB, VIEWxCODE, VIEW_SEARCH]
+
 # =========================================================== #
 #             DATA BASES  STRUCTURE                           #
 # =========================================================== #
@@ -325,12 +327,12 @@ Ix_Xlsx_Year     = 1
 Ix_Xlsx_Month    = 2
 Ix_Transact_Year = 3
 
-FIDEU      = 'FIDEU'     # Fideuram Account    Must be 5 length
-FLASH      = 'FLASH'     # Flash Card          Must be 5 length
-FID_FLASH = 'FIDEU+FLASH'  # FIDEU/FLASH/POSTA   Doesn't matter
-POSTA      = 'POSTA'     # Poste Italiane      Must be 5 length
-AMBRA      = 'AMBRA'     # Credit Card Ambra   Must be 5 length
-Conto_List = [FIDEU, FLASH, FID_FLASH, POSTA, AMBRA]
+FIDEU       = 'FIDEU'      # Fideuram Account    Must be 5 chars length
+FLASH       = 'FLASH'      # Flash Card          Must be 5 chars length
+FIDFLHBP    = 'FID+FLH+BP' # FIDEU/FLASH/POSTA   Doesn't matter
+POSTA       = 'POSTA'      # Poste Italiane      Must be 5 chars length
+AMBRA       = 'AMBRA'      # Credit Card Ambra   Must be 5 chars length
+Conto_List  = [FIDEU, FLASH, FIDFLHBP, POSTA, AMBRA]
 
 # -----------------------------------------------------------------------------------------------------------
 #                      0        1         2         3         4        5        6      7

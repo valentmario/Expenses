@@ -20,7 +20,7 @@ class Super_Top_Mngr(tk.Toplevel):
         super().__init__()
         self.Chat = Ms_Chat
         self.Data = Data_Manager
-        self.Chat.Attach([self, TOP_MNGR])
+        self.Chat.Attach([self, TOP_CODES_MNGR])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
 
         self.resizable(False, False)
@@ -48,8 +48,8 @@ class Super_Top_Mngr(tk.Toplevel):
 
     # ---------------------------------------------------------------------------------------------
     def Call_OnClose(self):
-        self.Chat.Tx_Request([TOP_MNGR, [TOP_XLSX_VIEW, TOP_GR_MNGR, TOP_CODES_VIEW], CODE_TO_CLOSE, []])
-        self.Chat.Detach(TOP_MNGR)
+        self.Chat.Tx_Request([TOP_CODES_MNGR, [TOP_XLSX_VIEW, TOP_GR_MNGR, TOP_CODES_VIEW], CODE_TO_CLOSE, []])
+        self.Chat.Detach(TOP_CODES_MNGR)
         self.destroy()
 
     # -----------------------------------------------------------------------------------------------

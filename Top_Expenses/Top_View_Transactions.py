@@ -48,7 +48,7 @@ class Top_View_Transact(tk.Toplevel):
 
     # ---------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
-        Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Values_List)
+        Print_Received_Message(Transmitter_Name, TOP_CODES_MNGR, Request_Code, Values_List)
         if Request_Code == CODE_TO_CLOSE:           # Close
             self.Call_OnClose()
 
@@ -65,7 +65,7 @@ class Top_View_Transact(tk.Toplevel):
         if len(Descr1) > len(Descr2):
             Descr = Descr1
         Val = [ Values[iRow_nRow], Values[iRow_Valuta], Descr ]
-        self.Chat.Tx_Request([TOP_XLSX_VIEW, [TOP_MNGR], CODE_CLEAR_FOCUS, Val ])
+        self.Chat.Tx_Request([TOP_XLSX_VIEW, [TOP_CODES_MNGR], CODE_CLEAR_FOCUS, Val ])
 
     # -----------------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7

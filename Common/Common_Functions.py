@@ -129,6 +129,19 @@ def Get_Xlsx_Year(Xlsx_Name):
     Year = Filename[6:10]
     return int(Year)
 
+# -----------------------------------------------------------------------------
+# /home/mario/bFiles/bXLSX_Files/ FIDEU/FIDEU_2024/
+# /home/mario/bFiles/bXLSX_Files/ TRANSACTIONS/
+def Create_Transactions_Name_FromXlsx(Xlsx_Filename):
+    Xlsx_Year    = Get_Xlsx_Year(Xlsx_Filename)
+    iTransactDir = Xlsx_Filename.find(TRANSACTIONS)
+    if iTransactDir == -1:
+        return False
+    Transactions_Dir = iTransactDir + 12
+    FullFilename     = str(Transactions_Dir) + '/' + Transact_ + str(Xlsx_Year) + '.db'
+    return FullFilename
+
+# -----------------------------------------------------------------------------
 def Get_Xlsx_FullMonth(Xlsx_Name):
     # FIDEU_2024_09-1.xlsx
     Filename    = Get_File_Name(Xlsx_Name)
@@ -146,10 +159,12 @@ def Get_Xlsx_FullMonth(Xlsx_Name):
     else:
         return FullMonth
 
+# -----------------------------------------------------------------------------
 def Get_Transactions_Year(Transact_Filenae):
     Filename = Get_File_Name(Transact_Filenae)
     return int(Filename[9:13])
 
+# -----------------------------------------------------------------------------
 def Get_YearMonthDay(TheDate):
     iYear  = int(TheDate[:4])
     iMonth = int(TheDate[5:7])
@@ -286,56 +301,19 @@ def GetStrList_ForFind(strToFind):
     return strList
 
 # -----------------------------------------------------------------------------
-def StrToFind_in_Fulldescr(strToFind, Full_String):
-    if strToFind == '#CARREFOUR#CHAMBERY#':
-        if 'CARREFOUR' in Full_String:
-            pass
-
+def StrToFind_in_Fulldescr(strToFind, String):
     strList = GetStrList_ForFind(strToFind)
     if not strList:
         return False
     index = 0
-    CurrString = Full_String
+    CurrString = String
     for Item in strList:
         FirstOccurence = CurrString.find(Item)
         if FirstOccurence == -1:
             return False
         index += FirstOccurence
-        CurrString = Full_String[index:]
+        CurrString = String[index:]
     return True
-
-# -----------------------------------------------------------------------------
-# def StrToFind_in_Fulldescr(strToFind, Full_String):
-#     if strToFind == '#CARREFOUR#CHAMBERY#':
-#         if 'CARREFOUR' in Full_String:
-#             pass
-#
-#     strList = GetStrList_ForFind(strToFind)
-#     if not strList:
-#         return False
-#     index = 0
-#     CurrString = Full_String
-#     for Item in strList:
-#         FirstOccurence = CurrString.find(Item)
-#         if FirstOccurence == -1:
-#             return False
-#         index += FirstOccurence
-#         CurrString = Full_String[index:]
-#     return True
-# -----------------------------------------------------------------------------
-# def StrToFind_in_Fulldescr(strToFind, String):
-#     strList = GetStrList_ForFind(strToFind)
-#     if not strList:
-#         return False
-#     index = 0
-#     CurrString = String
-#     for Item in strList:
-#         FirstOccurence = CurrString.find(Item)
-#         if FirstOccurence == -1:
-#             return False
-#         index += FirstOccurence
-#         CurrString = String[index:]
-#     return True
 
 # -------------------------------------------------------------------------------------
 def Db_Error(e):

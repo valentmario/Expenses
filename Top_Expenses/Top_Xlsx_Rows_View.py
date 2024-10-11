@@ -47,7 +47,7 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         self.destroy()
     # ---------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
-        Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Values_List)
+        Print_Received_Message(Transmitter_Name, TOP_CODES_MNGR, Request_Code, Values_List)
         if Request_Code == CODE_TO_CLOSE:
             self.Call_OnClose()
         elif Request_Code == XLSX_UPDATED or Request_Code == UPDATE_FILES_NAME:

@@ -83,7 +83,7 @@ class Top_GR_Codes_Mngr(tk.Toplevel):
         self.destroy()
 
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
-        Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Values_List)
+        Print_Received_Message(Transmitter_Name, TOP_CODES_MNGR, Request_Code, Values_List)
         if Request_Code == CODE_TO_CLOSE:               # Close
             self.Call_OnClose()
         elif Request_Code == CODE_CLEAR_FOCUS:          # Clear Focus
@@ -226,7 +226,7 @@ class Top_GR_Codes_Mngr(tk.Toplevel):
                 self.GRxCA_Cliked = True
                 self.Btn_GR_Updt.Btn_Enable()
                 # TrCode = int(TR_Full[iTR_TRcode])
-                # self.Chat.Tx_Request([TOP_GR_MNGR, [TOP_MNGR], CODE_CLK_ON_TR_CODES, [TrCode]])
+                # self.Chat.Tx_Request([TOP_GR_MNGR, [TOP_CODES_MNGR], CODE_CLK_ON_TR_CODES, [TrCode]])
 
     # --------------------    T R E E   of  TRcodes x GRcode   --------------------------------------------------------
     def Frame_TRxGR_Setup(self):
@@ -251,7 +251,7 @@ class Top_GR_Codes_Mngr(tk.Toplevel):
         #     if Index != -1:
         #         self.Frame_GRxCA.Set_Focus(Index)
         #         TrCode = int(TR_Full[iTR_TRcode])
-                # self.Chat.Tx_Request([TOP_GR_MNGR, [TOP_MNGR], CODE_CLK_ON_TR_CODES, [TrCode]])
+                # self.Chat.Tx_Request([TOP_GR_MNGR, [TOP_CODES_MNGR], CODE_CLK_ON_TR_CODES, [TrCode]])
 
     # ---------------------------------------------------------------
     def Set_GRxCA_List(self):

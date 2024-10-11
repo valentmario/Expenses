@@ -104,8 +104,8 @@ class Top_Settings(tk.Toplevel):
 
         self.ComboList      = []
         self.StrVar         = tk.StringVar()
-        self.ComboList      = [TOP_SETTINGS, TOP_MNGR, TOP_CODES_VIEW, TOP_VIEW_TRANSACT,
-                               TOP_GR_MNGR,  TOP_INS,  TOP_QUERY,      TOP_XLSX_VIEW]
+        self.ComboList      = [TOP_SETTINGS, TOP_CODES_MNGR, TOP_CODES_VIEW, TOP_VIEW_TRANSACT,
+                               TOP_GR_MNGR,  TOP_INS,        TOP_QUERY,      TOP_XLSX_VIEW]
         self.Part_Combo = TheCombo(self, self.StrVar, 20, 292, 32, 15,
                                    self.ComboList, '', self.Clk_Combo)
         self.Btn_Sel_Codes_DB  = TheButton(self, Btn_Def_En,  20, 20, 14, 'Select Codes DB file', self.Clk_Sel_Codes_DB)
@@ -139,8 +139,6 @@ class Top_Settings(tk.Toplevel):
         Print_Received_Message(Transmitter_Name, MAIN_WIND, Request_Code, Values_List)
         if Request_Code == CODE_TO_CLOSE:
             self.Call_OnClose()
-        # elif Request_Code == SOMETHING:
-        #   pass
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_Codes_DB(self):
@@ -153,17 +151,11 @@ class Top_Settings(tk.Toplevel):
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
-        self.Mod_Mngr.Sel_Xlsx(TOP_MNGR)
+        self.Mod_Mngr.Sel_Xlsx(TOP_CODES_MNGR)
 
     # -----------------------------------------------------------------------------------
     def Clk_View_xlsx_File(self):
-        File_Dlg      = File_Dialog(FileBox_Xlsx)
-        Full_Filename = File_Dlg.FileName
-        if not Full_Filename:
-            return
-        else:
-            pass
-        # self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS, [])
+        self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_SETTINGS, [])
 
     # ------------------------------------------------------------------------------------
     def Clk_Sel_Transact(self):
@@ -177,7 +169,7 @@ class Top_Settings(tk.Toplevel):
     # -----------------------------------------------------------------------------------
     @classmethod
     def Clk_View_Msg(cls):
-        Top_View_Message(['IL MIO MESSAGGIO\n1\n2\n3\n4'])
+        View_Message(['IL MIO MESSAGGIO\n1\n2\n3\n4'])
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Chat(self):
@@ -266,7 +258,7 @@ class Top_Settings(tk.Toplevel):
 
     # --------------------------------------------------------------------------------------
     def Clk_Check_Codes_DB(self):
-        self.Mod_Mngr.Check_Codes_Db()
+        self.Mod_Mngr.View_Check_Codes_Db(2)
 
     # ----------------------------------------------------------------------------------------
     def Clk_ForTest(self):

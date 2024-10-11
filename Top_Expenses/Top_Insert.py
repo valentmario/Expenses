@@ -102,7 +102,7 @@ class Top_Insert(tk.Toplevel):
 
     # -------------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
-        Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Values_List)
+        Print_Received_Message(Transmitter_Name, TOP_CODES_MNGR, Request_Code, Values_List)
         if Request_Code == CODE_TO_CLOSE:               # Close
             self.Call_OnClose()
         elif Request_Code == CODE_CLEAR_FOCUS:          # Clear Focus
@@ -276,7 +276,7 @@ class Top_Insert(tk.Toplevel):
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Codes_Mngr(self):
-        self.Mod_Mngr.Top_Launcher(TOP_MNGR, TOP_INS, [])
+        self.Mod_Mngr.Top_Launcher(TOP_CODES_MNGR, TOP_INS, [])
 
     # -------------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):

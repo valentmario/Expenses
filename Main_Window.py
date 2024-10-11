@@ -16,7 +16,7 @@ from Top_Expenses.Modules_Manager import Modul_Mngr
 from Widgt.Dialogs import *
 from Widgt.Widgets import *
 from Top_Expenses.Top_Settings import Top_Settings
-from Top_Expenses.Top_Codes_Mngr import Top_Mngr
+from Top_Expenses.Top_Codes_Mngr import Top_Codes_Mngr
 from Top_Expenses.Top_Codes_View import Top_View_Codes
 from Top_Expenses.Top_GR_Codes_Mngr import Top_GR_Codes_Mngr
 from Top_Expenses.Top_Xlsx_Rows_View import Top_XLSX_Rows_View
@@ -47,11 +47,11 @@ class Main_Window(tk.Tk):
 
         Widgets_Styles()   # Setup Styles  once called
 
-        self.Dummy      = '  '
-        self.Top_Gen    = None
-        self.View_Xlsx  = None
-        self.Top_Mngr   = None
-        self.Top_View   = None
+        self.Dummy         = '  '
+        self.Top_Gen       = None
+        self.View_Xlsx     = None
+        self.Top_Codes_Mngr= None
+        self.Top_View      = None
 
         self.Btn_Chat = TheButton(self, Btn_Def_En,  20, 150, 14, 'Test',        self.Clk_Settings)
         self.Btn_Mng = TheButton(self,  Btn_Def_En, 170, 150, 14, 'Gestione files',   self.Clk_Manage_Codes)
@@ -90,7 +90,7 @@ class Main_Window(tk.Tk):
     # -----------------------------------------------------------------------
     # def Tx_Request(self, Tx_Req_List):       # [Txr, [RecList], Request, [Values]]
     def Clk_Manage_Codes(self):
-        self.Mod_Mngr.Top_Launcher(TOP_MNGR, MAIN_WIND, [])
+        self.Mod_Mngr.Top_Launcher(TOP_CODES_MNGR, MAIN_WIND, [])
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Insert(self):
@@ -137,18 +137,18 @@ class Main_Window(tk.Tk):
         Values         = []
         for ix in range(Ix_Query_Conto, Ix_Query_CAsel+1):       # setup values for queries
             Values.append(Query_List[ix])
-        FirstVal = str(Values[0])
-        Space = ''
-        if FirstVal == ALL_CODES:
-            Space = '    '
+        # FirstVal = str(Values[0])
+        # Space = ''
+        # if FirstVal == ALL_CODES:
+        #     Space = '    '
         strQuery       = 'Queries:    ' + \
                          str(Values[Ix_Query_Conto]) + '   ' + \
                          str(Values[Ix_Query_Month]) + '   ' + \
                          str(Values[Ix_Query_TotMonths])
-        FirstVal = str(Values[0])
-        Space = ''
-        if FirstVal == ALL_CODES:
-            Space = '    '
+        # FirstVal = str(Values[0])
+        # Space = ''
+        # if FirstVal == ALL_CODES:
+        #     Space = '    '
         strSelect      = '\nSelezioni:\n' + \
                          str(Values[Ix_Query_TRsel]) + '   ' + \
                          str(Values[Ix_Query_GRsel]) + '   ' + \
@@ -166,18 +166,18 @@ class Main_Window(tk.Tk):
 
     def Top_Level_Id_Create_List(self):
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_Settings,       TOP_SETTINGS])
-        self.Mod_Mngr.Add_Toplevels_Id_List([Top_Mngr,           TOP_MNGR])
+        self.Mod_Mngr.Add_Toplevels_Id_List([Top_Codes_Mngr,     TOP_CODES_MNGR])
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_View_Codes,     TOP_CODES_VIEW])
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_GR_Codes_Mngr,  TOP_GR_MNGR])
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_XLSX_Rows_View, TOP_XLSX_VIEW])
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_Insert,         TOP_INS])
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_View_Transact,  TOP_VIEW_TRANSACT])
         self.Mod_Mngr.Add_Toplevels_Id_List([Top_Queries,        TOP_QUERY])
-        self.Mod_Mngr.Add_Toplevels_Id_List([Top_View_Message,   TOP_VIEW_MESS])
+        self.Mod_Mngr.Add_Toplevels_Id_List([View_Message,       TOP_VIEW_MESS])
         pass
 
 
-
+# =============================================================================================
 import sqlite3
 def create_sqlite_database(filename):
     """ create a database connection to an SQLite database """

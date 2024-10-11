@@ -106,7 +106,7 @@ from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheTextPoints
 
 
-class Top_View_Message(tk.Toplevel):
+class View_Message(tk.Toplevel):
     def __init__(self, List):
         super().__init__()
         self.Chat = Ms_Chat

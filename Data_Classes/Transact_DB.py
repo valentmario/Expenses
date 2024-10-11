@@ -47,7 +47,6 @@ class Transact_Db(Xlsx_Manager):
         else:
             return Result
 
-
     # -----------------------------------------------------------------------------------
     def _Load_Transact_Table(self, TransacFilename):
         self._tTransact_Year = Get_Transactions_Year(TransacFilename)

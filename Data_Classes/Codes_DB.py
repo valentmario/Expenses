@@ -27,6 +27,8 @@ class Codes_db(Files_Names_Manager):
         self._CA_Codes_Ordered     = []
 
         self._Multiple_Maching_List = []  # full descriptions matching with the same StrToFind
+        self.connect                = None
+        self.cursor                 = None
 
 
     # ----------------------   Check the database  codes table   --------------------------------
@@ -169,41 +171,58 @@ class Codes_db(Files_Names_Manager):
         self.Tree_Codes_View_List_Ordered = []
 
         self.CodesFilename = CodesFilename
-        if not CodesFilename:
-            self.CodesFilename = self._Codes_DB_Filename
-        try:
-            sqlite3.connect(self._Codes_DB_Filename)
-            pass
-        except:
-            return 'Error on connect Codes Db\nmay be the data drive is not mounted'
+        # if not CodesFilename:
+        #     self.CodesFilename = self._Codes_DB_Filename
+        try:  # ---------------------------------------------------------- # try connect
+            self.connect = sqlite3.connect(CodesFilename)
+        except sqlite3.Error as e:  # in case of error nothing change
+            strErr = Db_Error(e)
+            MsgErr = 'ERROR on connect Transactions Table:\n' + str(strErr)
+            return MsgErr
+        finally:
+            self.cursor = self.connect.cursor()
 
-        connect = sqlite3.connect(self.CodesFilename)   # self.Files_Mngr.Codes_DB_Filename)
-        cursor = connect.cursor()
-        try:
-            cursor.execute("SELECT * FROM TRANSACT_CODES")
-            self._tTR_Codes_Table = cursor.fetchall()
-        except:
-            connect.close()
-            return 'Transations Codes ERROR'
-        try:
-            cursor.execute("SELECT * FROM GROUP_CODES")
-            self._tGR_Codes_Table = cursor.fetchall()
-        except:
-            connect.close()
-            return 'Groups table ERROR'
-        try:
-            cursor.execute("SELECT * FROM CATEGORY_CODES")
-            self._tCA_Codes_Table = cursor.fetchall()
-        except:
-            connect.close()
-            return 'Categories table ERROR'
-        connect.close()
+        try: # ------------------------------------------------------------- # try load Transactions Codes
+            self.cursor.execute("SELECT * FROM TRANSACT_CODES")
+            self._tTR_Codes_Table = self.cursor.fetchall()
+        except sqlite3.Error as e:  # in case of error nothing change
+            strErr = Db_Error(e)
+            MsgErr = 'ERROR on Loading Codes Table:\n' + str(strErr)
+            if self.connect:
+                self.connect.close()
+            return MsgErr
+        finally:
+            pass
+
+        try:  # ------------------------------------------------------------- # try load Groups codes
+            self.cursor.execute("SELECT * FROM GROUP_CODES")
+            self._tGR_Codes_Table = self.cursor.fetchall()
+        except sqlite3.Error as e:  # in case of error nothing change
+            strErr = Db_Error(e)
+            MsgErr = 'ERROR on Loading Codes Table:\n' + str(strErr)
+            if self.connect:
+                self.connect.close()
+            return MsgErr
+        finally:
+            pass
+
+        try:  # ------------------------------------------------------------- # try load Categories codes
+            self.cursor.execute("SELECT * FROM CATEGORY_CODES")
+            self._tCA_Codes_Table = self.cursor.fetchall()
+        except sqlite3.Error as e:  # in case of error nothing change
+            strErr = Db_Error(e)
+            MsgErr = 'ERROR on Loading Codes Table:\n' + str(strErr)
+            if self.connect:
+                self.connect.close()
+            return MsgErr
+        finally:
+            if self.connect:
+                self.connect.close()
+
 
         if not self._tTR_Codes_Table or not self._tGR_Codes_Table or not self._tCA_Codes_Table:
-            return 'Codes tables EMPTY'
+            return 'TR or GR or CA Codes tables EMPTY'
 
-        # Create the TR_Code_Table with TRcode, TRdrsc , GRcode as in Codes_DB_yyyy-mm-dd.db
-        # then update GRdesc, CAcode, CAdesc as in GR_Table and in CA_Table
         self._TR_Codes_Table = self._tTR_Codes_Table
         self._GR_Codes_Table = self._tGR_Codes_Table
         self._CA_Codes_Table = self._tCA_Codes_Table

@@ -29,7 +29,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.configure(background=BakGnd)
         self.Chat.Attach([self, TOP_QUERY])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
-        self.title('*****     Queries on transactions database     *****')
+        self.title('    ')
 
         self.Geometry       = ''
         self.nFrames        = 0
@@ -106,7 +106,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Btn_xlsx_View = TheButton(self, Btn_Def_En, self.Widg_PosX, 450, 15, 'Mostra file Xlsx',    self.Clk_XlsxView)
 
         self.Btn_Exit = TheButton(self, Btn_Bol_En, self.Widg_PosX, 936, 13, '  E S C I  ', self.Call_OnClose)
-
+        self.Set_All_Select()
     # -------------------------------------------------------------------------------------------------------------
     def Clear_Code_Sel(self):
         self.TRselected = ''
@@ -155,9 +155,11 @@ class Super_Top_Queries(tk.Toplevel):
     def Setup_Year_Conto_Month_Tot_Date(self):
         self.Files_Ident    = self.Data.Get_Xlsx_Transact_Ident()   # list created on ModulesManager
         self.Year_Selected  = self.Files_Ident[Ix_Transact_Year]
+        # Title = '*****     + str
 
         List = Data_Manager.Get_Transact_Year_ListInData()
         self.Transact_Years_List = List[1]
+        self.Transact_Years_List.sort()
         self.OptMenu_Year.SetValues(self.Transact_Years_List)
 
         Queries_Sel = self.Data.Get_Selections_Member(Ix_Query_List)
@@ -220,19 +222,14 @@ class Super_Top_Queries(tk.Toplevel):
         if not self.Mod_Mngr.Cek_Transactions_Name(Full_Filename):
             return
         if self.Mod_Mngr.Load_Transact(TOP_QUERY, Full_Filename):
-            # self.OneYear_Transact_List = self.Data.Get_Transact_Table()
-            # self.Data.Update_Selections(Full_Filename, Ix_Transact_File)
-            # self.Set_TR_GR_CA_Sel_List()
-            # self.Setup_TR_GR_CA_OptManu()
             self.Load_All_Data()
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Conto(self, Value):
         self.Conto_Selected = Value
-        self.Month_Selected = Month_Names[0]
-        self.Tot_Selected   = ONE_MONTH
         self.Update_Sel_onTxt()
         self.Load_All_Data()
+        self.Set_All_Select()
 
     def Clk_Month(self, Value):
         self.Month_Selected = Value

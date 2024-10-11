@@ -204,11 +204,11 @@ class Xlsx_Manager(Codes_db):
         if self._tTot_OK == 0:
             return 'no correct rows found on xlsx file'
         if self._tXlsx_Conto == FLASH or self._tXlsx_Conto == AMBRA or self._tXlsx_Conto == POSTA:
-            self._Adjust_Xlsx_Rows_ForFLASH()   # adjust rows as in FLASH or in AMBRA
-        elif self._tXlsx_Conto == POSTA:
-            pass                                # """     "   "  "  POSTA
-        else:
-            pass                                # NOT identified leave as FIDEU
+            self._Adjust_Rows_MostToLess()   # Invert order from Most Recent to Less
+        # elif self._tXlsx_Conto == POSTA:
+        #     pass                                # """     "   "  "  POSTA
+        # else:
+        #     pass                                # NOT identified leave as FIDEU
         # -------------
         if not self._tXLSX_Rows_Desc_Compact:
             return 'xlsx file contains any row with significant data'
@@ -343,7 +343,10 @@ class Xlsx_Manager(Codes_db):
                 self.Valuta = self.Contab
             elif typeValuta is datetime:
                 self.Contab = self.Valuta
-
+        # -----------------------------------------------------------------------------------
+        #     A            B           C         D        E
+        # DataContab.	DataVal.	Addebiti  Accred. Descrizione
+        # -----------------------------------------------------------------------------------
         elif self._tXlsx_Conto == POSTA:                              # Get columns for POSTA
             self.Contab = self._Work_Sheet['A' + str(nRow)].value
             self.Valuta = self._Work_Sheet['B' + str(nRow)].value
@@ -365,11 +368,14 @@ class Xlsx_Manager(Codes_db):
         elif self._tXlsx_Conto == AMBRA:                              # Get columns for AMBRA
             pass
 
-    # ---------------------------------------------------------------
-    def _Adjust_Xlsx_Rows_ForFLASH(self):
+    # ----------------------------------------------------------------------------- #
+    #  Data.contab   Data.val   Descriz.  Accred.val  Accred.  Addeb.val  Addeb.    #
+    #       0            1        2           3          4         5        6       #
+    # ----------------------------------------------------------------------------- #
+    def _Adjust_Rows_MostToLess(self):
         Copy1 = self._Xlsx_Rows_From_Sheet.copy()
         self.XLSX_Rows_From_Sheet = []
-        Copy2 = self._Xlsx_Rows_Desc_Compact
+        Copy2 = self._Xlsx_Rows_Desc_Compact.copy()
         self._Xlsx_Rows_Desc_Compact = []
         Index = self._Tot_OK -1
         for j in range(0, self._Tot_OK):

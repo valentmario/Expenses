@@ -61,7 +61,6 @@ class Modules_Manager(Mod_Mngr_Init):
                     print(e)
                     return False
                 finally:
-                    pass
                     return True
 
     # ---------------------------------------------------------------------------------------------
@@ -85,7 +84,7 @@ class Modules_Manager(Mod_Mngr_Init):
 
             if Check == CEK_XLSX_LIST:                      # CEK_XLSX LISTS
                 if not self.Init_Xlsx_Lists(Origin):
-                    self.Xlsx_Sel_Request(Origin)
+                    # self.Xlsx_Sel_Request(Origin)
                     pass
 
             if Check == CEK_TOP_INSERT:                     # CEK_TRANSACT for Top_Insert
@@ -95,7 +94,7 @@ class Modules_Manager(Mod_Mngr_Init):
                     return False
 
             if Check == CEK_TOP_QUERIES:                    # CEK_TRANSACT for Top_Queries
-                if not self.Initialize_Tansactions(ON_SELECTIONS):
+                if not self.Init_Transactions(Origin):
                     return False
         return True
 
@@ -141,11 +140,12 @@ class Modules_Manager(Mod_Mngr_Init):
                 # -------- Check for transactions year same as xlsx year   -------------
                 self.Transact_Year = Get_Transactions_Year(self.Transact_Filename)
                 if self.Xlsx_Year == self.Transact_Year:
-                    return self.Initialize_Tansactions(ON_SELECTIONS)
+                    return self.Init_Transactions(Origin)
                 else:
-                    if self.Get_Transact_For_Xlsx_Year():
-                        return self.Initialize_Tansactions(ON_SELECTIONS)
-
+                    if self.Get_Transact_From_Xlsx_Year():
+                        return self.Transact_Filename(Origin)
+                    else:
+                        return False
 
     # -------------------------------------------------------------------------------------------------
     def Create_New_Transact_Db(self, Year):
@@ -168,7 +168,7 @@ class Modules_Manager(Mod_Mngr_Init):
             return False
 
     # -------------------------------------------------------------------------------------------------
-    def Get_Transact_For_Xlsx_Year(self):
+    def Get_Transact_From_Xlsx_Year(self):
         # -----------------   years   NOT  EQUAL    ---------------------------
         TRansact_Years_List = self.Data.Get_Transact_Year_ListInData()[1]
         if self.Xlsx_Year in TRansact_Years_List:
@@ -190,19 +190,6 @@ class Modules_Manager(Mod_Mngr_Init):
                 return False
             else:
                 return True
-
-    # ------------------------------------------------------------------------------------------------
-    def Initialize_Tansactions(self, Filename):
-        Transact_Filename = Filename
-        if Filename == ON_SELECTIONS:
-            Transact_Filename = self.Data.Get_Selections_Member(Ix_Transact_File)
-        Result = self.Data.Load_Transact_Table(Transact_Filename)
-        if Result == OK:
-            return True
-        else:
-            Msg_Dlg = Message_Dlg(MsgBox_Info, Result)
-            Msg_Dlg.wait_window()
-            return False
 
 # =================================================================================================
 

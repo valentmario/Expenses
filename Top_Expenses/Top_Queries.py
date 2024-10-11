@@ -30,10 +30,10 @@ class Top_Queries(Super_Top_Queries):
         self.Tot_Frames_Setup()
 
         # ----------------------------------------------------------------
-        self.Frame_Average = TheFrame(self, xyToHide, 10, self.Click_OnTot)  # the frame for month average of expensess
-        self.Frame_Average_Setup()
+        self.Frame_Avg_Debits  = TheFrame(self, xyToHide, 10, self.Click_OnTot)  # the frame for month average of expensess
+        self.Frame_Avg_Debits_Setup()
 
-        self.Frame_TotRows = TheFrame(self, xyToHide, 10, self.Click_OnTot)  # the frame for total number of rows
+        self.Frame_Avg_Credits = TheFrame(self, xyToHide, 10, self.Click_OnTot)  # the frame for total number of rows
         self.TotRows_Frame_Setup()
 
         self.Frame_TotCred = TheFrame(self, xyToHide, 10, self.Click_OnTot)  # the frame for total credits
@@ -62,7 +62,7 @@ class Top_Queries(Super_Top_Queries):
 
     # -------------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
-        Print_Received_Message(Transmitter_Name, TOP_MNGR, Request_Code, Values_List)
+        Print_Received_Message(Transmitter_Name, TOP_CODES_MNGR, Request_Code, Values_List)
         if Request_Code == CODE_TO_CLOSE:  # Close
             self.Call_OnClose()
         elif Request_Code == TRANSACT_UPDATED:
@@ -96,24 +96,24 @@ class Top_Queries(Super_Top_Queries):
             Frame.Tree_Setup(Form_List)
 
     # --------------------------------------------------------------------------------------------------
-    def Frame_Average_Setup(self):
+    def Frame_Avg_Debits_Setup(self):
         Nrows     = 1
         nColToVis = 1
-        Headings  = ['#0', 'media   mese  ']
+        Headings  = ['#0', 'media   uscite   ']
         Anchor    = ['c',  'e']
         Width     = [ 0,    125]
         Form_ListT = [Nrows, nColToVis, Headings, Anchor, Width]
-        self.Frame_Average.Tree_Setup(Form_ListT)
+        self.Frame_Avg_Debits.Tree_Setup(Form_ListT)
 
     # --------------------------------------------------------------------------------------------------
     def TotRows_Frame_Setup(self):
         Nrows     = 1
         nColToVis = 1
-        Headings  = ['#0', 'totale    righe  ']
+        Headings  = ['#0', 'media   entrate   ']
         Anchor    = ['c',  'e']
         Width     = [ 0,    125]
         Form_ListT = [Nrows, nColToVis, Headings, Anchor, Width]
-        self.Frame_TotRows.Tree_Setup(Form_ListT)
+        self.Frame_Avg_Credits.Tree_Setup(Form_ListT)
 
     # --------------------------------------------------------------------------------------------------
     def Credit_Frame_Setup(self):
@@ -139,7 +139,7 @@ class Top_Queries(Super_Top_Queries):
 
     # -------------------------------------------------------------------------------------------------
     def Click_OnTot(self, Value):
-        self.Frame_TotRows.Clear_Focus()
+        self.Frame_Avg_Credits.Clear_Focus()
         self.Frame_TotCred.Clear_Focus()
         self.Frame_TotDebit.Clear_Focus()
         self.Frame1_Tot.Clear_Focus()
@@ -190,10 +190,10 @@ class Top_Queries(Super_Top_Queries):
         self.Frame2_Tot.Frame_PosXY(self.Widgtes_PosX[1], 910)
         self.Frame3_Tot.Frame_PosXY(self.Widgtes_PosX[2], 910)
 
-        self.Frame_Average.Frame_PosXY(self.Widgtes_PosX[3], 640)
-        self.Frame_TotRows.Frame_PosXY(self.Widgtes_PosX[3], 710)
-        self.Frame_TotCred.Frame_PosXY(self.Widgtes_PosX[3], 780)
-        self.Frame_TotDebit.Frame_PosXY(self.Widgtes_PosX[3],850)
+        self.Frame_TotCred.Frame_PosXY(self.Widgtes_PosX[3], 640)
+        self.Frame_Avg_Credits.Frame_PosXY(self.Widgtes_PosX[3], 710)      # 640 70
+        self.Frame_TotDebit.Frame_PosXY(self.Widgtes_PosX[3],780)
+        self.Frame_Avg_Debits.Frame_PosXY(self.Widgtes_PosX[3], 850)
 
     # -------------------------------------------------------------------------------------------------
     def Set_Frames_Title(self):
@@ -220,9 +220,9 @@ class Top_Queries(Super_Top_Queries):
         else:
             return -1
         # Check for Conto
-        if self.Conto_Selected == FID_FLASH:
+        if self.Conto_Selected == FIDFLHBP:
             ContoInDB = Rec[iTransact_Conto]
-            if ContoInDB == FIDEU or ContoInDB == FLASH:
+            if ContoInDB == FIDEU or ContoInDB == FLASH or ContoInDB == POSTA:
                 pass
             else:
                 return -1
@@ -323,15 +323,19 @@ class Top_Queries(Super_Top_Queries):
 
         Total_Credit = self.Tot_CredDeb_xTree[0][0] + self.Tot_CredDeb_xTree[1][0] + self.Tot_CredDeb_xTree[2][0]
         Total_Debit  = self.Tot_CredDeb_xTree[0][1] + self.Tot_CredDeb_xTree[1][1] + self.Tot_CredDeb_xTree[2][1]
-
-        strAverage    = Float_ToString_Setup(Total_Debit/self.iTot_Months)
         strTot_Credit = Float_ToString_Setup(Total_Credit)
         strTot_Debit  = Float_ToString_Setup(Total_Debit)
 
-        self.Frame_Average.Load_Row_Values([[strAverage]])
+        strAvg_Credit  = Float_ToString_Setup(Total_Credit/self.iTot_Months)
+        strAvg_Debit   = Float_ToString_Setup(Total_Debit/self.iTot_Months)
+
         self.Frame_TotCred.Load_Row_Values([[strTot_Credit]])
+        self.Frame_Avg_Credits.Load_Row_Values([[strAvg_Credit]])
         self.Frame_TotDebit.Load_Row_Values([[strTot_Debit]])
-        self.Frame_TotRows.Load_Row_Values([[self.Total_Rows, 2]])
+        self.Frame_Avg_Debits.Load_Row_Values([[strAvg_Debit]])
+
+        Title = '*****      ' + str(self.Total_Rows) + '    Movimenti      *****'
+        self.title(Title)
 
     # -------------------------------------------------------------------------------------------------
     # selections for year conto, month, total months, TR, GR, CA
