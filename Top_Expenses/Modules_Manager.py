@@ -148,8 +148,8 @@ class Modules_Manager(Mod_Mngr_Init):
                 if self.Xlsx_Year == self.Transact_Year:
                     return self.Init_Transactions(Origin)
                 else:
-                    if self.Get_Transact_From_Xlsx_Year():
-                        return self.Transact_Filename(Origin)
+                    if self.Get_Transact_From_Xlsx_Year(Origin):
+                        return self.Init_Transactions(Origin)
                     else:
                         return False
 
@@ -174,7 +174,7 @@ class Modules_Manager(Mod_Mngr_Init):
             return False
 
     # -------------------------------------------------------------------------------------------------
-    def Get_Transact_From_Xlsx_Year(self):
+    def Get_Transact_From_Xlsx_Year(self, Origin):
         # -----------------   years   NOT  EQUAL    ---------------------------
         TRansact_Years_List = self.Data.Get_Transact_Year_ListInData()[1]
         if self.Xlsx_Year in TRansact_Years_List:
@@ -189,6 +189,7 @@ class Modules_Manager(Mod_Mngr_Init):
                 Msg_Dlg.wait_window()
                 return False
             self.Data.Update_Selections(Full_Filename, Ix_Transact_File)
+            self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
             return True
 
         else:  # ------------------  any transactions file found ----------

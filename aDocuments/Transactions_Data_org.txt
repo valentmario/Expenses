@@ -1,7 +1,8 @@
 
 ******************************   Mod_Mngr_Init  for Transactions    ****************************
 
-Init_Transactions(Origin):                    *** on Make_Checkout  Init_Top_Insert Top_Insert
+Init_Transactions(Origin):                          *** on Make_Checkout
+                                                        Init_Top_Insert Top_Insert
     if Transact_Filename and Xlsx_Filename unknown  
         Message_Dlg
         return  Sel_Transact_Mngr
@@ -14,12 +15,12 @@ Init_Transactions(Origin):                    *** on Make_Checkout  Init_Top_Ins
      Message_Dlg  return False
 
 
-TryToLoad_Transactions(Transact_Filename)       *** on  Init_Transactions
+TryToLoad_Transactions(Transact_Filename)           *** on  Init_Transactions
   if Cek_Transactions_Name(Transact_Filename):
        return self.Load_Transact_Mngr
 
 
-Get_Transact_FromXlsxFilename(Xlsx_Filename):   *** on  Init_Transactions
+Get_Transact_FromXlsxFilename(Xlsx_Filename):   *   ** on  Init_Transactions
     if not Cek_Xlsx_Name(Xlsx_Filename):
         return False
     Transact_Filename = Create_Transactions_Name_FromX(Xlsx_Filename)
@@ -29,12 +30,12 @@ Get_Transact_FromXlsxFilename(Xlsx_Filename):   *** on  Init_Transactions
         Update_Selections  return True
   
 
-Cek_Transactions_Name(Full_Filename):           *** on TryToLoad_Transactions Sel_Transact_Mngr
+Cek_Transactions_Name(Full_Filename):               *** on TryToLoad_Transactions Sel_Transact_Mngr
     OK:                   return True
     Err: make Message_Dlg return False
 
 
-Sel_Transact_Mngr(Origin):                      *** on Init_Transactions Top_Settings
+Sel_Transact_Mngr(Origin):                          *** on Init_Transactions Top_Settings
     File_Dialog
     Cancel:  return False
     if Cek_Transactions_Name:
@@ -42,6 +43,7 @@ Sel_Transact_Mngr(Origin):                      *** on Init_Transactions Top_Set
             Update_Selections
             Tx_Request return True
     return False
+
 
 Load_Transact_Mngr(Origin, Full_Filename):      *** Init_Transactions TryToLoad_Transactions 
     Set Filename if unknown return False            Sel_Transact_Mngr  Super_Top_Queries
@@ -64,7 +66,13 @@ _Load_Transact_Table                            *** on Load_Transact_Table  Crea
     _Transact_Year  = tTransact_Year
     Update_Selections
 
+
+**********************************       Queries           ********************************
+
+
+
 =============================================================================================
+
 
 
 

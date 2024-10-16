@@ -25,8 +25,8 @@ class Top_View_Transact(tk.Toplevel):
         self.Chat.Attach([self, TOP_VIEW_TRANSACT])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
 
-        self.resizable(False, False)
-        self.geometry(Top_View_geometry)
+        self.resizable(True, True)
+        self.geometry(Top_TrView_geometry)
         self.title('***   View transactions database  *** ')
         self.configure(background=BakGnd)
 
@@ -52,10 +52,10 @@ class Top_View_Transact(tk.Toplevel):
         if Request_Code == CODE_TO_CLOSE:           # Close
             self.Call_OnClose()
 
-        elif Request_Code == CODE_CLEAR_FOCUS or Request_Code == CODE_CLK_ON_TR_CODES or Request_Code\
-                          == CODE_CLIK_ON_XLSX or Request_Code == XLSX_UPDATED:
-            self.Frame_Sheets_Rows.Clear_Focus()
-            self.Frame_Sheets_Rows.Load_Row_Values(self.Data.Load_Transact_Table(ON_SELECTIONS))
+        # elif Request_Code == CODE_CLEAR_FOCUS or Request_Code == CODE_CLK_ON_TR_CODES or Request_Code\
+        #                   == CODE_CLIK_ON_XLSX or Request_Code == XLSX_UPDATED:
+        #     self.Frame_Sheets_Rows.Clear_Focus()
+        #     self.Frame_Sheets_Rows.Load_Row_Values(self.Data.Load_Transact_Table(ON_SELECTIONS))
 
     # ---------------------------------------------------------------------------------------------
     def Clk_On_Sheets_Rows(self, Values):

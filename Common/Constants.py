@@ -10,16 +10,18 @@ PRINT_ENABLED = False     # To print or NOT
 
 DUAL_DISPLAY  = False
 if DUAL_DISPLAY:
-    Main_Wind_geometry     = '330x310+1850+900'     # '330x310+1700+10'
-    Settings_geometry      = '330x400+1850+300'    # 330x400+1700+370
-    Top_Mngr_geometry      = '660x1000+2200+10'    # 660x1000+2100+10
-    Top_View_geometry      = '840x1000+3400+10'
+    Main_Wind_geometry     = '330x310+1580+1'     # '330x310+1700+10'
+    Settings_geometry      = '330x400+1580+390'    # 330x400+1700+370
+    Top_Mngr_geometry      = '660x1000+1000+10'    # 660x1000+2100+10
+    Top_View_geometry      = '840x1000+2000+10'
+    Top_View_geom_reduced  = '840x1000+350+200'
     Top_View_Mess_geometry = '450x470+600+10'
-    Top_GRcodes_geometry   = '830x1000+2600+10'
-    Top_Xlsx_View_geometry = '820x1000+3400+10'   # '820x1000+2040+10'
-    Top_Insert_geometry    = '610x1000+2300+10'  # '610x1000+2870+10'
+    Top_GRcodes_geometry   = '830x1000+1600+10'
+    Top_Xlsx_View_geometry = '820x1000+1300+10'   # '820x1000+2040+10'
+    Top_Insert_geometry    = '740x1000+2200+10'  # '610x1000+2870+10'
+    Top_TrView_geometry    = '820x1000+3000+10'
     #                             1 Frame               2 Frames           3 Frames
-    Top_Query_geometry     = ['500x1000+1060+10', '1080x1000+640+10', '1500x1000+200+10']
+    Top_Query_geometry     = ['630x1000+3200+10', '1080x1000+640+10', '1500x1000+200+10']
                            # ['630x1000+1060+10', '1060x1000+640+10', '1500x1000+200+10']
 else:
     Main_Wind_geometry     = '330x310+1580+1'
@@ -31,7 +33,7 @@ else:
     Top_Xlsx_View_geometry = '820x1000+10+1'
     Top_View_Mess_geometry = '450x470+600+10'
     Top_Insert_geometry    = '740x1000+900+1'
-    Top_TrView_geometry    = '900x1000+10+1'
+    Top_TrView_geometry    = '820x1000+10+1'
     #                         one frame           two frames          three frames
     Top_Query_geometry     = ['630x1000+1020+10', '1080x1000+570+10', '1520x1000+130+10']
 

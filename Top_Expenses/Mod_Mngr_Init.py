@@ -30,11 +30,6 @@ class Mod_Mngr_Init:
         self.Check_Result      = False
         self.Toplevels_Id_List = []   # <class>,  NAME
                                       # List of toplevel to launch in Top_Settings
-
-    # def Print_Loaded(self):
-    #     Loaded = self.Data.Get_Files_Loaded_Stat()
-    #
-
     # =========================================================================================== #
     #           --------------      Codes  managing     --------------                            #
     #    If Codes filename is correct,   self.Data.Load_Codes_Tables tries to load the Codes      #

@@ -314,7 +314,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
     def Clk_Add_New_Record(self):
         Result = self.Add_Record_Code()
         if Result == OK:
-            Res_List =  self.Data.Check_Codesdatabase()
+            Res_List =  self.Data.Check_Codesdatabase(ON_SELECTIONS)
             if not Res_List:
                 Msg = Message_Dlg(MsgBox_Info, 'Codice inserito correttamente')
                 Msg.wait_window()
