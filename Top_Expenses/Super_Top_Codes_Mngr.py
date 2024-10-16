@@ -9,6 +9,7 @@ import tkinter as tk
 from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data_Manager
+from Top_Expenses.Modules_Manager import Modul_Mngr
 
 from Widgt.Dialogs import Message_Dlg
 from Widgt.Widgets import TheText
@@ -18,8 +19,9 @@ from Widgt.Widgets import TheCombo
 class Super_Top_Mngr(tk.Toplevel):
     def __init__(self):
         super().__init__()
-        self.Chat = Ms_Chat
-        self.Data = Data_Manager
+        self.Chat          = Ms_Chat
+        self.Data          = Data_Manager
+        self.Mod_Mngr      = Modul_Mngr
         self.Chat.Attach([self, TOP_CODES_MNGR])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
 
@@ -83,14 +85,13 @@ class Super_Top_Mngr(tk.Toplevel):
             if Result != OK:
                 return Result
 
-        Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
+        self.Mod_Mngr.Load_Codes_Mngr(TOP_CODES_MNGR, ON_SELECTIONS)
         if Result != OK:
             errMessage = 'ERROR on reloading codes dababase\nafter a delete operation\n\n'
             errMessage += Result
             return errMessage
 
-        Result = self.Data.Check_If_Code_Exist(Last_Code)    # check if record has canceled
-        if Result:
+        if self.Data.Check_If_Code_Exist(Last_Code):    # check if record has canceled
             Msg = ('Code ' + str(Last_Code) + '  ' + Descrip + '\n NOT  deleted ???')
             return Msg
         else:
@@ -126,7 +127,7 @@ class Super_Top_Mngr(tk.Toplevel):
             Result = self.Data.Add_TR_Record(TR_Record)
             if Result != OK:
                 return Result
-            Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
+            self.Mod_Mngr.Load_Codes_Mngr(TOP_CODES_MNGR, ON_SELECTIONS)
             if Result != OK:
                 errMessage = 'ERROR on reloading codes dababase\nafter an add operation\n\n'
                 errMessage += Result
@@ -164,7 +165,7 @@ class Super_Top_Mngr(tk.Toplevel):
             Result = self.Data.Update_DB_TR_Codes(TR_Record_ToUpdate)
             if Result != OK:
                  return Result
-            Result = self.Data.Load_Codes_Tables(ON_SELECTIONS)
+            self.Mod_Mngr.Load_Codes_Mngr(TOP_CODES_MNGR, ON_SELECTIONS)
             if Result != OK:
                 errMessage = 'ERROR on reloading codes dababase\nafter an update operation\n\n'
                 errMessage += Result

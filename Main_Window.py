@@ -53,22 +53,20 @@ class Main_Window(tk.Tk):
         self.Top_Codes_Mngr= None
         self.Top_View      = None
 
-        self.Btn_Chat = TheButton(self, Btn_Def_En,  20, 150, 14, 'Test',        self.Clk_Settings)
-        self.Btn_Mng = TheButton(self,  Btn_Def_En, 170, 150, 14, 'Gestione files',   self.Clk_Manage_Codes)
+        self.Btn_Chat = TheButton(self, Btn_Def_En,  20, 150, 14, 'Test',           self.Clk_Settings)
+        self.Btn_Mng = TheButton(self,  Btn_Def_En, 170, 150, 14, 'Gestione files', self.Clk_Manage_Codes)
 
-        self.Btn_Ins  = TheButton(self, Btn_Col_En,  20, 200, 14, 'Carica movimenti', self.Clk_Insert)
+        self.Btn_Ins  = TheButton(self, Btn_Col_En,  20, 200, 14, 'Carica movimenti',self.Clk_Insert)
         self.Btn_Query= TheButton(self, Btn_Col_En, 170, 200, 14, 'Queries',         self.Clk_Queries)
         self.Exit     = TheButton(self, Btn_Bol_En,  24, 250, 27, '  E S C I   ',    self.Call_OnClose)
 
         # -------------------------------------------------------------------------------------------------
         self.Mod_Mngr.Cek_Create_Selections()    # Check or Create Selections file
-        if not self.Mod_Mngr.Init_Codes(MAIN_WIND):
-            pass
+        self.Mod_Mngr.Init_Codes(MAIN_WIND)
         self.Set_Selections()     # Set Selections filenames, files_satus, [tot], Queries,
         self.Top_Level_Start()
 
         self.mainloop()
-        pass
 
     # ---------------------------------------------------------------------------------------------
     def Call_OnClose(self):

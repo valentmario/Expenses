@@ -4,9 +4,7 @@
 #      List_Rows_WithoutCode : nRow    Date      FullDesc                            #
 #      List View Codes       : TRcode  TR_Desc   GR_Desc  CA_Desc  StrToSearch       #
 # ---------------------------------------------------------------------------------- #
-# import tkinter
 
-# from Common.Common_Functions import *
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Top_Expenses.Super_Top_Codes_Mngr import Super_Top_Mngr
 
@@ -49,25 +47,26 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         self.Txt_CAdesc      = TheText(self, Txt_DisBlak, 62, 816, 25, 1, 'Category')
 
         # ----------------------------------    B U T T O N S     ---------------------------------
-        self.BtnSelCod = TheButton(self, Btn_Def_En,  60, 860, 22, 'Select Codes DB ', self.Clk_Sel_Codes)
-        self.BtnView   = TheButton(self, Btn_Def_En,  60, 900, 22, 'Show Transact Codes', self.Clk_View_Codes)
-        self.BtnGRmngr = TheButton(self, Btn_Def_En,  60, 940, 22, 'Groups Codes',      self.Clk_GR_Mngr)
+        self.BtnSelCod = TheButton(self, Btn_Def_En,  60, 860, 22, 'Select Codes DB ',  self.Clk_Sel_Codes)
+        self.BtnView   = TheButton(self, Btn_Def_Dis,  60, 900, 22, 'Show Transact Codes', self.Clk_View_Codes)
+        self.BtnGRmngr = TheButton(self, Btn_Def_Dis,  60, 940, 22, 'Groups Codes',      self.Clk_GR_Mngr)
 
         self.BtnDel    = TheButton(self, Btn_Def_Dis,286, 772, 18, 'Delete Last Record',self.Clk_Delete_Record)
-        self.BtnAddNew = TheButton(self, Btn_Def_Dis,286, 815, 18, 'Add New Record',    self.Clk_Add_New_Record)
+        self.BtnAddNew = TheButton(self, Btn_Def_En ,286, 815, 18, 'Add New Record',    self.Clk_Add_New_Record)
         self.BtnSelXls = TheButton(self, Btn_Def_En, 286, 860, 18, 'Select Xlsx file',  self.Clk_Sel_xlsx)
         self.BtnViXlsx = TheButton(self, Btn_Def_Dis,286, 900, 18, 'Show Xlsx Rows',    self.Clk_View_Xlsx)
-        self.BtnCekDb  = TheButton(self, Btn_Def_En,286, 940, 18, 'Check codes DB',    self.Clk_Ceck_Codes_DB)
+        self.BtnCekDb  = TheButton(self, Btn_Def_Dis, 286, 940, 18, 'Check codes DB',    self.Clk_Ceck_Codes_DB)
 
-        self.BtnUpdate = TheButton(self, Btn_Def_Dis,474, 772, 17, 'Update Code',          self.Clk_Update_Record)
-        self.BtnVWithC = TheButton(self, Btn_Def_En, 474, 815, 17, 'Show with/hout codes', self.Clk_View_Rows)
-        self.BtnInsert = TheButton(self, Btn_Def_Dis,474, 860, 17, 'Load Transactions',    self.Clk_Load_Transact)
-        self.BtnTransact=TheButton(self, Btn_Def_Dis,474, 900, 17, 'Show Transactions',    self.Clk_ViewTransact)
-        self.BtnExit   = TheButton(self, Btn_Def_En, 474, 940, 18, 'E X I T ',             self.Call_OnClose)
+        self.BtnUpdate = TheButton(self, Btn_Def_En,  474, 772, 17, 'Update Code',          self.Clk_Update_Record)
+        self.BtnWith_out= TheButton(self, Btn_Def_Dis,474, 815, 17, 'Show with/hout codes',self.Clk_With_out)
+        self.BtnInsert = TheButton(self, Btn_Def_En,  474, 860, 17, 'Load Transactions',    self.Clk_Load_Transact)
+        self.BtnWiewTransact=TheButton(self, Btn_Def_Dis,474, 900, 17, 'Show Transactions',self.Clk_ViewTransact)
+        self.BtnExit   = TheButton(self, Btn_Def_En,  474, 940, 18, 'E X I T ',             self.Call_OnClose)
 
         self.geometry(Top_Mngr_geometry)
-        self.Set_Btn_Status()
-        self.Load_Trees()
+        self.Set_Status()
+        if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):  # In case of Codes not yet Loaded
+            self.Load_Trees()
 
     # ------------------------------------------------------------------------------------------------------
     def Share_Msg_on_Chat(self, Transmitter_Name, Request_Code, Values_List):
@@ -88,7 +87,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         nColToVis = 4
         Headings  = ['#0', 'nRow', 'Date', 'Adeb  ', ' Full Description']
         Anchor    = ['c',   'c',    'c',   'e',      'w']
-        Width     = [0,      60,     80,    90,       470]
+        Width     = [0,      60,     80,    90,       385]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_NoCodes.Tree_Setup(Form_List)
 
@@ -107,7 +106,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         nColToVis = 7
         Headings = ['#0',  'Row ',  'Contab ', 'Valuta ', 'Description',  'Accred ', 'Addeb ', 'Code ']
         Anchor   = ['c',   'w',     'c',       'c',       'w',            'e',       'e',      'c'    ]
-        Width    = [ 0,     50,      80,        90,        190,            70,        70,       50    ]
+        Width    = [ 0,     50,      80,        90,        205,            70,        70,       50    ]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_WithCodes.Tree_Setup(Form_List)
 
@@ -121,7 +120,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         self.Frame_NoCodes.Clear_Focus()
         self.Chat.Tx_Request([TOP_CODES_MNGR, [ANY,], CODE_CLEAR_FOCUS, []])
         self.View_Descr_Text(TRcode, self.GR_Combo)
-        self.Set_State_Butt_New_Updt('disabled', 'normal')
+        # self.Set_State_Butt_New_Updt('disabled', 'normal')  # New Update
         self.Chat.Tx_Request([TOP_CODES_MNGR, [TOP_XLSX_VIEW], CODE_CLIK_ON_XLSX, [] ])
         self.Chat.Tx_Request([TOP_CODES_MNGR, [TOP_XLSX_VIEW, TOP_GR_MNGR], CODE_CLK_ON_TR_CODES, [TRcode] ])
 
@@ -151,7 +150,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
     # ---------------------------------------------------------------------------------------------
     # invoked on  Delete  Add  and Update  Record
     def Frames_Refresh(self):
-        self.Mod_Mngr.Load_Xlsx_Lists(TOP_CODES_MNGR, ON_SELECTIONS)
+        self.Mod_Mngr.Load_Xlsx_Lists_Mngr(TOP_CODES_MNGR, ON_SELECTIONS)
         self.Load_Trees()
         self.View_Frames(-1)
         return True
@@ -183,7 +182,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         self.Mod_Mngr.Top_Launcher(TOP_GR_MNGR, TOP_CODES_MNGR, [])
 
     # ---------------------------------------------------------------------------------------------
-    def Clk_View_Rows(self):
+    def Clk_With_out(self):
         if self.View_Without_Code:
             self.View_Without_Code = False
         else:
@@ -191,54 +190,48 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         self.View_Frames(-1)
 
     # ----------------------------------------------------------------------------------------------
-    def Set_Btn_Status(self):
-        Status = False
+    def Set_Status(self):
+        Codes_Loaded = False
         if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):
-            if not self.Data.Get_Multiple_List():
-                Status = True
-        else:
-            Status = False
-        # self.BtnView.Btn_Set_Status(Status)
-        # self.BtnGRmngr.Btn_Set_Status(Status)
-        self.BtnDel.Btn_Set_Status(Status)
-        self.BtnAddNew.Btn_Set_Status(Status)
-        self.BtnUpdate.Btn_Set_Status(Status)
-        # self.BtnCekDb.Btn_Set_Status(Status)
+            Codes_Loaded = True
+        self.BtnView.Btn_Set_Status(Codes_Loaded)
+        self.BtnGRmngr.Btn_Set_Status(Codes_Loaded)
+        self.BtnCekDb.Btn_Set_Status(Codes_Loaded)
+        self.BtnDel.Btn_Set_Status(Codes_Loaded)
+
+        Status      = False
+        Xlsx_Loaded = False
+        if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
+            Xlsx_Loaded = True
+        if Codes_Loaded and Xlsx_Loaded:
+            Status = True
+        self.BtnViXlsx.Btn_Set_Status(Xlsx_Loaded)
+        self.BtnWith_out.Btn_Set_Status(Status)
+
+        Status = False
+        Multiple = self.Data.Get_Multiple_List()
+        Total    = self.Data.Get_Total_Rows()
+        if Xlsx_Loaded and not Multiple and Total[Ix_Tot_OK]:
+            Status = True
+        self.BtnInsert.Btn_Set_Status(Status)        # Codes_Loaded   NO_Multiple   Xlsx_Loaded  Rws_OK!0
 
         self.ComboList = []
-        if Status:
+        if Codes_Loaded:
             for Rec in self.Data.GR_Codes_Ordered:
                 self.ComboList.append(Rec[iGR_GRdesc])
-
         self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 23,
                                   self.ComboList, 'Select  Group', self.Clk_Combo)
-        StatusLoad = False
-        if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
-            StatusLoad = True
-        self.BtnViXlsx.Btn_Set_Status(Status)
-        # self.BtnVWithC.Btn_Set_Status(Status)
-
-        if StatusLoad:
-            TotalRows = self.Data.Get_Total_Rows()
-            if TotalRows[Ix_Tot_WithCode] == 0 and \
-               TotalRows[Ix_Tot_Without_Code] == 0:
-                self.BtnInsert.Btn_Disable()
-            elif TotalRows[Ix_Tot_Without_Code] == 0:
-                self.BtnInsert.Btn_Enable()
-        else:
-            self.BtnInsert.Btn_Disable()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_Codes(self):
-        if self.Mod_Mngr.Sel_Codes(TOP_CODES_MNGR):
-            self.Mod_Mngr.View_Check_Codes_Db(1)
-            self.Set_Btn_Status()
+        if self.Mod_Mngr.Sel_Codes_Mngr(TOP_CODES_MNGR):
+            self.Set_Status()
             pass
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_xlsx(self):
-        if self.Mod_Mngr.Sel_Xlsx(TOP_CODES_MNGR):
-            self.Set_Btn_Status()
+        if self.Mod_Mngr.Sel_Xlsx_Mngr(TOP_CODES_MNGR):
+            self.Set_Status()
             self.Load_Trees()
 
     # ---------------------------------------------------------------------------------------------
@@ -267,7 +260,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
                 self.Frame_WithCodes.Set_List_For_Focus(Index)
                 break
         self.View_Descr_Text(TRcode, self.GR_Combo)
-        self.Set_State_Butt_New_Updt('disabled', 'normal')
+        # self.Set_State_Butt_New_Updt('disabled', 'normal')  # New Update
 
     # -------------------------------------------------------------------------------------------------
     def Clear_Texts(self):
@@ -294,13 +287,13 @@ class Top_Codes_Mngr(Super_Top_Mngr):
                 self.Txt_StrFullDesc.Set_Text(Full_Desc)
                 NewCode = self.Data.Get_New_Code()
                 self.Txt_TR_Code.Set_Text(str(NewCode[0]))
-                self.Set_State_Butt_New_Updt('normal', 'disabled')
+                # self.Set_State_Butt_New_Updt('normal', 'disabled')  # New Update
                 break
 
     # -----------------    Enable Disable Buttons  New / Update Code   ------------------
-    def Set_State_Butt_New_Updt(self, StateNew, StateUpdt):
-        self.BtnAddNew.configure(state=StateNew)
-        self.BtnUpdate.configure(state=StateUpdt)
+    # def Set_State_Butt_New_Updt(self, StateNew, StateUpdt):
+    #     self.BtnAddNew.configure(state=StateNew)        # New Update
+    #     self.BtnUpdate.configure(state=StateUpdt)
 
     # ------------------------     ***   Delete  the last TR Record      --------------------------
     def Clk_Delete_Record(self):
@@ -309,7 +302,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
             Msg = Message_Dlg(MsgBox_Info, 'Code has correctly deleted')
             Msg.wait_window()
             if self.Frames_Refresh():
-                self.Set_Btn_Status()
+                self.Set_Status()
                 self.Chat.Tx_Request([TOP_CODES_MNGR, [ANY], CODES_DB_UPDATED, []])
         elif Result == NONE:
             pass
@@ -319,25 +312,23 @@ class Top_Codes_Mngr(Super_Top_Mngr):
 
     # ------------------------     ***   Add new code Record  the last TR Record      -------------
     def Clk_Add_New_Record(self):
-        if not self.Test_Transaction_Data(-1):
-            return
-        else:
-            Result = self.Add_Record_Code()
-            if Result == OK:
-                Res_List =  self.Data.Check_Codesdatabase()
-                if not Res_List:
-                    Msg = Message_Dlg(MsgBox_Info, 'Codice inserito correttamente')
-                    Msg.wait_window()
-                    if self.Frames_Refresh():
-                        self.Set_Btn_Status()
-                        self.Chat.Tx_Request([TOP_CODES_MNGR, [ANY], CODES_DB_UPDATED, []])
-                else:
-                    self.Mod_Mngr.View_Check_Codes_Db(1)
-
-            elif Result == NONE:    # In case of "NO" to add record request
-                pass
+        Result = self.Add_Record_Code()
+        if Result == OK:
+            Res_List =  self.Data.Check_Codesdatabase()
+            if not Res_List:
+                Msg = Message_Dlg(MsgBox_Info, 'Codice inserito correttamente')
+                Msg.wait_window()
+                if self.Frames_Refresh():
+                    self.Set_Status()
+                    self.Chat.Tx_Request([TOP_CODES_MNGR, [ANY], CODES_DB_UPDATED, []])
             else:
-                View_Message([Result])
+                self.Mod_Mngr.Check_Codes_View(CHECK_DBCODES_LOADED, VIEW_OKand_ERROR)
+
+        elif Result == NONE:    # In case of "NO" to add record request
+            pass
+        else:
+            View_Message([Result])
+            pass
 
     # ------------------------     ***   Update TR code Record      -------------------------------
     def Clk_Update_Record(self):
@@ -345,15 +336,15 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         if not self.Test_Transaction_Data(TrCode):
             return
         else:
-            self.Set_State_Butt_New_Updt('disabled', 'disabled')
+            # self.Set_State_Butt_New_Updt('disabled', 'disabled')  # New Update
             Result = self.Update_Record_Code()
             if Result == OK:
-                Res_List = self.Data.Check_Codesdatabase()
+                Res_List = self.Data.Check_Codesdatabase(ON_SELECTIONS)
                 if not Res_List:
                     Msg = Message_Dlg(MsgBox_Info, 'Codice aggiornato correttamente')
                     Msg.wait_window()
                     if self.Frames_Refresh():
-                        self.Set_Btn_Status()
+                        self.Set_Status()
                         self.Chat.Tx_Request([TOP_CODES_MNGR, [ANY], CODES_DB_UPDATED, []])
                 else:
                     Msg = Message_Dlg(MsgBox_Info, Res_List[0])
@@ -381,6 +372,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
                     return True
                 else:
                     View_Message([Result[1]])
+                    pass
                     return False
             else:
                 Msg_Dlg = Message_Dlg(MsgBox_Err, 'String to find\nNot matched with Full description')
@@ -394,6 +386,6 @@ class Top_Codes_Mngr(Super_Top_Mngr):
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Ceck_Codes_DB(self):
-        self.Mod_Mngr.View_Check_Codes_Db(2)
+        self.Mod_Mngr.Check_Codes_View(ON_SELECTIONS, VIEW_OKand_ERROR)
 
 # ==============================================================================================================

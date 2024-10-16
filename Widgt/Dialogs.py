@@ -4,8 +4,6 @@
 # -------------------------------------------------------------------------------------- #
 
 import tkinter as tk
-from Common.Common_Functions import *
-
 from Widgt.Widgets import TheText
 from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheCombo
@@ -23,7 +21,7 @@ class Message_Dlg(tk.Toplevel):
         self.configure(bg='lightblue')
         self.Texto = ''
         self.data  = ' '
-        self.MaxChar_xLine = 44
+        self.MaxChar_xLine = 46     #  VERY IMPORTANT for nLines count
 
         if Texto[-1] == '\n':
             self.Txt = Texto[:-1]
@@ -46,33 +44,34 @@ class Message_Dlg(tk.Toplevel):
                 if self.nLine        > 80:
                     break
         self.nLine += 2
-        VertFlot  = float(self.nLine) * 18.1
+        VertFlot  = float(self.nLine) * 14.5
         Vert_Delt = int(VertFlot)
-        Btn_Ypos = 60 + Vert_Delt
-        VertYgeo = 120 +Vert_Delt
-        self.geometry('430x'+ str(VertYgeo)+'+900+50')   # 650
+        Btn_Xpos  = 280
+        Btn_Ypos  = 60  + Vert_Delt
+        VertYgeo  = 120 + Vert_Delt
+        self.geometry('450x' + str(VertYgeo)+'+900+50')
 
         if Option == MsgBox_Info:
             self.title('Info Message')
             TheText(self, Txt_MsgWhite, 10, 10, self.MaxChar_xLine, self.nLine, self.Texto)
-            TheButton(self, Btn_Def_En, 260, Btn_Ypos, 15, 'OK', self.Clk_OK)
+            TheButton(self, Btn_Def_En, Btn_Xpos, Btn_Ypos, 15, 'OK', self.Clk_OK)
 
         elif Option == MsgBox_Err:
             self.title('E R R O R   Message')
             TheText(self, Txt_MsgErr,   10, 10, self.MaxChar_xLine, self.nLine, self.Texto)
-            TheButton(self, Btn_Def_En, 260, Btn_Ypos, 15, 'OK', self.Clk_OK)
+            TheButton(self, Btn_Def_En, Btn_Xpos, Btn_Ypos, 15, 'OK', self.Clk_OK)
 
         elif Option == MsgBox_Ask:
             self.title('YES  NO  Selection Request')
             self.Texto += ' ?'
             TheText(self, Txt_MsgWhite, 10, 10, self.MaxChar_xLine, self.nLine, self.Texto)
             # TheText(self, Txt_MsgWhite,  self.MaxChar_xLine, self.MaxChar_xLine, self.Texto)
-            TheButton(self, Btn_Def_En, 260, Btn_Ypos, 15, 'YES', self.Clk_YES)
-            TheButton(self, Btn_Def_En,  10, Btn_Ypos,  15, 'NO', self.Clk_NO)
+            TheButton(self, Btn_Def_En, Btn_Xpos, Btn_Ypos, 15, 'YES', self.Clk_YES)
+            TheButton(self, Btn_Def_En,  20, Btn_Ypos,  15, 'NO', self.Clk_NO)
 
         else:
             self.title('FATAL ERROR\n!!!  Message type unknown   !!!')
-            TheText(self, Txt_MsgErr,    43, 20, self.Nchar_xLine, self.nLine, 'Message Code NOT FOUND')
+            TheText(self,   Txt_MsgErr,  43, 20, self.Nchar_xLine, self.nLine, 'Message Code NOT FOUND')
             TheButton(self, Btn_Def_En, 260, Btn_Ypos, 15, 'OK', self.Clk_OK)
         self.wait_visibility()
         self.grab_set()
@@ -123,6 +122,7 @@ class View_Message(tk.Toplevel):
             pass
         self.Txt1 = TheTextPoints(self, Txt_Disab,  20, 20, 50, 20, Messg, 11)
         TheButton(self, Btn_Def_En, 270, 410, 16, 'E X I T ', self.Call_OnClose)
+        pass
 
     # ----------------------------------------------------------------------------- #
     def Call_OnClose(self):

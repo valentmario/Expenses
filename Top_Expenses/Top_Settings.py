@@ -143,7 +143,7 @@ class Top_Settings(tk.Toplevel):
     # -----------------------------------------------------------------------------------
     def Clk_Sel_Codes_DB(self):
         self.Dummy = 0
-        self.Mod_Mngr.Sel_Codes(TOP_SETTINGS)
+        self.Mod_Mngr.Sel_Codes_Mngr(TOP_SETTINGS)
         pass
 
     def Clk_View_Codes_DB(self):
@@ -151,7 +151,7 @@ class Top_Settings(tk.Toplevel):
 
     # -----------------------------------------------------------------------------------
     def Clk_Sel_xlsx_File(self):
-        self.Mod_Mngr.Sel_Xlsx(TOP_CODES_MNGR)
+        self.Mod_Mngr.Sel_Xlsx_Mngr(TOP_CODES_MNGR)
 
     # -----------------------------------------------------------------------------------
     def Clk_View_xlsx_File(self):
@@ -159,7 +159,7 @@ class Top_Settings(tk.Toplevel):
 
     # ------------------------------------------------------------------------------------
     def Clk_Sel_Transact(self):
-        self.Mod_Mngr.Sel_Transact(TOP_SETTINGS)
+        self.Mod_Mngr.Sel_Transact_Mngr(TOP_SETTINGS)
         pass
 
     # ------------------------------------------------------------------------------------
@@ -170,6 +170,7 @@ class Top_Settings(tk.Toplevel):
     @classmethod
     def Clk_View_Msg(cls):
         View_Message(['IL MIO MESSAGGIO\n1\n2\n3\n4'])
+        pass
 
     # ------------------------------------------------------------------------------------
     def Clk_View_Chat(self):
@@ -199,30 +200,40 @@ class Top_Settings(tk.Toplevel):
             Total = self.Data.Get_Total_Rows()
         Queries_List = self.Data.Get_Selections_Member(Ix_Query_List)
         Files_Status = []
-        for Index in range (0, 4):
+        for Index in range (0, 3):
             Stat = self.Data.Get_Files_Loaded_Stat(Index)
             strStat = LOADED
             if not Stat:
                 strStat = 'Not Loaded'
             Files_Status.append(strStat)
-        strStat1 = Files_Status[0]
-        strStat2 = Files_Status[1]
-        strStat3 = Files_Status[2]
-        strStat4 = Files_Status[3]
+        strStat1 = Files_Status[Ix_Codes_Loaded]
+        strStat2 = Files_Status[Ix_Xlsx_Lists_Loaded]
+        strStat3 = Files_Status[Ix_Transact_Loaded]
+        Multiple = self.Data.Get_Multiple_List()
+        strMulti = '\n------  No multiple codes match found  ----'
+        if Multiple:
+            CodesOrd = 0
+            strMulti = '\n--------   Multiple matching codes  -------\n'
+            for Item in Multiple:
+                CodesOrd += 1
+                ToAdd     = 'Code' + str(CodesOrd) + ': '
+                ToAdd    += str(Item[0]) + ' '
+                strMulti += ToAdd
+            pass
 
         strText = ''
-        strText +=     '-------------  Codes DB  -----------------\n'
+        strText +=     '-------------  Codes DB  ------------------\n'
         strText += self.Data.Get_Selections_Member(Ix_Codes_File)
-        strText += '\n\n------------   Xlsx file  ----------------\n'
+        strText += strMulti
+        strText += '\n\n------------   Xlsx file  -----------------\n'
         strText += self.Data.Get_Selections_Member(Ix_Xlsx_File)
-        strText += '\n\n-----------  Transactions DB  ------------\n'
+        strText += '\n\n-----------  Transactions DB  -------------\n'
         strText += self.Data.Get_Selections_Member(Ix_Transact_File)
-        strText += '\n\n----------  Files status  ----------------\n'
-        strText += strStat1 + '  ' + strStat2 + '  ' + strStat3 + '  ' + strStat4
+        strText += '\n\n--- Files status:  Codes  Xlsx  Transact --\n'
+        strText += strStat1 + '  ' + strStat2 + '  ' + strStat3
 
-        # [self._Xlsx_Conto, self._Xlsx_Year, self._Xlsx_Month, self._Transact_Year]
         Str = self.Get_Ident()
-        strText += '\n\n--------  Xlsx Transactions  ident -------\n'
+        strText += '\n\n-- Xlsx: Conto Year Month   Transact_Year -\n'
         strText += Str[0] + '   ' + Str[1] + '   ' + Str[2] + '   ' + Str[3]
 
         strText += '\n\n----------  Xlsx total rows   -------------\n'
@@ -231,7 +242,7 @@ class Top_Settings(tk.Toplevel):
         strText += '\nTotal without-code ' + str(Total[Ix_Tot_Without_Code])
 
         TransactYear = str(self.Data.Get_TransacYear())
-        strText += '\n\n---  Queries  selections  -----------------'
+        strText += '\n\n----  Queries  selections  ----------------'
         strText +=   '\nQuery Year:       ' + TransactYear
         strText +=   '\nQuery Conto:      ' + Queries_List[Ix_Query_Conto]
         strText +=   '\nQuery month:      ' + Queries_List[Ix_Query_Month]
@@ -244,6 +255,7 @@ class Top_Settings(tk.Toplevel):
         for Top in self.Top_List:
             strStart += Top + '\n'
         strText += strStart
+        print(strText)
         Msg = Message_Dlg(MsgBox_Info, strText)
         Msg.wait_window()
 
@@ -258,7 +270,7 @@ class Top_Settings(tk.Toplevel):
 
     # --------------------------------------------------------------------------------------
     def Clk_Check_Codes_DB(self):
-        self.Mod_Mngr.View_Check_Codes_Db(2)
+        self.Mod_Mngr.Check_Codes_View(ON_SELECTIONS, VIEW_OKand_ERROR)
 
     # ----------------------------------------------------------------------------------------
     def Clk_ForTest(self):

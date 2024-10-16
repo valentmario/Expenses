@@ -23,7 +23,7 @@ class Top_View_Codes(tk.Toplevel):
         self.Chat.Attach([self, TOP_CODES_VIEW])
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
 
-        self.resizable(False, False)
+        self.resizable(True, True)
         # self.geometry(Top_View_geometry)
         self.title('*****     Codici  dei Movimenti     ***** ')
         self.configure(background=BakGnd)

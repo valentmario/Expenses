@@ -47,6 +47,7 @@ class Top_Queries(Super_Top_Queries):
     # ------------------------------------------------------------------------------------------------
     def Load_All_Data(self):
         self.OneYear_Transact_List = self.Data.Get_Transact_Table()
+        self.Setup_Year_Conto_Month_Tot_Date()
         self.Set_TR_GR_CA_Sel_List()
         self.Setup_TR_GR_CA_OptManu()
 

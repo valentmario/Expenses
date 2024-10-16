@@ -23,7 +23,7 @@ class Modules_Manager(Mod_Mngr_Init):
         self.Transact_Filename  = ''
         self.Transact_Year      = None
 
-        # =======================   Selections  settings    ==========================================#
+    # =======================   Selections  settings    ==========================================#
     #                  called at start from Main_Window                                           #
     # =========================================================================================== #
     def Cek_Create_Selections(self):
@@ -75,22 +75,28 @@ class Modules_Manager(Mod_Mngr_Init):
                     CheckList.append(Check)
                 break
         if not CheckList:
-            return True
+            return True                                     # CEK_XLSX_TRUE
                 
         for Check in CheckList:
-            if Check == CEK_CODES:                          # CEK_CODES
-                if not self.Init_Codes(Origin):
+            if Check == CEK_CODES:                          # CEK_CODES NO Control
+                self.Init_Codes(Origin)
+                # NOT Checked
+
+            if Check == CEK_CODES_TRUE:                     # CEK_CODES with Control
+                self.Init_Codes(Origin)
+                if self.Data.Get_Multiple_List():
                     return False
 
-            if Check == CEK_XLSX_LIST:                      # CEK_XLSX LISTS
+            if Check == CEK_XLSX_LIST:                      # CEK_XLSX LISTS NO Control
+                self.Init_Xlsx_Lists(Origin)
+                # NOT Checked
+
+            if Check == CEK_XLSX_TRUE:                      # CEK_XLSX LISTS with Control
                 if not self.Init_Xlsx_Lists(Origin):
-                    # self.Xlsx_Sel_Request(Origin)
-                    pass
+                    return False
 
             if Check == CEK_TOP_INSERT:                     # CEK_TRANSACT for Top_Insert
-                if self.Init_Top_Insert(Origin):
-                    pass
-                else:
+                if not self.Init_Top_Insert(Origin):
                     return False
 
             if Check == CEK_TOP_QUERIES:                    # CEK_TRANSACT for Top_Queries
@@ -102,7 +108,7 @@ class Modules_Manager(Mod_Mngr_Init):
     def Xlsx_Sel_Request(self, Origin):
         Msg_Dlg = Message_Dlg(MsgBox_Err, 'an Xlsx file must be selected')
         Msg_Dlg.wait_window()
-        if self.Sel_Xlsx(Origin):
+        if self.Sel_Xlsx_Mngr(Origin):
             return True
         else:
             return False

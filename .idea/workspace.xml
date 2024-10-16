@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Running OK.&#10;Delete spaces on:&#10;String To Find and&#10;Full Description">
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="All OK but:&#10;CR HUB BERGAMO matches either with:&#10;Humanitas Gavazzeni and&#10;CR HUB CENTER IP">
+      <change afterPath="$PROJECT_DIR$/aDocuments/Codes_Data_org.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aDocuments/Transactions_Data_org.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/aDocuments/Xlsx_Data_org.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Common/Common_Functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Common_Functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Common/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Classes/Filesnames_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Filesnames_Mngr.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data_Classes/Transact_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Transact_DB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main_Window.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main_Window.py" afterDir="false" />
@@ -18,14 +22,14 @@
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_GR_Codes_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_GR_Codes_Mngr.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Insert.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Insert.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Queries.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Queries.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_View_Transactions.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_View_Transactions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Xlsx_Rows_View.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Xlsx_Rows_View.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Widgt/Dialogs.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgt/Dialogs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aDocuments/Data_organization.txt" beforeDir="false" afterPath="$PROJECT_DIR$/aDocuments/Data_organization.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgt/Widgets.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgt/Widgets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/aDocuments/Data_organization.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/unknown" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,10 +58,15 @@
     "Python.Main_Window.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/mario/bExpenses/aExpSaved/aExp_20240914",
+    "last_opened_file_path": "/home/mario/bExpenses/aExp_/aDocuments",
     "settings.editor.selected.configurable": "editor.preferences.fonts.default"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/aDocuments" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -73,14 +82,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725472318728</updated>
-    </task>
-    <task id="LOCAL-00020" summary=".gitignore updated with a lot of files">
-      <option name="closed" value="true" />
-      <created>1725477781723</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1725477781723</updated>
     </task>
     <task id="LOCAL-00021" summary="__pycache__ added in .gitignore">
       <option name="closed" value="true" />
@@ -466,7 +467,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728490337684</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="All OK but:&#10;CR HUB BERGAMO matches either with:&#10;Humanitas Gavazzeni and&#10;CR HUB CENTER IP">
+      <option name="closed" value="true" />
+      <created>1728673004208</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1728673004209</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -493,7 +502,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Data_Organization updated deleted two txt files and File Dialog inserted on Dialog" />
     <MESSAGE value="Small corrections to eliminate unused things" />
     <MESSAGE value="The record insert on db not yet running OK" />
     <MESSAGE value="The record insert on db transactions seems work correctly" />
@@ -518,7 +526,8 @@
     <MESSAGE value="Creating a Super class for Modules_Manager for:&#10;in parent: &#10;all methods for Init Cek_name Sel and Load&#10;in child:&#10;Launcher and init for Top_Levels" />
     <MESSAGE value="Crating transactions  2020-22-23-24" />
     <MESSAGE value="Running OK.&#10;Delete spaces on:&#10;String To Find and&#10;Full Description" />
-    <option name="LAST_COMMIT_MESSAGE" value="Running OK.&#10;Delete spaces on:&#10;String To Find and&#10;Full Description" />
+    <MESSAGE value="All OK but:&#10;CR HUB BERGAMO matches either with:&#10;Humanitas Gavazzeni and&#10;CR HUB CENTER IP" />
+    <option name="LAST_COMMIT_MESSAGE" value="All OK but:&#10;CR HUB BERGAMO matches either with:&#10;Humanitas Gavazzeni and&#10;CR HUB CENTER IP" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -530,18 +539,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>289</line>
+          <line>301</line>
           <option name="timeStamp" value="149" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Widgt/Dialogs.py</url>
-          <line>134</line>
-          <option name="timeStamp" value="157" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>251</line>
-          <option name="timeStamp" value="1027" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
@@ -550,32 +549,32 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py</url>
-          <line>99</line>
+          <line>100</line>
           <option name="timeStamp" value="1543" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>77</line>
+          <line>76</line>
           <option name="timeStamp" value="1548" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py</url>
-          <line>125</line>
+          <line>126</line>
           <option name="timeStamp" value="1598" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Transact_DB.py</url>
-          <line>117</line>
+          <line>116</line>
           <option name="timeStamp" value="1646" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Transact_DB.py</url>
-          <line>133</line>
+          <line>132</line>
           <option name="timeStamp" value="1659" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Widgt/Widgets.py</url>
-          <line>306</line>
+          <line>297</line>
           <option name="timeStamp" value="1684" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -585,207 +584,122 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Transact_DB.py</url>
-          <line>149</line>
+          <line>148</line>
           <option name="timeStamp" value="1780" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Transact_DB.py</url>
-          <line>160</line>
+          <line>159</line>
           <option name="timeStamp" value="1782" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Transact_DB.py</url>
-          <line>84</line>
+          <line>83</line>
           <option name="timeStamp" value="1847" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>135</line>
-          <option name="timeStamp" value="1851" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Transact_DB.py</url>
-          <line>121</line>
+          <line>120</line>
           <option name="timeStamp" value="1857" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Transact_DB.py</url>
-          <line>131</line>
+          <line>130</line>
           <option name="timeStamp" value="1858" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>152</line>
-          <option name="timeStamp" value="1868" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>
-          <line>174</line>
+          <line>173</line>
           <option name="timeStamp" value="1869" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>
-          <line>136</line>
+          <line>135</line>
           <option name="timeStamp" value="1872" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>172</line>
-          <option name="timeStamp" value="1880" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>163</line>
-          <option name="timeStamp" value="1881" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Transact_DB.py</url>
-          <line>125</line>
+          <line>124</line>
           <option name="timeStamp" value="1884" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>
-          <line>255</line>
+          <line>254</line>
           <option name="timeStamp" value="1886" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>184</line>
-          <option name="timeStamp" value="1891" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>159</line>
-          <option name="timeStamp" value="1896" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>
-          <line>259</line>
+          <line>258</line>
           <option name="timeStamp" value="1899" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py</url>
-          <line>41</line>
-          <option name="timeStamp" value="1903" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>452</line>
-          <option name="timeStamp" value="1906" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
-          <line>328</line>
-          <option name="timeStamp" value="1908" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>434</line>
-          <option name="timeStamp" value="1935" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>383</line>
-          <option name="timeStamp" value="1943" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>312</line>
+          <line>332</line>
           <option name="timeStamp" value="1955" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>327</line>
+          <line>347</line>
           <option name="timeStamp" value="1956" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>320</line>
+          <line>340</line>
           <option name="timeStamp" value="1960" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>324</line>
-          <option name="timeStamp" value="1961" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>326</line>
-          <option name="timeStamp" value="1962" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>331</line>
-          <option name="timeStamp" value="1963" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>339</line>
+          <line>329</line>
           <option name="timeStamp" value="1969" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py</url>
-          <line>126</line>
+          <line>127</line>
           <option name="timeStamp" value="1971" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>258</line>
-          <option name="timeStamp" value="1986" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>461</line>
-          <option name="timeStamp" value="1998" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
-          <line>329</line>
-          <option name="timeStamp" value="1999" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>375</line>
+          <line>372</line>
           <option name="timeStamp" value="2000" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>206</line>
+          <line>208</line>
           <option name="timeStamp" value="2001" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>339</line>
+          <line>336</line>
           <option name="timeStamp" value="2002" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>356</line>
+          <line>353</line>
           <option name="timeStamp" value="2005" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>349</line>
+          <line>346</line>
           <option name="timeStamp" value="2008" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>228</line>
+          <line>233</line>
           <option name="timeStamp" value="2009" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>255</line>
+          <line>260</line>
           <option name="timeStamp" value="2010" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>277</line>
+          <line>282</line>
           <option name="timeStamp" value="2011" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
-          <line>283</line>
+          <line>288</line>
           <option name="timeStamp" value="2012" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -794,94 +708,134 @@
           <option name="timeStamp" value="2018" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
-          <line>173</line>
-          <option name="timeStamp" value="2019" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Queries.py</url>
           <line>48</line>
           <option name="timeStamp" value="2043" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
-          <line>149</line>
-          <option name="timeStamp" value="2050" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py</url>
-          <line>130</line>
-          <option name="timeStamp" value="2051" />
+          <line>111</line>
+          <option name="timeStamp" value="2096" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Main_Window.py</url>
-          <line>92</line>
-          <option name="timeStamp" value="2053" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>94</line>
-          <option name="timeStamp" value="2057" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>88</line>
-          <option name="timeStamp" value="2058" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>57</line>
-          <option name="timeStamp" value="2060" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>62</line>
-          <option name="timeStamp" value="2061" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
-          <line>64</line>
-          <option name="timeStamp" value="2062" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
-          <line>21</line>
-          <option name="timeStamp" value="2063" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Main_Window.py</url>
-          <line>163</line>
-          <option name="timeStamp" value="2066" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>219</line>
-          <option name="timeStamp" value="2068" />
+          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
+          <line>352</line>
+          <option name="timeStamp" value="2102" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Codes_Mngr.py</url>
-          <line>20</line>
-          <option name="timeStamp" value="2071" />
+          <line>134</line>
+          <option name="timeStamp" value="2103" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
+          <line>413</line>
+          <option name="timeStamp" value="2104" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
+          <line>412</line>
+          <option name="timeStamp" value="2106" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_View.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="2107" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
+          <line>143</line>
+          <option name="timeStamp" value="2111" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
+          <line>314</line>
+          <option name="timeStamp" value="2115" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
+          <line>272</line>
+          <option name="timeStamp" value="2138" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
+          <line>157</line>
+          <option name="timeStamp" value="2203" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Data_Classes/Filesnames_Mngr.py</url>
+          <line>49</line>
+          <option name="timeStamp" value="2227" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>
+          <line>152</line>
+          <option name="timeStamp" value="2228" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
+          <line>315</line>
+          <option name="timeStamp" value="2231" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
+          <line>316</line>
+          <option name="timeStamp" value="2232" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Settings.py</url>
+          <line>216</line>
+          <option name="timeStamp" value="2258" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>155</line>
-          <option name="timeStamp" value="2074" />
+          <line>238</line>
+          <option name="timeStamp" value="2271" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
+          <line>65</line>
+          <option name="timeStamp" value="2284" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
+          <line>294</line>
+          <option name="timeStamp" value="2285" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py</url>
+          <line>243</line>
+          <option name="timeStamp" value="2286" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Modules_Manager.py</url>
+          <line>151</line>
+          <option name="timeStamp" value="2311" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Main_Window.py</url>
+          <line>77</line>
+          <option name="timeStamp" value="2312" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
-          <line>43</line>
-          <option name="timeStamp" value="2082" />
+          <line>225</line>
+          <option name="timeStamp" value="2321" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
-          <line>37</line>
-          <option name="timeStamp" value="2083" />
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Insert.py</url>
+          <line>184</line>
+          <option name="timeStamp" value="2324" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
-          <line>49</line>
-          <option name="timeStamp" value="2084" />
+          <url>file://$PROJECT_DIR$/Top_Expenses/Super_Top_Queries.py</url>
+          <line>33</line>
+          <option name="timeStamp" value="2329" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Top_Queries.py</url>
+          <line>18</line>
+          <option name="timeStamp" value="2330" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

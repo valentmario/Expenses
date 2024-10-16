@@ -127,18 +127,21 @@ ANY              = 'All Modules     '
 
 # Checkes to be maade before a Tolevel launch
 CEK_CODES      = 'Check codes DB     '
+CEK_CODES_TRUE = 'Check codes DB if OK'
 CEK_XLSX_LIST  = 'Check xlsx lists   '
+CEK_XLSX_TRUE  = 'Check xlsx if OK   '
+
 CEK_TOP_INSERT = 'Check for Top_Insert '
 CEK_TOP_QUERIES= 'Check for Top_Queries '
 
 LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
-                    [TOP_CODES_MNGR,    [CEK_CODES, CEK_XLSX_LIST]],
+                    [TOP_CODES_MNGR,    [CEK_CODES,      CEK_XLSX_LIST]],
                     [TOP_CODES_VIEW,    [CEK_CODES]],
                     [TOP_GR_MNGR,       [CEK_CODES]],
-                    [TOP_XLSX_VIEW,     [CEK_CODES,  CEK_XLSX_LIST]],
-                    [TOP_INS,           [CEK_CODES,  CEK_XLSX_LIST, CEK_TOP_INSERT]],
-                    [TOP_VIEW_TRANSACT, [CEK_CODES,  CEK_TOP_QUERIES]],
-                    [TOP_QUERY,         [CEK_CODES,  CEK_TOP_QUERIES]],
+                    [TOP_XLSX_VIEW,     [CEK_CODES,       CEK_XLSX_LIST]],
+                    [TOP_INS,           [CEK_CODES_TRUE,  CEK_XLSX_TRUE, CEK_TOP_INSERT]],
+                    [TOP_VIEW_TRANSACT, [CEK_CODES_TRUE,  CEK_TOP_QUERIES]],
+                    [TOP_QUERY,         [CEK_CODES_TRUE,  CEK_TOP_QUERIES]],
                     [TOP_VIEW_MESS,     []] ]
 
 # Participants_List  [<class name>,  Name]
@@ -179,7 +182,7 @@ NO   = 'NO'
 NONE = 'None'
 OK     = 'OK'
 NOK    = 'NOK'
-LOADED = 'Loaded'
+LOADED = 'Loaded'   # it means that the file or Db are Loaded but can contains error
 EMPTY  = 'Empty'
 
 ALL_CODES   = 'All codes'
@@ -188,7 +191,7 @@ ALL_CAT     = 'All categories'
 
 Selections_Dir_Name    = '/home/mario/aExp_Selections'
 Selections_Full_Name   = '/home/mario/aExp_Selections/Selections'
-Default_Init_Dir     = '/home/mario'
+Default_Init_Dir       = '/home/mario/bFiles'
 #Default_Init_Dir       = '/home/mario/bXLSX_Files/FIDEU/FIDEU_2023'
 
 # Txt File Items Indexes  ----------------------------
@@ -268,7 +271,15 @@ CODES_VIEW_SEL = [VIEW_ALPHAB, VIEWxCODE, VIEW_SEARCH]
 # =========================================================== #
 #             DATA BASES  STRUCTURE                           #
 # =========================================================== #
-#   -----  Database  Codes_DB_2024-07-17.db -----------------
+VIEW_ONLY_ERROR  = 1
+VIEW_OKand_ERROR = 2
+
+CHECK_DBCODES_LOADED = 1
+CHECK_TEMT_DBCODES   = 2
+ISSTRING             = 1
+ISLIST               = 2
+
+#   -----  Database  Codes_DB_yyy-mm-dd.db -----------------
 # TABLE  TRANSACT_CODES
 Len_Codes_Filename_Min  = 22
 Ident_DB_Filename   = 'Codes_DB/Codes_DB_20'

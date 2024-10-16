@@ -29,7 +29,8 @@ class Files_Names_Manager:
         self.Sheet_Name          = UNKNOWN
         self._Work_Sheet         = None
         self._Transact_DB_Filename = UNKNOWN
-        self._Files_Loaded       = [False, False, False, False] # Codes_Db, Xlsx_Rows, Xlsx_Lists, Transact_Db
+        # self._Files_Loaded       = [False, False, False, False] # Codes_Db, Xlsx_Rows, Xlsx_Lists, Transact_Db
+        self._Files_Loaded = [False, False, False]  # Codes_Db, Xlsx_Lists, Transact_Db
 
         self._Xlsx_Conto    = None  # or on selecting new file  FIDEU_2024_01.xlsx
         self._Xlsx_Year     = None  # they are  calculated on startup

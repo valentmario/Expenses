@@ -56,8 +56,8 @@ class Xlsx_Manager(Codes_db):
         self._tiYear_List   = []
         # -----------------------------------------------------------------------------------------
         self._tXlsx_Conto    = None  # these attributs are not saved on Selections
-        self._tXlsx_Year     = None  # they wil be calculated in Load_Xlsx_Lists()
-        self._tXlsx_Month    = None
+        self._tXlsx_Year     = None  # calculated in _Set_Xlsx_Conto_Year_Month()
+        self._tXlsx_Month    = None  #    """      "     """      """
 
     # ----------------------------------------------------------------------------------- #
     #            ----------------      public   methods   -----------------               #
@@ -131,13 +131,14 @@ class Xlsx_Manager(Codes_db):
         self._Xlsx_Conto = self._tXlsx_Conto
         self._Xlsx_Year  = self._tXlsx_Year
         self._Xlsx_Month = self._tXlsx_Month
-        self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
 
     # -----------------------------------------------------------------------------------------
-    def Load_Xlsx_Lists_FromData(self, Filename):
+    def Load_Xlsx_Lists(self, Filename):
         File_Name    = Filename
         if Filename == ON_SELECTIONS:
             File_Name = self._Xlsx_Filename
+        if File_Name  == UNKNOWN:
+            return 'Xlsx Filename is unknown'
 
         self._Init_Xlsx_Data()    # ------------------------------------------------
         # Xlsx file ident is clear on _Init_Xlsx_Data
@@ -153,6 +154,7 @@ class Xlsx_Manager(Codes_db):
             Result = self._Create_Xlsx_Lists()                  # create xlsx lists
             if Result == OK:
                 self._Save_Xlsx_Data()   # -------------------------------------------
+                self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
                 return OK
             else:
                 return Result
@@ -201,19 +203,16 @@ class Xlsx_Manager(Codes_db):
                     else:
                         myRow.append(Val)
                 self._tXLSX_Rows_From_Sheet.append(myRow)    # Descripritions as in Sheet, Date is str
-        if self._tTot_OK == 0:
-            return 'no correct rows found on xlsx file'
+        # if self._tTot_OK == 0:
+        #     return 'no correct rows found on xlsx file'
         if self._tXlsx_Conto == FLASH or self._tXlsx_Conto == AMBRA or self._tXlsx_Conto == POSTA:
             self._Adjust_Rows_MostToLess()   # Invert order from Most Recent to Less
-        # elif self._tXlsx_Conto == POSTA:
-        #     pass                                # """     "   "  "  POSTA
-        # else:
-        #     pass                                # NOT identified leave as FIDEU
+
         # -------------
-        if not self._tXLSX_Rows_Desc_Compact:
-            return 'xlsx file contains any row with significant data'
-        else:
-            return OK
+        # if not self._tXLSX_Rows_Desc_Compact:
+        #     return 'xlsx file contains any row with significant data'
+        # else:
+        return OK
 
     # ----------------------  Set tree rows list   ---------------------------------------  #
     def _Create_Xlsx_Lists(self):
@@ -226,25 +225,23 @@ class Xlsx_Manager(Codes_db):
         for Row in self._tXLSX_Rows_Desc_Compact:
             Row_Without_Code = []
             Row_With_Code    = []
-            Full_Desc        = self.Description_Select(Row[iRow_Descr1], Row[iRow_Descr2])
+            Full_Desc        = self.Description_Select(self._tXlsx_Conto, Row[iRow_Descr1], Row[iRow_Descr2])
             Row[iRow_Descr1] = Full_Desc
-            if int(Row[iRow_nRow]) == 35:
-                pass
+            pass
 
             # Find for Full Description of Row  a String_To_Find on Codes Table
             # If more than one String_To_Find exists : ERROR
+
             Result = self._Find_StrToFind_InFullDesc(Row, Full_Desc)
-            # return:      [NOK, []]  [NOK, ErrMsg] [OK, Found_List[0]]
+            # return:      [NOK, []]  [OK, Found_List[0]]
+
             if Result[0] == NOK:
-                if not Result[1]:
-                    self._tTot_WithoutCode += 1
-                    Row_Without_Code.append(Row[iRow_nRow])       # nRow
-                    Row_Without_Code.append(Row[iRow_Valuta])     # Valuta
-                    Row_Without_Code.append(Row[iRow_Addeb])      # Addebiti
-                    Row_Without_Code.append(Full_Desc)            # Full_Desc
-                    self._tWihtout_Code_Tree_List.append(Row_Without_Code)
-                else:
-                    return Result[1]
+                self._tTot_WithoutCode += 1
+                Row_Without_Code.append(Row[iRow_nRow])       # nRow
+                Row_Without_Code.append(Row[iRow_Valuta])     # Valuta
+                Row_Without_Code.append(Row[iRow_Addeb])      # Addebiti
+                Row_Without_Code.append(Full_Desc)            # Full_Desc
+                self._tWihtout_Code_Tree_List.append(Row_Without_Code)
             else:
                 Rec_Found = Result[1]
                 self._tTot_WithCode += 1
@@ -390,16 +387,18 @@ class Xlsx_Manager(Codes_db):
     #  while the Worksheet is the container of Data of one Sheet                        #
     # --------------------------------------------------------------------------------- #
     def _Get_Work_Sheet_Rows(self, Filename):
+        Work_Book = None
         try:
             Work_Book = load_workbook(Filename)
-        except:
+        except sqlite3.Error:
             self._tTot_Rows = -1
             return
-        self.SheetName   = Work_Book.sheetnames[0]   # always the first sheet
-        self.Update_Selections(self.SheetName, Ix_Sheet_Name)
-        self._Work_Sheet = Work_Book[self.SheetName]
-        self._tTot_Rows  = self._Work_Sheet.max_row
-        pass
+        finally:
+            self.SheetName   = Work_Book.sheetnames[0]   # always the first sheet
+            self.Update_Selections(self.SheetName, Ix_Sheet_Name)
+            self._Work_Sheet = Work_Book[self.SheetName]
+            self._tTot_Rows  = self._Work_Sheet.max_row
+            pass
 
     # -----------------------------------------------------------------------------------
     @classmethod
@@ -425,12 +424,13 @@ class Xlsx_Manager(Codes_db):
         return dateobject
 
     # -----------------------------------------------------------------------------------
-    def Description_Select(self, Desc1, Desc2):
+    def Description_Select(self, XlsxConto, Desc1, Desc2):
         self.Dummy = 1
         Typ1 = type(Desc1)
         Typ2 = type(Desc2)
         Len1  = 0
         Len2  = 0
+        String_LenNOK = str(XlsxConto) + ' - ' + str(Desc1) + ' --- ' + str(Desc2)
         if Typ1 is str:
             Len1 = len(Desc1)
         if Typ2 is str:
@@ -438,9 +438,17 @@ class Xlsx_Manager(Codes_db):
         if not Len1 and not Len2:
             return ''
         if Len1 > Len2:
-            return Desc1
+            Texto = '-----   Len1 > Len2 ---  ' + String_LenNOK
+            print(Texto)
+            pass
+            return String_LenNOK
+        elif Len2 < 20:
+            Texto = '-----    Len2 < 20 ---   ' + String_LenNOK
+            print(Texto)
+            return String_LenNOK
         else:
             return Desc2
+
 
     # ------------------------------------------------------------------------------------
     def Check_The_Row(self, FullDesc, TRcode):

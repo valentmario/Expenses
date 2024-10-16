@@ -211,6 +211,7 @@ class TheText(tk.Text):
         else:
             CleanTexto = Texto.replace('\n', '', 5)
             return CleanTexto
+
     @classmethod
     def Test_Dec(cls, Texto):
         for Digit in Texto:
@@ -231,10 +232,6 @@ class TheText(tk.Text):
     # -------------------------------------------
     def Text_Hide(self):
         self.place(x=xyToHide, y=xyToHide)
-
-
-
-
 
 
 
@@ -280,12 +277,6 @@ class TheButton(ttk.Button):
         self.Btn_Text = Name
         self.configure(text=Name, command=Command, width=Nchar)
         self.place(x=PosX, y=PosY)
-
-    def Set_Btn_State(self, Status):
-        if Status == Btn_Disab:
-            self.configure(state='disabled')
-        else:
-            self.configure(state='normal')
 
     def Btn_Enable(self):
         self.configure(state='normal')

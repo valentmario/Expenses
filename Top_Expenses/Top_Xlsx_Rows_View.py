@@ -8,7 +8,7 @@ from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Data_Classes.Transact_DB import Data_Manager
 
-from Widgt.Dialogs import Print_Received_Message
+from Widgt.Dialogs import Print_Received_Message, Message_Dlg
 from Widgt.Tree_Widg import TheFrame
 from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheTextPoints
@@ -34,6 +34,8 @@ class Top_XLSX_Rows_View(tk.Toplevel):
 
         self.Txt1 = TheTextPoints(self, Txt_Disab,  20, 860, 33, 4, '', 11)
         self.Txt2 = TheTextPoints(self, Txt_Disab, 310, 860, 60, 4, '', 11)
+        TheButton(self, Btn_Def_En,  20, 950, 16, 'Select Xlsx File ', self.Clk_Sel_Xlsx)
+        # TheButton(self, Btn_Def_En, 220, 950, 16, 'Show Xlsx File ', self.Clk_Show_Xlsx)
         TheButton(self, Btn_Def_En, 640, 950, 16, 'E X I T ', self.Call_OnClose)
 
         # --------------------------   Create Treeview Frame   ------------------------------------
@@ -53,6 +55,16 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         elif Request_Code == XLSX_UPDATED or Request_Code == UPDATE_FILES_NAME:
             self.Frame_Sheets_Rows_View()
 
+    # ---------------------------------------------------------------------------------------------
+    def Clk_Sel_Xlsx(self):
+        self.Mod_Mngr.Sel_Xlsx_Mngr(TOP_XLSX_VIEW)
+
+        TotalRows = self.Data.Get_Total_Rows()
+        if TotalRows[Ix_Tot_OK] != 0:
+            self.Frame_Sheets_Rows_View()
+        else:
+            Msg_Dlg = Message_Dlg(MsgBox_Info, 'No rows OK on Xlsx file')
+            Msg_Dlg.wait_window()
 
     # ---------------------------------------------------------------------------------------------
     def Clk_On_Sheets_Row(self, Values):
@@ -79,9 +91,24 @@ class Top_XLSX_Rows_View(tk.Toplevel):
         FrameText += str(Total[Ix_Tot_Without_Code]) + '  without code  '
 
         self.Frame_Sheet_Rows.Frame_Title(FrameText)
-        Rows_List = self.Data.Get_Xlsx_Rows_From_Sheet()
+        Rows_List   = self.Data.Get_Xlsx_Rows_From_Sheet()
+        # NoZero_List = Rows_List
+        NoZero_List = []
+
+        for Row in Rows_List:
+            Index = -1
+            No_Zero_Row = []
+            for Item in Row:
+                Item_ToAdd = Item
+                Index += 1
+                if Index == iRow_Accr or Index == iRow_Addeb:
+                    if Item == 0.0:
+                        Item_ToAdd = ''
+                No_Zero_Row.append(Item_ToAdd)
+            NoZero_List.append(No_Zero_Row)
+
+        self.Frame_Sheet_Rows.Load_Row_Values(NoZero_List)
         pass
-        self.Frame_Sheet_Rows.Load_Row_Values(Rows_List)
 
     # ---------------------------------------------------------------------------------------------
     def Set_Focus_On_Row(self, Values):

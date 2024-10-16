@@ -1,0 +1,92 @@
+
+for Buttn enable:   Codes_Loaded   NO_Multiple   Xlsx_Loaded  Rws_OK!0
+
+Clk_Sel_Codes       always
+Clk_View_Codes      Codes_Loaded         
+Clk_GR_Mngr         Codes_Loaded
+Clk_Ceck_Codes_DB   Codes_Loaded
+
+Clk_Delete_Record   Codes_Loaded
+Clk_Add_New_Record  Codes_Loaded
+Clk_Update_Record   Codes_Loaded  Check TR GR CA data
+ 
+Clk_Sel_xlsx        Always
+Clk_View_Xlsx       Codes_Loaded & Xlsx_Loaded
+Clk_View_Rows       Xlsx_Loaded
+Clk_Load_Transact   Codes_Loaded   NO_Multiple   Xlsx_Loaded  Rws_OK!0
+Clk_ViewTransact    Codes_Loaded   Transact_Loaded
+
+
+******************************   Mod_Mngr_Init  for Xlsx ***********************************
+
+Init_Xlsx_Lists(Origin):                          *** on Main_Window   return nothing
+    Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
+    if    unknown:   Sel_Codes_Mngr
+    else 
+        if Loaded:   pass
+        else     :   Load_Codes_Mngr
+                     View_Check_Codes
+        Waarning for no Rows
+
+Cek_Xlsx_Name(Full_Filename):                  *** on Sel_Codes_Mngr & Main_Window
+    OK:                   return True
+    Err: make Message_Dlg return False
+
+Sel_Xlsx_Mngr(Origin):                         *** Init_Codes Top_Codes_Mngr Top_Settings
+    File_Dialog :    
+        Cancel:      return False
+        if Cek_Xlsx_Name
+            Load_Xlsx_Lists_Mngr(Origin, Filename)
+            Update_Selections   Tx_Request
+
+Load_Xlsx_Lists_Mngr(Origin, Full_Filename): *** on Init_Codes  Sel_Codes_Mngr  Make_Checkout
+    Set Filename if unknown return False
+    Reply = Data.Load_Codes_Tables(Filename)
+        OK:   Tx_Request  Return True
+        Err:  View_Message
+              return False
+
+
+******************************      Xlsx_Manager        *******************************
+Load_Xlsx_Lists(Filename)
+    Set Filename if unknown return Diagn
+    _Init_Xlsx_Data
+    _Set_Xlsx_Conto_Year_Month
+
+    Result = _Load_xlsx_Rows_From_Sheet
+    if    not OK:
+          return Result
+    else:
+        Result = self._Create_Xlsx_Lists()                  # create xlsx lists
+        if Result == OK:
+            self._Save_Xlsx_Data() 
+            File_Loaded            return OK
+         else:                     return Result
+        
+
+_Load_xlsx_Rows_From_Sheet(Filename)
+    _Get_Work_Sheet_Rows
+        Err:  return Diagn
+        else:
+              create XLS_Row_List   XLS_Row_Compact
+              return OK
+
+_Get_Work_Sheet_Rows
+    if Except:   return 'error string'
+    return OK 
+
+
+_Create_Xlsx_Lists
+    Create  _tWihtout_Code_Tree_List 
+            _tWith_Code_Tree_List
+    if not _tXlsxRows_Multi_Matching_Text:
+        return OK
+    else:
+         return Multi_List
+
+=============================================================================================
+
+
+
+
+

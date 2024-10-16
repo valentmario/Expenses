@@ -214,14 +214,19 @@ class Super_Top_Queries(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------------------
     def Clk_ComboYear(self, Value):
         self.Dummy = 0
-        # Create filename for transactions,             if self.Load_Transact(Origin, ON_SELECTIONS):
+        CurrYear   = self.Year_Selected
         newTransact_Filename = Transact_ + str(Value) + '.db'
         Dir_Name = Get_Dir_Name(self.Data.Get_Selections_Member(Ix_Transact_File))
         Full_Filename = Dir_Name + newTransact_Filename
         # Init Transactions
         if not self.Mod_Mngr.Cek_Transactions_Name(Full_Filename):
+            self.OptMenu_Year.SetValues(CurrYear)
             return
-        if self.Mod_Mngr.Load_Transact(TOP_QUERY, Full_Filename):
+        self.Data.Update_Selections(Full_Filename, Ix_Transact_File)
+        self.Chat.Tx_Request([TOP_QUERY, [MAIN_WIND], UPDATE_FILES_NAME, []])
+        self.Year_Selected = Value
+
+        if self.Mod_Mngr.Load_Transact_Mngr(TOP_QUERY, Full_Filename):
             self.Load_All_Data()
 
     # -------------------------------------------------------------------------------------------------------------
@@ -304,7 +309,7 @@ class Super_Top_Queries(tk.Toplevel):
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_SelXlsx(self):
-        self.Mod_Mngr.Sel_Xlsx(ON_SELECTIONS)
+        self.Mod_Mngr.Mod_Mngr_Mngr(ON_SELECTIONS)
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Summaries(self):

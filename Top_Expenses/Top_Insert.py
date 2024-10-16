@@ -68,7 +68,6 @@ class Top_Insert(tk.Toplevel):
         self.Sel_Xlsx     = TheButton(self, Btn_Def_En,   20, 900, 23, 'Seleziona un file xlsx', self.Clk_Sel_Xlsx)
         self.ViewXlsx     = TheButton(self, Btn_Def_Dis,  20, 940, 23, 'Mostra movimenti xlsx',  self.Clk_View_Xlsx)
 
-        self.Cod_Mngr     = TheButton(self, Btn_Def_Dis, 260, 900, 23, 'Gestore files',         self.Clk_Codes_Mngr)
         self.ViewTransact = TheButton(self, Btn_Def_Dis, 260, 940, 23, 'Mostra movimenti nel Db',self.Clk_View_Transact)
 
         self.Ins_Btn      = TheButton(self, Btn_Def_En, 500, 900, 23, 'Inserire Movimenti nel Db', self.Clk_Insert)
@@ -148,10 +147,10 @@ class Top_Insert(tk.Toplevel):
 
         # -------------------------------------------------------------------------------------------------
     def Clk_Sel_Xlsx(self):
-        if not self.Mod_Mngr.Sel_Xlsx(TOP_INS):
+        if not self.Mod_Mngr.Sel_Xlsx_Mngr(TOP_INS):
             return
         self.Disable_Buttons()
-        self.Data.Set_Files_Lodad(Ix_Transact_File, False)
+        self.Data.Set_Files_Lodad(Ix_Xlsx_Lists_Loaded, False)
         if not self.Mod_Mngr.Init_Top_Insert(TOP_INS):
             return
         self.Set_Data()
@@ -273,10 +272,6 @@ class Top_Insert(tk.Toplevel):
         Width     = [ 0,    40,   70,      90,        90,        170,           75,        75,       60]
         Form_List_Rows = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_Transact.Tree_Setup(Form_List_Rows)
-
-    # -------------------------------------------------------------------------------------------------
-    def Clk_Codes_Mngr(self):
-        self.Mod_Mngr.Top_Launcher(TOP_CODES_MNGR, TOP_INS, [])
 
     # -------------------------------------------------------------------------------------------------
     def Clk_View_Xlsx(self):

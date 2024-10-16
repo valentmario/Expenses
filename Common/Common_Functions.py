@@ -302,6 +302,8 @@ def GetStrList_ForFind(strToFind):
 
 # -----------------------------------------------------------------------------
 def StrToFind_in_Fulldescr(strToFind, String):
+    if strToFind == 'CARTA N 5398 XXXX XXXX XX85':
+        pass
     strList = GetStrList_ForFind(strToFind)
     if not strList:
         return False

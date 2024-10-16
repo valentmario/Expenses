@@ -1,0 +1,72 @@
+
+******************************   Mod_Mngr_Init  for Transactions    ****************************
+
+Init_Transactions(Origin):                    *** on Make_Checkout  Init_Top_Insert Top_Insert
+    if Transact_Filename and Xlsx_Filename unknown  
+        Message_Dlg
+        return  Sel_Transact_Mngr
+    if Transact_Filename != unknown: 
+        return self.TryToLoad_Transactions
+    if Xlsx_Filename != UNKNOWN:
+        if self.Get_Transact_FromXlsxFilename(Xlsx_Filename):
+            if self.Load_Transact_Mngr(Transact_Filename):
+                return True
+     Message_Dlg  return False
+
+
+TryToLoad_Transactions(Transact_Filename)       *** on  Init_Transactions
+  if Cek_Transactions_Name(Transact_Filename):
+       return self.Load_Transact_Mngr
+
+
+Get_Transact_FromXlsxFilename(Xlsx_Filename):   *** on  Init_Transactions
+    if not Cek_Xlsx_Name(Xlsx_Filename):
+        return False
+    Transact_Filename = Create_Transactions_Name_FromX(Xlsx_Filename)
+        File_Exists = os.path.isfile(Transact_Filename)
+        if not File_Exists:
+            Make Message_Dialog  return False
+        Update_Selections  return True
+  
+
+Cek_Transactions_Name(Full_Filename):           *** on TryToLoad_Transactions Sel_Transact_Mngr
+    OK:                   return True
+    Err: make Message_Dlg return False
+
+
+Sel_Transact_Mngr(Origin):                      *** on Init_Transactions Top_Settings
+    File_Dialog
+    Cancel:  return False
+    if Cek_Transactions_Name:
+        if Load_Transact_Mngr:
+            Update_Selections
+            Tx_Request return True
+    return False
+
+Load_Transact_Mngr(Origin, Full_Filename):      *** Init_Transactions TryToLoad_Transactions 
+    Set Filename if unknown return False            Sel_Transact_Mngr  Super_Top_Queries
+    Reply = Data.Load_Transact_Table
+        OK:   Tx_Request    return True
+        NOK:  Message_Dlg   return False
+
+
+******************************      Transactions_DB        *******************************
+Load_Transact_Table(Filename)                   *** Load_Transact_Mngr  Top_View_Transactions
+    Set Filename
+    Result = _Load_Transact_Table
+    if Result OK:   File_Loaded return OK
+    return Result
+ 
+_Load_Transact_Table                            *** on Load_Transact_Table  Create_Transact_DB_File
+    try From Transact:
+    except:  return Error
+    _Transact_Table = tTransact_Table
+    _Transact_Year  = tTransact_Year
+    Update_Selections
+
+=============================================================================================
+
+
+
+
+

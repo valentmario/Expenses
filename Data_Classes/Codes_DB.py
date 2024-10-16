@@ -26,32 +26,50 @@ class Codes_db(Files_Names_Manager):
         self._GRdescr_Ordered_List = []
         self._CA_Codes_Ordered     = []
 
-        self._Multiple_Maching_List = []  # full descriptions matching with the same StrToFind
-        self.connect                = None
-        self.cursor                 = None
+        self._Multi_Codes_Matching_List = []  # full descriptions matching with the same StrToFind
+        self.connect                    = None
+        self.cursor                     = None
+
+        self._tXlsxRows_Multi_Matching_Text = ''
 
 
     # ----------------------   Check the database  codes table   --------------------------------
     # for each code record to check verify if in the restant code records
     # exists a record that has a fullDescr that match with the StrToFind to check
     # -------------------------------------------------------------------------------------------
-    def Check_Codesdatabase(self):
-        self._Multiple_Maching_List = []
-        for Rec_To_Check in self._TR_Codes_Table:
+    def Check_Codesdatabase(self, Db_Select):
+        if Db_Select == CHECK_DBCODES_LOADED:
+            TR_Codes_Table = self._TR_Codes_Table
+        else:
+            TR_Codes_Table = self._tTR_Codes_Table
+
+        self._Multi_Codes_Matching_List = []
+        for Rec_To_Check in TR_Codes_Table:
+            TR_toCheck = Rec_To_Check[iTR_TRcode]
+            if TR_toCheck == 330:
+                pass
+            if TR_toCheck == 475:
+                pass
+
             StrToCek = Rec_To_Check[iTR_TRstrToFind]
-            for Rec in self._TR_Codes_Table:
-                if Rec == Rec_To_Check:
+            for Rec in TR_Codes_Table:
+                RecInChecking = Rec[iTR_TRcode]
+                if RecInChecking == 330:
                     pass
-                else:
+                if RecInChecking == 475:
+                    pass
+                if Rec == Rec_To_Check:     # it's himself
+                    pass
+                else:                       # different record
                     FullDescr = Rec[iTR_TRfullDes]
                     if StrToFind_in_Fulldescr(StrToCek, FullDescr):
-                        self._Multiple_Maching_List.append(Rec_To_Check)
-                        self._Multiple_Maching_List.append(Rec)
-        return self._Multiple_Maching_List
+                        self._Multi_Codes_Matching_List.append(Rec_To_Check)
+                        self._Multi_Codes_Matching_List.append(Rec)
+        return self._Multi_Codes_Matching_List
 
     # ----------------------------------------------------------------------------------------
     def Get_Multiple_List(self):
-        return self._Multiple_Maching_List
+        return self._Multi_Codes_Matching_List
 
     # -------------------------------------------------------------------------------------- #
     #      public methods invoked outside from  Top_Codes  classes                           #
@@ -60,6 +78,8 @@ class Codes_db(Files_Names_Manager):
         Codes_Name = CodesFilename
         if CodesFilename == ON_SELECTIONS:
             Codes_Name = self._Codes_DB_Filename
+        if Codes_Name == UNKNOWN:
+            return 'Codes Database file unknown'
         Result = self._Load_Codes_Tables(Codes_Name)
         if Result != OK:
             return Result
@@ -171,8 +191,7 @@ class Codes_db(Files_Names_Manager):
         self.Tree_Codes_View_List_Ordered = []
 
         self.CodesFilename = CodesFilename
-        # if not CodesFilename:
-        #     self.CodesFilename = self._Codes_DB_Filename
+
         try:  # ---------------------------------------------------------- # try connect
             self.connect = sqlite3.connect(CodesFilename)
         except sqlite3.Error as e:  # in case of error nothing change
@@ -211,7 +230,7 @@ class Codes_db(Files_Names_Manager):
             self._tCA_Codes_Table = self.cursor.fetchall()
         except sqlite3.Error as e:  # in case of error nothing change
             strErr = Db_Error(e)
-            MsgErr = 'ERROR on Loading Codes Table:\n' + str(strErr)
+            MsgErr = 'ERROR on Loading Category Table:\n' + str(strErr)
             if self.connect:
                 self.connect.close()
             return MsgErr
@@ -219,10 +238,7 @@ class Codes_db(Files_Names_Manager):
             if self.connect:
                 self.connect.close()
 
-
-        if not self._tTR_Codes_Table or not self._tGR_Codes_Table or not self._tCA_Codes_Table:
-            return 'TR or GR or CA Codes tables EMPTY'
-
+        # Check for multiple matching is made on the calling method
         self._TR_Codes_Table = self._tTR_Codes_Table
         self._GR_Codes_Table = self._tGR_Codes_Table
         self._CA_Codes_Table = self._tCA_Codes_Table
@@ -302,11 +318,15 @@ class Codes_db(Files_Names_Manager):
             Connect.commit()
             Connect.close()
             return OK
-        except:
-            Connect.close()
-            errMessage = 'ERROR on DELETING\nlast code record  '
-            errMessage += str(Last_Code)
-            return errMessage
+        except sqlite3.Error as e:                      # in case of error nothing change
+            strErr = Db_Error(e)
+            MsgErr = ('ERROR on deleting:\n\n' + 'Code: ' + str(Last_Code) + '\n\n'
+                      ' in Codes Table:\n\n') + str(strErr)
+            return MsgErr
+        finally:
+            if Connect:
+                Connect.close()
+            return OK
 
     # -----------------------------------------------------------------------------------------------------------------
     def Add_TR_Record(self, Record):
@@ -350,11 +370,17 @@ class Codes_db(Files_Names_Manager):
         try:
             Cursor.execute(sql, sql_data)
             Connect.commit()
-            Connect.close()
+            # Connect.close()
+            # return OK
+        except sqlite3.Error as e:                      # in case of error nothing change
+            strErr = Db_Error(e)
+            MsgErr = ('ERROR on Updating:\n\n' + 'Code: ' + str(TR) + '\n\n'
+                      ' in Codes Table:\n\n') + str(strErr)
+            return MsgErr
+        finally:
+            if Connect:
+                Connect.close()
             return OK
-        except:
-            Connect.close()
-            return 'ERROR on Codes Database\nTR Record UPDATE'
 
     # --------------   update Group codes record on data base  --------------------------------------------------------
     def Update_GR_CA_Rec(self, List):
@@ -369,11 +395,16 @@ class Codes_db(Files_Names_Manager):
         try:
             Cursor.execute(sql, sql_data)
             Connect.commit()
-            Connect.close()
-            return self._Load_Codes_Tables('')
-        except:
-            Connect.close()
-            return 'ERROR on Codes Database\nGR Record UPDATE'
+        except sqlite3.Error as e:                      # in case of error nothing change
+            strErr = Db_Error(e)
+            MsgErr = ('ERROR on Updating:\n\n' + 'GR Code: ' + str(GRdesc) + '\n\n'
+                      ' in Groups Table:\n\n') + str(strErr)
+            return MsgErr
+        finally:
+            if Connect:
+                Connect.close()
+                Result = self._Load_Codes_Tables(CHECK_DBCODES_LOADED)
+                return [ISLIST, Result]  # OK or ErrMessage
 
     # -----------------------------------------------------------------------------------------------------------------
     def Check_If_Code_Exist(self, TRcode):
@@ -445,19 +476,21 @@ class Codes_db(Files_Names_Manager):
                     pass
                 Found_List.append(TRrecord)
 
-        if nFound == 1:
+        if nFound == 1:                         # Found only one String to find
             return [OK, Found_List[0]]
-        elif nFound == 0:
+        elif nFound == 0:                       # String to find NOT found
             return [NOK, []]
-        else:
+        else:                                   # Multiple String to find matching
             ErrMsg = ('In Xlsx file for:\n\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
             ErrMsg += '\nFull Description:\n' + Full_Desc + '\n\nFound:\n'
             for Rec in Found_List:
                 #print(Rec)
                 strCode = str(Rec[iTR_TRcode])
                 Texto   = 'Code: ' + strCode + ' Descr: ' + Rec[iTR_TRdesc] + '\n'
-                Texto += 'string To find: ' + Rec[iTR_TRstrToFind] + '\n\n'
+                Texto += 'string To find: ' + Rec[iTR_TRstrToFind] + '\n' + Rec[iTR_TRfullDes] + '\n'
                 ErrMsg += Texto
                 pass
-            return [NOK, ErrMsg]
+            print(ErrMsg)
+            self._tXlsxRows_Multi_Matching_Text += ErrMsg
+            return [NOK, []]
 # ==============================================================================================================

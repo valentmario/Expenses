@@ -1,0 +1,100 @@
+*****************************************************************************************
+******************************   Very  Important   **************************************
+on Codes database only the following columns can be modified:                           *
+TRdesc  GRdesc  CAdesc   GRcode associated with TRcode   CAcode associetad With GRcode  *
+DO NOT CHANGE:                                                                          *
+*****************      TRcode  and  String to find         ******************************
+*****************************************************************************************
+
+Data classes inheritance:
+Files_Names_Manager <-- Codes_db <-- Xlsx_Manager <-- Transact_Db
+
+Instance:
+Data = Transact_Db()
+
+The methods and data inside the file chain are underscored (_).
+the private (_) methods and attributes are invoked only inside data chain.
+Internal methods not undescored (_) can acces to _all attributes.
+From external classes the internal attributes (_) can be retrieved only
+by call of internal methods not underscored
+
+The Common_Functions import only Constants so they can be imported everywhere
+
+==========================================================================================
+for Buttn enable:   Codes_Loaded   NO_Multiple   Xlsx_Loaded  Rws_OK!0
+
+BtnSelCod  always
+BtnView    Codes_Loaded
+BtnGRmngr  Codes_Loaded
+BtnCekDb   Codes_Loaded
+BtnDel     Codes_Loaded
+BtnAddNew  Codes_Loaded
+BtnUpdate  Codes_Loaded
+ 
+BtnSelXls        Always
+BtnWith_out      Codes_Loaded & Xlsx_Loaded
+BtnViXlsx        Xlsx_Loaded
+
+BtnInsert        Codes_Loaded   NO_Multiple   Xlsx_Loaded  Rws_OK!0
+BtnWiewTransact  Transactions_Loaded
+
+******************************   Mod_Mngr_Init  for Codes ***********************************
+
+Init_Codes(Origin):                          *** on Main_Window   return nothing
+    Codes_DB_Filename = self.Data.Get_Selections_Member(Ix_Codes_File)
+    if    unknown:   Sel_Codes_Mngr
+    else 
+        if Loaded:   View_Check_Codes
+        else     :   Load_Codes_Mngr
+                     
+Cek_Codes_Name(Full_Filename):                 *** on Sel_Codes_Mngr & Main_Window
+    OK:                   return True
+    Err: make Message_Dlg return False
+
+Sel_Codes_Mngr(Origin):                        *** Init_Codes Top_Codes_Mngr Top_Settings
+    File_Dialog :    
+    Cancel:      return False
+    if Cek_Codes_Name(Full_Filename):
+        Data.Load_Codes_Tables(Filename)
+        Update_Selections
+        Tx_Request_Update
+        return True
+    Return False
+
+Load_Codes_Mngr(Origin, Full_Filename):         *** on Init_Codes  Sel_Codes_Mngr  
+                                                    Make_Checkout Super_Top_Mngr
+    Set Filename if unknown return False
+    Reply = Data.Load_Codes_Tables(Filename)
+    Check_Codes_View
+        if Reply OK:   Tx_Request_Update Return True
+        Err:  make Message_Dlg
+              return False
+
+View_Codes_Check_Error([Multiple])              *** on Check_Codes_View
+    prepare Multiple Codes Matching List
+    View       "  "   "     "    "    "
+
+Check_Codes_View(Db, View)                      *** on Init_Codes  Top_Codes_Mngr Top_Settings
+    Multiple = Data.Check_Codesdatabase(Db)
+    if   not Multiple : (View OK MessDlg
+    else              : View_Codes_Check_Error
+
+******************************      Codes_DB        *******************************
+Load_Codes_Tables(Filename)                     *** on Load_Codes_Mngr  
+    Set Filename if unknowr return Diagn
+    _Load_Codes_Tables(Codes_Name)
+        OK:   _Files_Loaded = True
+              return OK
+        Err:  return ErrMessage
+
+_Load_Codes_Tables(Filename)                    *** on Codes_DB
+    Load  Codes Tables
+    if Except:   return 'error string'
+    return OK 
+
+============================================================================================
+
+
+
+
+

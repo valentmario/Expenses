@@ -24,7 +24,7 @@ class Transact_Db(Xlsx_Manager):
         self.Cursor  = None
         self.Dummy   = 0
 
-        self._tTransact_Year  = None   #for _Load_Transact_Table()
+        self._tTransact_Year  = None
         self._tTransact_Table = []
 
         self._Transact_xMonth_List_ForInsert = [[], [], [], [], [], [], [], [], [], [], [], []]
@@ -40,9 +40,10 @@ class Transact_Db(Xlsx_Manager):
         Transact_Name      = TransacFilename
         if TransacFilename == ON_SELECTIONS:
             Transact_Name = self.Get_Selections_Member(Ix_Transact_File)
+
         Result = self._Load_Transact_Table(Transact_Name)
-        if Result == OK or Result == EMPTY:
-            self._Files_Loaded[Ix_Codes_Loaded] = True
+        if Result == OK:
+            self._Files_Loaded[Ix_Transact_Loaded] = True
             return OK
         else:
             return Result
@@ -69,8 +70,6 @@ class Transact_Db(Xlsx_Manager):
 
             # the Selections are upadated because TransacFilename can be origened from Sarch on TRANSACTIONS
             self.Update_Selections(TransacFilename, Ix_Transact_File)
-            if not self._Transact_Table:
-                return EMPTY
             return OK
 
 

@@ -31,30 +31,30 @@ class Mod_Mngr_Init:
         self.Toplevels_Id_List = []   # <class>,  NAME
                                       # List of toplevel to launch in Top_Settings
 
+    # def Print_Loaded(self):
+    #     Loaded = self.Data.Get_Files_Loaded_Stat()
+    #
+
     # =========================================================================================== #
     #           --------------      Codes  managing     --------------                            #
+    #    If Codes filename is correct,   self.Data.Load_Codes_Tables tries to load the Codes      #
+    #    Tables (TR, GR, CA) from database. In case of error nothing is changed                   #
     # =========================================================================================== #
     def Init_Codes(self, Origin):
         Codes_DB_Filename = self.Data.Get_Selections_Member(Ix_Codes_File)
-        if not self.Cek_Codes_Name(Codes_DB_Filename):
-            if self.Sel_Codes(Origin):  # Load Tables and return True or False
-                self.View_Check_Codes_Db(1)
-                return True
+        if Codes_DB_Filename == UNKNOWN:
+            self.Sel_Codes_Mngr(Origin)
+
+        else:   # if not unknown the filename is OK
+            if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):
+                pass
+                  # self.Check_Codes_View(CHECK_DBCODES_LOADED, VIEW_ONLY_ERROR)
             else:
-                return False
-        if self.Data.Get_Files_Loaded_Stat(Ix_Codes_Loaded):
-              self.View_Check_Codes_Db(1)
-              return True
-        else:
-            if self.Load_Codes(Origin, ON_SELECTIONS):
-                self.View_Check_Codes_Db(1)
-                return True
-            else:
-                return False
+                self.Load_Codes_Mngr(Origin, ON_SELECTIONS)
 
     # ---------------------------------------------------------------------------------------------
     @classmethod
-    def Cek_Codes_Name(cls, Full_Filename):
+    def Cek_Codes_Name(cls, Full_Filename):         # used only on Sel_Codes_Mngr
         errMessage = ''
         if Full_Filename == UNKNOWN:
             errMessage = 'Codes filename unknown\nPlease select a Codes file'
@@ -76,129 +76,100 @@ class Mod_Mngr_Init:
         else:
             return True
 
-    # --------------------------------------------------------------------------------------------
-    def View_Check_Codes_Db(self,ViewMsg):
-        Multiple = self.Data.Check_Codesdatabase()
-        if not Multiple:
-            # 0=None msg to View  1=View only Err  2=View both messsages
-            if ViewMsg == 2:
-                Len = self.Data.Get_TR_Codes_Table_Len()
-                Info = str(Len) + '   codes records correctly checked out'
-                Message = Message_Dlg(MsgBox_Info, Info)
-                Message.wait_window()
-        else:
-            Info = 'ERROR on checking out codes database\n\n'
-            Info += '--------------------------------------------\n'
-            nLine = -1
-            for TRrecord in Multiple:
-                nLine += 1
-                strCode = 'Code: ' + str(TRrecord[iTR_TRcode])
-                strDesc = TRrecord[iTR_TRdesc]
-                StrToFind = TRrecord[iTR_TRstrToFind]
-                FullDescr = TRrecord[iTR_TRfullDes]
-                Info += strCode + '\n' + strDesc + '\n'
-                Info += StrToFind + '\n' + FullDescr
-                if (nLine % 2) == 0:
-                    Info += '\n-----------------\n'
-                else:
-                    Info += '\n--------------------------------------------\n'
-            if ViewMsg >= 2:
-                View_Message([Info])
-
     # ---------------------------------------------------------------------------------------------
-    def Sel_Codes(self, Origin):
+    def Sel_Codes_Mngr(self, Origin):
         File_Dlg = File_Dialog(FileBox_Codes)
-        Full_Filename = File_Dlg.FileName
+        Full_Filename = File_Dlg.FileName  # Cancel
         if not Full_Filename:
             return False
         if self.Cek_Codes_Name(Full_Filename):
-            if self.Load_Codes(Origin, Full_Filename):
-                self.Data.Update_Selections(Full_Filename, Ix_Codes_File)
-                self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
-                return True
-            else:
-                return False
+            self.Load_Codes_Mngr(Origin, Full_Filename)
+            self.Data.Update_Selections(Full_Filename, Ix_Codes_File)
+            self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
+            return True
         else:
             return False
 
     # ---------------------------------------------------------------------------------------------
-    def Load_Codes(self, Origin, Filename):
-        Reply = self.Data.Load_Codes_Tables(Filename)
+    def Load_Codes_Mngr(self, Origin, Filename):
+        File_Name   = Filename
+        if Filename == ON_SELECTIONS:
+            File_Name = self.Data.Get_Selections_Member(Ix_Codes_File)
+        if File_Name == UNKNOWN:
+            return False
+        Reply = self.Data.Load_Codes_Tables(File_Name)
+        self.Check_Codes_View(File_Name, VIEW_ONLY_ERROR)
         if Reply == OK:  # reply:  OK or Diagnostic
             self.Chat.Tx_Request([Origin, [ANY], CODES_DB_UPDATED, []])
             return True
         else:
-            Msg = Message_Dlg(MsgBox_Err, Reply)
-            Msg.wait_window()
+            Msg_Dlg = Message_Dlg(MsgBox_Err, Reply)
+            Msg_Dlg.wait_window()
+            View_Message(Reply)
             return False
 
-    # ---------------------------------------------------------------------------------------------
-    # def Check_Codes_Db(self):
-    #     Multiple = self.Data.Check_Codesdatabase()
-    #     pass
-    #     if not Multiple:
-    #         Len = self.Data.Get_TR_Codes_Table_Len()
-    #         pass
-    #         # Info = str(Len) + '   code records correctly checked out'
-    #         # Message = Message_Dlg(MsgBox_Info, Info)
-    #         # Message.wait_window()
-    #     else:
-    #         Info = 'ERROR on checking out codes database\n\n'
-    #         Info += '--------------------------------------------\n'
-    #         nLine = -1
-    #         for TRrecord in Multiple:
-    #             nLine += 1
-    #             strCode = 'Code: ' + str(TRrecord[iTR_TRcode])
-    #             strDesc = TRrecord[iTR_TRdesc]
-    #             StrToFind = TRrecord[iTR_TRstrToFind]
-    #             FullDescr = TRrecord[iTR_TRfullDes]
-    #             Info += strCode + '\n' + strDesc + '\n'
-    #             Info += StrToFind + '\n' + FullDescr
-    #             if (nLine % 2) == 0:
-    #                 Info += '\n-----------------\n'
-    #             else:
-    #                 Info += '\n--------------------------------------------\n'
-    #         View_Message([Info])
+    # --------------------------------------------------------------------------------------------
+    def View_Codes_Check_Error(self, Multiple):
+        self.Dummy = 0
+        Info = 'ERROR on checking out codes database\n\n'
+        Info += '--------------------------------------------\n'
+        nLine = -1
+        for TRrecord in Multiple:
+            nLine += 1
+            strCode = 'Code: ' + str(TRrecord[iTR_TRcode])
+            strDesc = TRrecord[iTR_TRdesc]
+            StrToFind = TRrecord[iTR_TRstrToFind]
+            FullDescr = TRrecord[iTR_TRfullDes]
+            Info += strCode + '\n' + strDesc + '\n'
+            Info += StrToFind + '\n' + FullDescr
+            if (nLine % 2) == 0:
+                Info += '\n-----------------\n'
+            else:
+                Info += '\n--------------------------------------------\n'
+        View_Message([Info])
+        pass
 
-
+    # --------------------------------------------------------------------------------------------
+    def Check_Codes_View(self, DbTo_Check, ViewMsg):
+        Multiple = self.Data.Check_Codesdatabase(DbTo_Check)
+        if not Multiple:
+            if ViewMsg == VIEW_OKand_ERROR:
+                Len     = self.Data.Get_TR_Codes_Table_Len()
+                Info    = str(Len) + '   codes records correctly checked out'
+                Message = Message_Dlg(MsgBox_Info, Info)
+                Message.wait_window()
+        else:
+            self.View_Codes_Check_Error(Multiple)
 
     # =========================================================================================== #
     #     --------------      Transactions  manage     --------------                             #
-    #      If correct filename is selected,  self.Data.Load_Codes_Tables try to load the Tables   #
-    #      from database. In case of error nothing is changed                                     #
+    #    If Transactions filename is correct,   TryToLoad_Transactions tries to load              #
+    #    the Transactions Tables. In case of error nothing is changed                             #
     # =========================================================================================== #
     def Init_Transactions(self, Origin):
         Transact_Filename = self.Data.Get_Selections_Member(Ix_Transact_File)
         Xlsx_Filename     = self.Data.Get_Selections_Member(Ix_Xlsx_File)
 
         if Transact_Filename == UNKNOWN and Xlsx_Filename == UNKNOWN:
-            Msg_Dlg = Message_Dlg(MsgBox_Info, 'Xlsx and Transations filename unknown\nSelect a Db file')
+            Msg_Dlg = Message_Dlg(MsgBox_Info, 'Xlsx and Transations filename unknown\nSelect a Transactions file')
             Msg_Dlg.wait_window()
-            return self.Select_Transactions_File(Origin)
+            return self.Sel_Transact_Mngr(Origin)
 
         if Transact_Filename != UNKNOWN:
-            return self.TryToLoad_Transactions(Transact_Filename)
+            return self.TryToLoad_Transactions(Origin, Transact_Filename)
 
         if Xlsx_Filename != UNKNOWN:
             if self.Get_Transact_FromXlsxFilename(Xlsx_Filename):
-                if self.Load_Transact(Origin, Transact_Filename):
+                if self.Load_Transact_Mngr(Origin, Transact_Filename):
                     return True
             Msg_Dlg = Message_Dlg(MsgBox_Err, 'Impossible to get a transactions Db')
             Msg_Dlg.wait_window()
             return False
-    # ------------------------------------------------------------------------------------
-    def Select_Transactions_File(self, Origin):
-        if self.Sel_Transact(Origin):
-            return True
-        else:
-            Msg_Dlg = Message_Dlg(MsgBox_Err, 'A transactions database must be selected')
-            Msg_Dlg.wait_window()
-            return False
 
     # ------------------------------------------------------------------------------------
-    def TryToLoad_Transactions(self, Transact_Filename):
+    def TryToLoad_Transactions(self, Origin, Transact_Filename):
         if self.Cek_Transactions_Name(Transact_Filename):
-            return self.Load_Transact(self, Transact_Filename)
+            return self.Load_Transact_Mngr(Origin, Transact_Filename)
 
     # ------------------------------------------------------------------------------------
     def Get_Transact_FromXlsxFilename(self, Xlsx_Filename):
@@ -213,9 +184,6 @@ class Mod_Mngr_Init:
             return False
         self.Data.Update_Selections(Transact_Filename, Ix_Transact_File)
         return True
-
-
-
 
     # -----------------------------------------------------------------------------------------
     # 210987654321 0 12345678901234
@@ -249,29 +217,28 @@ class Mod_Mngr_Init:
             return True
 
     # ----------------------------------------------------------------------------------------------
-    def Sel_Transact(self, Origin):
+    def Sel_Transact_Mngr(self, Origin):
         File_Dlg      = File_Dialog(FileBox_Transact)
         Full_Filename = File_Dlg.FileName
         if not Full_Filename:
             return False
         if self.Cek_Transactions_Name(Full_Filename):
-            if self.Load_Transact(Origin, Full_Filename):
+            if self.Load_Transact_Mngr(Origin, Full_Filename):
                 self.Data.Update_Selections(Full_Filename, Ix_Transact_File)
                 self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
                 return True
-            else:
-                return False
-        else:
-            return False
+        return False
 
     # -------------------------------------------------------------------------
-    def Load_Transact(self, Origin, Filename):
+    def Load_Transact_Mngr(self, Origin, Filename):
+        File_Name   = Filename
+        if Filename == ON_SELECTIONS:
+            File_Name = self.Data.Get_Selections_Member(Ix_Transact_File)
+        if File_Name == UNKNOWN:
+            return False
         Reply = self.Data.Load_Transact_Table(Filename)
-        if Reply == OK or Reply == EMPTY:
-            if Reply == EMPTY:
-                Msg = Message_Dlg(MsgBox_Err, 'Transactions Database is EMPTY')
-                Msg.wait_window()
-                self.Chat.Tx_Request([Origin, [ANY], TRANSACT_UPDATED, []])
+        if Reply == OK:
+            self.Chat.Tx_Request([Origin, [ANY], TRANSACT_UPDATED, []])
             return True
         else:
             Msg = Message_Dlg(MsgBox_Err, Reply)  # display 'ERROR... '
@@ -283,20 +250,25 @@ class Mod_Mngr_Init:
     #           --------------      Xlsx file  managing     --------------                        #
     # =========================================================================================== #
     def Init_Xlsx_Lists(self, Origin):
+        Result = None
         Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
-        if not self.Cek_Xlsx_Name(Xlsx_Filename):
-            if self.Sel_Xlsx(Origin):    # Load Lists and return True False
-                return True
-            else:
-                return False
-        else:
+        if Xlsx_Filename == UNKNOWN:
+            return self.Sel_Xlsx_Mngr(Origin)
+
+        else:  # if not unknown the filename is OK
             if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
                 return True
             else:
-                if self.Load_Xlsx_Lists(Origin, ON_SELECTIONS):
-                    return True
-                else:
-                    return False
+                Result = self.Load_Xlsx_Lists_Mngr(Origin, ON_SELECTIONS)
+            self.Warning_For_NO_Rows()
+            return Result
+
+    # -------------------------------------------------------------------------
+    def Warning_For_NO_Rows(self):
+        Total = self.Data.Get_Total_Rows()
+        if Total[Ix_Tot_OK] == 0:
+            Msg_Dlg = Message_Dlg(MsgBox_Info, 'Any row found')
+            Msg_Dlg.wait_window()
 
     # -------------------------------------------------------------------------
     # /home/mario/bExpenses/bFiles/bXLSX_Files/FIDEU/FIDEU_2023/ FIDEU_2023_01.xlsx
@@ -335,24 +307,26 @@ class Mod_Mngr_Init:
         return True
 
     # ---------------------------------------------------------------------------------------------
-    def Sel_Xlsx(self, Origin):
+    def Sel_Xlsx_Mngr(self, Origin):
         File_Dlg      = File_Dialog(FileBox_Xlsx)
         Full_Filename = File_Dlg.FileName
         if not Full_Filename:
             return False
         if self.Cek_Xlsx_Name(Full_Filename):
-            if self.Load_Xlsx_Lists(Origin, Full_Filename):
-               self.Data.Update_Selections(Full_Filename, Ix_Xlsx_File)
-               self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
-               return True
-            else:
-                return False
-        else:
-            return False
+            self.Load_Xlsx_Lists_Mngr(Origin, Full_Filename)
+            self.Data.Update_Selections(Full_Filename, Ix_Xlsx_File)
+            self.Chat.Tx_Request([Origin, [MAIN_WIND], UPDATE_FILES_NAME, []])
+            return True
 
     # -------------------------------------------------------------------------------------------------------
-    def Load_Xlsx_Lists(self, Origin, Filename):
-        Reply = self.Data.Load_Xlsx_Lists_FromData(Filename)
+    def Load_Xlsx_Lists_Mngr(self, Origin, Filename):
+        File_Name   = Filename
+        if Filename == ON_SELECTIONS:
+            File_Name = self.Data.Get_Selections_Member(Ix_Codes_File)
+        if File_Name == UNKNOWN:
+            return False
+
+        Reply = self.Data.Load_Xlsx_Lists(Filename)
         if Reply == OK:                     #  reply:  OK or Diagnostic
             self.Chat.Tx_Request([Origin, [ANY], XLSX_UPDATED, []])
             return True
