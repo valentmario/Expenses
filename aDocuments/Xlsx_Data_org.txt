@@ -100,27 +100,8 @@ Records_ToInsert[]  as in Transact_Year.db
     iTransact_nRow  = 0  iTransact_Conto = 1  iTransact_Contab = 2  iTransact_Valuta = 3
     iTransact_TRdesc= 4  iTransact_Accred= 5  iTransact_Addeb  = 6  iTransact_TRcode = 7
 
-View on Ask_YES_NO for Insert:
-                    0      1      2      3     4      5
-Candidate_List = [nRow, Contab Valuta Accred Addeb Full_Desc]
-------------------------------------------------------------
-Xlsx Row candidate for insertion on database:
-nRow  Contab Valuta Amount Full_Desc
-------------------------------------------------------------
-Transaction record to be inserted on database:
-nRow  TRcode  TRdesc
-StrToserc
-FullDesc
-Group  Category  Accred   Addeb
-
-
 Rec_Queries_List[]
     iQuery_Date = 0  iQuery_Descr = 1  iQuery_Accr = 2 iQuery_Addeb = 3
-
-
-------------------------------------------------------------
-
-
 
 =============================================================================================
 

@@ -13,6 +13,10 @@
 # ------------------------------------------------------------------------------------- #
 
 import tkinter as tk
+from enum import CONTINUOUS
+
+from openpyxl.descriptors import ASCII
+
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Chat import Ms_Chat
 from Common.Common_Functions import *
@@ -23,6 +27,7 @@ from Widgt.Dialogs import Message_Dlg
 from Widgt.Tree_Widg import TheFrame
 from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheText
+from Widgt.Widgets import TheCombo
 
 # ==================================================================================================== #
 #  --------------------        class Top_Insert(tk.Toplevel)        --------------------------------   #
@@ -60,12 +65,21 @@ class Top_Insert(tk.Toplevel):
         self.Txt_Xlsx_Month   = TheText(self, Txt_Disab, 590,  20, 11, 1, '')
 
         #  ------------------------------------  B U T T O N s  ---------------------------------------
-        self.Sel_Xlsx     = TheButton(self, Btn_Def_En,   20, 900, 23, 'Seleziona un file xlsx', self.Clk_Sel_Xlsx)
-        self.ViewXlsx     = TheButton(self, Btn_Def_Dis,  20, 940, 23, 'Mostra movimenti xlsx',  self.Clk_View_Xlsx)
+        self.Sel_Xlsx     = TheButton(self, Btn_Def_En,   20, 860, 23, 'Seleziona un file xlsx', self.Clk_Sel_Xlsx)
+        self.ViewXlsx     = TheButton(self, Btn_Def_Dis,  20, 900, 23, 'Mostra movimenti xlsx',  self.Clk_View_Xlsx)
 
-        self.ViewTransact = TheButton(self, Btn_Def_Dis, 260, 940, 23, 'Mostra movimenti nel Db',self.Clk_View_Transact)
+        self.StrVar_Conto  = tk.StringVar
+        self.OptMenu_Cont  = TheCombo(self, self.StrVar_Conto, 260, 860, 15, 16, Continue_List,
+                                      STEP, self.Clk_Continue)
+        self.UpToText      = TheText(self, Txt_Enab,           425, 860, 5, 1, '')
 
-        self.Ins_Btn      = TheButton(self, Btn_Def_En, 500, 900, 23, 'Inserire Movimenti nel Db', self.Clk_Insert)
+        self.ViewTransact = TheButton(self, Btn_Def_Dis,       500, 860, 23, 'Mostra movimenti nel Db',self.Clk_View_Transact)
+
+        self.Ins_Btn      = TheButton(self, Btn_Def_En,        260, 900, 23, 'Inserire Movimenti nel Db', self.Clk_Insert)
+
+        Texto = 'Clear Transactions db ' + str(self.intYear)
+        self.ClrDb_Btn    = TheButton(self, Btn_Def_En,        260, 940, 23, '', self.Clk_Insert)
+
         self.Exit         = TheButton(self, Btn_Def_En,  500, 940, 23, '  F I N E  ',               self.Call_OnClose)
 
         self.Total           = []
@@ -76,9 +90,10 @@ class Top_Insert(tk.Toplevel):
         self.Rows_WithCod_List  = []
         self.Records_ToIns_List = []
 
-        self.TotTransact_ToBeInserted     = 0
-        self.Transact_Filename            = ''
-        self.Transact_Year                = 0
+        self.TotTransact_ToBeInserted = 0
+        self.Transact_Filename        = ''
+        self.Transact_Year            = 0
+        self.Continue                 = STEP
 
         # --------------------------  T R E E     Transactions to insert   ----------------------------
         self.Frame_Transact = TheFrame(self, 20, 60, self.Clk_Ontree_View)
@@ -155,32 +170,37 @@ class Top_Insert(tk.Toplevel):
         self.Set_Buttons()
 
     # --------------------------------------------------------------------------------------------------
-    #                      0        1         2         3         4        5        6      7
-    # List_Transact_DB :  nRow    Conto    Contab    Valuta    TR_Desc   Accred   Addeb  TRcode
-    # ---------------------------------------------------------------------------------------------------
-    def Ask_For_RecToInsert(self, Candidate, RecToIns):
+    def Purge_FulDesc(self, All, Full_Desc):
         self.Dummy = 0
-        Message = ''
-        """
-        iWithCode_nRow = 0  iWithCode_Contab= 1  iWithCode_Valuta = 2  iWithCode_TR_Desc = 3
-        iWithCode_Accr = 4  iWithCode_Added = 5  iWithCode_TRcode = 6  iWithCode_FullDesc= 7
+        ToCheck = Full_Desc
+        if All:
+           ToCheck = Full_Desc[21:]
+        Purged = ''
+        for Char in ToCheck:
+            if Char == '\n':
+                pass
+            else:
+                Purged += Char
+        return Purged
 
-        iTransact_nRow   = 0  iTransact_Conto = 1  iTransact_Contab= 2  iTransact_Valuta = 3
-        iTransact_TRdesc = 4  iTransact_Accred= 5  iTransact_Addeb = 6  iTransact_TRcode = 7
-
-                               0      1      2      3     4      5
-        Candidate_List    = [nRow, Contab Valuta Accred Addeb Full_Desc]
-        View_Rec_ToInsert = TRcode  TRdesc   Group  Category StrToserc Full_Desc
-        """
-        Message = '---------------------------------------------\nXlsx Row candidate:\n'
-        Message += 'nRow  : ' + str(Candidate[0]) + '\nDescr:  ' + str(Candidate[1])
-        Message += '\nContab: ' + str(Candidate[1]) + '\nValuta: ' + str(Candidate[2])
-        Value   = Candidate[4]
+    # ---------------------------------------------------------------------------------------------------
+    def Ask_For_RecToInsert(self, Rec_WithCode, RecToIns):
+        self.Dummy = 0
+        # iWithCode_nRow = 0  iWithCode_Contab= 1  iWithCode_Valuta = 2  iWithCode_TR_Desc = 3
+        # iWithCode_Accr = 4  iWithCode_Added = 5  iWithCode_TRcode = 6  iWithCode_FullDesc= 7
+        #
+        # iTransact_nRow   = 0  iTransact_Conto = 1  iTransact_Contab= 2  iTransact_Valuta = 3
+        # iTransact_TRdesc = 4  iTransact_Accred= 5  iTransact_Addeb = 6  iTransact_TRcode = 7
+        Message = '---------------------------------------------\nCandidate:\n'
+        Message += 'nRow  :   ' + str(Rec_WithCode[iWithCode_nRow]) + '\nDescr :   ' + str(Rec_WithCode[iWithCode_TR_Desc])
+        Message += '\nDate  :   ' + str(Rec_WithCode[iWithCode_Valuta])
+        Value   = Rec_WithCode[iWithCode_Addeb]
         if not Value:
-            Value = Candidate[3]
-        Message += '\nAmount: ' + str(Value) + '\nFull Description:\n' + str(Candidate[5])
-        Message += '\n---------------------------------------------\n'
-        Message += '\nRecord to insert:'
+            Value = Rec_WithCode[iWithCode_Accr]
+        Purged  = self.Purge_FulDesc(True, Rec_WithCode[iWithCode_FullDesc])
+        Message += '\nAmount:   ' + str(Value) + '\n\nFull Description:\n' + str(Purged)
+        Message += '\n\n---------------------------------------------'
+        Message += '\nTransaction Code Found:'
         TrCode  = RecToIns[iTransact_TRcode]
         Index   = TrCode
         TRfull  = self.Data. Get_TR_Codes_Full(Index)
@@ -189,9 +209,11 @@ class Top_Insert(tk.Toplevel):
         Categ   = TRfull[iTR_Ful_CAdesc]
         StrToSrc= TRfull[iTR_Ful_TRfind]
         Full_Des= TRfull[iTR_Ful_TRful]
-        Message += '\nCode:   ' + str(TrCode)   + '\nDescr:  ' + str(TrDesc)
-        Message += '\nGroup:  ' + str(Group)    + '\nCateg:  ' + str(Categ)
-        Message += '\nToFind: ' + str(StrToSrc) + '\nFullDes:' + str(Full_Des)
+        Purged = self.Purge_FulDesc(False, Full_Des)
+        Message += '\nCode  :   ' + str(TrCode)   + '\nDescr :   ' + str(TrDesc)
+        Message += '\nToFind:   ' + str(StrToSrc)
+        Message += '\nGroup :   ' + str(Group)    + '\nCateg :   ' + str(Categ)
+        Message += '\n\nFullDescription:\n' + str(Purged)
         Message += '\n---------------------------------------------\n\nContinue'
 
         Msg_Dlg = Message_Dlg(MsgBox_Ask, Message)
@@ -202,8 +224,31 @@ class Top_Insert(tk.Toplevel):
         return False
 
     # -------------------------------------------------------------------------------------------------
+    def Clk_Continue(self, Value):
+        self.Continue = Value
+        if Value == NONSTOP or Value == STEP:
+            self.UpToText.Set_Text('')
+        elif Value == UPTO:
+            UptoNrow = self.UpToText.Get_Text(NOT_INT)
+            if UptoNrow == '' or (int(UptoNrow) < 10) :
+                self.UpToText.Set_Text('30')
+
+    def Check_Continue(self, WithCodList):
+        if self.Continue == CONTINUOUS:
+            return True
+        elif self.Continue == STEP:
+            return False
+        else:
+            nRow_ToEnd = self.UpToText.Get_Text(INTEGER)
+            nRow       = int(WithCodList[iWithCode_nRow])
+            if nRow   >= nRow_ToEnd:
+                return False
+            else:
+                return True
+
+    # -------------------------------------------------------------------------------------------------
     def Clk_Insert(self):
-        self.Ins_Btn.Btn_Disable()
+        # self.Ins_Btn.Btn_Disable()
         Result = self.Data.OpenClose_Transactions_Database(True, self.Full_Filename_For_Insert)
         if Result != OK:
             return Result
@@ -211,11 +256,12 @@ class Top_Insert(tk.Toplevel):
         IndexEnd     = len(self.Records_ToIns_List) + 1
         Remain_List  = self.Records_ToIns_List.copy()
         for Index in range(0, IndexEnd):
-            Rec         = self.Records_ToIns_List[Index]
+            RecToIns    = self.Records_ToIns_List[Index]
             WithCodList = self.Rows_WithCod_List[Index]
-            if not self.Ask_For_RecToInsert(WithCodList, Rec):
-                return
-            Result = self.Data.Insert_Transact_Record(Rec)
+            if not self.Check_Continue(WithCodList):
+                if not self.Ask_For_RecToInsert(WithCodList, RecToIns):
+                    return
+            Result = self.Data.Insert_Transact_Record(RecToIns)
             if Result != OK:
                 Msg_Dlg = Message_Dlg(MsgBox_Err, Result)
                 Msg_Dlg.wait_window()
@@ -241,6 +287,8 @@ class Top_Insert(tk.Toplevel):
         self.Conto       = self.Files_Ident[Ix_Xlsx_Conto]
         self.intYear     = self.Files_Ident[Ix_Xlsx_Year]
         self.intMonth    = self.Files_Ident[Ix_Xlsx_Month]
+        Texto = 'Clear Transactions db ' + str(self.intYear)
+        self.ClrDb_Btn.Set_Text(Texto)
 
         Full_Transact_Name = self.Data.Get_Selections_Member(Ix_Transact_File)
         Transact_Name      = Get_File_Name(Full_Transact_Name)
@@ -263,8 +311,6 @@ class Top_Insert(tk.Toplevel):
     def Create_RecToInsert_From_RowWithCode(self, RecWithCode):
         # Xlsx Row candidate for insertion on database:
         # nRow  Contab Valuta Contab Valuta Full_Desc
-        Candidate_List = [RecWithCode[iWithCode_nRow], RecWithCode[iWithCode_Contab], RecWithCode[iWithCode_Valuta],
-                          RecWithCode[iWithCode_Accr], RecWithCode[iWithCode_Addeb], RecWithCode[iWithCode_FullDesc]]
         RecToInsert = [RecWithCode[iWithCode_nRow],
                        self.Conto,
                        RecWithCode[iWithCode_Contab],
@@ -273,7 +319,7 @@ class Top_Insert(tk.Toplevel):
                        RecWithCode[iWithCode_Accr],
                        RecWithCode[iWithCode_Addeb],
                        RecWithCode[iWithCode_TRcode]]
-        return [Candidate_List, RecToInsert]
+        return RecToInsert
 
     # -------------------------------------------------------------------------------------------------
     def Create_RecordsList_ToBeInserted(self):
@@ -291,9 +337,7 @@ class Top_Insert(tk.Toplevel):
             YearCont      = YearMonCont[0]
             MonthCont     = YearMonCont[1] - 1
             if YearVal == self.intYear  or  YearCont == self.intYear:
-                WithCode_RecToIns = self.Create_RecToInsert_From_RowWithCode(Rec_InList)
-                Row_List          = WithCode_RecToIns[0]
-                RecToInsert       = WithCode_RecToIns[1]
+                RecToInsert = self.Create_RecToInsert_From_RowWithCode(Rec_InList)
                 if Month_List_Empty[MonthVal] and Month_List_Empty[MonthCont]:
                     ToInsert = True
                 else:
@@ -303,7 +347,8 @@ class Top_Insert(tk.Toplevel):
                         ToInsert = True
                 if ToInsert:
                     self.TotTransact_ToBeInserted += 1
-                    self.Rows_WithCod_List.append(Row_List)
+                    # self.Rows_WithCod_List.append(Row_List)
+                    self.Rows_WithCod_List.append(Rec_InList)
                     self.Records_ToIns_List.append(RecToInsert)
         pass
 
@@ -319,7 +364,7 @@ class Top_Insert(tk.Toplevel):
 
       # -------------------------------------------------------------------------------------------------
     def Frame_Transact_Setup(self):
-        Nrows     = 38
+        Nrows     = 37
         nColToVis = 8
         Headings  = ['#0', 'row','Conto ','Contab  ','Valuta  ','Descrizione ','Entrate  ','Uscite ','codice']
         Anchor    = ['c',  'c',  'c',     'c',       'c',       'w',           'e',       'e',      'c']

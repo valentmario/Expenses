@@ -346,6 +346,10 @@ FIDFLHBP    = 'FID+FLH+BP' # FIDEU/FLASH/POSTA   Doesn't matter
 POSTA       = 'POSTA'      # Poste Italiane      Must be 5 chars length
 AMBRA       = 'AMBRA'      # Credit Card Ambra   Must be 5 chars length
 Conto_List  = [FIDEU, FLASH, FIDFLHBP, POSTA, AMBRA]
+STEP        = 'Step by Step'
+NONSTOP     = 'Non Stop to End'
+UPTO        = 'Up to Row n.'
+Continue_List = [STEP, NONSTOP, UPTO]
 
 # -----------------------------------------------------------------------------------------------------------
 #                      0        1         2         3         4        5        6      7

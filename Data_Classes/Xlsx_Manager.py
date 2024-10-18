@@ -255,7 +255,7 @@ class Xlsx_Manager(Codes_db):
                 Row_With_Code.append(Rec_Found[iTR_TRcode])    # TRcode
                 Row_With_Code.append(Rec_Found[iTR_TRfullDes]) # Full_Desc
                 self._tWith_Code_Tree_List.append(Row_With_Code)
-        print(self._tWith_Code_Tree_List[0])
+        # print(self._tWith_Code_Tree_List[0])
         return OK
 
     # --------------------------------------------------------------------------------------------
@@ -441,33 +441,6 @@ class Xlsx_Manager(Codes_db):
         if Len1 > Len2:
             Full_Desc = Desc1
         return Full_Desc
-
-    # -----------------------------------------------------------------------------------
-    # def Description_Select(self, XlsxConto, Desc1, Desc2):
-    #     self.Dummy = 1
-    #     Typ1 = type(Desc1)
-    #     Typ2 = type(Desc2)
-    #     Len1  = 0
-    #     Len2  = 0
-    #     String_LenNOK = str(XlsxConto) + ' - ' + str(Desc1) + ' --- ' + str(Desc2)
-    #     if Typ1 is str:
-    #         Len1 = len(Desc1)
-    #     if Typ2 is str:
-    #         Len2 = len(Desc2)
-    #     if not Len1 and not Len2:
-    #         return ''
-    #     if Len1 > Len2:
-    #         Texto = '-----   Len1 > Len2 ---  ' + String_LenNOK
-    #         print(Texto)
-    #         pass
-    #         return String_LenNOK
-    #     elif Len2 < 20:
-    #         Texto = '-----    Len2 < 20 ---   ' + String_LenNOK
-    #         print(Texto)
-    #         return String_LenNOK
-    #     else:
-    #         return Desc2
-
 
     # ------------------------------------------------------------------------------------
     def Check_The_Row(self, FullDesc, TRcode):

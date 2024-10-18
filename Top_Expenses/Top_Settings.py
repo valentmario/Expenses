@@ -60,12 +60,12 @@ class Top_String_Matching(tk.Toplevel):
     def View_Matchings(self):
         self.Text1.Set_Text('')
         self.Text2.Set_Text('')
-        StrToMach = self.Txt_StrToMatch.Get_Text('ASCII').replace('\n', '')
+        StrToMach = self.Txt_StrToMatch.Get_Text(NOT_INT).replace('\n', '')
         if not StrToMach:
             self.Frame_Matchings.Load_Row_Values([])
         else:
             self.Matchings_List = []
-            StrToMach = self.Txt_StrToMatch.Get_Text('ASCII').replace('\n', '')
+            StrToMach = self.Txt_StrToMatch.Get_Text(NOT_INT).replace('\n', '')
 
             for Rec in self.Data.Get_Codes_Table():  # Get_Codes_Table():
                 Txt_StrToFind =  Rec[iTR_TRstrToFind].replace('\n', '', 5)
