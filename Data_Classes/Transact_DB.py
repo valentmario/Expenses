@@ -173,6 +173,9 @@ class Transact_Db(Xlsx_Manager):
                 if self.Connect:
                     self.Connect.close()
                 return OK
+        else:
+            if self.Connect:
+                self.Connect.close()
 
     # --------------------------------------------------------------------------------------------------
     #                      0        1         2         3         4        5        6      7
@@ -228,12 +231,12 @@ class Transact_Db(Xlsx_Manager):
     def Check_IfTransactRecord_InDatabase(self, RecToInsert):
         for Transact_Rec in self._Transact_Table:
             ListOnDb = list(Transact_Rec)
-            if ListOnDb[iTransact_Conto]       == RecToInsert[iTransact_Conto]  and \
-                    ListOnDb[iTransact_Contab] == RecToInsert[iTransact_Contab] and \
-                    ListOnDb[iTransact_Valuta] == RecToInsert[iTransact_Valuta] and \
-                    ListOnDb[iTransact_Accred] == RecToInsert[iTransact_Accred] and \
-                    ListOnDb[iTransact_Addeb]  == RecToInsert[iTransact_Addeb]:
-                    return True
+            if ListOnDb[iTransact_Conto]  == RecToInsert[iTransact_Conto]  and \
+               ListOnDb[iTransact_Contab] == RecToInsert[iTransact_Contab] and \
+               ListOnDb[iTransact_Valuta] == RecToInsert[iTransact_Valuta] and \
+               ListOnDb[iTransact_Accred] == RecToInsert[iTransact_Accred] and \
+               ListOnDb[iTransact_Addeb]  == RecToInsert[iTransact_Addeb]:
+                return True
         return False
 
     # -------------------------------------------------------------------------------------------------------------

@@ -290,11 +290,6 @@ class Top_Codes_Mngr(Super_Top_Mngr):
                 # self.Set_State_Butt_New_Updt('normal', 'disabled')  # New Update
                 break
 
-    # -----------------    Enable Disable Buttons  New / Update Code   ------------------
-    # def Set_State_Butt_New_Updt(self, StateNew, StateUpdt):
-    #     self.BtnAddNew.configure(state=StateNew)        # New Update
-    #     self.BtnUpdate.configure(state=StateUpdt)
-
     # ------------------------     ***   Delete  the last TR Record      --------------------------
     def Clk_Delete_Record(self):
         Result = self.Delete_Code_Record()

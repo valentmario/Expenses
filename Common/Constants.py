@@ -381,13 +381,14 @@ iNoCode_Addeb    = 2
 iNoCode_FullDesc = 3
 
 # List_WithCode
-iWithCode_nRow    = 0
-iWithCode_Contab  = 1
-iWithCode_Valuta  = 2
-iWithCode_TR_Desc = 3
-iWithCode_Accr    = 4
-iWithCode_Addeb   = 5
-iWithCode_TRcode  = 6
+iWithCode_nRow     = 0
+iWithCode_Contab   = 1
+iWithCode_Valuta   = 2
+iWithCode_TR_Desc  = 3
+iWithCode_Accr     = 4
+iWithCode_Addeb    = 5
+iWithCode_TRcode   = 6
+iWithCode_FullDesc = 7
 
 # List_View_Codes
 iView_TRcode    = 0

@@ -84,6 +84,44 @@ _Create_Xlsx_Lists
     else:
          return Multi_List
 
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+XLS_Row_List[]
+    iRow_nRow = 0  iRow_Contab = 1  iRow_Valuta = 2  iRow_Descr1 = 3
+    iRow_Accr = 4  iRow_Addeb  = 5  iRow_Descr2 = 6
+
+_tWihtout_Code_Tree_List[]
+    iNoCode_nRow = 0  iNoCode_Date = 1  iNoCode_Addeb = 2  iNoCode_FullDesc = 3
+
+_tWith_Code_Tree_List[]
+    iWithCode_nRow = 0  iWithCode_Contab = 1  iWithCode_Valuta = 2  iWithCode_TR_Desc  = 3
+    iWithCode_Accr = 4  iWithCode_Addeb  = 5  iWithCode_TRcode = 6  iWithCode_FullDesc = 7
+
+Records_ToInsert[]  as in Transact_Year.db
+    iTransact_nRow  = 0  iTransact_Conto = 1  iTransact_Contab = 2  iTransact_Valuta = 3
+    iTransact_TRdesc= 4  iTransact_Accred= 5  iTransact_Addeb  = 6  iTransact_TRcode = 7
+
+View on Ask_YES_NO for Insert:
+                    0      1      2      3     4      5
+Candidate_List = [nRow, Contab Valuta Accred Addeb Full_Desc]
+------------------------------------------------------------
+Xlsx Row candidate for insertion on database:
+nRow  Contab Valuta Amount Full_Desc
+------------------------------------------------------------
+Transaction record to be inserted on database:
+nRow  TRcode  TRdesc
+StrToserc
+FullDesc
+Group  Category  Accred   Addeb
+
+
+Rec_Queries_List[]
+    iQuery_Date = 0  iQuery_Descr = 1  iQuery_Accr = 2 iQuery_Addeb = 3
+
+
+------------------------------------------------------------
+
+
+
 =============================================================================================
 
 

@@ -225,8 +225,9 @@ class Xlsx_Manager(Codes_db):
         for Row in self._tXLSX_Rows_Desc_Compact:
             Row_Without_Code = []
             Row_With_Code    = []
-            Full_Desc        = self.Description_Select(self._tXlsx_Conto, Row[iRow_Descr1], Row[iRow_Descr2])
-            Row[iRow_Descr1] = Full_Desc
+            # Full_Desc        = self.Description_Select(self._tXlsx_Conto, Row[iRow_Descr1], Row[iRow_Descr2])
+            # Row[iRow_Descr1] = Full_Desc
+            Full_Desc        = self.Descrip_Select(Row[iRow_Descr1], Row[iRow_Descr2])
             pass
 
             # Find for Full Description of Row  a String_To_Find on Codes Table
@@ -245,14 +246,16 @@ class Xlsx_Manager(Codes_db):
             else:
                 Rec_Found = Result[1]
                 self._tTot_WithCode += 1
-                Row_With_Code.append(int(Row[iRow_nRow]))    # nRow
-                Row_With_Code.append(Row[iRow_Contab])       # Contabile
-                Row_With_Code.append(Row[iRow_Valuta])       # Valuta
-                Row_With_Code.append(Rec_Found[iTR_TRdesc])  # TRdesc
-                Row_With_Code.append(Row[iRow_Accr])         # Accred
-                Row_With_Code.append(Row[iRow_Addeb])        # Addeb
-                Row_With_Code.append(Rec_Found[iTR_TRcode])  # TRcode
+                Row_With_Code.append(int(Row[iRow_nRow]))      # nRow
+                Row_With_Code.append(Row[iRow_Contab])         # Contabile
+                Row_With_Code.append(Row[iRow_Valuta])         # Valuta
+                Row_With_Code.append(Rec_Found[iTR_TRdesc])    # TRdesc
+                Row_With_Code.append(Row[iRow_Accr])           # Accred
+                Row_With_Code.append(Row[iRow_Addeb])          # Addeb
+                Row_With_Code.append(Rec_Found[iTR_TRcode])    # TRcode
+                Row_With_Code.append(Rec_Found[iTR_TRfullDes]) # Full_Desc
                 self._tWith_Code_Tree_List.append(Row_With_Code)
+        print(self._tWith_Code_Tree_List[0])
         return OK
 
     # --------------------------------------------------------------------------------------------
@@ -424,30 +427,46 @@ class Xlsx_Manager(Codes_db):
         return dateobject
 
     # -----------------------------------------------------------------------------------
-    def Description_Select(self, XlsxConto, Desc1, Desc2):
+    def Descrip_Select(self, Desc1, Desc2):
         self.Dummy = 1
-        Typ1 = type(Desc1)
-        Typ2 = type(Desc2)
-        Len1  = 0
-        Len2  = 0
-        String_LenNOK = str(XlsxConto) + ' - ' + str(Desc1) + ' --- ' + str(Desc2)
-        if Typ1 is str:
+        Len1 = 0
+        Len2 = 0
+        if type(Desc1) is str:
             Len1 = len(Desc1)
-        if Typ2 is str:
+        if type(Desc2) is str:
             Len2 = len(Desc2)
         if not Len1 and not Len2:
-            return ''
+            return '??????? Desciption_1 and 2  UNKNOWN  ?????????????'
+        Full_Desc = Desc2
         if Len1 > Len2:
-            Texto = '-----   Len1 > Len2 ---  ' + String_LenNOK
-            print(Texto)
-            pass
-            return String_LenNOK
-        elif Len2 < 20:
-            Texto = '-----    Len2 < 20 ---   ' + String_LenNOK
-            print(Texto)
-            return String_LenNOK
-        else:
-            return Desc2
+            Full_Desc = Desc1
+        return Full_Desc
+
+    # -----------------------------------------------------------------------------------
+    # def Description_Select(self, XlsxConto, Desc1, Desc2):
+    #     self.Dummy = 1
+    #     Typ1 = type(Desc1)
+    #     Typ2 = type(Desc2)
+    #     Len1  = 0
+    #     Len2  = 0
+    #     String_LenNOK = str(XlsxConto) + ' - ' + str(Desc1) + ' --- ' + str(Desc2)
+    #     if Typ1 is str:
+    #         Len1 = len(Desc1)
+    #     if Typ2 is str:
+    #         Len2 = len(Desc2)
+    #     if not Len1 and not Len2:
+    #         return ''
+    #     if Len1 > Len2:
+    #         Texto = '-----   Len1 > Len2 ---  ' + String_LenNOK
+    #         print(Texto)
+    #         pass
+    #         return String_LenNOK
+    #     elif Len2 < 20:
+    #         Texto = '-----    Len2 < 20 ---   ' + String_LenNOK
+    #         print(Texto)
+    #         return String_LenNOK
+    #     else:
+    #         return Desc2
 
 
     # ------------------------------------------------------------------------------------

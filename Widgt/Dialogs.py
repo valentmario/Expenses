@@ -5,7 +5,6 @@
 
 import tkinter as tk
 from Widgt.Widgets import TheText
-from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheCombo
 
 # =======================   M E S S A G E      D I A L O G       ========================
@@ -49,7 +48,7 @@ class Message_Dlg(tk.Toplevel):
         Btn_Xpos  = 280
         Btn_Ypos  = 60  + Vert_Delt
         VertYgeo  = 120 + Vert_Delt
-        self.geometry('450x' + str(VertYgeo)+'+900+50')
+        self.geometry('450x' + str(VertYgeo)+'+400+50')
 
         if Option == MsgBox_Info:
             self.title('Info Message')
@@ -65,7 +64,6 @@ class Message_Dlg(tk.Toplevel):
             self.title('YES  NO  Selection Request')
             self.Texto += ' ?'
             TheText(self, Txt_MsgWhite, 10, 10, self.MaxChar_xLine, self.nLine, self.Texto)
-            # TheText(self, Txt_MsgWhite,  self.MaxChar_xLine, self.MaxChar_xLine, self.Texto)
             TheButton(self, Btn_Def_En, Btn_Xpos, Btn_Ypos, 15, 'YES', self.Clk_YES)
             TheButton(self, Btn_Def_En,  20, Btn_Ypos,  15, 'NO', self.Clk_NO)
 

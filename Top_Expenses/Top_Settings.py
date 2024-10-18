@@ -290,9 +290,6 @@ class Top_Settings(tk.Toplevel):
         strLen = str(len(self.Data.Get_WithCodeList()))
         print('Len without code = ' + strLen)
 
-        # strLen = str(len(self.Data.TransactRecords_ToBeInserted()))
-        # print('Len Transactions to be inserted = ' + strLen)
-
         print(self.Data.Get_Selections_Member(Ix_Transact_File))
         print(self.Data.Get_TransacYear())
 

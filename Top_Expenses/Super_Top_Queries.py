@@ -348,7 +348,7 @@ class Super_Top_Queries(tk.Toplevel):
         strCredit   = Float_ToString_Setup(floatCredit)
         strDebit    = Float_ToString_Setup(floatDebit)
         CreditDebit_List = [floatCredit, floatDebit, strCredit, strDebit]
-        Rec_List         = [Rec[iQuery_Date], Rec[iQuery_Descr], strCredit, strDebit]
-        return [Rec_List, CreditDebit_List]
+        Rec_Queries_List = [Rec[iQuery_Date], Rec[iQuery_Descr], strCredit, strDebit]
+        return [Rec_Queries_List, CreditDebit_List]
 
 # =================================================================================================================
