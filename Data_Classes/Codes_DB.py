@@ -484,13 +484,12 @@ class Codes_db(Files_Names_Manager):
             ErrMsg = ('In Xlsx file for:\n\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
             ErrMsg += '\nFull Description:\n' + Full_Desc + '\n\nFound:\n'
             for Rec in Found_List:
-                #print(Rec)
                 strCode = str(Rec[iTR_TRcode])
                 Texto   = 'Code: ' + strCode + ' Descr: ' + Rec[iTR_TRdesc] + '\n'
                 Texto += 'string To find: ' + Rec[iTR_TRstrToFind] + '\n' + Rec[iTR_TRfullDes] + '\n'
                 ErrMsg += Texto
                 pass
-            print(ErrMsg)
+            # print(ErrMsg)
             self._tXlsxRows_Multi_Matching_Text += ErrMsg
             return [NOK, []]
 # ==============================================================================================================

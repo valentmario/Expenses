@@ -15,6 +15,7 @@ from Widgt.Widgets import TheButton, TheText, TheCombo
 
 # ---------------------------------------------------------------------------------------
 class Top_View_Codes(tk.Toplevel):
+    # List is [] for Full Codes Database  or  a limited List for Queries
     def __init__(self, List):
         super().__init__()
         self.Chat     = Ms_Chat
@@ -24,8 +25,7 @@ class Top_View_Codes(tk.Toplevel):
         self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
 
         self.resizable(True, True)
-        # self.geometry(Top_View_geometry)
-        self.title('*****     Codici  dei Movimenti     ***** ')
+        self.title('*****     Transactions Codes     ***** ')
         self.configure(background=BakGnd)
 
         self.nRows      = 41
@@ -83,6 +83,13 @@ class Top_View_Codes(tk.Toplevel):
         elif Request_Code == CODE_CLK_ON_TR_CODES:      # Clicked on Codes Tree [TRcode]
             pass
             # self.Set_Focus_On_Tcode(int(Value))
+        elif Request_Code == CODES_DB_UPDATED:
+            self.Codes_List = self.Data.Tree_Codes_View_List
+            self.View_Type  = VIEWxCODE
+            self.Combo_View.SetSelText(VIEWxCODE)
+            self.Frame_Codes.Load_Row_Values(self.Codes_List)
+
+
 
     # ---------------------------------------------------------------------------------------------
     def Set_Focus_On_Tcode(self, TRcode):

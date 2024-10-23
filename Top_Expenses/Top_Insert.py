@@ -12,10 +12,9 @@
 #                                                                                       #
 # ------------------------------------------------------------------------------------- #
 
+import os
 import tkinter as tk
 from enum import CONTINUOUS
-
-from openpyxl.descriptors import ASCII
 
 from Top_Expenses.Modules_Manager import Modul_Mngr
 from Chat import Ms_Chat
@@ -71,14 +70,13 @@ class Top_Insert(tk.Toplevel):
         self.StrVar_Conto  = tk.StringVar
         self.OptMenu_Cont  = TheCombo(self, self.StrVar_Conto, 260, 860, 15, 16, Continue_List,
                                       STEP, self.Clk_Continue)
-        self.UpToText      = TheText(self, Txt_Enab,           425, 860, 5, 1, '')
+        self.UpToText      = TheText(self, Txt_Enab,          425, 860,   5,  1, '')
 
-        self.ViewTransact = TheButton(self, Btn_Def_Dis,       500, 860, 23, 'Mostra movimenti nel Db',self.Clk_View_Transact)
+        self.ViewTransact = TheButton(self, Btn_Def_Dis,       20, 940,  23, 'Show Transactions on Db',self.Clk_View_Transact)
 
         self.Ins_Btn      = TheButton(self, Btn_Def_En,        260, 900, 23, 'Inserire Movimenti nel Db', self.Clk_Insert)
 
-        Texto = 'Clear Transactions db ' + str(self.intYear)
-        self.ClrDb_Btn    = TheButton(self, Btn_Def_En,        260, 940, 23, '', self.Clk_Insert)
+        self.ClrDb_Btn    = TheButton(self, Btn_Def_En,        260, 940, 23, '', self.Clk_Delete_DbInsert)
 
         self.Exit         = TheButton(self, Btn_Def_En,  500, 940, 23, '  F I N E  ',               self.Call_OnClose)
 
@@ -226,60 +224,68 @@ class Top_Insert(tk.Toplevel):
     # -------------------------------------------------------------------------------------------------
     def Clk_Continue(self, Value):
         self.Continue = Value
-        if Value == NONSTOP or Value == STEP:
+        if Value == CONTINUOUS or Value == STEP:
             self.UpToText.Set_Text('')
         elif Value == UPTO:
             UptoNrow = self.UpToText.Get_Text(NOT_INT)
             if UptoNrow == '' or (int(UptoNrow) < 10) :
                 self.UpToText.Set_Text('30')
 
-    def Check_Continue(self, WithCodList):
-        if self.Continue == CONTINUOUS:
-            return True
-        elif self.Continue == STEP:
-            return False
+    # -------------------------------------------------------------------------------------------------
+    def Check_Ask_Dlg(self, WithCodList):
+        if self.Continue == STEP:
+            return ASK                          # ask
+        elif self.Continue == CONTINUOUS:
+            return NOTASK                        # NOT ask
         else:
-            nRow_ToEnd = self.UpToText.Get_Text(INTEGER)
+            nRow_ToEnd = int(self.UpToText.Get_Text(INTEGER))
             nRow       = int(WithCodList[iWithCode_nRow])
-            if nRow   >= nRow_ToEnd:
-                return False
+            if nRow >= nRow_ToEnd+1:
+                return STOP                     # Stop
             else:
-                return True
+                return NOTASK                   # NOT Ask
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Insert(self):
-        # self.Ins_Btn.Btn_Disable()
+        self.Ins_Btn.Btn_Disable()
         Result = self.Data.OpenClose_Transactions_Database(True, self.Full_Filename_For_Insert)
         if Result != OK:
             return Result
         ListToInsert = self.Records_ToIns_List
-        IndexEnd     = len(self.Records_ToIns_List) + 1
+        IndexEnd     = len(self.Records_ToIns_List)
         Remain_List  = self.Records_ToIns_List.copy()
         for Index in range(0, IndexEnd):
             RecToIns    = self.Records_ToIns_List[Index]
             WithCodList = self.Rows_WithCod_List[Index]
-            if not self.Check_Continue(WithCodList):
-                if not self.Ask_For_RecToInsert(WithCodList, RecToIns):
-                    return
-            Result = self.Data.Insert_Transact_Record(RecToIns)
-            if Result != OK:
-                Msg_Dlg = Message_Dlg(MsgBox_Err, Result)
-                Msg_Dlg.wait_window()
-                return
-            del Remain_List[0]
-            self.Load_Tree(Remain_List)
 
+            Reply = self.Check_Ask_Dlg(WithCodList)     # STOP  or ASK  or NOT_ASK
+            Continue = True                             # NOT_ASK and conitinue
+            if Reply == STOP:                           # STOP
+                Continue = False
+            elif Reply == ASK:                          # ASK
+                if not self.Ask_For_RecToInsert(WithCodList, RecToIns):
+                    Continue = False                    # Reply = NO
+
+            if Continue:
+                Result = self.Data.Insert_Transact_Record(RecToIns)
+                if Result != OK:
+                    Msg_Dlg = Message_Dlg(MsgBox_Err, Result)
+                    Msg_Dlg.wait_window()
+                    return
+                del Remain_List[0]
+                self.Load_Tree(Remain_List)
+            else:
+                break
         self.Data.OpenClose_Transactions_Database(False, self.Full_Filename_For_Insert)
 
-        # Check for insertion on Db --------------------
-        if not Modul_Mngr.Init_Transactions(TOP_INS):
-            return
+        # Reload Rows etc for Insert --------------------
         if self.Mod_Mngr.Init_Top_Insert(TOP_INS):
             self.Create_RecordsList_ToBeInserted()
             self.Set_Data()
             self.Set_Texts()
-            self.Load_Tree(ListToInsert)
+            self.Load_Tree(self.Records_ToIns_List)
             self.Ins_Btn.Btn_Enable()
+            self.Chat.Tx_Request([TOP_INS, [ANY], XLSX_UPDATED, []])
 
     # -------------------------------------------------------------------------------------------------
     def Set_Texts(self):
@@ -287,7 +293,7 @@ class Top_Insert(tk.Toplevel):
         self.Conto       = self.Files_Ident[Ix_Xlsx_Conto]
         self.intYear     = self.Files_Ident[Ix_Xlsx_Year]
         self.intMonth    = self.Files_Ident[Ix_Xlsx_Month]
-        Texto = 'Clear Transactions db ' + str(self.intYear)
+        Texto = 'Delete Transactions db ' + str(self.intYear)
         self.ClrDb_Btn.Set_Text(Texto)
 
         Full_Transact_Name = self.Data.Get_Selections_Member(Ix_Transact_File)
@@ -376,7 +382,7 @@ class Top_Insert(tk.Toplevel):
     def Clk_View_Xlsx(self):
         self.Mod_Mngr.Top_Launcher(TOP_XLSX_VIEW, TOP_INS, [])
 
-    # ---------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------------
     def Clk_View_Transact(self):
         self.Mod_Mngr.Top_Launcher(TOP_VIEW_TRANSACT, TOP_INS, [])
 
@@ -387,6 +393,25 @@ class Top_Insert(tk.Toplevel):
         if selected_nMonth < 1 or selected_nMonth > 12:
             return 2
         return 3            # Year and month are OK
+
+    # -------------------------------------------------------------------------------------------------
+    def Clk_Delete_DbInsert(self):
+        Message = 'Cofirm to delete Transactions Db\nYear:  ' + str(self.intYear)
+        Msg_dlg = Message_Dlg(MsgBox_Ask, Message)
+        Msg_dlg.wait_window()
+        Reply = Msg_dlg.data
+        if Reply == YES:
+            FullTransactFileName = self.Data.Get_Selections_Member(Ix_Transact_File)
+            if os.path.exists(FullTransactFileName):
+                os.remove(FullTransactFileName)
+                self.Data.Update_Selections(UNKNOWN, Ix_Transact_File)
+                Message = 'Transactions Db\nYear:  ' + str(self.intYear) + '   deleted\nPlease select an xlsx file'
+                Msg_dlg = Message_Dlg(MsgBox_Info, Message)
+                Msg_dlg.wait_window()
+                self.intYear = 0
+                Texto = 'Delete Transactions db '
+                self.ClrDb_Btn.Set_Text(Texto)
+                self.Clk_Sel_Xlsx()
 
     # -------------------------------------------------------------------------------------------------
     def Clk_Ontree_View(self, Values):

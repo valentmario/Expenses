@@ -165,13 +165,13 @@ class Transact_Db(Xlsx_Manager):
                 self.Connect = sqlite3.connect(Transact_Filename)
                 self.Cursor = self.Connect.cursor()
             except sqlite3.Error as e:
+                if self.Connect:
+                    self.Connect.close()
                 strErr = Db_Error(e)
-                ErMessg = [0, ['Errore nel creare  ' + Transact_Filename + '\n' + str(strErr)]]
+                ErMessg = [0, ['Errore on opening  ' + Transact_Filename + '\n' + str(strErr)]]
                 return ErMessg
 
             finally:
-                if self.Connect:
-                    self.Connect.close()
                 return OK
         else:
             if self.Connect:
@@ -181,7 +181,7 @@ class Transact_Db(Xlsx_Manager):
     #                      0        1         2         3         4        5        6      7
     # List_Transact_DB :  nRow    Conto    Contab    Valuta    TR_Desc   Accred   Addeb  TRcode
     # ---------------------------------------------------------------------------------------------------
-    def Insert_Transact_Record(self, Record_List):   # nRow, Cont, Contab, Valuta, Trdesc, Accred, Addeb, TRcode:
+    def Insert_Transact_Record(self, Record_List):
         nRow   = Record_List[iTransact_nRow]
         Conto  = Record_List[iTransact_Conto]
         Contab = Record_List[iTransact_Contab]
@@ -190,24 +190,24 @@ class Transact_Db(Xlsx_Manager):
         Accred = Record_List[iTransact_Accred]
         Addeb  = Record_List[iTransact_Addeb]
         TRcode = Record_List[iTransact_TRcode]
-        # self.Connect(TransactDB_Filename) is  made before the loop for insert
+        # self.Connect(TransactDB_Filename) made before the loop for insert
         try:
-            Connect = sqlite3.connect(self._Transact_DB_Filename)
-            Cursor  = Connect.cursor()
-            Cursor.execute("""
+            self.Cursor.execute("""
                              INSERT INTO TRANSACT (nRow, Conto, Contab, Valuta, TRdesc, Accred, Addeb, TRcode)
                              VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
                              (nRow, Conto, Contab, Valuta, TRdesc, Accred, Addeb, TRcode))
-            Connect.commit()
-            Cursor.close()
+            self.Connect.commit()
+            pass
         except sqlite3.Error as e:
+            if self.Connect:
+                self.Connect.close()
             strErr = Db_Error(e)
             MsgErr = ('ERROR on inserting:\n\n' + TRdesc + '\n\n'
                       'in Codes Table:\n\n') + str(strErr)
             return MsgErr
         finally:
-            if self.Connect:
-                self.Connect.close()
+            # if self.Connect:
+            #     self.Connect.close()  made at the end of loop for insert
             return OK
 
     # --------------------------------------------------------------------------------------------------

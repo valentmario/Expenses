@@ -24,16 +24,16 @@ if DUAL_DISPLAY:
     Top_Query_geometry     = ['630x1000+3200+10', '1080x1000+640+10', '1500x1000+200+10']
                            # ['630x1000+1060+10', '1060x1000+640+10', '1500x1000+200+10']
 else:
-    Main_Wind_geometry     = '330x310+1580+1'
+    Main_Wind_geometry     = '330x310+1580+10'
     Settings_geometry      = '330x390+1580+360'
-    Top_Mngr_geometry      = '660x1000+1000+1'
-    Top_View_geometry      = '840x1000+350+1'
+    Top_Mngr_geometry      = '660x1000+1000+10'
+    Top_View_geometry      = '840x1000+160+10'
     Top_View_geom_reduced  = '840x470+350+200'
-    Top_GRcodes_geometry   = '830x1000+20+1'
-    Top_Xlsx_View_geometry = '820x1000+10+1'
+    Top_GRcodes_geometry   = '830x1000+20+10'
+    Top_Xlsx_View_geometry = '820x1000+10+10'
     Top_View_Mess_geometry = '450x470+600+10'
-    Top_Insert_geometry    = '740x1000+900+1'
-    Top_TrView_geometry    = '820x1000+10+1'
+    Top_Insert_geometry    = '740x1000+900+10'
+    Top_TrView_geometry    = '990x1000+10+10'
     #                         one frame           two frames          three frames
     Top_Query_geometry     = ['630x1000+1020+10', '1080x1000+570+10', '1520x1000+130+10']
 
@@ -142,7 +142,7 @@ LAUNCH_CHECKOUT = [ [TOP_SETTINGS,      []],
                     [TOP_GR_MNGR,       [CEK_CODES]],
                     [TOP_XLSX_VIEW,     [CEK_CODES,       CEK_XLSX_LIST]],
                     [TOP_INS,           [CEK_CODES_TRUE,  CEK_XLSX_TRUE, CEK_TOP_INSERT]],
-                    [TOP_VIEW_TRANSACT, [CEK_CODES_TRUE,  CEK_TOP_QUERIES]],
+                    [TOP_VIEW_TRANSACT, [CEK_CODES_TRUE,  CEK_XLSX_LIST, CEK_TOP_QUERIES]],
                     [TOP_QUERY,         [CEK_CODES_TRUE,  CEK_TOP_QUERIES]],
                     [TOP_VIEW_MESS,     []] ]
 
@@ -346,11 +346,14 @@ FIDFLHBP    = 'FID+FLH+BP' # FIDEU/FLASH/POSTA   Doesn't matter
 POSTA       = 'POSTA'      # Poste Italiane      Must be 5 chars length
 AMBRA       = 'AMBRA'      # Credit Card Ambra   Must be 5 chars length
 Conto_List  = [FIDEU, FLASH, FIDFLHBP, POSTA, AMBRA]
-STEP        = 'Step by Step'
-NONSTOP     = 'Non Stop to End'
-UPTO        = 'Up to Row n.'
-Continue_List = [STEP, NONSTOP, UPTO]
 
+STEP        = 'Step by Step'
+CONTINUOUS  = 'Continuous'
+UPTO        = 'Up to Row n.'
+Continue_List = [STEP, CONTINUOUS, UPTO]
+NOTASK        = 'Not Ask Dialog'
+ASK           = ' Ask Dialog'
+STOP          = 'Stop'
 # -----------------------------------------------------------------------------------------------------------
 #                      0        1         2         3         4        5        6      7
 # List_Transact_DB :  nRow    Conto    Contab    Valuta    TR_Desc   Accred   Addeb  TRcode

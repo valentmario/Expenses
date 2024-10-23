@@ -180,6 +180,7 @@ class Top_Queries(Super_Top_Queries):
         self.OptMenu_CA.PosX(PosXok)
         self.Btn_xlsx_View.SetX(PosXok)
         self.Btn_xlsx_file.SetX(PosXok)
+        self.Btn_Small_Exp.SetX(PosXok)
 
         self.Btn_DB_View.SetX(PosXok)
         self.Btn_Exit.SetX(PosXok)

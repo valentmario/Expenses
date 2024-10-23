@@ -256,6 +256,7 @@ class Xlsx_Manager(Codes_db):
                 Row_With_Code.append(Rec_Found[iTR_TRfullDes]) # Full_Desc
                 self._tWith_Code_Tree_List.append(Row_With_Code)
         # print(self._tWith_Code_Tree_List[0])
+        print(self._tXlsxRows_Multi_Matching_Text)
         return OK
 
     # --------------------------------------------------------------------------------------------

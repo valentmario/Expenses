@@ -104,6 +104,7 @@ class Super_Top_Queries(tk.Toplevel):
         self.Btn_DB_View   = TheButton(self, Btn_Def_En, self.Widg_PosX, 370, 15, 'Mostra i Movimenti', self.Clk_ViewTransact)
         self.Btn_xlsx_file = TheButton(self, Btn_Def_En, self.Widg_PosX, 410, 15, 'Selez. un file Xlsx', self.Clk_SelXlsx)
         self.Btn_xlsx_View = TheButton(self, Btn_Def_En, self.Widg_PosX, 450, 15, 'Mostra file Xlsx',    self.Clk_XlsxView)
+        self.Btn_Small_Exp = TheButton(self, Btn_Def_En, self.Widg_PosX, 490, 15, 'Piccole spese', self.Clk_XlsxView)
 
         self.Btn_Exit = TheButton(self, Btn_Bol_En, self.Widg_PosX, 936, 13, '  E S C I  ', self.Call_OnClose)
         self.Set_All_Select()
@@ -309,7 +310,7 @@ class Super_Top_Queries(tk.Toplevel):
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_SelXlsx(self):
-        self.Mod_Mngr.Mod_Mngr_Mngr(ON_SELECTIONS)
+        self.Mod_Mngr.Xlsx_Sel_Request(ON_SELECTIONS)
 
     # -------------------------------------------------------------------------------------------------------------
     def Clk_Summaries(self):

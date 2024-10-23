@@ -55,13 +55,13 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         self.BtnAddNew = TheButton(self, Btn_Def_En ,286, 815, 18, 'Add New Record',    self.Clk_Add_New_Record)
         self.BtnSelXls = TheButton(self, Btn_Def_En, 286, 860, 18, 'Select Xlsx file',  self.Clk_Sel_xlsx)
         self.BtnViXlsx = TheButton(self, Btn_Def_Dis,286, 900, 18, 'Show Xlsx Rows',    self.Clk_View_Xlsx)
-        self.BtnCekDb  = TheButton(self, Btn_Def_Dis, 286, 940, 18, 'Check codes DB',    self.Clk_Ceck_Codes_DB)
+        self.BtnCekDb  = TheButton(self, Btn_Def_Dis, 286, 940, 18, 'Check codes DB',   self.Clk_Ceck_Codes_DB)
 
-        self.BtnUpdate = TheButton(self, Btn_Def_En,  474, 772, 17, 'Update Code',          self.Clk_Update_Record)
+        self.BtnUpdate = TheButton(self, Btn_Def_En,  474, 772, 17, 'Update Code',         self.Clk_Update_Record)
         self.BtnWith_out= TheButton(self, Btn_Def_Dis,474, 815, 17, 'Show with/hout codes',self.Clk_With_out)
-        self.BtnInsert = TheButton(self, Btn_Def_En,  474, 860, 17, 'Load Transactions',    self.Clk_Load_Transact)
+        self.BtnInsert = TheButton(self, Btn_Def_En,  474, 860, 17, 'Load Transactions',   self.Clk_Load_Transact)
         self.BtnWiewTransact=TheButton(self, Btn_Def_Dis,474, 900, 17, 'Show Transactions',self.Clk_ViewTransact)
-        self.BtnExit   = TheButton(self, Btn_Def_En,  474, 940, 18, 'E X I T ',             self.Call_OnClose)
+        self.BtnExit   = TheButton(self, Btn_Def_En,  474, 940, 18, 'E X I T ',            self.Call_OnClose)
 
         self.geometry(Top_Mngr_geometry)
         self.Set_Status()
@@ -78,7 +78,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
             self.Reqst_Clkd_On_TRcode(TRcode)
         elif Request_Code == CODES_DB_UPDATED or \
                 Request_Code == XLSX_UPDATED:
-                # self.Mod_Mngr.Load_Xlsx()
+                self.Mod_Mngr.Init_Xlsx_Lists(TOP_CODES_MNGR)          # Load_Xlsx()
                 self.Load_Trees()
 
     # --------------------------  T R E E     Without  Codes   ------------------------------------
