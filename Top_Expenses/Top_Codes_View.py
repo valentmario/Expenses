@@ -51,12 +51,12 @@ class Top_View_Codes(tk.Toplevel):
 
 
         # ----------------------------------    B U T T O N S     ---------------------------------
-        self.Txt_StrSerch = TheText(self,Txt_Disab,      20, self.Widg_PosY,    24, 4, '')
-        self.Txt_FullDesc = TheText(self, Txt_Disab,    230, self.Widg_PosY,    55, 4, '')
+        self.Txt_StrSerch = TheText(self,Txt_Disab,      10, self.Widg_PosY,    20, 4, '')
+        self.Txt_FullDesc = TheText(self, Txt_Disab,    190, self.Widg_PosY,    64, 4, '')
         self.View_StrVar  = tk.StringVar()
-        self.Combo_View   = TheCombo(self, self.View_StrVar, 686, self.Widg_PosY, 31, 14,
+        self.Combo_View   = TheCombo(self, self.View_StrVar, 720, self.Widg_PosY, 31, 14,
                                      CODES_VIEW_SEL, VIEW_ALPHAB, self.Clk_OnCombo)
-        self.Btn_Exit     = TheButton(self, Btn_Def_En, 690, self.Widg_PosY+50, 13, '  E X I T ', self.Call_OnClose)
+        self.Btn_Exit     = TheButton(self, Btn_Def_En, 720, self.Widg_PosY+50, 13, '  E X I T ', self.Call_OnClose)
 
         # ---------------------------------    T R E E   of  Codes    -----------------------------
         self.Frame_Codes = TheFrame(self,  10,  10, self.Clk_OnTree_Codes)
@@ -107,8 +107,8 @@ class Top_View_Codes(tk.Toplevel):
         Nrows       = self.nRows
         nColToVis = 5
         Headings  = ['#0', 'Code', 'Transaction', "Group", 'Category', 'String To Search']
-        Anchor    = [' c',  'c',   'w',           'w',     'w',        'w']
-        Width     = [0, 50, 190, 140, 140, 270]
+        Anchor    = ['c',  'c',    'w',           'w',     'w',        'w']
+        Width     = [ 0,    50,     210,           150,     140,        270]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_Codes.Tree_Setup(Form_List)
 

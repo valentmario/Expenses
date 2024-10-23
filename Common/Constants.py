@@ -13,8 +13,8 @@ if DUAL_DISPLAY:
     Main_Wind_geometry     = '330x310+1580+1'     # '330x310+1700+10'
     Settings_geometry      = '330x400+1580+390'    # 330x400+1700+370
     Top_Mngr_geometry      = '660x1000+1000+10'    # 660x1000+2100+10
-    Top_View_geometry      = '840x1000+2000+10'
-    Top_View_geom_reduced  = '840x1000+350+200'
+    Top_View_geometry      = '890x1000+2000+10'
+    Top_View_geom_reduced  = '890x1000+350+200'
     Top_View_Mess_geometry = '450x470+600+10'
     Top_GRcodes_geometry   = '830x1000+1600+10'
     Top_Xlsx_View_geometry = '820x1000+1300+10'   # '820x1000+2040+10'
@@ -27,8 +27,8 @@ else:
     Main_Wind_geometry     = '330x310+1580+10'
     Settings_geometry      = '330x390+1580+360'
     Top_Mngr_geometry      = '660x1000+1000+10'
-    Top_View_geometry      = '840x1000+160+10'
-    Top_View_geom_reduced  = '840x470+350+200'
+    Top_View_geometry      = '870x1000+100+10'
+    Top_View_geom_reduced  = '870x470+350+200'
     Top_GRcodes_geometry   = '830x1000+20+10'
     Top_Xlsx_View_geometry = '820x1000+10+10'
     Top_View_Mess_geometry = '450x470+600+10'
@@ -186,6 +186,7 @@ OK     = 'OK'
 NOK    = 'NOK'
 LOADED = 'Loaded'   # it means that the file or Db are Loaded but can contains error
 EMPTY  = 'Empty'
+MULTI  = 'Multiple Row Match'
 
 ALL_CODES   = 'All codes'
 ALL_GROUPS  = 'All groups'
@@ -278,8 +279,6 @@ VIEW_OKand_ERROR = 2
 
 CHECK_DBCODES_LOADED = 1
 CHECK_TEMT_DBCODES   = 2
-ISSTRING             = 1
-ISLIST               = 2
 
 #   -----  Database  Codes_DB_yyy-mm-dd.db -----------------
 # TABLE  TRANSACT_CODES

@@ -79,10 +79,10 @@ _Get_Work_Sheet_Rows
 _Create_Xlsx_Lists
     Create  _tWihtout_Code_Tree_List 
             _tWith_Code_Tree_List
-    if not _tXlsxRows_Multi_Matching_Text:
-        return OK
-    else:
-         return Multi_List
+            if MULTI:
+                return Multimatch
+     else:
+         return OK
 
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 XLS_Row_List[]

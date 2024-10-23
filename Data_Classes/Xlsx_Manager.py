@@ -136,28 +136,26 @@ class Xlsx_Manager(Codes_db):
     def Load_Xlsx_Lists(self, Filename):
         File_Name    = Filename
         if Filename == ON_SELECTIONS:
-            File_Name = self._Xlsx_Filename
+            File_Name = self._Xlsx_Filename                     # set filename
         if File_Name  == UNKNOWN:
-            return 'Xlsx Filename is unknown'
+            return 'Xlsx filename unknown'          # return UNKNOWN
 
-        self._Init_Xlsx_Data()    # ------------------------------------------------
-        # Xlsx file ident is clear on _Init_Xlsx_Data
-        # the xlsx filename is surely correct and Conto Year Month can be setted
-        # these attribute are necessary for _Load_xlsx_Rows_From_Sheet
+        self._Init_Xlsx_Data()
         # to adjust the rows values for different Conto (FIDEU_2024_09.xlsx)
         self._Set_Xlsx_Conto_Year_Month(File_Name)
 
         Result = self._Load_xlsx_Rows_From_Sheet(File_Name)      # Load xlsx Rows
         if Result != OK:
-            return Result
+            return Result                           # return  'Error on loading' or 'No rows'
+
         else:
             Result = self._Create_Xlsx_Lists()                  # create xlsx lists
             if Result == OK:
-                self._Save_Xlsx_Data()   # -------------------------------------------
+                self._Save_Xlsx_Data()
                 self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
                 return OK
             else:
-                return Result
+                return Result                       # return   'Multi matching'
 
     # -------------------------------------  Get rows from sheet ----------------------------
     def _Load_xlsx_Rows_From_Sheet(self, Filename):
@@ -203,15 +201,8 @@ class Xlsx_Manager(Codes_db):
                     else:
                         myRow.append(Val)
                 self._tXLSX_Rows_From_Sheet.append(myRow)    # Descripritions as in Sheet, Date is str
-        # if self._tTot_OK == 0:
-        #     return 'no correct rows found on xlsx file'
         if self._tXlsx_Conto == FLASH or self._tXlsx_Conto == AMBRA or self._tXlsx_Conto == POSTA:
             self._Adjust_Rows_MostToLess()   # Invert order from Most Recent to Less
-
-        # -------------
-        # if not self._tXLSX_Rows_Desc_Compact:
-        #     return 'xlsx file contains any row with significant data'
-        # else:
         return OK
 
     # ----------------------  Set tree rows list   ---------------------------------------  #
@@ -225,25 +216,29 @@ class Xlsx_Manager(Codes_db):
         for Row in self._tXLSX_Rows_Desc_Compact:
             Row_Without_Code = []
             Row_With_Code    = []
-            # Full_Desc        = self.Description_Select(self._tXlsx_Conto, Row[iRow_Descr1], Row[iRow_Descr2])
-            # Row[iRow_Descr1] = Full_Desc
             Full_Desc        = self.Descrip_Select(Row[iRow_Descr1], Row[iRow_Descr2])
             pass
 
-            # Find for Full Description of Row  a String_To_Find on Codes Table
-            # If more than one String_To_Find exists : ERROR
+            # Find for Full_Description of Row  a  String_To_Find on Codes Table
+            # If more than one String_To_Find exists : Multiple match error
 
             Result = self._Find_StrToFind_InFullDesc(Row, Full_Desc)
-            # return:      [NOK, []]  [OK, Found_List[0]]
+            # return:      [NOK, []]  [OK, Found_List[0]]  [MULTI, 'multimatchText
 
             if Result[0] == NOK:
                 self._tTot_WithoutCode += 1
                 Row_Without_Code.append(Row[iRow_nRow])       # nRow
                 Row_Without_Code.append(Row[iRow_Valuta])     # Valuta
-                Row_Without_Code.append(Row[iRow_Addeb])      # Addebiti
+                Amount = Row[iRow_Addeb]
+                if type(Amount) is float:
+                    if Amount == 0.0:
+                        Amount = Row[iRow_Accr]
+                else:
+                    Amount = Row[iRow_Accr]
+                Row_Without_Code.append(Amount)
                 Row_Without_Code.append(Full_Desc)            # Full_Desc
                 self._tWihtout_Code_Tree_List.append(Row_Without_Code)
-            else:
+            elif Result[0] == OK:
                 Rec_Found = Result[1]
                 self._tTot_WithCode += 1
                 Row_With_Code.append(int(Row[iRow_nRow]))      # nRow
@@ -255,8 +250,8 @@ class Xlsx_Manager(Codes_db):
                 Row_With_Code.append(Rec_Found[iTR_TRcode])    # TRcode
                 Row_With_Code.append(Rec_Found[iTR_TRfullDes]) # Full_Desc
                 self._tWith_Code_Tree_List.append(Row_With_Code)
-        # print(self._tWith_Code_Tree_List[0])
-        print(self._tXlsxRows_Multi_Matching_Text)
+            else:
+                return str(Result[1])    # Row matching  with multiple Str_ToFind
         return OK
 
     # --------------------------------------------------------------------------------------------

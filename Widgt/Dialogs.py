@@ -93,6 +93,7 @@ class Message_Dlg(tk.Toplevel):
 
 # ================================================================================= #
 #                  *****      Top_View_Message.py      *****                        #
+#                         View Message and select a value
 # ================================================================================= #
 
 import tkinter as tk
@@ -103,6 +104,49 @@ from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheTextPoints
 
 
+class View_Message_Select(tk.Toplevel):
+    def __init__(self, List):
+        super().__init__()
+        self.Chat = Ms_Chat
+
+        self.Chat.Attach([self, TOP_XLSX_VIEW])
+        self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
+        self.data  = ' '
+
+        self.resizable(False, False)
+        self.geometry(Top_View_Mess_geometry)
+        self.title('***   Show  message   *** ')
+        self.configure(background=BakGnd)
+        Messg         = List[0]
+        ListForSelect = List[1]
+        if len(List) > 1:
+            pass
+        self.Txt1 = TheTextPoints(self, Txt_Disab,  20, 20, 50, 20, Messg, 11)
+        TheButton(self, Btn_Def_En, 270, 410, 16, 'S E L E C T', self.Call_OnClose)
+
+        self.StringVar = tk.StringVar
+        self.OptMenu   = TheCombo(self, self.StringVar,20, 410, 16, 20, ListForSelect, ListForSelect[0], self.ClkCombo )
+
+        self.wait_visibility()
+        self.grab_set()
+        self.transient()
+        pass
+
+    def ClkCombo(self, Value):
+        if Value == NONE:
+            self.data = '0'
+        else:
+            self.data = Value
+
+    def Call_OnClose(self):
+        self.data = self.data
+        self.grab_release()
+        self.Chat.Detach(TOP_XLSX_VIEW)
+        self.destroy()
+
+# ================================================================================= #
+#                  *****      Top_View_Message.py      *****                        #
+# ================================================================================= #
 class View_Message(tk.Toplevel):
     def __init__(self, List):
         super().__init__()

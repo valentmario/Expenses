@@ -245,7 +245,6 @@ class Mod_Mngr_Init:
     #           --------------      Xlsx file  managing     --------------                        #
     # =========================================================================================== #
     def Init_Xlsx_Lists(self, Origin):
-        Result = None
         Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
         if Xlsx_Filename == UNKNOWN:
             return self.Sel_Xlsx_Mngr(Origin)
@@ -254,9 +253,10 @@ class Mod_Mngr_Init:
             if self.Data.Get_Files_Loaded_Stat(Ix_Xlsx_Lists_Loaded):
                 return True
             else:
-                Result = self.Load_Xlsx_Lists_Mngr(Origin, ON_SELECTIONS)
-            self.Warning_For_NO_Rows()
-            return Result
+                if self.Load_Xlsx_Lists_Mngr(Origin, ON_SELECTIONS):
+                    self.Warning_For_NO_Rows()
+                else:
+                    return False
 
     # -------------------------------------------------------------------------
     def Warning_For_NO_Rows(self):
