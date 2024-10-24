@@ -93,56 +93,73 @@ class Message_Dlg(tk.Toplevel):
 
 # ================================================================================= #
 #                  *****      Top_View_Message.py      *****                        #
-#                         View Message and select a value
+#                       View Message and select a value                             #
 # ================================================================================= #
 
 import tkinter as tk
-
 from Common.Common_Functions import *
 from Chat import Ms_Chat
 from Widgt.Widgets import TheButton
 from Widgt.Widgets import TheTextPoints
 
-
+# -----------------------------------------------------------------------------------
 class View_Message_Select(tk.Toplevel):
-    def __init__(self, List):
+    def __init__(self, Message, SelectList):
         super().__init__()
-        self.Chat = Ms_Chat
-
-        self.Chat.Attach([self, TOP_XLSX_VIEW])
-        self.protocol('WM_DELETE_WINDOW', self.Call_OnClose)
-        self.data  = ' '
-
         self.resizable(False, False)
-        self.geometry(Top_View_Mess_geometry)
-        self.title('***   Show  message   *** ')
-        self.configure(background=BakGnd)
-        Messg         = List[0]
-        ListForSelect = List[1]
-        if len(List) > 1:
-            pass
-        self.Txt1 = TheTextPoints(self, Txt_Disab,  20, 20, 50, 20, Messg, 11)
-        TheButton(self, Btn_Def_En, 270, 410, 16, 'S E L E C T', self.Call_OnClose)
+        self.geometry('470x650') # +100+500')
 
+        self.title('Select Dialog')
+        self.configure(bg='lightblue')
+        self.Texto = ''
+        self.data  = ' '
+        self.MaxChar_xLine = 46     #  VERY IMPORTANT for nLines count
+
+        if Message[-1] == '\n':
+            self.Txt = Message[:-1]
+        else:
+            self.Txt = Message
+
+        self.Nchar_xLine      = self.MaxChar_xLine
+        self.nLine            = 1
+        self.nCharCount_xLine = 0
+
+        for Char in self.Txt:
+            self.Texto += Char
+            self.nCharCount_xLine += 1
+            if self.nCharCount_xLine >= self.MaxChar_xLine:    # self.Nchar_xLine:
+                self.nCharCount_xLine = 0
+                self.nLine += 1
+            if Char == '\n':
+                self.nCharCount_xLine = 0
+                self.nLine           += 1
+                if self.nLine        > 80:
+                    break
+        self.nLine += 2
+        VertFlot  = float(self.nLine) * 14.5
+        Vert_Delt = int(VertFlot)
+        Btn_Ypos  = 60  + Vert_Delt
+        VertYgeo  = 120 + Vert_Delt
+        self.geometry('450x' + str(VertYgeo)+'+400+50')
+
+        self.title('Info Message')
+        TheText(self, Txt_MsgWhite, 10, 10, self.MaxChar_xLine, self.nLine, self.Texto)
         self.StringVar = tk.StringVar
-        self.OptMenu   = TheCombo(self, self.StringVar,20, 410, 16, 20, ListForSelect, ListForSelect[0], self.ClkCombo )
+        self.OptMenu   = TheCombo(self, self.StringVar,20, Btn_Ypos, 16, 20, SelectList, SelectList[0], self.ClkCombo )
+        self.data      = NONE
+        TheButton(self, Btn_Def_En, 280, Btn_Ypos, 15, 'S E L E C T', self.Clk_OK)
 
         self.wait_visibility()
         self.grab_set()
         self.transient()
         pass
 
-    def ClkCombo(self, Value):
-        if Value == NONE:
-            self.data = '0'
-        else:
-            self.data = Value
-
-    def Call_OnClose(self):
-        self.data = self.data
+    def Clk_OK(self):
         self.grab_release()
-        self.Chat.Detach(TOP_XLSX_VIEW)
         self.destroy()
+
+    def ClkCombo(self, Value):
+        self.data = Value
 
 # ================================================================================= #
 #                  *****      Top_View_Message.py      *****                        #

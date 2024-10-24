@@ -323,11 +323,59 @@ class Mod_Mngr_Init:
 
         Reply = self.Data.Load_Xlsx_Lists(Filename)
         if Reply == OK:                     #  reply:  OK or Diagnostic
+            self.Test_For_MultiChecking()
             self.Chat.Tx_Request([Origin, [ANY], XLSX_UPDATED, []])
             return True
         else:
             View_Message([Reply])
             return False
+
+    # --------------------------------------------------------------------------------------------
+    def Test_For_MultiChecking(self):
+        Row_MultiCheck_List = self.Data.Xlsx_Rows_MultiMatch_List
+        if not Row_MultiCheck_List:
+            return True
+        Row    = Row_MultiCheck_List[0]
+        Nrow   = str(Row[iRow_nRow])
+        Date   = str(Row[iRow_Valuta])
+        Desc1  = str(Row[iRow_Descr1])
+        Desc2  = str(Row[iRow_Descr2])
+        Amount = Row[iRow_Addeb]
+        if type(Amount) is not float:
+            Amount = Row[iRow_Accr]
+
+        Message = ('In Xlsx file for:\n\nRow: ' + Nrow + '\nDate: ' + Date + '\nAmount: ' + str(Amount))
+        Message += '\nDesc1: ' + Desc1 + '\nDesc2: ' + Desc2 + '\n\nFound:\n'
+
+        FoundList  = Row_MultiCheck_List[1]
+        ListFor_Select = [NONE]
+        for TrRec in FoundList:
+            strCode   = str(TrRec[iTR_TRcode])
+            strDesc   = str(TrRec[iTR_TRdesc])
+            ToSelect  = strCode + '/   ' + strDesc
+            ListFor_Select.append(ToSelect)
+            strToFind = str(TrRec[iTR_TRstrToFind])
+            FullDesc  = str(TrRec[iTR_TRfullDes])
+            Texto     = '\nCode: ' + strCode + '   Desc: ' + strDesc + '\nString to find:\n' + strToFind
+            Texto    += '\nFull Descr:\n' + FullDesc + '\n'
+            Message  += Texto
+            pass
+
+        Mesg_Sel = View_Message_Select(Message, ListFor_Select)
+        Mesg_Sel.wait_window()
+        Select = Mesg_Sel.data
+        if Select == NONE:
+            Code = 0
+        else:
+            iSlashIndex = Select.rfind('/')
+            strCode = Select[:iSlashIndex]
+            Code    = int(strCode)
+        print(Code)
+        if Code == 0:
+            return False
+        else:
+            self.Data.Add_Row_WithCode(Row, Code)
+        pass
 
     # --------------------------------------------------------------------------------------------
     #  invoked  on Main_window

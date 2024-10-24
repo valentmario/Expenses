@@ -465,10 +465,12 @@ class Codes_db(Files_Names_Manager):
         return [TRdesc, GRdesc, CAdesc]
 
     # ---------------------------------------------------------------------------------------------
-    def _Find_StrToFind_InFullDesc(self, Row, Full_Desc):  # nRow Contab Valuta   Full_Desc ....
-        nFound      = 0
-        Found_List  = []    # [TRrecord, ..., TRrecord]
+    def _Find_StrToFind_InFullDesc(self, Full_Desc):  # nRow Contab Valuta   Full_Desc ....
+        nFound      = 0     #  TESTING
+        Found_List  = []    # [[TRrecord], ..., [TRrecord]]
+        nCount = 0
         for TRrecord in self._TR_Codes_Table:
+            nCount += 1     #  TESTING
             StrToFind = TRrecord[iTR_TRstrToFind]
             if StrToFind == '' and Full_Desc == '':
                 pass
@@ -476,8 +478,9 @@ class Codes_db(Files_Names_Manager):
                 nFound += 1
                 Found_List.append(TRrecord)
                 #  TESTING
-                # nFound += 1
-                # Found_List.append(TRrecord)
+                if nCount == 30:
+                    nFound += 1
+                    Found_List.append(TRrecord)
 
         if nFound == 1:                         # Found only one String to find
             return [OK, Found_List[0]]

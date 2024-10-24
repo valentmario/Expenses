@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="before delete transctions db">
+    <list default="true" id="44cd0445-7b88-4755-82e8-cee30a2428e2" name="Changes" comment="Quit ready for xlsx multichecking">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Common/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Common/Constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Codes_DB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Modules_Manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Modules_Manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Codes_Mngr.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Top_Expenses/Top_Settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Top_Settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/aDocuments/Xlsx_Data_org.txt" beforeDir="false" afterPath="$PROJECT_DIR$/aDocuments/Xlsx_Data_org.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py" beforeDir="false" afterPath="$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Widgt/Dialogs.py" beforeDir="false" afterPath="$PROJECT_DIR$/Widgt/Dialogs.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,14 +62,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1725472318728</updated>
-    </task>
-    <task id="LOCAL-00025" summary="Created parent for Top_queries to reduce lines on Top_Queries">
-      <option name="closed" value="true" />
-      <created>1725527005405</created>
-      <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
-      <option name="project" value="LOCAL" />
-      <updated>1725527005405</updated>
     </task>
     <task id="LOCAL-00026" summary="Start to reduce Top_Qeries lines">
       <option name="closed" value="true" />
@@ -458,7 +447,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729279391964</updated>
     </task>
-    <option name="localTasksCounter" value="74" />
+    <task id="LOCAL-00074" summary="Quit ready for xlsx multichecking">
+      <option name="closed" value="true" />
+      <created>1729765866183</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1729765866186</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -485,7 +482,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Ready to use for years 2018..." />
     <MESSAGE value="Next step to add &#10;Top_View_Mess" />
     <MESSAGE value="Top_View_Mess is added now modify Modules_Manager with a second parameter for a list to pass to the &#10;Toplevel" />
     <MESSAGE value="Modules_Manager receive a List to transmit to Toplevel" />
@@ -510,7 +506,8 @@
     <MESSAGE value="Big Debugging. better&#10;Quit toward the end" />
     <MESSAGE value="Around Top_Insert" />
     <MESSAGE value="before delete transctions db" />
-    <option name="LAST_COMMIT_MESSAGE" value="before delete transctions db" />
+    <MESSAGE value="Quit ready for xlsx multichecking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Quit ready for xlsx multichecking" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -562,22 +559,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>375</line>
+          <line>397</line>
           <option name="timeStamp" value="2000" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>339</line>
+          <line>361</line>
           <option name="timeStamp" value="2002" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>356</line>
+          <line>378</line>
           <option name="timeStamp" value="2005" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>349</line>
+          <line>371</line>
           <option name="timeStamp" value="2008" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -722,43 +719,53 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>498</line>
+          <line>501</line>
           <option name="timeStamp" value="2551" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>491</line>
+          <line>494</line>
           <option name="timeStamp" value="2555" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>240</line>
-          <option name="timeStamp" value="2561" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
-          <line>328</line>
-          <option name="timeStamp" value="2562" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>244</line>
-          <option name="timeStamp" value="2565" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
-          <line>155</line>
-          <option name="timeStamp" value="2568" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
           <line>329</line>
+          <option name="timeStamp" value="2562" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
+          <line>330</line>
           <option name="timeStamp" value="2573" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Data_Classes/Codes_DB.py</url>
-          <line>497</line>
+          <line>500</line>
           <option name="timeStamp" value="2575" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
+          <line>371</line>
+          <option name="timeStamp" value="2594" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
+          <line>365</line>
+          <option name="timeStamp" value="2596" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Data_Classes/Xlsx_Manager.py</url>
+          <line>82</line>
+          <option name="timeStamp" value="2597" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
+          <line>376</line>
+          <option name="timeStamp" value="2598" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Top_Expenses/Mod_Mngr_Init.py</url>
+          <line>369</line>
+          <option name="timeStamp" value="2605" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

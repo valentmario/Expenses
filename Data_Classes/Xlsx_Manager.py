@@ -67,6 +67,21 @@ class Xlsx_Manager(Codes_db):
         # Ix_Tot_OK, Ix_Tot_WithCode, Ix_Tot_Without_Code
         return [self._Tot_OK, self._TotWith_Code, self._TotWihtout_Code]
 
+    def Add_Row_WithCode(self, Row, Code):
+        WithOutCode = []
+        NoCode_Count = 0
+        for RowNoCode in self._Wihtout_Code_Tree_List:
+            if RowNoCode == Row:
+                NoCode_Count += 1
+                pass
+            else:
+                WithOutCode.append(RowNoCode)
+        if NoCode_Count:
+            self._With_Code_Tree_List.append(Row)
+            self._TotWihtout_Code -= 1
+            self._TotWith_Code    += 1
+            pass
+
     def Get_WithCodeList(self):
         return self._With_Code_Tree_List
 
@@ -150,16 +165,21 @@ class Xlsx_Manager(Codes_db):
 
         Result = self._Load_xlsx_Rows_From_Sheet(File_Name)      # Load xlsx Rows
         if Result != OK:
-            return Result                           # return  'Error on loading' or 'No rows'
+            return Result    # return  'Error on loading' or 'No rows'
 
         else:
-            Result = self._Create_Xlsx_Lists()                  # create xlsx lists
-            if Result == OK:
-                self._Save_Xlsx_Data()
-                self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
-                return OK                           # return OK
-            else:
-                return Result                       # return   'Multi matching'
+            self._Create_Xlsx_Lists()                            # create xlsx  lists
+            self._Save_Xlsx_Data()
+            self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
+            return OK        # return OK
+
+            # Result = self._Create_Xlsx_Lists()
+            # if Result == OK:
+            #     self._Save_Xlsx_Data()
+            #     self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
+            #     return OK                           # return OK
+            # else:
+            #     return Result                       # return   'Multi matching'
 
     # -------------------------------------  Get rows from sheet ----------------------------
     def _Load_xlsx_Rows_From_Sheet(self, Filename):
@@ -226,7 +246,7 @@ class Xlsx_Manager(Codes_db):
 
             # Find for Full_Description of Row  a  String_To_Find on Codes Table
             # If more than one String_To_Find exists : Xlsx_Rows_MultiMatch_List.append(Found_List)
-            Result = self._Find_StrToFind_InFullDesc(Row, Full_Desc)
+            Result = self._Find_StrToFind_InFullDesc(Full_Desc)
 
             if Result[0] == NOK:
                 self._tTot_WithoutCode += 1
@@ -254,9 +274,11 @@ class Xlsx_Manager(Codes_db):
                 Row_With_Code.append(Rec_Found[iTR_TRfullDes]) # Full_Desc
                 self._tWith_Code_Tree_List.append(Row_With_Code)
             else:  # MULTI
+                self.Xlsx_Rows_MultiMatch_List.append(Row)
                 self.Xlsx_Rows_MultiMatch_List.append(Result[1])
                 pass  # self.Xlsx_Rows_MultiMatch_List is tested by the caller
-        return OK
+        pass
+        # return OK
 
     # --------------------------------------------------------------------------------------------
     # List_For_XLSX_Row_Control = [
