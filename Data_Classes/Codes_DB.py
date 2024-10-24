@@ -65,7 +65,7 @@ class Codes_db(Files_Names_Manager):
         return self._Multi_Codes_Matching_List
 
     # ----------------------------------------------------------------------------------------
-    def Get_Multiple_List(self):
+    def Get_MultiCodes_Match_List(self):
         return self._Multi_Codes_Matching_List
 
     # -------------------------------------------------------------------------------------- #
@@ -483,16 +483,18 @@ class Codes_db(Files_Names_Manager):
             return [OK, Found_List[0]]
         elif nFound == 0:                       # String to find NOT found
             return [NOK, []]
-        else:                                   # Multiple String_to_Tind matching
-            ErrMsg = ('In Xlsx file for:\n\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
-            ErrMsg += '\nFull Description:\n' + Full_Desc + '\n\nFound:\n'
-            CodesFound = '  '
-            for Rec in Found_List:
-                strCode = str(Rec[iTR_TRcode])
-                Texto   = 'Code: ' + strCode + '    Descr: ' + Rec[iTR_TRdesc] + '\n'
-                Texto += 'string To find: ' + Rec[iTR_TRstrToFind] + '\n' + Rec[iTR_TRfullDes] + '\n'
-                ErrMsg += Texto
-                CodesFound += '  --   ' + strCode
-            ErrMsg += 'Please Select the correct code:  '  + str(CodesFound)
-            return [MULTI, ErrMsg]
+        else:                                   # Multiple String_to_Tind matching the Row
+            return [MULTI, Found_List]
+
+            # ErrMsg = ('In Xlsx file for:\n\nRow: ' + str(Row[iRow_nRow]) + '  Contab: ' + str(Row[iRow_Contab]))
+            # ErrMsg += '\nFull Description:\n' + Full_Desc + '\n\nFound:\n'
+            # CodesFound = '  '
+            # for Rec in Found_List:
+            #     strCode = str(Rec[iTR_TRcode])
+            #     Texto   = 'Code: ' + strCode + '    Descr: ' + Rec[iTR_TRdesc] + '\n'
+            #     Texto += 'string To find: ' + Rec[iTR_TRstrToFind] + '\n' + Rec[iTR_TRfullDes] + '\n'
+            #     ErrMsg += Texto
+            #     CodesFound += '  --   ' + strCode
+            # ErrMsg += 'Please Select the correct code:  '  + str(CodesFound)
+            # return [MULTI, ErrMsg]
 # ==============================================================================================================

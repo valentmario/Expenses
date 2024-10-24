@@ -26,7 +26,7 @@ if DUAL_DISPLAY:
 else:
     Main_Wind_geometry     = '330x310+1580+10'
     Settings_geometry      = '330x390+1580+360'
-    Top_Mngr_geometry      = '660x1000+1000+10'
+    Top_Mngr_geometry      = '680x1000+1000+10'
     Top_View_geometry      = '870x1000+100+10'
     Top_View_geom_reduced  = '870x470+350+200'
     Top_GRcodes_geometry   = '830x1000+20+10'
@@ -266,9 +266,9 @@ iTreeWidth = 4
 
 NoFocus    = -1
 
-VIEW_ALPHAB    = 'alfabeticamente'
-VIEWxCODE      = 'ordine per codice'
-VIEW_SEARCH    = 'Stringa chiave'
+VIEW_ALPHAB    = 'order by name'
+VIEWxCODE      = 'order by code'
+VIEW_SEARCH    = 'string to find'
 CODES_VIEW_SEL = [VIEW_ALPHAB, VIEWxCODE, VIEW_SEARCH]
 
 # =========================================================== #
@@ -362,8 +362,10 @@ STOP          = 'Stop'
 # XLS_Row_List          : nRow    Contab    Valuta    Des1     Accr      Addeb   Des2      as in xlsx File  #
 # XLS_Row_Compact       : nRow    Contab    Valuta    Des1Comp Accr      Addeb,  Des2Comp                   #
 # List View Codes       : TRcode  TR_Desc   GR_Desc   CA_Desc  StrToSear                                    #
-# List_Rows_WithoutCode : nRow    Date      FullDesc                                                        #
+# List_Rows_WithoutCode : nRow    Valuta    Amount    FullDesc                                              #
 # List_Rows_WithCode    : nRow    Contab    Valuta    TR_Desc   Accred   Addeb   TRcode                     #
+# Xlsx_Rows_MultiMatch_List : [Row, [TRrec, .., TRrec], .., Row, [] ]                                       #
+#                                                                                                           #
 # Query_View_List       : Date    TR_Desc   Accred    Addeb                                                 #
 # ========================================================================================================= #
 Ix_Tot_OK           = 0

@@ -34,34 +34,34 @@ class Top_Codes_Mngr(Super_Top_Mngr):
 
         # --------------------------- Group Select Combo  -----------------------------------------
         self.ComboList = []
-        self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 23,
+        self.GR_Combo  = TheCombo(self, self.StrVar, 60, 830, 32, 23,
                                   [], 'Select  Group', self.Clk_Combo)
         # --------------------------------------  TEXT Boxes  -------------------------------------
-        self.Txt_StrFullDesc = TheText(self, Txt_DisBlak,280, 680, 44, 4, '')
-        self.Txt_StrToFind   = TheText(self, Txt_Enab,    10, 680, 31, 2, '')
-        self.Txt_TR_Desc     = TheText(self, Txt_Enab,    60, 734, 25, 1, '')
-        self.Txt_TR_Code     = TheText(self, Txt_DisBlak, 10, 734,  4, 1, 0)
-
-        self.Txt_GR_Code     = TheText(self, Txt_DisBlak, 10, 776,  4, 1, 0)
-        self.Txt_CA_Code     = TheText(self, Txt_DisBlak, 10, 816,  4, 1, 0)
-        self.Txt_CAdesc      = TheText(self, Txt_DisBlak, 62, 816, 25, 1, 'Category')
+        self.Txt_StrFullDesc = TheText(self, Txt_DisBlak, 10, 664, 81, 3, '')
+        self.Txt_StrToFind   = TheText(self, Txt_Enab,    10, 740, 31, 2, '')
+        self.Txt_TR_Desc     = TheText(self, Txt_Enab,    60, 794, 25, 1, '')
+        self.Txt_TR_Code     = TheText(self, Txt_DisBlak, 10, 794,  4, 1, 0)
+        #
+        self.Txt_GR_Code     = TheText(self, Txt_DisBlak, 10, 830,  4, 1, 0)
+        self.Txt_CA_Code     = TheText(self, Txt_DisBlak, 10, 866,  4, 1, 0)
+        self.Txt_CAdesc      = TheText(self, Txt_DisBlak, 62, 866, 25, 1, 'Category')
 
         # ----------------------------------    B U T T O N S     ---------------------------------
-        self.BtnSelCod = TheButton(self, Btn_Def_En,  60, 860, 22, 'Select Codes DB ',  self.Clk_Sel_Codes)
-        self.BtnView   = TheButton(self, Btn_Def_Dis,  60, 900, 22, 'Show Transact Codes', self.Clk_View_Codes)
-        self.BtnGRmngr = TheButton(self, Btn_Def_Dis,  60, 940, 22, 'Groups Codes',      self.Clk_GR_Mngr)
+        self.BtnSelCod = TheButton(self, Btn_Def_En, 60, 910, 22, 'Select Codes DB ',    self.Clk_Sel_Codes)
+        self.BtnView   = TheButton(self, Btn_Def_Dis,60, 950, 22, 'Show Transact Codes', self.Clk_View_Codes)
 
-        self.BtnDel    = TheButton(self, Btn_Def_Dis,286, 772, 18, 'Delete Last Record',self.Clk_Delete_Record)
-        self.BtnAddNew = TheButton(self, Btn_Def_En ,286, 815, 18, 'Add New Record',    self.Clk_Add_New_Record)
-        self.BtnSelXls = TheButton(self, Btn_Def_En, 286, 860, 18, 'Select Xlsx file',  self.Clk_Sel_xlsx)
-        self.BtnViXlsx = TheButton(self, Btn_Def_Dis,286, 900, 18, 'Show Xlsx Rows',    self.Clk_View_Xlsx)
-        self.BtnCekDb  = TheButton(self, Btn_Def_Dis, 286, 940, 18, 'Check codes DB',   self.Clk_Ceck_Codes_DB)
+        self.BtnDel    = TheButton(self, Btn_Def_Dis,296, 740, 18, 'Delete Last Record',self.Clk_Delete_Record)
+        self.BtnAddNew = TheButton(self, Btn_Def_En ,296, 780, 18, 'Add New Record',    self.Clk_Add_New_Record)
+        self.BtnSelXls = TheButton(self, Btn_Def_En, 296, 820, 18, 'Select Xlsx file',  self.Clk_Sel_xlsx)
+        self.BtnViXlsx = TheButton(self, Btn_Def_Dis,296, 860, 18, 'Show Xlsx Rows',    self.Clk_View_Xlsx)
+        self.BtnCekDb  = TheButton(self, Btn_Def_Dis,296, 910, 18, 'Check codes DB',    self.Clk_Ceck_Codes_DB)
+        self.BtnGRmngr = TheButton(self, Btn_Def_Dis,296, 950, 18,'Groups Codes',       self.Clk_GR_Mngr)
 
-        self.BtnUpdate = TheButton(self, Btn_Def_En,  474, 772, 17, 'Update Code',         self.Clk_Update_Record)
-        self.BtnWith_out= TheButton(self, Btn_Def_Dis,474, 815, 17, 'Show with/hout codes',self.Clk_With_out)
-        self.BtnInsert = TheButton(self, Btn_Def_En,  474, 860, 17, 'Load Transactions',   self.Clk_Load_Transact)
-        self.BtnWiewTransact=TheButton(self, Btn_Def_Dis,474, 900, 17, 'Show Transactions',self.Clk_ViewTransact)
-        self.BtnExit   = TheButton(self, Btn_Def_En,  474, 940, 18, 'E X I T ',            self.Call_OnClose)
+        self.BtnUpdate = TheButton(self, Btn_Def_En,  494, 740, 18, 'Update Code',         self.Clk_Update_Record)
+        self.BtnWith_out= TheButton(self, Btn_Def_Dis,494, 780, 18, 'Show with/hout codes',self.Clk_With_out)
+        self.BtnInsert = TheButton(self, Btn_Def_En,  494, 820, 18, 'Load Transactions',   self.Clk_Load_Transact)
+        self.BtnWiewTransact=TheButton(self, Btn_Def_Dis,494,860,18, 'Show Transactions',  self.Clk_ViewTransact)
+        self.BtnExit   = TheButton(self, Btn_Def_En,  494, 950, 18, 'E X I T ',            self.Call_OnClose)
 
         self.geometry(Top_Mngr_geometry)
         self.Set_Status()
@@ -83,11 +83,11 @@ class Top_Codes_Mngr(Super_Top_Mngr):
 
     # --------------------------  T R E E     Without  Codes   ------------------------------------
     def Frame_NoCodes_Setup(self):
-        Nrows     = 30
+        Nrows     = 29
         nColToVis = 4
         Headings  = ['#0', 'nRow', 'Date', 'Adeb  ', ' Full Description']
         Anchor    = ['c',   'c',    'c',   'e',      'w']
-        Width     = [0,      60,     80,    90,       385]
+        Width     = [0,      60,     80,    90,       405]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_NoCodes.Tree_Setup(Form_List)
 
@@ -102,11 +102,11 @@ class Top_Codes_Mngr(Super_Top_Mngr):
     # --------------------------  T R E E     With  Codes   ---------------------------------------
     def Frame_WithCodes_Setup(self):
         self.Frame_WithCodes.Frame_Title('  ')
-        Nrows     = 30
+        Nrows     = 29
         nColToVis = 7
         Headings = ['#0',  'Row ',  'Contab ', 'Valuta ', 'Description',  'Accred ', 'Addeb ', 'Code ']
         Anchor   = ['c',   'w',     'c',       'c',       'w',            'e',       'e',      'c'    ]
-        Width    = [ 0,     50,      80,        90,        205,            70,        70,       50    ]
+        Width    = [ 0,     50,      80,        90,        225,            70,        70,       50    ]
         Form_List = [Nrows, nColToVis, Headings, Anchor, Width]
         self.Frame_WithCodes.Tree_Setup(Form_List)
 
@@ -209,7 +209,7 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         self.BtnWith_out.Btn_Set_Status(Status)
 
         Status = False
-        Multiple = self.Data.Get_Multiple_List()
+        Multiple = self.Data.Get_MultiCodes_Match_List()
         Total    = self.Data.Get_Total_Rows()
         if Xlsx_Loaded and not Multiple and Total[Ix_Tot_OK]:
             Status = True
@@ -219,8 +219,8 @@ class Top_Codes_Mngr(Super_Top_Mngr):
         if Codes_Loaded:
             for Rec in self.Data.GR_Codes_Ordered:
                 self.ComboList.append(Rec[iGR_GRdesc])
-        self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 23,
-                                  self.ComboList, 'Select  Group', self.Clk_Combo)
+        # self.GR_Combo  = TheCombo(self, self.StrVar, 60, 776, 32, 23,
+        #                           self.ComboList, 'Select  Group', self.Clk_Combo)
 
     # ---------------------------------------------------------------------------------------------
     def Clk_Sel_Codes(self):

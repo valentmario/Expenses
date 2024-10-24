@@ -209,7 +209,7 @@ class Top_Settings(tk.Toplevel):
         strStat1 = Files_Status[Ix_Codes_Loaded]
         strStat2 = Files_Status[Ix_Xlsx_Lists_Loaded]
         strStat3 = Files_Status[Ix_Transact_Loaded]
-        Multiple = self.Data.Get_Multiple_List()
+        Multiple = self.Data.Get_MultiCodes_Match_List()
         strMulti = '\n------  No multiple codes match found  ----'
         if Multiple:
             CodesOrd = 0

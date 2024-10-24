@@ -84,7 +84,7 @@ class Modules_Manager(Mod_Mngr_Init):
 
             if Check == CEK_CODES_TRUE:                     # CEK_CODES with Control
                 self.Init_Codes(Origin)
-                if self.Data.Get_Multiple_List():
+                if self.Data.Get_MultiCodes_Match_List():
                     return False
 
             if Check == CEK_XLSX_LIST:                      # CEK_XLSX LISTS NO Control

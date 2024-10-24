@@ -28,7 +28,8 @@ class Xlsx_Manager(Codes_db):
         # ------------------------             A      B      C      D      E     F  ---------------
         self._Xlsx_Rows_From_Sheet   = []  # Contab Valuta Descr1 Accred Addeb Descr2
         self._Xlsx_Rows_Desc_Compact = []
-        self._Xlsx_Rows_NOK_List     = []
+        self._Xlsx_Rows_NOK_List     = []  # Not Used
+        self.Xlsx_Rows_MultiMatch_List= [] # [Row, [TRrec, .., TRrec], .., Row, [] ]
         #
         self._With_Code_Tree_List    = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
         self._Wihtout_Code_Tree_List = []  # nRow Valuta Descr
@@ -43,7 +44,7 @@ class Xlsx_Manager(Codes_db):
         # -------   _tAtt : temporary attributes  that will be coied on _Att  if all OK  -------------
         self._tXLSX_Rows_From_Sheet    = []
         self._tXLSX_Rows_Desc_Compact  = []
-        self._tXlsx_Rows_NOK_List      = []
+        # self._tXlsx_Rows_NOK_List    = []
         #
         self._tWith_Code_Tree_List     = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
         self._tWihtout_Code_Tree_List  = []
@@ -94,19 +95,22 @@ class Xlsx_Manager(Codes_db):
 
     # --------------------------------------------------------------------------------------------
     def _Init_Xlsx_Data(self):
-        self._tXLSX_Rows_From_Sheet   = []
-        self._tXLSX_Rows_Desc_Compact = []
-        self._tXlsx_Rows_NOK_List     = []
+        self._tXLSX_Rows_From_Sheet   = []  # nRow  Contab  Valuta  Des1     Accr  Addeb  Des2
+        self._tXLSX_Rows_Desc_Compact = []  # nRow  Contab  Valuta  Des1Comp Accr  Addeb  Des2Comp
+        # self._tXlsx_Rows_NOK_List     = []
         #
         self._tWith_Code_Tree_List    = []  # nRow Contabile Valuta TRdesc Accred Addeb TRcode
         self._tWihtout_Code_Tree_List = []
+        self.Xlsx_Rows_MultiMatch_List= []  # [Row, [TRrec, .., TRrec], .., Row, [] ]
+                                            # this list is defined in Codes_DB
         # ------------------------
-        self._tTot_Rows     = 0
-        self._tTot_OK       = 0
-        self._tTot_NOK      = 0
-        self._tTotWith_Code = 0
+        self._tTot_Rows        = 0
+        self._tTot_OK          = 0
+        self._tTot_NOK         = 0
+        self._tTotWith_Code    = 0
         self._tTotWihtout_Code = 0
         self._tiYear_List = []
+
         # -----------------------------------------------------------------------------------------
         self._tXlsx_Conto    = None  # or on selecting new file  FIDEU_2024_01.xlsx
         self._tXlsx_Year     = None  # they are  calculated on startup
@@ -116,7 +120,7 @@ class Xlsx_Manager(Codes_db):
     def _Save_Xlsx_Data(self):
         self._Xlsx_Rows_From_Sheet   = self._tXLSX_Rows_From_Sheet
         self._Xlsx_Rows_Desc_Compact = self._tXLSX_Rows_Desc_Compact
-        self._Xlsx_Rows_NOK_List     = self._tXlsx_Rows_NOK_List
+        # self._Xlsx_Rows_NOK_List     = self._tXlsx_Rows_NOK_List
         #
         self._With_Code_Tree_List    = self._tWith_Code_Tree_List
         self._Wihtout_Code_Tree_List = self._tWihtout_Code_Tree_List
@@ -153,7 +157,7 @@ class Xlsx_Manager(Codes_db):
             if Result == OK:
                 self._Save_Xlsx_Data()
                 self._Files_Loaded[Ix_Xlsx_Lists_Loaded] = True
-                return OK
+                return OK                           # return OK
             else:
                 return Result                       # return   'Multi matching'
 
@@ -178,8 +182,9 @@ class Xlsx_Manager(Codes_db):
 
             Checked_Row_List = self._Check_Values(XLS_Row_Compact)
             if not Checked_Row_List:
-                self._tTot_NOK += 1
-                self._tXlsx_Rows_NOK_List.append(XLS_Row_List)
+                pass
+                # self._tTot_NOK += 1
+                # self._tXlsx_Rows_NOK_List.append(XLS_Row_List)
             else:
                 self._tTot_OK += 1
                 self._tXLSX_Rows_Desc_Compact.append(Checked_Row_List)    # Descriptions compacted
@@ -220,10 +225,8 @@ class Xlsx_Manager(Codes_db):
             pass
 
             # Find for Full_Description of Row  a  String_To_Find on Codes Table
-            # If more than one String_To_Find exists : Multiple match error
-
+            # If more than one String_To_Find exists : Xlsx_Rows_MultiMatch_List.append(Found_List)
             Result = self._Find_StrToFind_InFullDesc(Row, Full_Desc)
-            # return:      [NOK, []]  [OK, Found_List[0]]  [MULTI, 'multimatchText
 
             if Result[0] == NOK:
                 self._tTot_WithoutCode += 1
@@ -234,7 +237,7 @@ class Xlsx_Manager(Codes_db):
                     if Amount == 0.0:
                         Amount = Row[iRow_Accr]
                 else:
-                    Amount = Row[iRow_Accr]
+                    Amount = Row[iRow_Accr]                   # Amount
                 Row_Without_Code.append(Amount)
                 Row_Without_Code.append(Full_Desc)            # Full_Desc
                 self._tWihtout_Code_Tree_List.append(Row_Without_Code)
@@ -250,8 +253,9 @@ class Xlsx_Manager(Codes_db):
                 Row_With_Code.append(Rec_Found[iTR_TRcode])    # TRcode
                 Row_With_Code.append(Rec_Found[iTR_TRfullDes]) # Full_Desc
                 self._tWith_Code_Tree_List.append(Row_With_Code)
-            else:
-                return str(Result[1])    # Row matching  with multiple Str_ToFind
+            else:  # MULTI
+                self.Xlsx_Rows_MultiMatch_List.append(Result[1])
+                pass  # self.Xlsx_Rows_MultiMatch_List is tested by the caller
         return OK
 
     # --------------------------------------------------------------------------------------------

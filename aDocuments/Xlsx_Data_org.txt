@@ -19,7 +19,7 @@ Clk_ViewTransact    Codes_Loaded   Transact_Loaded
 
 ******************************   Mod_Mngr_Init  for Xlsx ***********************************
 
-Init_Xlsx_Lists(Origin):                          *** on Main_Window   return nothing
+Init_Xlsx_Lists(Origin):                       *** on Main_Window   return nothing
     Xlsx_Filename = self.Data.Get_Selections_Member(Ix_Xlsx_File)
     if    unknown:   Sel_Codes_Mngr
     else 
@@ -39,7 +39,7 @@ Sel_Xlsx_Mngr(Origin):                         *** Init_Codes Top_Codes_Mngr Top
             Load_Xlsx_Lists_Mngr(Origin, Filename)
             Update_Selections   Tx_Request
 
-Load_Xlsx_Lists_Mngr(Origin, Full_Filename): *** on Init_Codes  Sel_Codes_Mngr  Make_Checkout
+Load_Xlsx_Lists_Mngr(Origin, Full_Filename):    *** on Init_Codes  Sel_Codes_Mngr  Make_Checkout
     Set Filename if unknown return False
     Reply = Data.Load_Codes_Tables(Filename)
         OK:   Tx_Request  Return True
@@ -53,11 +53,11 @@ Load_Xlsx_Lists(Filename)
     _Init_Xlsx_Data
     _Set_Xlsx_Conto_Year_Month
 
-    Result = _Load_xlsx_Rows_From_Sheet
+    Result = _Load_xlsx_Rows_From_Sheet                     # Load Xlsx Rows
     if    not OK:
           return Result
     else:
-        Result = self._Create_Xlsx_Lists()                  # create xlsx lists
+        Result = self._Create_Xlsx_Lists()                  # create Xlsx lists
         if Result == OK:
             self._Save_Xlsx_Data() 
             File_Loaded            return OK
@@ -77,7 +77,7 @@ _Get_Work_Sheet_Rows
 
 
 _Create_Xlsx_Lists
-    To be rewed
+    To be rewied
     Create  _tWihtout_Code_Tree_List 
             _tWith_Code_Tree_List
             if MULTI:
